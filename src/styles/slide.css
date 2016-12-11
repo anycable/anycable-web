@@ -16,7 +16,7 @@
 
     &.left {
       align-items: flex-end;
-      padding: 200px 60px 200px 120px;
+      padding: 200px 120px 200px 60px;
     }
   }
 

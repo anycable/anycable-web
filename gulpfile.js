@@ -1,6 +1,9 @@
 var gulp = require('gulp');
 var browserSync = require("browser-sync");
 var reload = browserSync.reload;
+var options = {
+  env: 'development',
+};
 
 function config(dir){
   return {
@@ -17,7 +20,7 @@ gulp.task('html', function() {
   var useref = require('gulp-useref');
 
   return gulp.src('src/**/*.pug')
-    .pipe(pug({pretty: true}))
+    .pipe(pug({pretty: true, locals: options}))
     .pipe(useref({searchPath: './'}))
     .pipe(gulp.dest('./build'))
     .pipe(reload({stream: true}));
@@ -87,6 +90,13 @@ gulp.task('build',
     gulp.parallel(
       'styles', 'html', 'copy'
     )
+  )
+);
+
+gulp.task('build:prod', 
+  gulp.series(
+    function(cb) { options.env = 'production'; cb(); },
+    'build'
   )
 );
 

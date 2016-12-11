@@ -7,7 +7,7 @@
   "scripts": {
     "start": "gulp",
     "watch": "gulp watch",
-    "build": "gulp build && jspm bundle-sfx app build/js/app.min.js --minify --skip-source-maps",
+    "build": "gulp build:prod && jspm bundle-sfx app build/js/app.min.js --minify --skip-source-maps",
     "devbuild": "jspm bundle-sfx app build/js/app.dev.js",
     "postinstall": "jspm install"
   },
