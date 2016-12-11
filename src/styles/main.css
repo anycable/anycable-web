@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+@import "fonts.css";
+@import "reset.css";
+@import "vars.css";
+
+body {
+  background: #fff;
+  color: $default-color;
+  font: 18px/30px $default-font;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 70px;
+  line-height: 90px;
+  letter-spacing: 2px;
+  font-family: $display-font;
+  font-weight: bold;
+}
+
+@media (max-width: 601px) {
+  body {
+    font-size: 4vw;
+    line-height: 6vw;
+  }
+
+  h1 {
+    font-size: 14vw;
+    line-height: 18vw;
+  }
+}
+
+@import "slide.css";
+
+@import "slides/main.css";
