@@ -1,16 +1,25 @@
-.main-slide--title {
-  display: inline;
-  position: relative;
+.main-slide {
+  height: 100%;
 
-  &.alpha:after {
-    content: url('/images/alpha.svg');
-    position: absolute;
-    top: -8px;
-    right: -16px;
-    line-height: 0;
+  &--title {
+    display: inline;
+    position: relative;
+
+    &.alpha:after {
+      content: url('/images/alpha.svg');
+      position: absolute;
+      top: -8px;
+      right: -16px;
+      line-height: 0;
+    }
   }
-}
 
-.main-slide--logo {
-  width: 120px;
+  &--logo {
+   width: 140px;
+  }
+
+  &--btn {
+    position: absolute;
+    left: 0;
+  }
 }

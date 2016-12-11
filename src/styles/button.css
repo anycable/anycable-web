@@ -1,0 +1,26 @@
+.btn {
+  cursor: pointer;
+  height: 60px;
+  text-decoration: none;
+  padding: 0 20px;
+  text-align: center;
+  background: $red;
+  transition: opacity 200ms;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+
+  &:hover,
+  &:focus {
+    opacity: .8;
+    transition: none;
+  }
+
+  &--icon {
+    margin-right: 16px;
+    margin-top: 6px;
+  }
+}

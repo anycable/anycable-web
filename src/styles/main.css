@@ -3,6 +3,12 @@
 @import "fonts.css";
 @import "reset.css";
 @import "vars.css";
+@import "button.css";
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
 
 body {
   background: #fff;
@@ -20,6 +26,11 @@ h1 {
   letter-spacing: 2px;
   font-family: $display-font;
   font-weight: bold;
+}
+
+.main {
+  height: 100%;
+  width: 100%;
 }
 
 @media (max-width: 601px) {

@@ -6,6 +6,7 @@
   &--item {
     display: flex;
     flex-direction: column;
+    position: relative;
     padding: 200px 60px 200px 60px;
     box-sizing: border-box;
     width: 50%;
@@ -15,7 +16,7 @@
 
     &.left {
       align-items: flex-end;
-      padding-right: 120px;
+      padding: 200px 60px 200px 120px;
     }
   }
 
@@ -30,16 +31,18 @@
 
 @media (max-width: 601px) {
   .slide {
-    flex-direction: column-reverse;
+    flex-direction: column;
+    justify-content: flex-start;
 
     &--item {
-      padding: 100px 30px;
+      padding: 30px;
       width: auto;
       border: none;
+      align-items: center;
 
       &.left {
         align-items: center;
-        padding: 0 30px;
+        padding: 30px;
       }
     }
   }
