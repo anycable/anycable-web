@@ -1,0 +1,22 @@
+.ac-slide {
+  &--top-image {
+    position: absolute;
+    top: 30px;
+  }
+
+  &--image {
+    margin-top: 90px;
+  }
+}
+
+@media (max-width: 601px) {
+  .ac-slide {
+    &--top-image {
+      display: none;
+    }
+
+    &--image {
+      margin-top: 0;
+    }
+  }
+}

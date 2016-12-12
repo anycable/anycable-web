@@ -1,6 +1,4 @@
 .main-slide {
-  height: 100%;
-
   &--title {
     display: inline;
     position: relative;
@@ -57,14 +55,17 @@
   }
 }
 
-@media (min-width: 600px) {
-  .main-slide--item {
-    padding-top: 30vh !important;
-  }
-}
 
 @media (max-width: 601px) {
-  .main-slide--actions {
-    display: none;
+  .main-slide {
+    flex-direction: column;
+
+    &--item.left {
+      padding-top: 30px;
+    }
+
+    &--actions {
+      display: none;
+    }
   }
 }

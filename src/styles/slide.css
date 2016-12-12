@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
+  min-height: 100%;
 
   &--item {
     display: flex;
@@ -31,7 +32,7 @@
 
 @media (max-width: 601px) {
   .slide {
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: flex-start;
 
     &--item {
@@ -42,8 +43,18 @@
 
       &.left {
         align-items: center;
-        padding: 30px;
+        padding: 0 30px 30px 30px;
       }
     }
+
+    &--image svg {
+      width: 70vw;
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  .slide--item {
+    padding-top: 30vh !important;
   }
 }
