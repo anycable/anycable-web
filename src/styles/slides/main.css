@@ -22,4 +22,49 @@
     position: absolute;
     left: 0;
   }
+
+  &--actions {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover,
+    &:focus {
+      opacity: .8;
+      transition: none;
+    }
+  }
+
+  &--action-arrow {
+    background: $dark-red;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      margin-top: 2px;
+    }
+  }
+
+  &--action-text {
+    color: $grey-text;
+    margin-left: 10px;
+  }
+}
+
+@media (min-width: 600px) {
+  .main-slide--item {
+    padding-top: 30vh !important;
+  }
+}
+
+@media (max-width: 601px) {
+  .main-slide--actions {
+    display: none;
+  }
 }

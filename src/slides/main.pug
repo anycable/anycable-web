@@ -1,9 +1,9 @@
 .slide.main-slide
-  .slide--item.left
+  .slide--item.left.main-slide--item
     .slide--content
       .main-slide--logo
         include ../layout/logo
-  .slide--item.right
+  .slide--item.right.main-slide--item
     .slide--content
       h1.main-slide--title.alpha ANYCABLE
       .slide--text.grey
@@ -12,3 +12,7 @@
         span.btn--icon
           include ../images/github.svg
         span FORK ON GITHUB
+      .main-slide--actions
+        span.main-slide--action-arrow
+          include ../images/arrow.svg
+        span.main-slide--action-text See how it works

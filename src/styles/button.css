@@ -19,6 +19,10 @@
     transition: none;
   }
 
+  &:active {
+    background: $dark-red;
+  }
+
   &--icon {
     margin-right: 16px;
     margin-top: 6px;
