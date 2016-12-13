@@ -28,6 +28,19 @@
       color: $grey-text;
     }
   }
+
+  &--code {
+    margin: 36px 0;
+    font-family: Roboto Mono, monospace;
+
+    & .comment {
+      color: $code-green;
+    }
+
+    & .string {
+      color: $code-red;
+    }
+  }
 }
 
 @media (max-width: 601px) {
@@ -63,3 +76,5 @@
 }
 
 @import "slides/chart.css";
+@import "slides/features.css";
+

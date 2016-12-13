@@ -1,0 +1,57 @@
+.slide
+  .slide--item.left
+    .slide--content
+      .main-slide--logo.desktop-only
+        include ../layout/logo
+  .slide--item.right
+    .slide--content
+      h2 How To Use?
+      .slide--code
+        p.comment # Add AnyCable to your Gemfile
+        p
+          | gem 
+          span.string 'anycable'
+          | , group: 
+          span.string :production
+        br
+        p.comment # Generate server script
+        p rails generate anycable
+        br
+        p.comment # Run gRPC server
+        p ./bin/anycable
+        br
+        p.comment # Run WebSocket server (e.g. anycable-go)
+        p anycable-go -addr=0.0.0.0:3334
+      br
+      br
+      .features--list
+        .features--item
+          .features--item--icon
+            include ../images/rails.svg
+          .features--item--text
+            a(href="https://github.com/anycable/anycable#actioncable-compatibility", target="_blank") Compatible 
+            | with ActionCable
+            br
+            | Choose one of the 
+            a(href="https://github.com/anycable/anycable#compatible-websocket-servers", target="_blank") existing servers 
+            | or build your own
+        .features--item
+          .features--item--icon
+            include ../images/grpc.svg
+          .features--item--text
+            | Powered by 
+            a(href="http://grpc.io", target="_blank") gRPC
+        .features--item
+          .features--item--icon
+            include ../images/fork.svg
+          .features--item--text
+            | Want to contribute? 
+            a(href="https://github.com/anycable") Fork us 
+            | on GitHub!
+        .features--item
+          .features--item--icon
+            include ../images/ask.svg
+          .features--item--text
+            | Have a question? 
+            a(href="https://gitter.im/anycable/Lobby", target="_blank") Ask us 
+            | on Gitter!

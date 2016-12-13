@@ -1,0 +1,15 @@
+.features--list {
+  margin-top: 20px;
+}
+
+.features--item {
+  display: flex;
+  margin-bottom: 20px;
+
+  &--icon {
+    width: 60px;
+    text-align: center;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+}
