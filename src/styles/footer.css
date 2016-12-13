@@ -1,0 +1,33 @@
+.footer {
+  width: 100%;
+  padding: 60px;
+  display: flex;
+  justify-content: space-around;
+  background: $footer-bg;
+
+  h3 {
+    color: white;
+    font-weight: normal;
+  }
+
+  &--block {
+    color: white;
+    font-size: 14px;
+
+    &.legals {
+      color: $grey-text;
+    }
+  }
+}
+
+.copyright {
+  position: relative;
+
+  &:before {
+    content: '©';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    line-height: 10px;
+  }
+}
