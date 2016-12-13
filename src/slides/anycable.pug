@@ -1,15 +1,62 @@
 .slide
   .slide--item.left
     .slide--content
-      .slide--image.ac-slide--image
+      .slide--image.ac-slide--image.desktop-only
         include ../images/anycable.svg
   .slide--item.right
     .slide--content
       h2 Now You Have
       .slide--text
-        | AnyCable plugged into the Rails Application which allows you to use custom WebSocket server.
+        | AnyCable plugged into the Rails application which allows you to use custom WebSocket server.
         br
         br
         | You can try one of the 
         a(href="https://github.com/anycable/anycable#compatible-websocket-servers", target="_blank") existing AnyCable servers 
         | or write your own in any language you like.
+
+      .slide--image.ac-slide--image.mobile-only
+        include ../images/anycable.svg
+
+      br
+      br
+      h3 Reduced CPU usage
+      h4 Running 
+        a(href="https://github.com/hashrocket/websocket-shootout", target="_blank") WebSocket Shootout 
+        | benchmark
+      .slide--chart
+        .slide--chart--item
+          img(src="/images/anycable.gif")
+          .slide--chart--caption.red AnyCable-Go
+        .slide--chart--item
+          img(src="/images/actioncable.gif")
+          .slide--chart--caption.orange ActionCable
+
+      br
+      br
+      h3 Reduced memory usage
+      h4 Handling 20K idle connections
+      .slide--chart.memory-chart
+        .slide--chart--item.memory-chart--item
+          .slide--chart--caption.red AnyCable-Go
+          .memory-figure.red(style="height:4vh")
+          .slide--chart--caption 798 MB
+        .slide--chart--item.memory-chart--item
+          .slide--chart--caption.green ErlyCable
+          .memory-figure.green(style="height:5vh")
+          .slide--chart--caption 832 MB
+        .slide--chart--item.memory-chart--item
+          .slide--chart--caption.orange ActionCable
+          .memory-figure.orange(style="height:20vh")
+          .slide--chart--caption 3,5 GB
+
+      br
+      br
+      h3 Drastically increased broadcasting performance
+      h4 Broadcast RTT depending on number of connections
+      .slide--chart
+        .slide--chart--item
+          include ../images/rtt.svg
+          .slide--chart--captions
+            .slide--chart--caption.red AnyCable-Go
+            .slide--chart--caption.green ErlyCable
+            .slide--chart--caption.orange ActionCable

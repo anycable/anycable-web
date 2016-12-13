@@ -23,6 +23,12 @@
     background: $dark-red;
   }
 
+  &:visited,
+  &:hover,
+  &:active {
+    color: white;
+  }
+
   &--icon {
     margin-right: 16px;
     margin-top: 6px;

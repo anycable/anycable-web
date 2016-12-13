@@ -63,9 +63,5 @@
     &--item.left {
       padding-top: 30px;
     }
-
-    &--actions {
-      display: none;
-    }
   }
 }

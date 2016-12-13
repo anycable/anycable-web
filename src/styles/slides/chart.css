@@ -1,0 +1,47 @@
+.slide--chart {
+  display: flex;
+  justify-content: flex-start;
+
+  &--item {
+    margin-right: 10px;
+    flex-grow: 1;
+    position: relative;
+
+    > img, > svg {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &--captions {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &--caption {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    color: $grey-text;
+
+    &.red {
+      color: $dark-red;
+    }
+
+    &.orange {
+      color: $orange;
+    }
+
+    &.green {
+      color: $green;
+    }
+  }
+}
+
+@media (max-width: 601px) {
+  .slide--chart--caption {
+    font-size: 3vw;
+  }
+}
+
+@import "memory.css"

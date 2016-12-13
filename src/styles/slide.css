@@ -47,8 +47,11 @@
       }
     }
 
-    &--image svg {
-      width: 70vw;
+    &--image {
+      text-align: center;
+      svg {
+        width: 70vw;
+      }
     }
   }
 }
@@ -58,3 +61,5 @@
     padding-top: 30vh !important;
   }
 }
+
+@import "slides/chart.css";
