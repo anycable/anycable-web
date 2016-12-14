@@ -7,8 +7,8 @@
   "scripts": {
     "start": "gulp",
     "watch": "gulp watch",
-    "build": "gulp build:prod && jspm bundle-sfx app build/js/app.min.js --minify --skip-source-maps",
-    "devbuild": "jspm bundle-sfx app build/js/app.dev.js",
+    "build": "gulp build:prod && jspm bundle-sfx index build/js/app.min.js --minify --skip-source-maps",
+    "devbuild": "jspm bundle-sfx index build/js/app.dev.js",
     "postinstall": "jspm install"
   },
   "author": "Vlad Dem <palkan@evl.ms>",
@@ -35,6 +35,10 @@
       "lib": "src/js"
     },
     "configFile": "jspm.config.js",
+    "dependencies": {
+      "jump.js": "npm:jump.js@^1.0.1",
+      "lighty": "npm:lighty@^0.5.0"
+    },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",
       "babel-runtime": "npm:babel-runtime@^5.8.24",

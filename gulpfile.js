@@ -73,6 +73,7 @@ gulp.task('serve', function() {
 
 gulp.task('watch', function() {
   gulp.watch('src/**/*.pug', gulp.series('html'));
+  gulp.watch('src/**/*.js', gulp.series('html'));
   gulp.watch('src/**/*.css', gulp.series('styles'));
   gulp.watch('src/images/**/*', gulp.series('copy:images'));
 });
