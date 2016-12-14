@@ -17,6 +17,7 @@ System.config({
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.6",
+    "fontfaceobserver": "npm:fontfaceobserver@2.0.7",
     "jump.js": "npm:jump.js@1.0.1",
     "lighty": "npm:lighty@0.5.0",
     "github:jspm/nodelibs-assert@0.1.0": {

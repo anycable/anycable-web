@@ -13,7 +13,11 @@ html, body {
 body {
   background: #fff;
   color: $default-color;
-  font: 18px/30px $default-font;
+  font: 18px/30px $default-font-fallback;
+
+  .fonts-loaded & {
+    font-family: $default-font;
+  }
 }
 
 a {
@@ -34,7 +38,6 @@ h1 {
   font-size: 70px;
   line-height: 90px;
   letter-spacing: 2px;
-  font-family: $display-font;
   font-weight: bold;
 }
 
@@ -42,7 +45,6 @@ h2 {
   font-size: 40px;
   line-height: 50px;
   letter-spacing: 1.5px;
-  font-family: $display-font;
 }
 
 h4 {
