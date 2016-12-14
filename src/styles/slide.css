@@ -3,6 +3,31 @@
   justify-content: space-around;
   width: 100%;
   min-height: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  &--header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 60px;
+
+    &--title {
+      color: $red;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    &--btn {
+      height: 30px;
+      padding: 0 10px;
+      font-size: 14px;
+    }
+  }
 
   &--item {
     display: flex;
