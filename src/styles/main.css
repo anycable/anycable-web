@@ -8,6 +8,7 @@
 html, body {
   height: 100%;
   width: 100%;
+  min-width: 300px;
 }
 
 body {
@@ -62,7 +63,29 @@ h4 {
   display: none;
 }
 
-@media (max-width: 601px) {
+@media (max-width: 800px) and (min-width: 601px) {
+  body {
+    font-size: 3vw;
+    line-height: 5vw;
+  }
+
+  h1 {
+    font-size: 14vw;
+    line-height: 18vw;
+  }
+
+  h2 {
+    font-size: 5vw;
+    line-height: 7vw;
+  }
+
+  h4 {
+    font-size: 2vw;
+  }
+}
+
+
+@media (max-width: 600px) {
   body {
     font-size: 4vw;
     line-height: 6vw;

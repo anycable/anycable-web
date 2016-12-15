@@ -74,7 +74,15 @@
   }
 }
 
-@media (max-width: 601px) {
+@media (max-height: 600px), (max-width: 800px) {
+  .slide {
+    &--actions {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 600px) {
   .slide {
     flex-direction: column-reverse;
     justify-content: flex-start;
@@ -95,7 +103,7 @@
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 601px) {
   .slide--item {
     padding-top: 30vh !important;
   }
