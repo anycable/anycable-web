@@ -23,7 +23,7 @@ application.component('.js-animation-controller', {
   // active hook is an element,
   // which lies in the upper half of the window
   findActiveHook() {
-    const viewTop = document.body.scrollTop;
+    const viewTop = document.body.scrollTop || document.documentElement.scrollTop;
     const viewH = window.innerHeight;
 
     const threshold = viewTop + (1 / 2) * viewH;

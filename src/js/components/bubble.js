@@ -11,7 +11,7 @@ application.component('.js-bubble', {
 
   eventHandler() {
     const y = nodeY(this.node);
-    const viewTop = document.body.scrollTop;
+    const viewTop = document.body.scrollTop || document.documentElement.scrollTop;
       
     if (viewTop > y + this.delta) {
       this.bubble();

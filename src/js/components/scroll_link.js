@@ -14,7 +14,8 @@ application.component('.js-scroll-link', {
       const upperBound = y + h + DELTA;
       const lowerBound = y + h - DELTA;
       
-      const viewBottom = document.body.scrollTop + window.innerHeight;
+      const viewTop = document.body.scrollTop || document.documentElement.scrollTop
+      const viewBottom = viewTop + window.innerHeight;
       
       if (viewBottom > upperBound || viewBottom < lowerBound) {
         this.hide();
