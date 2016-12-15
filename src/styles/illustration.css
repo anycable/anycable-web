@@ -1,0 +1,16 @@
+.illustration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  width: 50%;
+  box-sizing: border-box;
+  border-right: solid 0.5px $grey;
+
+  &--content {
+    display: flex;
+    align-items: flex-end;
+    padding: 60px 120px 60px 60px;
+  }
+}

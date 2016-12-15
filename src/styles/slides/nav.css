@@ -1,0 +1,28 @@
+.topnav {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  transition: top 200ms easeOutCubic;
+  justify-content: space-between;
+  padding: 60px;
+
+  .is-bubbling & {
+    top: 0;
+  }
+
+  &--title {
+    color: $red;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  &--btn {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 14px;
+  }
+}

@@ -1,33 +1,10 @@
 .slide {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   width: 100%;
   min-height: 100%;
   position: relative;
   box-sizing: border-box;
-
-  &--header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 60px;
-
-    &--title {
-      color: $red;
-      font-size: 24px;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
-
-    &--btn {
-      height: 30px;
-      padding: 0 10px;
-      font-size: 14px;
-    }
-  }
 
   &--item {
     display: flex;
@@ -36,14 +13,6 @@
     padding: 60px;
     box-sizing: border-box;
     width: 50%;
-    &:not(:first-child) {
-      border-left: solid 0.5px $grey;
-    }
-
-    &.left {
-      align-items: flex-end;
-      padding: 60px 120px 60px 60px;
-    }
   }
 
   &--text {
@@ -115,11 +84,6 @@
       width: auto;
       border: none;
       align-items: center;
-
-      &.left {
-        align-items: center;
-        padding: 0 30px 30px 30px;
-      }
     }
 
     &--image {
@@ -137,6 +101,6 @@
   }
 }
 
+@import "slides/nav.css";
 @import "slides/chart.css";
 @import "slides/features.css";
-

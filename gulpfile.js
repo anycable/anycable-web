@@ -34,7 +34,8 @@ gulp.task('styles', function () {
     .pipe(sourcemaps.init())
     .pipe(postcss([
       require('postcss-cssnext'),
-      require('precss')
+      require('precss'),
+      require('postcss-easings')
     ]))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('./build'))

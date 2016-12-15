@@ -3341,6 +3341,12 @@ postcss-custom-selectors@^3.0.0:
     postcss "^5.0.0"
     postcss-selector-matches "^2.0.0"
 
+postcss-easings@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/postcss-easings/-/postcss-easings-0.3.0.tgz#23dccbf97587e28d5da19c3bae4b50698c5aad5e"
+  dependencies:
+    postcss "^5.0.2"
+
 postcss-extend@^1.0.1:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/postcss-extend/-/postcss-extend-1.0.5.tgz#5ea98bf787ba3cacf4df4609743f80a833b1d0e7"

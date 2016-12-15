@@ -91,6 +91,7 @@ h4 {
   }
 }
 
+@import "illustration.css";
 @import "slide.css";
 
 @import "slides/main.css";

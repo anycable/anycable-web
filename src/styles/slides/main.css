@@ -12,10 +12,6 @@
     }
   }
 
-  &--logo {
-   width: 140px;
-  }
-
   &--btn {
     position: absolute;
     left: 0;
@@ -27,8 +23,9 @@
   .main-slide {
     flex-direction: column;
 
-    &--item.left {
-      padding-top: 30px;
+    &--logo svg {
+      width: 40vw;
+      padding: 10vw 0;
     }
   }
 }
