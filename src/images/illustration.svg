@@ -21,13 +21,13 @@
             <use xlink:href="#path-5"></use>
         </mask>
     </defs>
-    <g id="i-chart" transform="translate(0, 280)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g class="i-chart" transform="translate(0, 280)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Illustration2">
             <g id="Illustration">
                 <text id="Rails-Application-+" font-family="Stem-Regular, Stem" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
                     <tspan x="96.5" y="261">Rails Application</tspan>
                     <tspan x="103.858" y="277">+ ActionCable</tspan>
-                    <tspan id="i-anycable-text" x="112.1455" y="293">+ AnyCable</tspan>
+                    <tspan class="i-anycable-text" x="112.1455" y="293">+ AnyCable</tspan>
                 </text>
                 <g id="Rails" transform="translate(106.000000, 150.000000)">
                     <polygon stroke-width="4" stroke="#363636" mask="url(#mask-4)" id="Rails-path-1" points="0 20 40 0 80 20 80 70 40 90 0 70"></polygon>
@@ -58,9 +58,9 @@
                     <polygon class="i-ws-box" stroke-width="4" stroke="#E0E0E0" mask="url(#mask-4)" id="WS-path-1" points="0 20 40 0 80 20 80 70 40 90 0 70"></polygon>
                     <path d="M40,88.5 L40,40.5" class="i-ws-box" id="Line" stroke="#E0E0E0" stroke-width="2" stroke-linecap="square"></path>
                     <polyline class="i-ws-box" id="Line-2" stroke="#E0E0E0" stroke-width="2" points="1 20.5 40 40 79 20.5"></polyline>
-                    <path d="M66.7932406,49.1654098 L66.7932406,58.4454098 L70.4254473,56.6405153 L70.4254473,45.4455946 L66.389662,42.2954775 L63.7952286,46.8989736 L66.7932406,49.1654098 Z M52.2644135,67.2853055 L56.3001988,70.5090735 L74,61.7137936 L70.4254473,58.9236899 L57.7992048,65.1978471 L54.8011928,62.7841093 L52.2644135,67.2853055 Z M62.584493,49.0472718 L63.7952286,46.8989736 L57.5685885,42.0387928 L45,48.284301 L48.5745527,51.0744047 L56.0695825,47.3500191 L58.72167,49.3464453 L54.8011928,56.2291887 L52.2067594,54.2041134 L52.2067594,51.6999864 L48.5745527,53.5048809 L48.5745527,57.9239285 L54.8011928,62.7841093 L56.1272366,60.5048621 L58.6640159,62.4849357 L63.7375746,59.9638132 L58.6640159,55.9300151 L59.9900596,53.5771171 L65.0059642,57.5659135 L65.0059642,51.0109929 L62.584493,49.0472718 Z" id="i-ws-logo" fill="#E0E0E0"></path>
+                    <path d="M66.7932406,49.1654098 L66.7932406,58.4454098 L70.4254473,56.6405153 L70.4254473,45.4455946 L66.389662,42.2954775 L63.7952286,46.8989736 L66.7932406,49.1654098 Z M52.2644135,67.2853055 L56.3001988,70.5090735 L74,61.7137936 L70.4254473,58.9236899 L57.7992048,65.1978471 L54.8011928,62.7841093 L52.2644135,67.2853055 Z M62.584493,49.0472718 L63.7952286,46.8989736 L57.5685885,42.0387928 L45,48.284301 L48.5745527,51.0744047 L56.0695825,47.3500191 L58.72167,49.3464453 L54.8011928,56.2291887 L52.2067594,54.2041134 L52.2067594,51.6999864 L48.5745527,53.5048809 L48.5745527,57.9239285 L54.8011928,62.7841093 L56.1272366,60.5048621 L58.6640159,62.4849357 L63.7375746,59.9638132 L58.6640159,55.9300151 L59.9900596,53.5771171 L65.0059642,57.5659135 L65.0059642,51.0109929 L62.584493,49.0472718 Z" class="i-ws-logo" fill="#E0E0E0"></path>
                 </g>
-                <g id="i-question">
+                <g class="i-question">
                     <circle id="Oval-4" fill="#F64242" cx="81" cy="71" r="15"></circle>
                     <path d="M83.92,67.5 C83.92,69.6 79.44,69.36 79.44,72.16 C79.44,72.46 79.48,72.9 79.58,73.24 L81.76,73.22 C81.74,72.94 81.68,72.84 81.68,72.54 C81.68,70.7 86.4,71.26 86.4,67.1 C86.4,64.9 84.64,63.34 80.92,63.34 C78.16,63.34 76.1,64.84 75.6,67.3 L77.78,67.92 C78.26,66.6 79.24,65.66 80.96,65.66 C83.22,65.66 83.92,66.54 83.92,67.5 Z M78.96,76.04 C78.96,76.82 79.6,77.54 80.58,77.54 C81.5,77.54 82.18,76.82 82.18,76.04 C82.18,75.34 81.5,74.58 80.58,74.58 C79.6,74.58 78.96,75.34 78.96,76.04 Z" id="?" fill="#FFFFFF"></path>
                 </g>
@@ -70,7 +70,7 @@
             <path class="i-arrow" id="Arrow3-Line-decoration-2" d="M91.1955356,135.416021 L102,138.399902 L94.2824177,130.271008" stroke="#83A8C3" stroke-linecap="round" stroke-linejoin="round"></path>
         </g>
     </g>
-    <g id="i-logo" transform="translate(108, 0)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g class="i-logo" transform="translate(108, 0)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Normal">
             <g id="Group">
                 <g class="i-leg" id="Leg" transform="translate(26.000000, 69.000000)">

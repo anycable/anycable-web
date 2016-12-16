@@ -26,7 +26,7 @@
   }
 }
 
-#i-logo {
+.i-logo {
   transition: transform 500ms easeOutCubic;
 
   .frame-1 & {
@@ -51,7 +51,7 @@
   }
 }
 
-#i-chart {
+.i-chart {
   transition: transform 500ms easeOutCubic;
 
   .i-arrow {
@@ -60,12 +60,12 @@
     transition-delay: 250ms;
   }
 
-  #i-anycable-text {
+  .i-anycable-text {
     display: none;
     transition-delay: 250ms;
   }
 
-  #i-question {
+  .i-question {
     transition: transform 400ms easeOutCubic;
   }
 
@@ -84,7 +84,7 @@
       stroke: #363636;
     }
 
-    & #i-ws-logo {
+    & .i-ws-logo {
       fill: #f64242;
     }
 
@@ -92,11 +92,11 @@
       opacity: 1;
     }
 
-    & #i-anycable-text {
+    & .i-anycable-text {
       display: block;
     }
 
-    & #i-question {
+    & .i-question {
       transform: translateY(450px);
     }
   }

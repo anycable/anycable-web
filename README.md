@@ -10,3 +10,9 @@ Includes:
 ## Usage
 
 Run `npm install` and then `npm start` or `gulp` to start dev server with livereload.
+
+## SVG Optimization
+
+Use [svgo](https://github.com/svg/svgo) to optimize SVG images.
+
+For animated illustration use: `svgo --disable=moveGroupAttrsToElems --disable=convertTransform src/images/illustration.svg src/images/illustration.min.svg`
