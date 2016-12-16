@@ -13,7 +13,7 @@ application.component('.js-animation-controller', {
 
   updateAnimation() {
     const activeHook = this.findActiveHook();
-    if (!activeHook) return;
+    if (!activeHook || (activeHook == this.prevHook)) return;
 
     if (this.prevHook) this.node.classList.remove(this.prevHook.dataset['frame']);
     this.node.classList.add(activeHook.dataset['frame']);

@@ -7,7 +7,7 @@
   z-index: 10;
   width: 50%;
   box-sizing: border-box;
-  border-right: solid 0.5px $grey;
+  border-right: solid 1px $grey;
 
   &--content {
     display: flex;
