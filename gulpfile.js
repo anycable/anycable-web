@@ -55,7 +55,7 @@ gulp.task('copy:images', function () {
 });
 
 gulp.task('copy:root', function () {
-  return gulp.src('src/*.{xml,png,ico,json,svg}')
+  return gulp.src(['src/*.{xml,png,ico,json,svg}', 'src/CNAME'])
     .pipe(gulp.dest('./build'))
     .pipe(reload({stream: true}));
 });
