@@ -63,6 +63,10 @@ h4 {
   display: none;
 }
 
+.grey-text {
+  color: $grey-text;
+}
+
 @media (max-width: 800px) and (min-width: 601px) {
   body {
     font-size: 3vw;

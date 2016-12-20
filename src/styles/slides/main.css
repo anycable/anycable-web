@@ -12,6 +12,11 @@
     }
   }
 
+  &--text {
+    margin-top: 10px;
+    margin-bottom: 22px;
+  }
+
   &--btn {
     position: absolute;
     left: 0;
