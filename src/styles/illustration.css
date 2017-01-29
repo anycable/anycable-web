@@ -37,7 +37,7 @@
     transform: scale(1) translate(106px, 0);
   }
 
-  .frame-3 & {
+  .frame-3 &, .frame-31 & {
     transform: scale(1) translate(106px, 380px);
 
     & .i-leg, .i-leg {
@@ -69,6 +69,32 @@
     transition: transform 400ms easeOutCubic;
   }
 
+  .i-rails {
+    transition: opacity 300ms easeOutCubic;
+
+    .frame-31 & {
+      opacity: 0;
+    }
+  }
+
+  .i-ruby-text {
+    opacity: 0;
+    transition: opacity 300ms easeOutCubic;
+
+    .frame-31 & {
+      opacity: 1;
+    }
+  }
+
+  .i-rails-text {
+    opacity: 1;
+    transition: opacity 300ms easeOutCubic;
+
+    .frame-31 & {
+      opacity: 0;
+    }
+  }
+
   .frame-1 &, .frame-4 &  {
     transform: translate(0, 1000px);
   }
@@ -77,7 +103,7 @@
     transform: translate(0, 280px);
   }
 
-  .frame-3 & {
+  .frame-3 &, .frame-31 & {
     transform: translate(0, 280px);
 
     & .i-ws-box {
