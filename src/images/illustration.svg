@@ -24,12 +24,12 @@
     <g class="i-chart" transform="translate(0, 280)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Illustration2">
             <g id="Illustration">
-                <text class="i-rails-text" id="Rails-Application-+" font-family="Stem-Regular, Stem" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
+                <text class="i-rails-text" id="Rails-Application-+" font-family="Stem Text" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
                     <tspan x="96.5" y="261">Rails Application</tspan>
                     <tspan x="103.858" y="277">+ ActionCable</tspan>
                     <tspan class="i-anycable-text" x="112.1455" y="293">+ AnyCable</tspan>
                 </text>
-                <text class="i-ruby-text" id="Ruby-Application-+" font-family="Stem-Regular, Stem" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
+                <text class="i-ruby-text" id="Ruby-Application-+" font-family="Stem Text" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
                     <tspan x="96.5" y="261">Ruby Application</tspan>
                     <tspan x="112.1455" y="277">+ LiteCable</tspan>
                     <tspan class="i-anycable-text" x="112.1455" y="293">+ AnyCable</tspan>
@@ -46,7 +46,7 @@
                 <path id="Line-decoration-1" d="M197.717582,130.271008 L190,138.399902 L200.804464,135.416021" stroke="#83A8C3" stroke-linecap="round" stroke-linejoin="round"></path>
                 <path d="M201.5,45.5 L90.5,45.5" class="i-arrow" id="Arrow2-Line" stroke="#83A8C3" stroke-linecap="round" stroke-linejoin="round" transform="translate(146.000000, 45.500000) scale(-1, 1) translate(-146.000000, -45.500000) "></path>
                 <path id="Arrow2-Line-decoration-1" class="i-arrow" d="M190.7,42.5 L201.5,45.5 L190.7,48.5" stroke="#83A8C3" stroke-linecap="round" stroke-linejoin="round"></path>
-                <text id="Client-Applications" font-family="Stem-Regular, Stem" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
+                <text id="Client-Applications" font-family="Stem Text" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
                     <tspan x="232.169" y="111">Client</tspan>
                     <tspan x="212.5" y="127">Applications</tspan>
                 </text>
@@ -56,7 +56,7 @@
                     <polyline id="Line" stroke="#363636" stroke-width="2" points="1 20.5 40 40 79 20.5"></polyline>
                     <path d="M59.9996161,70.60257 C52.8321274,74.1215689 47,69.9032901 47,61.1992355 C47,52.495181 52.8321274,42.5501404 59.9996161,39.0311414 C67.1678726,35.5117654 73,39.7300443 73,48.4340988 C73,57.1381533 67.1678726,67.083194 59.9996161,70.60257 Z M51.8261034,68.51129 C52.3879672,67.7046963 53.1763177,66.8882273 54.0400189,65.9937229 C55.3508078,64.6359424 56.9825748,62.9462115 56.9825748,61.8925874 L56.9825748,60.4585396 C56.5180011,60.2138976 55.7309135,59.5840038 55.6072831,58.1164809 C55.2310169,57.8704414 54.606722,57.2986185 54.606722,56.2114275 C54.606722,55.5512807 54.8217313,54.9133117 55.0106323,54.4821025 C54.8954488,53.830954 54.6789037,52.4556698 54.6789037,51.3684788 C54.6789037,47.7264824 56.7675655,44.347614 59.9996161,42.7607845 C60.9272276,42.305358 62.0537228,42.0543874 62.6810892,42.5622307 C64.146224,42.1561882 65.3210963,43.6856808 65.3210963,46.1435156 C65.3210963,47.7202222 65.0930329,49.1291771 64.9555805,49.8381603 C65.1083907,50.077358 65.2734871,50.4625065 65.2734871,51.0033048 C65.2734871,52.2256953 64.7651437,53.2659594 64.2905874,53.9213328 C64.1562066,55.4940851 63.4489796,56.8128821 63.0174252,57.4853719 L63.0174252,58.9296762 C63.0174252,59.8257229 64.3550902,59.7713112 65.6489855,59.7188083 C66.6170585,59.6791077 67.7486498,59.7763836 68.4471437,60.1141945 C67.9863786,60.7288237 64.9893678,66.2947467 60,68.744361 C55.0106322,71.1939754 52.3879672,68.8887228 51.8261034,68.51129 Z" id="Combined-Shape" fill="#F64242"></path>
                 </g>
-                <text id="WS-Server" font-family="Stem-Regular, Stem" font-size="13" font-weight="normal" line-spacing="14" fill="#9E9E9E">
+                <text id="WS-Server" font-family="Stem Text" font-size="13" font-weight="normal" line-spacing="14" fill="#9E9E9E">
                     <tspan x="7.5" y="112">WS Server</tspan>
                 </text>
                 <g id="WS">
