@@ -7,3 +7,5 @@ build:
 
 release: build
 	(cd ./build && git add . && git commit -m "$(MSG)" && git push -f)
+
+.PHONY: build release
