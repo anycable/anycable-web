@@ -1,14 +1,17 @@
 language: node_js
 cache:
   directories:
-    - node_modules
-    - jspm_packages
+  - node_modules
+  - jspm_packages
 script:
   - npm run build
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN
+  github_token: "$GITHUB"
   local_dir: "./build"
   on:
     branch: master
+env:
+  global:
+    secure: Oo4udlh6+SwXlju1Nze9oRX5AWdFWlGRTlneQnu+R0DZ632kqTPeMuOTol9iSZd7yyl9n9yW2+S+kXVeFjPBo/gXmV3fb2IcPlX8Lz8o2/v/286K0WqvQAhBOfL0OB7Wkw6AXJvJLFfEg5PTywC1HYlLFsPZ3VKhbEdCmJEDfoaIg+IC58YuHX++qufo2u48Bbew20ZEF0g+betXtt3EU1JfedxC+r9LePnno+L86zwL2kIzVFvSoNitgQ1Xf0N17IRYBjLqGrFmCP6YGgEDlyEL7tAWCs9JwPw8lQ9jXFiE8qugyMhA3oshZGg3NRgBznBdwcHiUYdVw46DIHJKZCwdBM8Mu/HbLWeOIWuZyMoqvEAMWjpMARwk9NzAG3HV4kRohfxfWKh/bUrJlMsFZxj8Bcz676Sw6qExH4tjV01GdXCkxnaVRGnA53cSmvXGxVzkAGvFuKbFi5lTiuUSjnEK9bohWSEICk6jlzOEZb0rBj/PnuUbCVuMI9hJwL8d2uWRqkCc2fIPSeedA/YOhvtN7qOsNO4NQZNFNL05kPmcdIs+nWgsraxLD1ojqd2WFGZhxwqp63i3FAgKpeCdxF9SyIIRxf3MKHfvrUvP3bSdU3SWSJ/P3QGAnNT964BGtNphzCsmxfGrsw1aziq+6dM6xwYVS3O/BkiMOXiHEGM=
