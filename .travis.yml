@@ -1,10 +1,11 @@
 language: node_js
 cache:
+  yarn: true
   directories:
-  - node_modules
-  - jspm_packages
+    - node_modules
+    - jspm_packages
 script:
-  - npm run build
+  - yarn run build
 deploy:
   provider: pages
   skip_cleanup: true
