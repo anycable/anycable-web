@@ -26,7 +26,7 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-useref": "^3.0.3",
-    "jspm": "^0.16.27",
+    "jspm": "^0.16.53",
     "postcss-cssnext": "^2.9.0",
     "postcss-easings": "^0.3.0",
     "precss": "^1.4.0"
@@ -46,5 +46,8 @@
       "babel-runtime": "npm:babel-runtime@^5.8.24",
       "core-js": "npm:core-js@^1.1.4"
     }
+  },
+  "dependencies": {
+    "fsevents": "1.1.2"
   }
 }
