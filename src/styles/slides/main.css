@@ -3,12 +3,19 @@
     display: inline;
     position: relative;
 
-    &.alpha:after {
-      content: url('/images/alpha.svg');
+    &:after {
       position: absolute;
       top: -8px;
       right: -16px;
       line-height: 0;
+    }
+     
+    &.alpha:after {
+      content: url('/images/alpha.svg');
+    }
+
+    &.beta:after {
+      content: url('/images/beta.svg');
     }
   }
 
