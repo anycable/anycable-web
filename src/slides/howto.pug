@@ -3,21 +3,23 @@
     .slide--content.js-animation-hook(data-frame="frame-4")
       h2 How To Use With Rails?
       .slide--code
-        p.comment # Add AnyCable to your Gemfile
+        p.comment # Gemfile
         p
           | gem 
           span.string 'anycable-rails'
-          | , group: 
-          span.string :production
         br
-        p.comment # Generate server script
-        p rails generate anycable
+        p.comment # config/cable.yml
+        p 
+          | production:
+        p
+          | &nbsp;&nbsp;adapter:
+          span.string &nbsp;:any_cable
         br
         p.comment # Run gRPC server
-        p ./bin/anycable
+        p $ bundle exec anycable
         br
         p.comment # Run WebSocket server (e.g. anycable-go)
-        p anycable-go -addr=0.0.0.0:3334
+        p $ anycable-go --port 3334
       br
       br
       .features--list
@@ -25,11 +27,11 @@
           .features--item--icon
             include ../images/rails.svg
           .features--item--text
-            a(href="https://github.com/anycable/anycable#actioncable-compatibility", target="_blank") Compatible 
+            a(href="https://docs.anycable.io/#compatibility", target="_blank") Compatible 
             | with ActionCable
             br
             | Choose one of the 
-            a(href="https://github.com/anycable/anycable/wiki/List-of-Compatible-Servers", target="_blank") existing servers 
+            a(href="https://docs.anycable.io/#websocket_servers", target="_blank") existing servers 
             | or build your own
         .features--item
           .features--item--icon
