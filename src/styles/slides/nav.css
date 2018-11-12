@@ -1,6 +1,7 @@
 .topnav {
   position: fixed;
-  top: -100px;
+  top: -200px;
+  opacity: 0;
   left: 50%;
   right: 0;
   z-index: 30;
@@ -11,6 +12,7 @@
 
   .is-bubbling & {
     top: 0;
+    opacity: 1;
   }
 
   &--title {
