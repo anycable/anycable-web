@@ -1,0 +1,8 @@
+.martians-logo {
+  display: flex;
+  justify-content: center;
+
+  svg {
+    width: 100%;
+  }
+}

@@ -1,0 +1,101 @@
+extends ../layout/base
+
+block content
+  .illustration.desktop-only.frame-1
+    .illustration--content
+      include ../images/illustration.min.svg
+  .slide.main-slide
+    .slide--item.right.main-slide--item
+      .slide--content.js-animation-hook(data-frame="frame-1")
+        .slide--image.mobile-only.main-slide--logo
+          include ../layout/logo
+        h1.main-slide--title ANYCABLE
+        p.main-slide--sub-title
+          | Commercial support by 
+          a(href="https://evilmartians.com") Evil Martians
+        .slide--text.main-slide--text.grey
+          | Martians team would be glad to help you in building high-performant real-time applications on top of AnyCable.
+        .nav.main-slide--btn.js-bubble(data-delta=50)
+          a.btn(href="#talk-to-us")
+            span TALK TO US
+          .topnav.desktop-only.js-bubble
+            .topnav--title ANYCABLE PRO
+            a.btn.topnav--btn(href="#talk-to-us") TALK TO US
+        .slide--actions.desktop-only.js-scroll-link(data-target="#help")
+          span.slide--action-arrow
+            include ../images/arrow.svg
+          span.slide--action-text See how we can help you
+  .slide#help
+    .slide--item
+      .slide--content.js-animation-hook(data-frame="frame-2")
+        h2 We Offer Help In
+        br
+        .features--list
+          .features--item
+            .features--item--text
+              | Optimizing AnyCable and Ruby/Go infrastructure for a high amount of connections and high availability
+          .features--item
+            .features--item--text
+              | Implementing new AnyCable features or changing the existing ones for the scope of your product
+          .features--item
+            .features--item--text
+              | Creating a new team or joining the existing team to build a product using AnyCable
+      .slide--actions.desktop-only.js-scroll-link(data-target="#why")
+        span.slide--action-arrow
+          include ../images/arrow.svg
+        span.slide--action-text Why AnyCable?
+  .slide#why
+    .slide--item
+      .slide--content.js-animation-hook(data-frame="frame-3")
+        h2 Why AnyCable?
+        br
+        h3 Reduce Infrastructure Costs
+        .slide--text
+          | AnyCable requires much less server resources (RAM, CPU) thus allowing you to scale more efficiently.
+        h4 Handling 20K connections
+        .slide--chart.memory-chart
+          .slide--chart--item.memory-chart--item
+            .slide--chart--caption.red AnyCable-Go
+            .memory-figure.red(style="height:4vh")
+            .slide--chart--caption 798 MB
+          .slide--chart--item.memory-chart--item
+            .slide--chart--caption.orange Action Cable
+            .memory-figure.orange(style="height:20vh")
+            .slide--chart--caption 3,5 GB
+        br
+        h3 Better Real-Time Experience
+        .slide--text
+          | Messaging broadcasting is optimized to provide a very low latency: 
+          | users shouldn't wait seconds to learn that something happened.
+        h4 Broadcast latency depending on the number of connections
+        .slide--chart
+          .slide--chart--item
+            include ../images/rtt.svg
+            .slide--chart--captions
+              .slide--chart--caption.red AnyCable-Go
+              .slide--chart--caption.orange Action Cable
+        
+        br
+        h3 Additional Features
+        .slide--text
+          | AnyCable provides some features missing in Action Cable, such as 
+          a(href="https://docs.anycable.io/#/go_instrumentation") analytics
+          |, 
+          a(href="https://docs.anycable.io/#/go_instrumentation?id=prometheus") Prometheus 
+          | integration, disconnect-less deployments with 
+          a(href="https://docs.anycable.io/#/go_envoy") Envoy
+          |, etc.
+          br
+        .slide--text
+          | It's designed to be easily extensible, so we can tune AnyCable for your needs.
+      br
+      br
+      .slide--content.js-animation-hook(data-frame="frame-4")#talk-to-us
+        h2 Talk to Us
+        .slide--text
+          | Shoot us an email to 
+          a(href="mailto:anycable@evilmartians.com") anycable@evilmartians.com 
+          | describing what real-time features you want to build, and we will help to make it real!
+        a.martians-logo(href="https://evilmartians.com", target="_blank")
+          include ../images/em.svg
+  include ../slides/footer
