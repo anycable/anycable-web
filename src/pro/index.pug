@@ -1,7 +1,7 @@
 extends ../layout/base
 
 block content
-  .illustration.desktop-only.frame-1
+  .illustration.desktop-only.js-animation-controller.frame-1
     .illustration--content
       include ../images/illustration.min.svg
   .slide.main-slide
@@ -19,7 +19,7 @@ block content
           a.btn(href="#talk-to-us")
             span TALK TO US
           .topnav.desktop-only.js-bubble
-            .topnav--title ANYCABLE PRO
+            .topnav--title ANYCABLE
             a.btn.topnav--btn(href="#talk-to-us") TALK TO US
         .slide--actions.desktop-only.js-scroll-link(data-target="#help")
           span.slide--action-arrow
@@ -27,7 +27,7 @@ block content
           span.slide--action-text See how we can help you
   .slide#help
     .slide--item
-      .slide--content.js-animation-hook(data-frame="frame-2")
+      .slide--content.js-animation-hook(data-frame="frame-1")
         h2 We Offer Help In
         br
         .features--list
@@ -46,7 +46,7 @@ block content
         span.slide--action-text Why AnyCable?
   .slide#why
     .slide--item
-      .slide--content.js-animation-hook(data-frame="frame-3")
+      .slide--content.js-animation-hook(data-frame="frame-1")
         h2 Why AnyCable?
         br
         h3 Reduce Infrastructure Costs
