@@ -20,7 +20,7 @@ gulp.task('html', function() {
   var useref = require('gulp-useref');
 
   return gulp.src('src/**/*.pug')
-    .pipe(pug({pretty: true, locals: options}))
+    .pipe(pug({pretty: true, locals: options, basedir: 'src'}))
     .pipe(useref({searchPath: './'}))
     .pipe(gulp.dest('./build'))
     .pipe(reload({stream: true}));
