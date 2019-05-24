@@ -9,8 +9,8 @@ System.config({
   },
   paths: {
     "*": "src/js/*.js",
-    "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*"
+    "github:*": "/jspm_packages/github/*",
+    "npm:*": "/jspm_packages/npm/*"
   },
   baseUrl: "/",
 
