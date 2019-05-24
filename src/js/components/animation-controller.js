@@ -1,5 +1,6 @@
 import application from '../app';
 import nodeY from '../utils/node-y';
+import { FramesPlayer } from '../utils/frames-player';
 
 application.component('.js-animation-controller', {
   init() {
@@ -15,8 +16,15 @@ application.component('.js-animation-controller', {
     const activeHook = this.findActiveHook();
     if (!activeHook || (activeHook == this.prevHook)) return;
 
-    if (this.prevHook) this.node.classList.remove(this.prevHook.dataset['frame']);
-    this.node.classList.add(activeHook.dataset['frame']);
+    activeHook.framesPlayer = activeHook.framesPlayer || new FramesPlayer(this.node, activeHook.dataset['frame']);
+    const activePlayer = activeHook.framesPlayer;
+
+    if (this.prevHook) {
+      this.prevHook.framesPlayer.stop();
+    }
+
+    activePlayer.play();
+
     this.prevHook = activeHook;
   },
 

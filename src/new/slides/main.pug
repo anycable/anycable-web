@@ -1,0 +1,21 @@
+.slide.main-slide
+  .slide--item.right.main-slide--item
+    .slide--content.js-animation-hook(data-frame="frame-1")
+      .slide--image.mobile-only.main-slide--logo
+        include /layout/logo
+      h1.main-slide--title ANYCABLE
+      p.main-slide--sub-title Action Cable on steroids!
+      .slide--text.main-slide--text.grey
+        | Build high-performant real-time applications with Ruby
+      .nav.main-slide--btn.js-bubble(data-delta=50)
+        a.btn.js-scroll-link(data-target="#getting-started")
+          span.btn--icon
+            include /images/play.svg
+          span GETTING STARTED
+        .topnav.desktop-only.js-bubble
+          .topnav--title ANYCABLE
+          a.btn.topnav--btn.js-scroll-link(data-target="#getting-started") GETTING STARTED
+      .slide--actions.desktop-only.js-scroll-link(data-target="#howitworks")
+        span.slide--action-arrow
+          include /images/arrow.svg
+        span.slide--action-text See how it works

@@ -1,0 +1,30 @@
+.slide#howitworks
+  .slide--item
+    .slide--content.js-animation-hook(data-frame="frame-2,frame-3")
+      h2 How it works?
+      br
+      .features--list
+        .features--item
+          .features--item--icon
+            include /images/rails.svg
+          .features--item--text
+            | Seamlessly integrates with the existing Action Cable application
+        .features--item
+          .features--item--icon
+            include /images/grpc.svg
+          .features--item--text
+            | Connects it to the powerful WebSocket server to handle hundreds of thousands of clients
+        .features--item
+          .features--item--icon
+            include /images/rails.svg
+          .features--item--text
+            | Your Ruby code stays the same.
+            br
+            | Except that now you shouldn't worry about its performance and resources usage anymore!
+      .slide--image.mobile-only
+        .slide--image.ac-slide--image
+          include /images/anycable.svg
+    .slide--actions.desktop-only.js-scroll-link(data-target="#anycable")
+      span.slide--action-arrow
+        include /images/arrow.svg
+      span.slide--action-text Why AnyCable?

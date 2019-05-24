@@ -1,0 +1,44 @@
+.slide#anycable
+    .slide--item
+      .slide--content.js-animation-hook(data-frame="frame-3")
+        h2 Why AnyCable?
+        br
+        h3 Reduce Infrastructure Costs
+        .slide--text
+          | AnyCable requires much less server resources (RAM, CPU) thus allowing you to scale more efficiently.
+        h4 Handling 20K connections
+        .slide--chart.memory-chart
+          .slide--chart--item.memory-chart--item
+            .slide--chart--caption.red AnyCable-Go
+            .memory-figure.red(style="height:4vh")
+            .slide--chart--caption 798 MB
+          .slide--chart--item.memory-chart--item
+            .slide--chart--caption.orange Action Cable
+            .memory-figure.orange(style="height:20vh")
+            .slide--chart--caption 3,5 GB
+        br
+        h3 Better Real-Time Experience
+        .slide--text
+          | Messaging broadcasting is optimized to provide a very low latency: 
+          | users shouldn't wait seconds to learn that something happened.
+        h4 Broadcast latency depending on the number of connections
+        .slide--chart
+          .slide--chart--item
+            include /images/rtt.svg
+            .slide--chart--captions
+              .slide--chart--caption.red AnyCable-Go
+              .slide--chart--caption.orange Action Cable
+
+        br
+        h3.js-animation-hook(data-frame="frame-31") Additional Features
+        .slide--text
+          | AnyCable provides some features missing in Action Cable, such as 
+          a(href="https://docs.anycable.io/#/go_instrumentation") analytics
+          |, 
+          a(href="https://docs.anycable.io/#/go_instrumentation?id=prometheus") Prometheus 
+          | integration, disconnect-less deployments with 
+          a(href="https://docs.anycable.io/#/go_envoy") Envoy
+          |, non-Rails applications support, etc.
+          br
+        .slide--text
+          | It's designed to be easily extensible, so we can tune AnyCable for your needs.
