@@ -7,12 +7,12 @@ System.config({
       "optimisation.modules.system"
     ]
   },
-  baseUrl: "/",
   paths: {
     "*": "src/js/*.js",
-    "github:*": "/jspm_packages/github/*",
-    "npm:*": "/jspm_packages/npm/*"
+    "github:*": "jspm_packages/github/*",
+    "npm:*": "jspm_packages/npm/*"
   },
+  baseUrl: "/",
 
   map: {
     "babel": "npm:babel-core@5.8.38",
