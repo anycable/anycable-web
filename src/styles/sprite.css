@@ -1,0 +1,167 @@
+.illustration-new {
+  transform: translate3d(0,0,0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  width: 50%;
+  box-sizing: border-box;
+  border-right: solid 1px $grey;
+
+  &--content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 0 60px;
+  }
+}
+
+@keyframes cog-spin { 100% { transform: rotate(360deg); } }
+@keyframes cog-spin-back { 100% { transform: rotate(-360deg); } }
+
+@media (max-width: 800px) and (min-width: 601px) {
+  .illustration-new {
+    &--content {
+      padding-right: 30px;
+    }
+  }
+}
+
+.sprite {
+  &-cog-frame {
+    /* make it visibile to help positionining the cog within a cube */
+    opacity: 0;
+  }
+
+  &--logo {
+    transition: transform 500ms easeOutCubic;
+    transform: scale(2) translate(80px, 80px);
+
+    .frame-2 & {
+      transform: translate(200px, 0px);
+    }
+
+    .frame-3 & {
+      transform: translate(200px, 249px);
+      &--leg {
+        opacity: 0;
+      }
+    }
+  }
+
+  &--go {
+    transition: transform 500ms easeOutCubic;
+    transform: translate(0px, 600px);
+
+    &--cog {
+      transform: translateX(-3px) translateY(34px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
+      &-big {
+        animation: cog-spin 800ms linear infinite;
+        transform-origin: 22px 22px;
+      }
+      &-small {
+        animation: cog-spin-back 600ms linear infinite;
+        transform-origin: 45px 46px;
+      }
+    }
+
+    .frame-2 & {
+      transform: translate(0px, 300px);
+    }
+
+    .frame-3 & {
+      transition: opacity 300ms easeOutCubic;
+      transform: translate(0px, 300px);
+      opacity: 0.3;
+    }
+  }
+
+  &--rails {
+    transition: transform 500ms easeOutCubic;
+    transform: translate(200px, 600px);
+
+    &--cog {
+      transform: translateX(1px) translateY(36px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
+      &-big {
+        animation: cog-spin 2s linear infinite;
+        transform-origin: 26px 26px;
+
+        .frame-3 & {
+          animation: cog-spin 500ms linear infinite;
+          transform-origin: 26.5px 25.5px;
+        }
+      }
+    }
+
+    .frame-2 & {
+      transform: translate(200px, 300px);
+    }
+
+    .frame-3 & {
+      transform: translate(200px, 300px);
+    }
+  }
+
+  &--elixir {
+    transition: transform 500ms easeOutCubic;
+    transform: translate(400px, 600px);
+
+    &--cog {
+      transform: translateX(1px) translateY(18px) translateZ(50px) rotateY(60deg) rotateZ(14deg) rotateX(9deg) scaleX(1.55) scaleY(1.1);
+      &-big {
+        animation: cog-spin 700ms linear infinite;
+        transform-origin: 38px 38px;
+      }
+    }
+
+    .frame-2 & {
+      transform: translate(400px, 300px);
+    }
+
+    .frame-3 & {
+      transition: opacity 300ms easeOutCubic;
+      transform: translate(400px, 300px);
+      opacity: 0.3;
+    }
+  }
+
+  &--arrows {
+    opacity: 0;
+    transform: translate(158px, 138px);
+
+    .frame-3 & {
+      transition: opacity 500ms easeOutCubic;
+      transition-delay: 400ms;
+      opacity: 1;
+    }
+  }
+
+  &--client {
+    transition: transform 500ms easeOutCubic;
+    transform: translate(310px, -500px);
+
+    .frame-3 & {
+      transform: translate(310px, 96px);
+    }
+  }
+
+  &--ws {
+    transition: transform 500ms easeOutCubic;
+    transform: translate(90px, -500px);
+
+    .frame-3 & {
+      transform: translate(90px, 96px);
+    }
+  }
+
+  &--cloud {
+    transition: transform 400ms easeOutCubic;
+    transform: translate(600px, 100px);
+
+    .is-animating & {
+      animation: blur 300ms;
+    }
+  }
+}
