@@ -16,7 +16,7 @@ application.component('.js-animation-controller', {
     const activeHook = this.findActiveHook();
     if (!activeHook || (activeHook == this.prevHook)) return;
 
-    activeHook.framesPlayer = activeHook.framesPlayer || new FramesPlayer(this.node, activeHook.dataset['frame']);
+    activeHook.framesPlayer = activeHook.framesPlayer || new FramesPlayer(this.node, activeHook.dataset['frame'], activeHook.dataset['interval']);
     const activePlayer = activeHook.framesPlayer;
 
     if (this.prevHook) {

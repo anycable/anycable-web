@@ -1,6 +1,7 @@
 export class FramesPlayer {
-  constructor(node, frames) {
+  constructor(node, frames, interval) {
     this.node = node;
+    this.interval = (interval || 1000) | 0;
     this.frames = frames.split(",");
     this.indexes = this.frames.map(function(frame){
       return frame.match(/frame\-(\d+)/)[1] | 0;
@@ -41,7 +42,7 @@ export class FramesPlayer {
       this.delayedFrameId = setTimeout(() => {
         this.goToFrame(nextIndex, nextIndex + 1);
       },
-      1000);
+      this.interval);
     }
   }
 }
