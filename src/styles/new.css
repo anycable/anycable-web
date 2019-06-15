@@ -3,7 +3,7 @@
 @import "fonts.css";
 @import "reset.css";
 @import "vars.css";
-@import "button.css";
+@import "new/button.css";
 
 html, body {
   height: 100%;
@@ -35,6 +35,10 @@ a {
   }
 }
 
+.small-text {
+  font-size: 15px;
+}
+
 h1 {
   font-size: 70px;
   line-height: 90px;
@@ -49,9 +53,9 @@ h2 {
 }
 
 h4 {
-  font-size: 14px;
-  color: $grey-text;
-  font-weight: normal;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 20px;
 }
 
 .main {
@@ -73,6 +77,10 @@ h4 {
     line-height: 5vw;
   }
 
+  .small-text {
+    font-size: 2vw;
+  }
+
   h1 {
     font-size: 14vw;
     line-height: 18vw;
@@ -84,7 +92,8 @@ h4 {
   }
 
   h4 {
-    font-size: 2vw;
+    font-size: 3vw;
+    line-height: 4vw;
   }
 }
 
@@ -118,10 +127,6 @@ h4 {
   }
 }
 
-@import "illustration.css";
-@import "slide.css";
-
-@import "slides/main.css";
-@import "slides/actioncable.css";
-@import "slides/pro.css";
+@import "sprite.css";
+@import "new/slide.css";
 @import "footer.css";

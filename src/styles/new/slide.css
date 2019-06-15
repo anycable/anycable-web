@@ -1,0 +1,124 @@
+.slide {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  &--item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 60px 0;
+    box-sizing: border-box;
+    width: 50%;
+
+    &.has-feedback {
+      padding-bottom: 0;
+    }
+  }
+
+  &--content {
+    padding: 0 120px 0 60px;
+  }
+
+  &--text {
+    margin: 36px 0;
+
+    &.grey {
+      color: $grey-text;
+    }
+  }
+
+  &--code {
+    margin: 36px 0;
+    font-family: Roboto Mono, monospace;
+
+    & .comment {
+      color: $code-green;
+    }
+
+    & .string {
+      color: $code-red;
+    }
+  }
+
+  &--actions {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover,
+    &:focus {
+      opacity: .8;
+      transition: none;
+    }
+
+    &.is-hidden {
+      opacity: 0;
+    }
+  }
+
+  &--action-arrow {
+    background: $dark-red;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      margin-top: 2px;
+    }
+  }
+
+  &--action-text {
+    color: $grey-text;
+    margin-left: 10px;
+  }
+}
+
+@media (max-height: 600px), (max-width: 800px) {
+  .slide {
+    &--actions {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .slide {
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+
+    &--item {
+      padding: 30px;
+      width: auto;
+      border: none;
+      align-items: center;
+    }
+
+    &--image {
+      text-align: center;
+      svg {
+        width: 70vw;
+      }
+    }
+  }
+}
+
+@media (min-width: 601px) {
+  .slide--item {
+    padding-top: 20vh !important;
+  }
+}
+
+@import "./slides/main.css";
+@import "./slides/nav.css";
+@import "./slides/chart.css";
+@import "./slides/features.css";
+@import "./feedback.css";

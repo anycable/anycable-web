@@ -37,7 +37,7 @@
 
   &--logo {
     transition: transform 500ms easeOutCubic;
-    transform: scale(2) translate(80px, 80px);
+    transform: scale(2) translate(80px, 8vh);
 
     .frame-2 & {
       transform: translate(200px, 0px);
@@ -53,7 +53,7 @@
 
   &--go {
     transition: transform 500ms easeOutCubic;
-    transform: translate(0px, 600px);
+    transform: translate(0px, 800px);
 
     &--cog {
       transform: translateX(-3px) translateY(34px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
@@ -80,12 +80,12 @@
 
   &--rails {
     transition: transform 500ms easeOutCubic;
-    transform: translate(200px, 600px);
+    transform: translate(200px, 800px);
 
     &--cog {
       transform: translateX(1px) translateY(36px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
       &-big {
-        animation: cog-spin 2s linear infinite;
+        animation: cog-spin 4s linear infinite;
         transform-origin: 26px 26px;
 
         .frame-3 & {
@@ -106,7 +106,7 @@
 
   &--elixir {
     transition: transform 500ms easeOutCubic;
-    transform: translate(400px, 600px);
+    transform: translate(400px, 800px);
 
     &--cog {
       transform: translateX(1px) translateY(18px) translateZ(50px) rotateY(60deg) rotateZ(14deg) rotateX(9deg) scaleX(1.55) scaleY(1.1);
@@ -140,7 +140,7 @@
 
   &--client {
     transition: transform 500ms easeOutCubic;
-    transform: translate(310px, -500px);
+    transform: translate(310px, -800px);
 
     .frame-3 & {
       transform: translate(310px, 96px);
@@ -149,7 +149,7 @@
 
   &--ws {
     transition: transform 500ms easeOutCubic;
-    transform: translate(90px, -500px);
+    transform: translate(90px, -800px);
 
     .frame-3 & {
       transform: translate(90px, 96px);
@@ -158,7 +158,7 @@
 
   &--cloud {
     transition: transform 400ms easeOutCubic;
-    transform: translate(600px, 100px);
+    transform: translate(800px, 100px);
 
     .is-animating & {
       animation: blur 300ms;
