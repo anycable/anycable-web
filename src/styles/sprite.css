@@ -18,11 +18,6 @@
   }
 }
 
-@keyframes blur {
-  0% { filter: none; }
-  50% { filter: url(#blur); }
-  100% { filter: none; }
-}
 @keyframes cog-spin { 100% { transform: rotate(360deg); } }
 @keyframes cog-spin-back { 100% { transform: rotate(-360deg); } }
 
@@ -41,12 +36,8 @@
   }
 
   &--logo {
-    transition: transform 300ms easeOutCubic;
+    transition: transform 500ms easeOutCubic;
     transform: scale(2) translate(80px, 80px);
-
-    .is-animating & {
-      animation: blur 300ms;
-    }
 
     .frame-2 & {
       transform: translate(200px, 0px);
@@ -148,12 +139,8 @@
   }
 
   &--client {
-    transition: transform 400ms easeOutCubic;
+    transition: transform 500ms easeOutCubic;
     transform: translate(310px, -500px);
-
-    .is-animating & {
-      animation: blur 300ms;
-    }
 
     .frame-3 & {
       transform: translate(310px, 96px);
@@ -161,12 +148,8 @@
   }
 
   &--ws {
-    transition: transform 400ms easeOutCubic;
+    transition: transform 500ms easeOutCubic;
     transform: translate(90px, -500px);
-
-    .is-animating & {
-      animation: blur 300ms;
-    }
 
     .frame-3 & {
       transform: translate(90px, 96px);
@@ -175,7 +158,7 @@
 
   &--cloud {
     transition: transform 400ms easeOutCubic;
-    transform: translate(500px, 100px);
+    transform: translate(600px, 100px);
 
     .is-animating & {
       animation: blur 300ms;

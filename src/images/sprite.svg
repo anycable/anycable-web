@@ -36,9 +36,6 @@
             <stop stop-color="#A5A1A8" stop-opacity="0.356091486" offset="0%"></stop>
             <stop stop-color="#370C50" stop-opacity="0.581974638" offset="100%"></stop>
         </linearGradient>
-        <filter id="blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="1.2"></feGaussianBlur>
-        </filter>
     </defs>
     <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g class="sprite--go" id="Go" transform="translate(100.000000, 0.000000)" fill-rule="nonzero">
