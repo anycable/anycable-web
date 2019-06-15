@@ -1,30 +1,22 @@
 .slide#howitworks
-  .slide--item
-    .slide--content.js-animation-hook(data-frame="frame-2,frame-3", data-interval="2000")
-      h2 How it works?
+  .slide--item.has-feedback
+    .slide--content.js-animation-hook(data-frame="frame-2")
+      h2
+        | Real-time with
+        br
+        | Ruby and Rails
       br
       .features--list
         .features--item
-          .features--item--icon
-            include /images/rails.svg
+          .features--item--bullet 1
           .features--item--text
-            | Seamlessly integrates with the existing Action Cable application
+            | You’ve chosen Ruby to write beautiful, clean and maintainable code.
         .features--item
-          .features--item--icon
-            include /images/grpc.svg
+          .features--item--bullet 2
           .features--item--text
-            | Connects it to the powerful WebSocket server to handle hundreds of thousands of clients
+            | You need real-time features like instant collaboration, chat, or notifications, but you don’t want to change the platform or lose the development tempo.
         .features--item
-          .features--item--icon
-            include /images/rails.svg
+          .features--item--bullet 3
           .features--item--text
-            | Your Ruby code stays the same.
-            br
-            | Except that now you shouldn't worry about its performance and resources usage anymore!
-      .slide--image.mobile-only
-        .slide--image.ac-slide--image
-          include /images/anycable.svg
-    .slide--actions.desktop-only.js-scroll-link(data-target="#anycable")
-      span.slide--action-arrow
-        include /images/arrow.svg
-      span.slide--action-text Why AnyCable?
+            | You can have it all—just plug an AnyCable server and offload all the hard work to it, while you continue to write business logic in Ruby.
+    include ../feedback/managebac

@@ -1,0 +1,37 @@
+.slide--feedback {
+  background: $grey-bg;
+  padding: 30px 120px 120px 60px;
+  margin-top: 60px;
+
+  &--header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  &--logo {
+    height: 40px;
+  }
+
+  &--quote {
+    margin: 6px 0 90px 0;
+    position: relative;
+
+    &:before {
+      content: "“";
+      position: absolute;
+      left: -30px;
+      font-size: 50px;
+      font-family: Stem;
+    }
+  }
+
+  &--btn {
+    display: flex;
+    .btn {
+      height: 50px;
+    }
+  }
+}
