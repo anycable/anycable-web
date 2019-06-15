@@ -38,11 +38,27 @@ export class FramesPlayer {
     this.currentIndex = index;
     this.node.classList.add(this.frames[this.currentIndex]);
 
+    this.addAnimationClass();
+
     if (nextIndex >= 0 && nextIndex < this.frames.length) {
       this.delayedFrameId = setTimeout(() => {
         this.goToFrame(nextIndex, nextIndex + 1);
       },
       this.interval);
     }
+  }
+
+  addAnimationClass() {
+    if (this.animationClearId) {
+      clearTimeout(this.animationClearId);
+      delete this.animationClearId;
+    }
+
+    this.node.classList.add("is-animating");
+
+    this.animationClearId = setTimeout(() => {
+      this.node.classList.remove("is-animating");
+    },
+    500);
   }
 }
