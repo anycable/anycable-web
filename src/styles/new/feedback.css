@@ -35,3 +35,9 @@
     }
   }
 }
+
+@media (max-width: 600px) {
+  .slide--feedback  {
+    padding: 0 40px 90px 40px;
+  }
+}

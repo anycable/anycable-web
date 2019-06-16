@@ -96,10 +96,13 @@
     justify-content: flex-start;
 
     &--item {
-      padding: 30px;
       width: auto;
       border: none;
       align-items: center;
+    }
+
+    &--content {
+      padding: 0 30px;
     }
 
     &--image {

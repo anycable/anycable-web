@@ -55,5 +55,9 @@
       width: 40vw;
       padding: 10vw 0;
     }
+
+    &--btn {
+      left: auto;
+    }
   }
 }
