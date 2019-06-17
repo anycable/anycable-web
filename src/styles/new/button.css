@@ -30,6 +30,12 @@
     color: white;
   }
 
+  &:disabled {
+    background: #535050;
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+
   &--icon {
     margin-right: 16px;
     margin-top: 6px;

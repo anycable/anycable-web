@@ -42,6 +42,12 @@ a {
 .caption {
   color: $grey-text;
   font-size: 14px;
+
+  @media (max-width: 600px) {
+    & {
+      font-size: 3vw;
+    }
+  }
 }
 
 h1 {

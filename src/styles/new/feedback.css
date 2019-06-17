@@ -16,9 +16,14 @@
   }
 
   &--logo {
-    /* max-width: 50%; */
-    /* height: auto; */
     margin-left: 10px;
+
+    @media (max-width: 600px) {
+      & {
+        max-width: 50%;
+        height: auto;
+      }
+    }
   }
 
   &--body {

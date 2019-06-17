@@ -1,15 +1,11 @@
-.slide
-  .slide--item#getting-started
-    .slide--content.js-animation-hook(data-frame="frame-4")
-      h2 How to start?
-      .slide--text
-        | AnyCable is an open-source software, you can start using it today!
-      .slide--text
-        a(href="https://docs.anycable.io", target="_blank") 📖 Documentation
-      h2 Commercial Support
-      .slide--text
-        a(href="https://evilmartians.com", target="_blank") Evil Martians 
-        | team would be glad to help you in building high-performant real-time applications on top of AnyCable.
-        br
-        br
-        | Fill the form below, describe what real-time features you want to build, and we will help to make it real!
+.slide.full
+  .slide--item.fullscreen.contact-form
+    form.contact-form.form
+      .form--control
+        input(type="text", name="email", placeholder="Your email or phone number")
+      .form--control
+        textarea(name="about", cols="30", rows="4", placeholder="Who are you and what do you do?")
+      .form--control
+        textarea(name="request", cols="30", rows="4", placeholder="What is you product and what do you want to build?")
+      .form--control
+        button.btn(type="submit", disabled) SEND

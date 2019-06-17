@@ -1,0 +1,25 @@
+.contacts {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &--column {
+    flex-basis: 40%;
+  }
+
+  &--group {
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    & p {
+      padding: 5px 0;
+    }
+
+    & .logo svg {
+      width: 50%;
+    }
+  }
+}

@@ -6,6 +6,15 @@
   position: relative;
   box-sizing: border-box;
 
+  &.full {
+    background: white;
+    z-index: 20;
+  }
+
+  &--block {
+    margin-top: 60px;
+  }
+
   &--item {
     display: flex;
     flex-direction: column;
@@ -16,6 +25,17 @@
 
     &.has-feedback {
       padding-bottom: 0;
+    }
+
+    &.fullscreen {
+      width: 100%;
+      padding: 60px 25%;
+
+      @media (max-width: 600px) {
+        & {
+          padding: 30px 10%;
+        }
+      }
     }
   }
 
@@ -30,6 +50,21 @@
       color: $grey-text;
     }
   }
+
+  &--text--logo {
+    & .logo {
+      float: right;
+      transform: scale(1.5);
+      margin-left: 30px;
+  
+      @media (max-width: 600px) {
+        & {
+          transform: scale(1);
+          margin-left: 10px;
+        }
+      }
+    }
+  } 
 
   &--value {
     margin: 36px 0;
@@ -47,10 +82,23 @@
       font-weight: bold;
       line-height: 80px;
 
+      @media (max-width: 600px) {
+        & {
+          font-size: 80px;
+        }
+      }
+
       &.huge {
         font-size: 150px;
         line-height: 110px;
-      }  
+
+        @media (max-width: 600px) {
+          & {
+            font-size: 100px;
+            line-height: 90px;
+          }
+        }
+      }
     }
 
     &--caption {
@@ -61,8 +109,17 @@
   &--btn {
     margin-top: 60px;
     display: flex;
+
+    &.zero-margin {
+      margin-top: 0;
+    }
+
     .btn {
       height: 50px;
+    }
+
+    .btn:not(:first-child) {
+      margin-left: 10px;
     }
   }
 
@@ -160,3 +217,5 @@
 @import "./slides/chart.css";
 @import "./slides/features.css";
 @import "./feedback.css";
+@import "./slides/form.css";
+@import "./slides/contacts.css";
