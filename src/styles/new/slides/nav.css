@@ -9,6 +9,11 @@
   transition: top 200ms easeOutCubic;
   justify-content: space-between;
   padding: 60px 60px 0 60px;
+  pointer-events: none;
+
+  & > a {
+    pointer-events: auto;
+  }
 
   .is-bubbling & {
     top: 0;
