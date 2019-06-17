@@ -3,6 +3,14 @@
   flex-direction: row;
   justify-content: space-between;
 
+  @media (max-width: 600px) {
+    & {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: baseline;
+    }
+  }
+
   &--column {
     flex-basis: 40%;
   }

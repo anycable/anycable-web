@@ -9,6 +9,7 @@
   &.full {
     background: white;
     z-index: 20;
+    min-height: auto;
   }
 
   &--block {
