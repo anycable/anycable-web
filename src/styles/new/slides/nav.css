@@ -8,7 +8,7 @@
   display: flex;
   transition: top 200ms easeOutCubic;
   justify-content: space-between;
-  padding: 60px;
+  padding: 60px 60px 0 60px;
 
   .is-bubbling & {
     top: 0;

@@ -1,6 +1,37 @@
 .contact-form {
   background: $grey-bg;
   padding-top: 20px !important;
+  padding-bottom: 20px !important;
+
+  .message {
+    display: none;
+    text-align: center;
+  }
+
+  .error {
+    display: none;
+    color: $red;
+  }
+
+  &.is-error {
+    .error {
+      display: block;
+    }
+  }
+
+  &.is-submitted {
+    .form {
+      display: none;
+    }
+    
+    .message {
+      display: block;
+
+      .logo {
+        margin: 20px 0;
+      }
+    }
+  }
 }
 
 .form {

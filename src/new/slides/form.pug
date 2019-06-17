@@ -1,11 +1,17 @@
 .slide.full
-  .slide--item.fullscreen.contact-form
-    form.contact-form.form
+  .slide--item.fullscreen.contact-form.js-form
+    form.contact-form.form#main-form
       .form--control
-        input(type="text", name="email", placeholder="Your email or phone number")
+        input(type="text", name="email", placeholder="Your email or phone number", required)
       .form--control
-        textarea(name="about", cols="30", rows="4", placeholder="Who are you and what do you do?")
+        textarea(name="about", cols="30", rows="4", placeholder="Who are you and what do you do?", required)
       .form--control
-        textarea(name="request", cols="30", rows="4", placeholder="What is you product and what do you want to build?")
+        textarea(name="request", cols="30", rows="4", placeholder="What is you product and what do you want to build?", required)
       .form--control
         button.btn(type="submit", disabled) SEND
+      .form--error.error.small-text Something went wrong :(
+    .slide--text.message
+      h3 Thanks for reaching us out!
+      .logo
+        include /images/logo.svg
+      h3 We'll be in touch soon!
