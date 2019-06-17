@@ -19,7 +19,7 @@
     }
   }
 
-  &--content {
+  &--content > * {
     padding: 0 120px 0 60px;
   }
 
@@ -28,6 +28,41 @@
 
     &.grey {
       color: $grey-text;
+    }
+  }
+
+  &--value {
+    margin: 36px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    &--metrics {
+      margin-left: 10px;
+    }
+
+    &--number {
+      color: $red;
+      font-size: 100px;
+      font-weight: bold;
+      line-height: 80px;
+
+      &.huge {
+        font-size: 150px;
+        line-height: 110px;
+      }  
+    }
+
+    &--caption {
+      text-align: center;
+    }
+  }
+
+  &--btn {
+    margin-top: 60px;
+    display: flex;
+    .btn {
+      height: 50px;
     }
   }
 
@@ -101,7 +136,7 @@
       align-items: center;
     }
 
-    &--content {
+    &--content > * {
       padding: 0 30px;
     }
 

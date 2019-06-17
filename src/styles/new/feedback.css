@@ -16,8 +16,8 @@
   }
 
   &--logo {
-    max-width: 50%;
-    height: auto;
+    /* max-width: 50%; */
+    /* height: auto; */
     margin-left: 10px;
   }
 
@@ -31,14 +31,6 @@
       left: -30px;
       font-size: 50px;
       font-family: Stem;
-    }
-  }
-
-  &--btn {
-    margin-top: 60px;
-    display: flex;
-    .btn {
-      height: 50px;
     }
   }
 }

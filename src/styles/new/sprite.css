@@ -45,9 +45,17 @@
 
     .frame-3 & {
       transform: translate(200px, 249px);
+    }
+
+    .frame-3 &, .frame-4 & {
       &--leg {
+        transition-delay: 200ms;
         opacity: 0;
       }
+    }
+
+    .frame-4 & {
+      transform: translate(100px, 249px);
     }
   }
 
@@ -82,8 +90,31 @@
     transition: transform 500ms easeOutCubic;
     transform: translate(200px, 800px);
 
+    &--text {
+      opacity: 0;
+
+      .frame-2 &, .frame-3 & {
+        opacity: 1;
+      }
+    }
+
+    &--premise {
+      opacity: 0;
+
+      .frame-4 & {
+        opacity: 1;
+      }
+    }
+
     &--cog {
+      transition: opacity 500ms easeOutCubic;
       transform: translateX(1px) translateY(36px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
+      opacity: 0;
+
+      .frame-2 &, .frame-3 & {
+        opacity: 1;
+      }
+
       &-big {
         animation: cog-spin 4s linear infinite;
         transform-origin: 26px 26px;
@@ -101,6 +132,10 @@
 
     .frame-3 & {
       transform: translate(200px, 300px);
+    }
+
+    .frame-4 & {
+      transform: translate(100px, 300px);
     }
   }
 
@@ -158,10 +193,21 @@
 
   &--cloud {
     transition: transform 400ms easeOutCubic;
-    transform: translate(800px, 100px);
+    transform: translate(800px, 210px);
 
-    .is-animating & {
-      animation: blur 300ms;
+    .frame-4 & {
+      transform: translate(300px, 210px);
+    }
+  }
+
+  &--vs {
+    transform: translate(210px, 330px);
+    opacity: 0;
+
+    .frame-4 & {
+      transition: opacity 500ms easeOutCubic;
+      transition-delay: 400ms;
+      opacity: 1;
     }
   }
 }

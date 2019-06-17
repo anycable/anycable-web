@@ -1,11 +1,16 @@
 .slide--chart {
   display: flex;
-  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 10px;
 
   &--item {
     margin-right: 10px;
     flex-grow: 1;
     position: relative;
+
+    &:last-child {
+      margin-right: 0;
+    }
 
     > img, > svg {
       width: 100%;
@@ -21,8 +26,6 @@
   &--caption {
     text-align: center;
     margin-top: 10px;
-    font-size: 16px;
-    color: $grey-text;
 
     &.red {
       color: $dark-red;
