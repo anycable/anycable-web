@@ -30,6 +30,9 @@
 }
 
 .sprite {
+  width: 100%;
+  height: 100%;
+
   &-cog-frame {
     /* make it visibile to help positionining the cog within a cube */
     opacity: 0;
@@ -209,5 +212,9 @@
       transition-delay: 400ms;
       opacity: 1;
     }
+  }
+
+  &--node--cog {
+    display: none;
   }
 }
