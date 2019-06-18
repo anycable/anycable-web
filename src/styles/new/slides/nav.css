@@ -10,6 +10,7 @@
   justify-content: space-between;
   padding: 60px 60px 0 60px;
   pointer-events: none;
+  box-sizing: border-box;
 
   & > a {
     pointer-events: auto;

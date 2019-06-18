@@ -29,15 +29,7 @@
   }
 }
 
-@media (max-width: 960px) and (min-width: 801px) {
-  .main-slide {
-    &--title {
-      font-size: 7vw;
-    }
-  }
-}
-
-@media (max-width: 800px) and (min-width: 601px) {
+@media (max-width: $tablet) and (min-width: $mobile_min) {
   .main-slide {
     &--title {
       font-size: 6vw;
@@ -45,13 +37,13 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $mobile) {
   .main-slide {
     flex-direction: column;
     margin-bottom: 60px;
 
     &--logo svg {
-      width: 40vw;
+      width: 30vh;
       padding: 10vw 0;
     }
 

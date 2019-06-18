@@ -24,6 +24,7 @@
     padding: 60px 0;
     box-sizing: border-box;
     width: 50%;
+    background: white;
 
     &.has-feedback {
       padding-bottom: 0;
@@ -33,7 +34,7 @@
       width: 100%;
       padding: 60px 25%;
 
-      @media (max-width: 600px) {
+      @media (max-width: $tablet) {
         & {
           padding: 30px 10%;
         }
@@ -43,6 +44,12 @@
 
   &--content > * {
     padding: 0 120px 0 60px;
+
+    @media(max-width: $tablet) {
+      & {
+        padding: 0 60px;
+      }
+    }
   }
 
   &--text {
@@ -59,7 +66,7 @@
       transform: scale(1.5);
       margin-left: 30px;
   
-      @media (max-width: 600px) {
+      @media (max-width: $mobile) {
         & {
           transform: scale(1);
           margin-left: 10px;
@@ -74,8 +81,22 @@
     flex-direction: row;
     align-items: flex-end;
 
+    @media (max-width: $tablet) {
+      & {
+        flex-direction: column-reverse;
+        align-items: center;
+      }
+    }
+
     &--metrics {
       margin-left: 10px;
+      text-align: center;
+
+      @media (max-width: $tablet) {
+        & {
+          margin-bottom: 30px;
+        }
+      }
     }
 
     &--number {
@@ -84,7 +105,7 @@
       font-weight: bold;
       line-height: 80px;
 
-      @media (max-width: 600px) {
+      @media (max-width: $tablet) and (min-width: $mobile_min) {
         & {
           font-size: 80px;
         }
@@ -94,7 +115,14 @@
         font-size: 150px;
         line-height: 110px;
 
-        @media (max-width: 600px) {
+        @media (max-width: 1200px) and (min-width: $mobile_min) {
+          & {
+            font-size: 120px;
+            line-height: 100px;
+          }
+        }
+
+        @media (max-width: $tablet) and (min-width: $mobile_min) {
           & {
             font-size: 100px;
             line-height: 90px;
@@ -113,7 +141,7 @@
     display: flex;
     align-items: flex-start;
 
-    @media (max-width: 600px) {
+    @media (max-width: $mobile) {
       & {
         flex-direction: column;
       }
@@ -166,6 +194,12 @@
     &.is-hidden {
       opacity: 0;
     }
+
+    @media (max-height: 600px), (max-width: 1040px) {
+      & {
+          display: none;
+        }
+    }
   }
 
   &--action-arrow {
@@ -188,15 +222,7 @@
   }
 }
 
-@media (max-height: 600px), (max-width: 800px) {
-  .slide {
-    &--actions {
-      display: none;
-    }
-  }
-}
-
-@media (max-width: 600px) {
+@media (max-width: $mobile) {
   .slide {
     flex-direction: column-reverse;
     justify-content: flex-start;
@@ -220,9 +246,9 @@
   }
 }
 
-@media (min-width: 601px) {
+@media (min-width: $mobile) {
   .slide--item {
-    padding-top: 20vh !important;
+    padding-top: 20vh;
   }
 }
 

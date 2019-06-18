@@ -3,6 +3,12 @@
   padding: 30px 120px 120px 60px;
   margin-top: 60px;
 
+  @media(max-width: $tablet) {
+    & {
+      padding: 30px 60px 60px 60px;
+    }
+  }
+
   &--header {
     display: flex;
     flex-direction: row;
@@ -18,7 +24,7 @@
   &--logo {
     margin-left: 10px;
 
-    @media (max-width: 600px) {
+    @media (max-width: $tablet) {
       & {
         max-width: 50%;
         height: auto;
@@ -40,7 +46,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $mobile) {
   .slide--feedback  {
     padding: 0 40px 90px 40px;
   }
