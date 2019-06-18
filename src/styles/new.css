@@ -20,11 +20,7 @@ html, body {
 body {
   background: #fff;
   color: $default-color;
-  font: 18px/30px $default-font-fallback;
-
-  .fonts-loaded & {
-    font-family: $default-font;
-  }
+  font: 18px/30px $default-font;
 }
 
 a {
@@ -62,30 +58,21 @@ h1 {
   line-height: 90px;
   letter-spacing: 2px;
   font-weight: bold;
-
-  .fonts-loaded & {
-    font-family: $headers-font;
-  }
+  font-family: $headers-font;
 }
 
 h2 {
   font-size: 40px;
   line-height: 50px;
   letter-spacing: 1.5px;
-
-  .fonts-loaded & {
-    font-family: $headers-font;
-  }
+  font-family: $headers-font;
 }
 
 h4 {
   font-size: 18px;
   font-weight: bold;
   line-height: 20px;
-
-  .fonts-loaded & {
-    font-family: $headers-font;
-  }
+  font-family: $headers-font;
 }
 
 .main {
