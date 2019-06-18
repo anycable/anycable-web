@@ -26,6 +26,22 @@
 
 @keyframes cog-spin { 100% { transform: rotate(360deg); } }
 @keyframes cog-spin-back { 100% { transform: rotate(-360deg); } }
+@keyframes coin-throw {
+  25% { transform: translate(100px, 83px); }
+  50% {
+    transform: translate(85px, 95px);
+    opacity: 1;
+  }
+  51% { opacity: 0; }
+  75% {
+    transform: translate(110px, 83px); 
+    opacity: 0;
+  }
+  80% { 
+    transform: translate(100px, 83px); 
+    opacity: 1;
+  }
+}
 
 @media (max-width: $tablet-small) and (min-width: $mobile_min) {
   .illustration-new {
@@ -79,13 +95,21 @@
 
     &--cog {
       transform: translateX(-3px) translateY(34px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
+
       &-big {
-        animation: cog-spin 800ms linear infinite;
         transform-origin: 22px 22px;
+
+        .frame-2 &, .frame-3 & {
+          animation: cog-spin 800ms linear infinite;
+        }
       }
+
       &-small {
-        animation: cog-spin-back 600ms linear infinite;
         transform-origin: 45px 46px;
+
+        .frame-2 &, .frame-3 & {
+          animation: cog-spin-back 600ms linear infinite;
+        }
       }
     }
 
@@ -133,6 +157,10 @@
         animation: cog-spin 4s linear infinite;
         transform-origin: 26px 26px;
 
+        .frame-2 & {
+          animation: cog-spin 4s linear infinite;
+        }
+
         .frame-3 & {
           animation: cog-spin 500ms linear infinite;
           transform-origin: 26.5px 25.5px;
@@ -160,8 +188,11 @@
     &--cog {
       transform: translateX(1px) translateY(18px) translateZ(50px) rotateY(60deg) rotateZ(14deg) rotateX(9deg) scaleX(1.55) scaleY(1.1);
       &-big {
-        animation: cog-spin 700ms linear infinite;
         transform-origin: 38px 38px;
+
+        .frame-2 &, .frame-3 & {
+          animation: cog-spin 700ms linear infinite;
+        }
       }
     }
 
@@ -209,8 +240,16 @@
     transition: transform 400ms easeOutCubic;
     transform: translate(110vw, 210px);
 
+    &--coin {
+      transition: transform 500ms easeOutCubic;
+    }
+
     .frame-4 & {
       transform: translate(280px, 210px);
+
+      &--coin {
+        animation: coin-throw 1500ms linear infinite;
+      }
     }
   }
 
