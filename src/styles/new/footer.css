@@ -9,12 +9,12 @@
   overflow: hidden;
 
   h3 {
-    color: white;
+    color: $white;
     font-weight: normal;
   }
 
   &--block {
-    color: white;
+    color: $white;
     font-size: 14px;
     position: relative;
 
@@ -43,17 +43,28 @@
 
 @media (--mobile) {
   .footer {
-    flex-direction: column;
-    padding: 60px 10% 30px 10%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 30px 20px 30px;
 
     &--block {
-      margin-bottom: 30px;
-      font-size: 4vw;
-      line-height: 7vw;
+      flex-basis: 50%;
+      margin-bottom: 20px;
+
+      h3,
+      & {
+        font-size: 15px;
+        line-height: 1.87;
+        font-weight: bold;
+      }
 
       &.legals {
         align-self: center;
-        margin-top: 30px;
+        margin-top: 0;
+        flex-basis: 100%;
+        font-size: 13px;
+        line-height: 2.15;
+        font-weight: normal;
       }
     }
   }

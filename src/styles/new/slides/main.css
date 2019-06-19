@@ -9,7 +9,7 @@
       right: -16px;
       line-height: 0;
     }
-     
+
     &.alpha:after {
       content: url('/images/alpha.svg');
     }
@@ -40,10 +40,26 @@
 @media (--mobile) {
   .main-slide {
     flex-direction: column;
-    margin-bottom: 60px;
+    margin-top: 135px;
+    background-image: $fade_gradient_top;
+
+    &--item {
+      margin-top: 0;
+    }
+
+    &--title {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    &--text {
+      margin-top: 13px;
+      margin-bottom: 9px;
+    }
 
     &--btn {
       left: auto;
+      width: 100%;
     }
   }
 }

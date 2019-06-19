@@ -13,6 +13,12 @@
 
   &--column {
     flex-basis: 40%;
+
+    @media (--mobile) {
+      & {
+        width: 100%;
+      }
+    }
   }
 
   &--group {
@@ -26,8 +32,22 @@
       padding: 5px 0;
     }
 
-    & .logo svg {
-      width: 50%;
+    & .logo {
+      @media (--mobile) {
+        & {
+          text-align: center;
+        }
+      }
+
+      svg {
+        width: 50%;
+
+        @media (--mobile) {
+          & {
+            width: 33%;
+          }
+        }
+      }
     }
   }
 }

@@ -1,11 +1,11 @@
 .illustration-new {
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   z-index: 0;
-  width: 50vw; /* use viewport because of the fixed position (percentage could be incorrect)*/
+  width: 50vw; /* use viewport because of the fixed position (percentage could be incorrect) */
   box-sizing: border-box;
   border-right: solid 1px $grey;
 
@@ -24,21 +24,31 @@
   }
 }
 
-@keyframes cog-spin { 100% { transform: rotate(360deg); } }
-@keyframes cog-spin-back { 100% { transform: rotate(-360deg); } }
+@keyframes cog-spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes cog-spin-back {
+  100% { transform: rotate(-360deg); }
+}
+
 @keyframes coin-throw {
   25% { transform: translate(100px, 83px); }
+
   50% {
     transform: translate(85px, 95px);
     opacity: 1;
   }
+
   51% { opacity: 0; }
+
   75% {
-    transform: translate(110px, 83px); 
+    transform: translate(110px, 83px);
     opacity: 0;
   }
+
   90% {
-    transform: translate(100px, 83px); 
+    transform: translate(100px, 83px);
     opacity: 1;
   }
 }
@@ -50,9 +60,17 @@
       padding-left: 30px;
     }
   }
+}
 
-  .sprite {
-    transform: scale(0.7);
+@media (--mobile) {
+  .illustration-new {
+    width: 100vw; /* use viewport because of the fixed position (percentage could be incorrect) */
+    border-right: none;
+
+    &--content {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
   }
 }
 
@@ -60,6 +78,10 @@
   height: 100%;
   margin: 0 auto;
   overflow: visible !important;
+
+  @media (--mobile) {
+    position: fixed;
+  }
 
   &-cog-frame {
     /* make it visibile to help positionining the cog within a cube */
@@ -70,15 +92,24 @@
     transition: transform 500ms easeOutCubic;
     transform: scale(2) translate(90px, 0);
 
+    @media (--mobile) {
+      transform: translate(210px, 20px);
+    }
+
     .frame-2 & {
-      transform: translate(210px, 0px);
+      transform: translate(210px, 0);
+
+      @media (--mobile) {
+        transform: translate(210px, 150px);
+      }
     }
 
     .frame-3 & {
       transform: translate(210px, 249px);
     }
 
-    .frame-3 &, .frame-4 & {
+    .frame-3 &,
+    .frame-4 & {
       &--leg {
         transition-delay: 200ms;
         opacity: 0;
@@ -87,6 +118,18 @@
 
     .frame-4 & {
       transform: translate(80px, 249px);
+
+      @media (--mobile) {
+        transition: none;
+        transform: translate(110px, 249px);
+      }
+    }
+
+    .frame-5 & {
+      @media (--mobile) {
+        transition: none;
+        transform: translate(170px, 249px) scale(2);
+      }
     }
   }
 
@@ -94,13 +137,18 @@
     transition: transform 500ms easeOutCubic;
     transform: translate(60px, 200vh);
 
+    @media (--mobile) {
+      transition: none;
+    }
+
     &--cog {
       transform: translateX(-3px) translateY(34px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
 
       &-big {
         transform-origin: 22px 22px;
 
-        .frame-2 &, .frame-3 & {
+        .frame-2 &,
+        .frame-3 & {
           animation: cog-spin 800ms linear infinite;
         }
       }
@@ -108,7 +156,8 @@
       &-small {
         transform-origin: 45px 46px;
 
-        .frame-2 &, .frame-3 & {
+        .frame-2 &,
+        .frame-3 & {
           animation: cog-spin-back 600ms linear infinite;
         }
       }
@@ -129,10 +178,15 @@
     transition: transform 500ms easeOutCubic;
     transform: translate(210px, 200vh);
 
+    @media (--mobile) {
+      transition: none;
+    }
+
     &--text {
       display: none;
 
-      .frame-2 &, .frame-3 & {
+      .frame-2 &,
+      .frame-3 & {
         display: block;
       }
     }
@@ -150,7 +204,8 @@
       transform: translateX(1px) translateY(36px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
       opacity: 0;
 
-      .frame-2 &, .frame-3 & {
+      .frame-2 &,
+      .frame-3 & {
         opacity: 1;
       }
 
@@ -179,6 +234,10 @@
 
     .frame-4 & {
       transform: translate(80px, 300px);
+
+      @media (--mobile) {
+        transform: translate(110px, 300px);
+      }
     }
   }
 
@@ -186,12 +245,18 @@
     transition: transform 500ms easeOutCubic;
     transform: translate(360px, 200vh);
 
+    @media (--mobile) {
+      transition: none;
+    }
+
     &--cog {
       transform: translateX(1px) translateY(18px) translateZ(50px) rotateY(60deg) rotateZ(14deg) rotateX(9deg) scaleX(1.55) scaleY(1.1);
+
       &-big {
         transform-origin: 38px 38px;
 
-        .frame-2 &, .frame-3 & {
+        .frame-2 &,
+        .frame-3 & {
           animation: cog-spin 700ms linear infinite;
         }
       }
@@ -240,6 +305,7 @@
   &--cloud {
     transition: transform 400ms easeOutCubic;
     transform: translate(110vw, 200vw);
+    opacity: 0;
 
     &--coin {
       transform: translate(100px, 83px);
@@ -248,6 +314,12 @@
 
     .frame-4 & {
       transform: translate(280px, 210px);
+      opacity: 1;
+
+      @media (--mobile) {
+        transition: none;
+        transform: translate(230px, 210px);
+      }
 
       &--coin {
         animation: coin-throw 1500ms linear infinite;
@@ -263,6 +335,11 @@
       transition: opacity 500ms easeOutCubic;
       transition-delay: 400ms;
       opacity: 1;
+
+      @media (--mobile) {
+        transition: none;
+        transform: translate(205px, 300px) scale(0.6);
+      }
     }
   }
 

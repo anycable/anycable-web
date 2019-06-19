@@ -17,7 +17,7 @@
 
   &:hover,
   &:focus {
-    opacity: .8;
+    opacity: 0.8;
     transition: none;
   }
 
@@ -44,5 +44,13 @@
   &--icon {
     margin-right: 16px;
     margin-top: 6px;
+  }
+
+  @media (--mobile) {
+    & {
+      display: flex;
+      justify-content: center;
+      padding: 0 10px;
+    }
   }
 }

@@ -12,5 +12,10 @@ $code-green: #1f6526;
 $code-red: #a12a17;
 $grey: #e3e3e3;
 $grey-bg: #f3f3f3;
+$white: #fff;
+$transparent: rgba(255, 255, 255, 0);
 
 $footer-bg: #363636;
+
+$fade_gradient_top: linear-gradient($transparent, $white 30px);
+$fade_gradient_bottom: linear-gradient(to top, $transparent, $white 30px);
