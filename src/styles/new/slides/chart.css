@@ -41,7 +41,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (--mobile) {
   .slide--chart--caption {
     font-size: 3vw;
   }

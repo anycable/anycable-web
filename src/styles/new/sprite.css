@@ -16,7 +16,7 @@
     height: 100%;
     padding: 0 60px;
 
-    @media (min-width: $mobile_min) {
+    @media (--except-mobile) {
       & {
         padding-top: 20vh !important;
       }
@@ -43,7 +43,7 @@
   }
 }
 
-@media (max-width: $tablet-small) and (min-width: $mobile_min) {
+@media (--tablet) {
   .illustration-new {
     &--content {
       padding-right: 30px;

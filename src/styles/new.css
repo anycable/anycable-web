@@ -5,10 +5,10 @@
 @import "vars.css";
 @import "new/button.css";
 
-$mobile: 800px;
-$mobile_min: 801px;
-$tablet: 1080px;
-$tablet_min: 1081px;
+@custom-media --mobile (max-width: 800px);
+@custom-media --tablet (max-width: 1080px);
+
+@import "media.css";
 
 html, body {
   height: 100%;
@@ -46,7 +46,7 @@ a {
   font-size: 14px;
   line-height: 18px;
 
-  @media (max-width: $mobile) {
+  @media (--mobile) {
     & {
       font-size: 3vw;
     }
@@ -88,19 +88,13 @@ h4 {
   color: $grey-text;
 }
 
-@media(min-width: $tablet_min) {
-  .no-desktop {
-    display: none !important;
-  }
-}
-
-@media(max-width: $tablet) {
+@media (--tablet) {
   .no-tablet {
     display: none !important;
   }
 }
 
-@media (max-width: $mobile) {
+@media (--mobile) {
   .no-mobile {
     display: none !important;
   }

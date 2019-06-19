@@ -29,7 +29,7 @@
   }
 }
 
-@media (max-width: $tablet) and (min-width: $mobile_min) {
+@media (--tablet-strict) {
   .main-slide {
     &--title {
       font-size: 6vw;
@@ -37,7 +37,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (--mobile) {
   .main-slide {
     flex-direction: column;
     margin-bottom: 60px;

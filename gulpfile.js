@@ -51,7 +51,8 @@ gulp.task('styles:new', function () {
     .pipe(postcss([
       require('postcss-cssnext'),
       require('precss'),
-      require('postcss-easings')
+      require('postcss-easings'),
+      require('postcss-custom-media')
     ]))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('./build'))

@@ -34,7 +34,7 @@
       width: 100%;
       padding: 60px 25%;
 
-      @media (max-width: $tablet) {
+      @media (--tablet) {
         & {
           padding: 30px 10%;
         }
@@ -45,7 +45,7 @@
   &--content > * {
     padding: 0 120px 0 60px;
 
-    @media(max-width: $tablet) {
+    @media(--tablet) {
       & {
         padding: 0 60px;
       }
@@ -66,7 +66,7 @@
       transform: scale(1.5);
       margin-left: 30px;
   
-      @media (max-width: $mobile) {
+      @media (--mobile) {
         & {
           transform: scale(1);
           margin-left: 10px;
@@ -81,7 +81,7 @@
     flex-direction: row;
     align-items: flex-end;
 
-    @media (max-width: $tablet) {
+    @media (--tablet) {
       & {
         flex-direction: column-reverse;
         align-items: center;
@@ -92,7 +92,7 @@
       margin-left: 10px;
       text-align: center;
 
-      @media (max-width: $tablet) {
+      @media (--tablet) {
         & {
           margin-bottom: 30px;
         }
@@ -105,7 +105,7 @@
       font-weight: bold;
       line-height: 80px;
 
-      @media (max-width: $tablet) and (min-width: $mobile_min) {
+      @media (--tablet-strict) {
         & {
           font-size: 80px;
         }
@@ -115,17 +115,10 @@
         font-size: 150px;
         line-height: 110px;
 
-        @media (max-width: 1200px) and (min-width: $mobile_min) {
+        @media (--tablet-strict) {
           & {
-            font-size: 120px;
+            font-size: 110px;
             line-height: 100px;
-          }
-        }
-
-        @media (max-width: $tablet) and (min-width: $mobile_min) {
-          & {
-            font-size: 100px;
-            line-height: 90px;
           }
         }
       }
@@ -141,7 +134,7 @@
     display: flex;
     align-items: flex-start;
 
-    @media (max-width: $mobile) {
+    @media (--mobile) {
       & {
         flex-direction: column;
       }
@@ -195,7 +188,7 @@
       opacity: 0;
     }
 
-    @media (max-height: 600px), (max-width: 1040px) {
+    @media (--small-height), (--tablet) {
       & {
           display: none;
         }
@@ -222,7 +215,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (--mobile) {
   .slide {
     flex-direction: column-reverse;
     justify-content: flex-start;
@@ -246,7 +239,7 @@
   }
 }
 
-@media (min-width: $mobile) {
+@media (--mobile) {
   .slide--item {
     padding-top: 20vh;
   }
