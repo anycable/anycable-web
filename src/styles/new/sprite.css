@@ -63,7 +63,7 @@
 
   &-cog-frame {
     /* make it visibile to help positionining the cog within a cube */
-    opacity: 0;
+    display: none;
   }
 
   &--logo {
@@ -92,7 +92,7 @@
 
   &--go {
     transition: transform 500ms easeOutCubic;
-    transform: translate(60px, 100vh);
+    transform: translate(60px, 200vh);
 
     &--cog {
       transform: translateX(-3px) translateY(34px) translateZ(49px) rotateY(60deg) rotateZ(-13deg) rotateX(10deg);
@@ -127,7 +127,7 @@
 
   &--rails {
     transition: transform 500ms easeOutCubic;
-    transform: translate(210px, 100vh);
+    transform: translate(210px, 200vh);
 
     &--text {
       display: none;
@@ -184,7 +184,7 @@
 
   &--elixir {
     transition: transform 500ms easeOutCubic;
-    transform: translate(360px, 100vh);
+    transform: translate(360px, 200vh);
 
     &--cog {
       transform: translateX(1px) translateY(18px) translateZ(50px) rotateY(60deg) rotateZ(14deg) rotateX(9deg) scaleX(1.55) scaleY(1.1);
@@ -221,7 +221,7 @@
 
   &--client {
     transition: transform 500ms easeOutCubic;
-    transform: translate(320px, -800px);
+    transform: translate(320px, -200vh);
 
     .frame-3 & {
       transform: translate(320px, 96px);
@@ -230,7 +230,7 @@
 
   &--ws {
     transition: transform 500ms easeOutCubic;
-    transform: translate(100px, -800px);
+    transform: translate(100px, -200vh);
 
     .frame-3 & {
       transform: translate(100px, 96px);
@@ -239,7 +239,7 @@
 
   &--cloud {
     transition: transform 400ms easeOutCubic;
-    transform: translate(110vw, 210px);
+    transform: translate(110vw, 200vw);
 
     &--coin {
       transform: translate(100px, 83px);
