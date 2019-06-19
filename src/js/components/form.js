@@ -6,7 +6,10 @@ application.component('.js-form', {
     this.inputs = this.form.querySelectorAll('input,textarea');
     this.submitBtn = this.form.querySelector('button[type="submit"]');
 
-    this.form.addEventListener('submit', (e) => {
+    this.form.removeAttribute('action');
+    this.form.removeAttribute('method');
+
+    this.form.addEventListener('submit', e => {
       e.preventDefault();
       this.hideError();
       this.startLoading();
