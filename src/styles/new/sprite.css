@@ -58,6 +58,7 @@
 
 .sprite {
   height: 100%;
+  margin: 0 auto;
   overflow: visible !important;
 
   &-cog-frame {
@@ -129,18 +130,18 @@
     transform: translate(210px, 100vh);
 
     &--text {
-      opacity: 0;
+      display: none;
 
       .frame-2 &, .frame-3 & {
-        opacity: 1;
+        display: block;
       }
     }
 
     &--premise {
-      opacity: 0;
+      display: none;
 
       .frame-4 & {
-        opacity: 1;
+        display: block;
       }
     }
 
@@ -241,6 +242,7 @@
     transform: translate(110vw, 210px);
 
     &--coin {
+      transform: translate(100px, 83px);
       transition: transform 500ms easeOutCubic;
     }
 
