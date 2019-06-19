@@ -42,11 +42,6 @@
     flex-direction: column;
     margin-bottom: 60px;
 
-    &--logo svg {
-      width: 30vh;
-      padding: 10vw 0;
-    }
-
     &--btn {
       left: auto;
     }

@@ -1,13 +1,13 @@
 .slide.main-slide
   .slide--item.right.main-slide--item
     .slide--content.js-animation-hook(data-frame="frame-1")
-      .slide--image.mobile-only.main-slide--logo
-        include /layout/logo
       h1.main-slide--title ANYCABLE
       p.main-slide--sub-title
         | Build lightning fast, reliable real-time
         | applications with Ruby and Rails
-      .slide--text.main-slide--text.small-text
+      .slide--text.main-slide--text.small-text.slide--text--logo
+        .logo.mobile-only
+          include /images/logo.svg
         | Add real-time features to your Ruby on Rails application without ever having to switch to another platform or language.
         | Stay productive by writing clean, maintainable code in Ruby while being sure that your application scales without costing a fortune to run it.
       .nav.main-slide--btn.js-bubble(data-delta=50)
