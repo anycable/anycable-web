@@ -16,5 +16,13 @@
     font-weight: bold;
     background: $red;
     color: white;
+
+    @media (--tablet) {
+      & {
+        /* width: 4vw;
+        height: 4vw;
+        line-height: 4vw; */
+      }
+    }
   }
 }

@@ -44,7 +44,7 @@
 @media (--mobile) {
   .footer {
     flex-direction: column;
-    padding: 60px 40px 30px 40px;
+    padding: 60px 10% 30px 10%;
 
     &--block {
       margin-bottom: 30px;

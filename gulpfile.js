@@ -11,7 +11,7 @@ function config(dir){
       baseDir: ['./', dir]
     },
     host: 'localhost',
-    port: 4242
+    port: 3002
   };
 };
 

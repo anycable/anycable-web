@@ -48,6 +48,6 @@
 
 @media (--mobile) {
   .slide--feedback  {
-    padding: 0 40px 90px 40px;
+    padding: 0 10% 90px 10%;
   }
 }

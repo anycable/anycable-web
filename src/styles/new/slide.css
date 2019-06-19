@@ -63,13 +63,16 @@
   &--text--logo {
     & .logo {
       float: right;
-      transform: scale(1.5);
       margin-left: 30px;
   
       @media (--mobile) {
         & {
-          transform: scale(1);
           margin-left: 10px;
+
+          img {
+            width: 20vw;
+            height: auto;
+          }    
         }
       }
     }
@@ -227,7 +230,7 @@
     }
 
     &--content > * {
-      padding: 0 30px;
+      padding: 0 10%;
     }
 
     &--image {
