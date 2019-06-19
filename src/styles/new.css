@@ -7,6 +7,8 @@
 
 $mobile: 700px;
 $mobile_min: 701px;
+$mobile_h: 500px;
+$mobile_h_min: 501px;
 $tablet-small: 800px;
 $tablet: 1080px;
 $tablet_min: 1081px;
@@ -46,7 +48,7 @@ a {
   font-size: 14px;
   line-height: 18px;
 
-  @media (max-width: $mobile) {
+  @media (max-width: $mobile), (max-height: $mobile_h) {
     & {
       font-size: 3vw;
     }
@@ -100,7 +102,7 @@ h4 {
   }
 }
 
-@media (max-width: $mobile) {
+@media (max-width: $mobile), (max-height: $mobile_h) {
   .no-mobile {
     display: none !important;
   }

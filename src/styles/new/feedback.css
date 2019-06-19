@@ -46,7 +46,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (max-width: $mobile), (max-height: $mobile_h) {
   .slide--feedback  {
     padding: 0 40px 90px 40px;
   }
