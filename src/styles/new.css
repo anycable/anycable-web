@@ -5,11 +5,8 @@
 @import "vars.css";
 @import "new/button.css";
 
-$mobile: 700px;
-$mobile_min: 701px;
-$mobile_h: 500px;
-$mobile_h_min: 501px;
-$tablet-small: 800px;
+$mobile: 800px;
+$mobile_min: 801px;
 $tablet: 1080px;
 $tablet_min: 1081px;
 
@@ -17,6 +14,7 @@ html, body {
   height: 100%;
   width: 100%;
   min-width: 300px;
+  min-height: 450px;
 }
 
 body {
@@ -48,7 +46,7 @@ a {
   font-size: 14px;
   line-height: 18px;
 
-  @media (max-width: $mobile), (max-height: $mobile_h) {
+  @media (max-width: $mobile) {
     & {
       font-size: 3vw;
     }
@@ -102,7 +100,7 @@ h4 {
   }
 }
 
-@media (max-width: $mobile), (max-height: $mobile_h) {
+@media (max-width: $mobile) {
   .no-mobile {
     display: none !important;
   }

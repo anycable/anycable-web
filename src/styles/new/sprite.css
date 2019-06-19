@@ -37,7 +37,7 @@
     transform: translate(110px, 83px); 
     opacity: 0;
   }
-  80% { 
+  90% {
     transform: translate(100px, 83px); 
     opacity: 1;
   }

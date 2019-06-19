@@ -41,7 +41,7 @@
   }
 }
 
-@media (max-width: $mobile), (max-height: $mobile_h) {
+@media (max-width: $mobile) {
   .footer {
     flex-direction: column;
     padding: 60px 40px 30px 40px;

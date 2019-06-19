@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
 
-  @media (max-width: $mobile), (max-height: $mobile_h) {
+  @media (max-width: $mobile) {
     & {
       flex-direction: column;
       justify-content: flex-start;
