@@ -19,7 +19,8 @@ application.component('.js-form', {
       });
     });
 
-    this.form.addEventListener('input', (e) => {
+    // use "keyup" to handle IE
+    this.form.addEventListener('keyup', (e) => {
       this.invalidate();
     });
 
