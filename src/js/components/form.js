@@ -6,21 +6,18 @@ application.component('.js-form', {
     this.inputs = this.form.querySelectorAll('input,textarea');
     this.submitBtn = this.form.querySelector('button[type="submit"]');
 
-    this.form.addEventListener('submit', (e) => {
+    this.form.removeAttribute('action');
+    this.form.removeAttribute('method');
+
+    this.form.addEventListener('submit', e => {
       e.preventDefault();
       this.hideError();
       this.startLoading();
-      this.submitData(this.readData()).then( () => {
-        this.node.classList.add("is-submitted");
-      }).catch((e) => {
-        console.error(e);
-        this.stopLoading();
-        this.showError();
-      });
+      this.submitData(new FormData(e.target));
     });
 
     // use "keyup" to handle IE
-    this.form.addEventListener('keyup', (e) => {
+    this.form.addEventListener('keyup', () => {
       this.invalidate();
     });
 
@@ -28,27 +25,22 @@ application.component('.js-form', {
   },
 
   submitData(data) {
-    console.log("Submitted:", data);
-    return new Promise((resolve, reject) => {
-      const delay = (Math.random() * 3000) | 0;
-
-      if (data.email === 'fail') {
-        setTimeout(reject, delay);
+    return fetch('https://hooks.zapier.com/hooks/catch/5193122/oy622xx/', {
+      method: 'POST',
+      body: data
+    }).then(response => {
+      if (response.status !== 200) {
+        throw new Error();
       } else {
-        setTimeout(resolve, delay);
+        this.node.classList.add("is-submitted");
       }
+    }).catch(() => {
+      this.stopLoading();
+      this.showError();
     });
   },
 
-  readData() {
-    let data = {};
-    for(let input of this.inputs) {
-      data[input.name] = input.value;
-    }
-    return data;
-  },
-
-  startLoading(){
+  startLoading() {
     this.prevSubmitText = this.submitBtn.textContent;
     this.submitBtn.disabled = true;
     this.submitBtn.textContent = ".";
@@ -61,13 +53,13 @@ application.component('.js-form', {
     200);
   },
 
-  stopLoading(){
+  stopLoading() {
     if (this.loadingTid) clearInterval(this.loadingTid);
     this.submitBtn.textContent = this.prevSubmitText;
     this.submitBtn.disabled = false;
   },
 
-  showError(){
+  showError() {
     this.node.classList.add('is-error');
   },
 

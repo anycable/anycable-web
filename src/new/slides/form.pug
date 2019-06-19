@@ -1,6 +1,6 @@
 .slide.full
   .slide--item.fullscreen.contact-form.js-form
-    form.contact-form.form#main-form
+    form.contact-form.form#main-form(action="https://hooks.zapier.com/hooks/catch/5193122/oy622xx/", method="post")
       .form--control
         input(type="text", name="email", placeholder="Your email or phone number", required)
       .form--control
@@ -8,7 +8,7 @@
       .form--control
         textarea(name="request", cols="30", rows="4", placeholder="What is you product and what do you want to build?", required)
       .form--control
-        button.btn(type="submit", disabled) SEND
+        button.btn(type="submit") SEND
       .form--error.error.small-text Something went wrong :(
     .slide--text.message
       h3 Thanks for reaching us out!

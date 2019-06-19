@@ -23,7 +23,7 @@
     .form {
       display: none;
     }
-    
+
     .message {
       display: block;
 
@@ -49,6 +49,7 @@
       border: solid 0.5px #e1dfdf;
       background-color: white;
       padding: 12.5px 20px;
+      -webkit-appearance: none;
 
       &:focus {
         outline: none;

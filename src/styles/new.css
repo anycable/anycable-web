@@ -130,8 +130,13 @@ h4 {
     font-size: 3vw;
   }
 
+  .main {
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .mobile-only {
-    display:  block;
+    display: block;
   }
 
   .small-text {
