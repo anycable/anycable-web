@@ -339,11 +339,7 @@
 
       @media (--mobile) {
         transition: none;
-        transform: translate(205px, 300px) scale(0.6);
-
-        &--text {
-          transform: translateY(50px);
-        }
+        transform: translate(205px, 320px) scale(0.6);
       }
     }
   }

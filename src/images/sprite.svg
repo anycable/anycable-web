@@ -171,7 +171,7 @@
             </text>
         </g>
         <g class="sprite--vs" id="VS" transform="translate(-1300.000000, 0.000000)">
-           <rect class="sprite--vs--bg" width="80" height="60" fill="#fff"></rect>
+           <rect class="sprite--vs--bg" width="80" height="60" fill="#fff" transform="translate(0, -50px)"></rect>
            <text class="sprite--vs--text" id="VS" font-family="Stem Text" font-size="50" font-weight="bold" line-spacing="16" fill="#f64343">
                 <tspan x="0" y="0">VS</tspan>
             </text>
