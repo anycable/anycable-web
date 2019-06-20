@@ -14,10 +14,10 @@ application.component('.js-scroll-link', {
       const upperBound = y + h + DELTA;
       const lowerBound = y + h - DELTA;
       
-      const viewTop = document.body.scrollTop || document.documentElement.scrollTop
+      const viewTop = document.body.scrollTop || document.documentElement.scrollTop;
       const viewBottom = viewTop + window.innerHeight;
       
-      if (viewBottom > upperBound || viewBottom < lowerBound) {
+      if (viewTop > upperBound || viewBottom < lowerBound) {
         this.hide();
       } else {
         this.show();

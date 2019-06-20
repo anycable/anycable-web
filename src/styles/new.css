@@ -10,7 +10,8 @@
 
 @import "media.css";
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   min-width: 300px;
@@ -100,6 +101,10 @@ h4 {
   .no-tablet {
     display: none !important;
   }
+
+  .desktop-only {
+    display: none !important;
+  }
 }
 
 @media (--mobile) {
@@ -111,28 +116,27 @@ h4 {
     display: initial;
   }
 
-  body {
-    font-size: 4vw;
-    line-height: 6vw;
+  body,
+  h3 {
+    font-size: 18px;
+    line-height: 1.56;
   }
 
   h1 {
-    font-size: 14vw;
-    line-height: 18vw;
+    font-size: 40px;
+    line-height: 1.2;
+    letter-spacing: 1.8px;
+    text-align: center;
   }
 
   h2 {
-    font-size: 10vw;
-    line-height: 12vw;
+    font-size: 40px;
+    line-height: 1.2;
   }
 
   h4 {
-    font-size: 3vw;
-  }
-
-  .main {
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
+    font-size: 15px;
+    line-height: 1.33;
   }
 
   .mobile-only {
@@ -140,7 +144,8 @@ h4 {
   }
 
   .small-text {
-    font-size: 3vw;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
   .desktop-only {

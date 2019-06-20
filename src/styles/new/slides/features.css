@@ -1,5 +1,22 @@
 .features--list {
   margin-top: 20px;
+
+  @media (--mobile) {
+    & {
+      margin-top: 305px;
+      padding-top: 15px;
+      background-image: $fade_gradient_top;
+      padding-bottom: 20px;
+    }
+
+    #howitworks & {
+      margin-top: 350px;
+    }
+
+    #cloud & {
+      margin-top: 230px;
+    }
+  }
 }
 
 .features--item {
@@ -15,7 +32,7 @@
     flex-shrink: 0;
     font-weight: bold;
     background: $red;
-    color: white;
+    color: $white;
 
     @media (--tablet) {
       & {

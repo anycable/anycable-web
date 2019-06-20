@@ -3,9 +3,16 @@
   padding: 30px 120px 120px 60px;
   margin-top: 60px;
 
-  @media(--tablet) {
+  @media (--tablet) {
     & {
       padding: 30px 60px 60px 60px;
+    }
+  }
+
+  @media (--mobile) {
+    & {
+      padding: 14px 20px 33px 20px;
+      margin-top: 0;
     }
   }
 
@@ -18,6 +25,13 @@
 
     &:not(:first-child) {
       margin-top: 30px;
+
+      @media (--mobile) {
+        & {
+          margin-top: 12px;
+          padding: 0;
+        }
+      }
     }
   }
 
@@ -28,6 +42,13 @@
       & {
         max-width: 50%;
         height: auto;
+      }
+    }
+
+    @media (--mobile) {
+      & {
+        flex-basis: 80px;
+        flex: 0 0 auto;
       }
     }
   }
@@ -42,12 +63,12 @@
       left: -30px;
       font-size: 50px;
       font-family: Stem;
-    }
-  }
-}
 
-@media (--mobile) {
-  .slide--feedback  {
-    padding: 0 10% 90px 10%;
+      @media (--mobile) {
+        & {
+          display: none;
+        }
+      }
+    }
   }
 }
