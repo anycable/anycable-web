@@ -11,5 +11,7 @@ head
     rel="stylesheet"
     href="/new.css"
   )
+  if env !== 'development'
+    include ./gtm.html
   include ../meta
   block styles
