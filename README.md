@@ -1,6 +1,6 @@
 ## About
 
-AnyCable website generator (https://anycable.github.io).
+AnyCable website generator (https://anycable.io).
 
 Includes:
 - [Jade](http://jade-lang.com) HTML preprocessor;
