@@ -288,7 +288,8 @@
 
       &.with-images {
         margin-bottom: 0;
-        margin-top: 250px;
+        margin-top: 235px;
+        padding-top: 15px;
         padding-bottom: 20px;
         background-image: $fade_gradient_top;
       }

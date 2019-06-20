@@ -3,7 +3,8 @@
 
   @media (--mobile) {
     & {
-      margin-top: 320px;
+      margin-top: 305px;
+      padding-top: 15px;
       background-image: $fade_gradient_top;
       padding-bottom: 20px;
     }
