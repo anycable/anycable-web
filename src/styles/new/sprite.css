@@ -305,7 +305,7 @@
 
   &--cloud {
     transition: transform 400ms easeOutCubic;
-    transform: translate(110vw, 200vw);
+    transform: translate(110vw, 210px);
     opacity: 0;
 
     &--coin {
