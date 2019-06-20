@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-@import "fonts.css";
+@import "new/fonts.css";
 @import "reset.css";
 @import "vars.css";
 @import "new/button.css";
@@ -67,6 +67,7 @@ h2 {
   line-height: 50px;
   letter-spacing: 1.5px;
   font-family: $headers-font;
+  font-weight: bold;
 }
 
 h4 {
