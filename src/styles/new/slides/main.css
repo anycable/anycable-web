@@ -1,4 +1,6 @@
 .main-slide {
+  min-height: 51vh;
+
   &--title {
     display: inline;
     position: relative;
@@ -60,6 +62,30 @@
     &--btn {
       left: auto;
       width: 100%;
+      margin-top: 40px;
+    }
+  }
+}
+
+@media (--tablet-small) {
+  .main-slide {
+    margin-top: 280px;
+
+    &--title {
+      font-size: 72px;
+    }
+
+    &--sub-title {
+      font-size: 28px;
+    }
+
+    &--text {
+      font-size: 20px;
+    }
+
+    &--btn {
+      font-size: 20px;
+      margin-bottom: 20px;
     }
   }
 }

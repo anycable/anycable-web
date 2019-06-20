@@ -5,4 +5,6 @@
 @custom-media --tablet-strict (max-width: 1080px) and (min-width: 801px);
 @custom-media --desktop (min-width: 1081px);
 
+@custom-media --tablet-small (max-width: 800px) and (min-width: 500px);
+
 @custom-media --small-height (max-height: 600px);

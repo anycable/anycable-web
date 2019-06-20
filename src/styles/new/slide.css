@@ -60,10 +60,9 @@
       width: 100%;
       padding: 60px 25%;
 
-
       @media (--mobile) {
         & {
-          padding: 0 20px;
+          padding: 0 10%;
 
           &.with-padding {
             padding: 32px 20px;
@@ -296,7 +295,7 @@
     }
 
     &--content > * {
-      padding: 0 20px;
+      padding: 0 10%;
     }
 
     &--image {
