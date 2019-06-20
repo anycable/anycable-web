@@ -1,6 +1,4 @@
 .main-slide {
-  min-height: 51vh;
-
   &--title {
     display: inline;
     position: relative;
@@ -69,6 +67,7 @@
 
 @media (--tablet-small) {
   .main-slide {
+    min-height: 51vh;
     margin-top: 280px;
 
     &--title {
