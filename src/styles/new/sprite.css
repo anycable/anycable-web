@@ -14,6 +14,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    width: 100%;
     padding: 0 60px;
 
     @media (--except-mobile) {
@@ -76,11 +77,11 @@
 
 .sprite {
   height: 100%;
-  margin: 0 auto;
   overflow: visible !important;
 
   @media (--mobile) {
     position: fixed;
+    left: calc(-250px + 50%);
   }
 
   &-cog-frame {
