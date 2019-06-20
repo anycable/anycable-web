@@ -11,7 +11,7 @@
 
   @media (--mobile) {
     & {
-      padding: 14px 20px 33px 20px;
+      padding: 14px 10% 33px;
       margin-top: 0;
     }
   }
@@ -47,8 +47,7 @@
 
     @media (--mobile) {
       & {
-        flex-basis: 80px;
-        flex: 0 0 auto;
+        flex: 0 0 80px;
       }
     }
   }
