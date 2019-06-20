@@ -3,6 +3,7 @@ var browserSync = require("browser-sync");
 var reload = browserSync.reload;
 var options = {
   env: 'development',
+  formURL: 'debug'
 };
 
 function config(dir){
@@ -114,7 +115,11 @@ gulp.task('build',
 
 gulp.task('build:prod', 
   gulp.series(
-    function(cb) { options.env = 'production'; cb(); },
+    function(cb) {
+      options.env = 'production';
+      options.formURL = 'https://hooks.zapier.com/hooks/catch/5193122/oy622xx/';
+      cb();
+    },
     'build'
   )
 );

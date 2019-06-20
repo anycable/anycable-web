@@ -5,6 +5,7 @@ application.component('.js-form', {
     this.form = this.node.querySelector('form');
     this.inputs = this.form.querySelectorAll('input,textarea');
     this.submitBtn = this.form.querySelector('button[type="submit"]');
+    this.actionURL = this.form.getAttribute('action');
 
     this.form.removeAttribute('action');
     this.form.removeAttribute('method');
@@ -25,18 +26,44 @@ application.component('.js-form', {
   },
 
   submitData(data) {
-    return fetch('https://hooks.zapier.com/hooks/catch/5193122/oy622xx/', {
-      method: 'POST',
-      body: data
-    }).then(response => {
-      if (response.status !== 200) {
-        throw new Error();
-      } else {
-        this.node.classList.add("is-submitted");
-      }
+    let promise;
+    if (this.actionURL === 'debug') {
+      promise = this.fakeSubmitData(data);
+    } else {
+      promise = fetch(
+        this.actionURL, {
+          method: 'POST',
+          body: data
+        }
+      ).then(response => {
+        if (response.status !== 200) {
+          throw new Error();
+        }
+        return response;
+      });
+    }
+    return promise.then(() => {
+      this.node.classList.add("is-submitted");
     }).catch(() => {
       this.stopLoading();
       this.showError();
+    });
+  },
+
+  fakeSubmitData(formData) {
+    let payload = {};
+    formData.forEach(function(value, key){
+      payload[key] = value;
+    });
+    console.log("Submitting form:", payload);
+
+    const delay = (Math.random() * 3000) | 0;
+    return new Promise((resolve, reject) => {
+      if (payload.email === 'fail') {
+        setTimeout(reject, delay);
+      } else {
+        setTimeout(resolve, delay);
+      }
     });
   },
 
