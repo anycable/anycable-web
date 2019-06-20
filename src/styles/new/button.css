@@ -21,6 +21,13 @@
     transition: none;
   }
 
+  @media (hover: none) {
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
   &:active {
     background: $dark-red;
   }
