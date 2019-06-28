@@ -36,22 +36,6 @@ gulp.task('styles', function () {
     .pipe(postcss([
       require('postcss-cssnext'),
       require('precss'),
-      require('postcss-easings')
-    ]))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('./build'))
-    .pipe(reload({stream: true}));
-});
-
-gulp.task('styles:new', function () {
-  var postcss    = require('gulp-postcss');
-  var sourcemaps = require('gulp-sourcemaps');
-
-  return gulp.src('src/styles/new.css')
-    .pipe(sourcemaps.init())
-    .pipe(postcss([
-      require('postcss-cssnext'),
-      require('precss'),
       require('postcss-easings'),
       require('postcss-custom-media')
     ]))
@@ -93,7 +77,7 @@ gulp.task('serve', function() {
 gulp.task('watch', function() {
   gulp.watch('src/**/*.pug', gulp.series('html'));
   gulp.watch('src/**/*.js', gulp.series('html'));
-  gulp.watch('src/**/*.css', gulp.series('styles', 'styles:new'));
+  gulp.watch('src/**/*.css', gulp.series('styles'));
   gulp.watch('src/images/**/*', gulp.series('copy:images', 'html'));
 });
 
@@ -108,7 +92,7 @@ gulp.task('build',
   gulp.series(
     'clean', 
     gulp.parallel(
-      'styles', 'styles:new', 'html', 'copy'
+      'styles', 'html', 'copy'
     )
   )
 );

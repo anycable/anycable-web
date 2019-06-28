@@ -9,7 +9,7 @@
       right: -16px;
       line-height: 0;
     }
-     
+
     &.alpha:after {
       content: url('/images/alpha.svg');
     }
@@ -20,25 +20,16 @@
   }
 
   &--text {
-    margin-top: 10px;
-    margin-bottom: 22px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   &--btn {
-    position: absolute;
-    left: 0;
+    display: inline-block;
   }
 }
 
-@media (max-width: 960px) and (min-width: 801px) {
-  .main-slide {
-    &--title {
-      font-size: 7vw;
-    }
-  }
-}
-
-@media (max-width: 800px) and (min-width: 601px) {
+@media (--tablet-strict) {
   .main-slide {
     &--title {
       font-size: 6vw;
@@ -46,14 +37,54 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (--mobile) {
   .main-slide {
     flex-direction: column;
-    margin-bottom: 60px;
+    margin-top: 135px;
+    background-image: $fade_gradient_top;
 
-    &--logo svg {
-      width: 40vw;
-      padding: 10vw 0;
+    &--item {
+      margin-top: 0;
+    }
+
+    &--title {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    &--text {
+      margin-top: 13px;
+      margin-bottom: 9px;
+    }
+
+    &--btn {
+      left: auto;
+      width: 100%;
+      margin-top: 40px;
+    }
+  }
+}
+
+@media (--tablet-small) {
+  .main-slide {
+    min-height: 51vh;
+    margin-top: 280px;
+
+    &--title {
+      font-size: 72px;
+    }
+
+    &--sub-title {
+      font-size: 28px;
+    }
+
+    &--text {
+      font-size: 20px;
+    }
+
+    &--btn {
+      font-size: 20px;
+      margin-bottom: 20px;
     }
   }
 }
