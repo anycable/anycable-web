@@ -2,7 +2,9 @@ doctype html
 html(lang='en')
   include new/dochead
   body
+    if env !== 'development'
+      include new/gtm_body.html
     include header
     .main
       block content
-    include footer
+    include new/footer
