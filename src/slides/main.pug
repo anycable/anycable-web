@@ -1,21 +1,22 @@
 .slide.main-slide
   .slide--item.right.main-slide--item
     .slide--content.js-animation-hook(data-frame="frame-1")
-      .slide--image.mobile-only.main-slide--logo
-        include /layout/logo
-      h1.main-slide--title ANYCABLE
-      p.main-slide--sub-title Action Cable on steroids!
-      .slide--text.main-slide--text.grey
-        | Combines the good parts of Action Cable with the power of your favorite language for concurrent applications
+      h1.main-slide--title AnyCable
+      p.main-slide--sub-title
+        | Build lightning fast, reliable real-time
+        | applications with Ruby and Rails
+      .slide--text.main-slide--text.small-text
+        | Add real-time features to your Ruby on Rails application without ever having to switch to another platform or language.
+        | Stay productive by writing clean, maintainable code in Ruby with the assurance that your application scales and won’t cost a fortune to run.
       .nav.main-slide--btn.js-bubble(data-delta=50)
-        a.btn(href="https://docs.anycable.io")
+        a.btn.js-scroll-link.gtm-link(data-target="#getting-started", data-gtm-category="landingButton", data-gtm-action="tryIt1")
           span.btn--icon
             include /images/play.svg
-          span GETTING STARTED
+          span Try it now
         .topnav.desktop-only.js-bubble
-          .topnav--title ANYCABLE
-          a.btn.topnav--btn(href="https://docs.anycable.io") TRY IT NOW
-      .slide--actions.desktop-only.js-scroll-link(data-target="#actioncable")
+          .topnav--title AnyCable
+          a.btn.topnav--btn.js-scroll-link.gtm-link(data-target="#getting-started", data-gtm-category="landingMenu", data-gtm-action="tryIt") Try it now
+      .slide--actions.desktop-only.js-scroll-link(data-target="#realtime")
         span.slide--action-arrow
           include /images/arrow.svg
         span.slide--action-text See how it works

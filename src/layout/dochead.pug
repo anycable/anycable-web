@@ -1,5 +1,5 @@
 head
-  title AnyCable: Action Cable on steroids!
+  title AnyCable: build lightning fast, reliable real-time applications with Ruby and Rails
   meta(
     name="viewport"
     content="width=device-width"
@@ -9,7 +9,10 @@ head
   )
   link(
     rel="stylesheet"
-    href="/main.css"
+    href="/new.css"
   )
-  include meta
+  if env !== 'development'
+    include ./gtm_head.html
+  include ./meta
+  include ./schemaorg.html
   block styles

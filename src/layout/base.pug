@@ -1,7 +1,9 @@
 doctype html
-html
+html(lang='en')
   include dochead
   body
+    if env !== 'development'
+      include gtm_body.html
     include header
     .main
       block content
