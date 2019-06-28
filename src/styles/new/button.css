@@ -2,6 +2,7 @@
   cursor: pointer;
   height: 60px;
   text-decoration: none;
+  text-transform: uppercase;
   padding: 0 20px;
   text-align: center;
   background: $red;

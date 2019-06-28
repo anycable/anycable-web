@@ -60,6 +60,7 @@ h1 {
   letter-spacing: 2px;
   font-weight: bold;
   font-family: $headers-font;
+  text-transform: uppercase;
 }
 
 h2 {
