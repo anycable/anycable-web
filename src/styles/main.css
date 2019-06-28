@@ -5,20 +5,23 @@
 @import "vars.css";
 @import "button.css";
 
-html, body {
+@custom-media --mobile (max-width: 800px);
+@custom-media --tablet (max-width: 1080px);
+
+@import "media.css";
+
+html,
+body {
   height: 100%;
   width: 100%;
   min-width: 300px;
+  min-height: 450px;
 }
 
 body {
   background: #fff;
   color: $default-color;
-  font: 18px/30px $default-font-fallback;
-
-  .fonts-loaded & {
-    font-family: $default-font;
-  }
+  font: 18px/30px $default-font;
 }
 
 a {
@@ -35,23 +38,44 @@ a {
   }
 }
 
+.small-text {
+  font-size: 15px;
+}
+
+.caption {
+  color: $grey-text;
+  font-size: 14px;
+  line-height: 18px;
+
+  @media (--mobile) {
+    & {
+      font-size: 3vw;
+    }
+  }
+}
+
 h1 {
   font-size: 70px;
   line-height: 90px;
   letter-spacing: 2px;
   font-weight: bold;
+  font-family: $headers-font;
+  text-transform: uppercase;
 }
 
 h2 {
   font-size: 40px;
   line-height: 50px;
   letter-spacing: 1.5px;
+  font-family: $headers-font;
+  font-weight: bold;
 }
 
 h4 {
-  font-size: 14px;
-  color: $grey-text;
-  font-weight: normal;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 20px;
+  font-family: $headers-font;
 }
 
 .main {
@@ -67,50 +91,17 @@ h4 {
   color: $grey-text;
 }
 
-@media (max-width: 800px) and (min-width: 601px) {
-  body {
-    font-size: 3vw;
-    line-height: 5vw;
-  }
-
-  h1 {
-    font-size: 14vw;
-    line-height: 18vw;
-  }
-
-  h2 {
-    font-size: 5vw;
-    line-height: 7vw;
-  }
-
-  h4 {
-    font-size: 2vw;
-  }
+.no-desktop {
+  display: none;
 }
 
-
-@media (max-width: 600px) {
-  body {
-    font-size: 4vw;
-    line-height: 6vw;
+@media (--tablet) {
+  .no-desktop {
+    display: initial;
   }
 
-  h1 {
-    font-size: 14vw;
-    line-height: 18vw;
-  }
-
-  h2 {
-    font-size: 10vw;
-    line-height: 12vw;
-  }
-
-  h4 {
-    font-size: 3vw;
-  }
-
-  .mobile-only {
-    display:  block;
+  .no-tablet {
+    display: none !important;
   }
 
   .desktop-only {
@@ -118,10 +109,52 @@ h4 {
   }
 }
 
-@import "illustration.css";
-@import "slide.css";
+@media (--mobile) {
+  .no-mobile {
+    display: none !important;
+  }
 
-@import "slides/main.css";
-@import "slides/actioncable.css";
-@import "slides/pro.css";
+  .no-desktop {
+    display: initial;
+  }
+
+  body,
+  h3 {
+    font-size: 18px;
+    line-height: 1.56;
+  }
+
+  h1 {
+    font-size: 40px;
+    line-height: 1.2;
+    letter-spacing: 1.8px;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 40px;
+    line-height: 1.2;
+  }
+
+  h4 {
+    font-size: 15px;
+    line-height: 1.33;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .small-text {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@import "sprite.css";
+@import "slide.css";
 @import "footer.css";

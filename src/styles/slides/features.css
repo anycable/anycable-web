@@ -1,15 +1,45 @@
 .features--list {
   margin-top: 20px;
+
+  @media (--mobile) {
+    & {
+      margin-top: 305px;
+      padding-top: 15px;
+      background-image: $fade_gradient_top;
+      padding-bottom: 20px;
+    }
+
+    #howitworks & {
+      margin-top: 350px;
+    }
+
+    #cloud & {
+      margin-top: 230px;
+    }
+  }
 }
 
 .features--item {
   display: flex;
   margin-bottom: 20px;
 
-  &--icon {
-    width: 60px;
+  &--bullet {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
-    margin-right: 10px;
+    margin-right: 30px;
     flex-shrink: 0;
+    font-weight: bold;
+    background: $red;
+    color: $white;
+
+    @media (--tablet) {
+      & {
+        /* width: 4vw;
+        height: 4vw;
+        line-height: 4vw; */
+      }
+    }
   }
 }
