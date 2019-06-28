@@ -17,6 +17,24 @@ Use [svgo](https://github.com/svg/svgo) to optimize SVG images.
 
 For animated illustration use: `svgo --disable=moveGroupAttrsToElems --disable=convertTransform src/images/illustration.svg src/images/illustration.min.svg`
 
+## JSPM config issue
+
+When you run `yarn install` (or `jspm install` explicitly) it updates the `jspm.config.js` in the following way:
+
+```diff
+   },
+   paths: {
+     "*": "src/js/*.js",
+-    "github:*": "/jspm_packages/github/*",
+-    "npm:*": "/jspm_packages/npm/*"
++    "github:*": "jspm_packages/github/*",
++    "npm:*": "jspm_packages/npm/*"
+   },
+   baseUrl: "/",
+```
+
+This configuration breaks non-root pages; revert this change to use the absolute path.
+
 ## GTM Integration
 
 To send custom events to GTM do the following:
