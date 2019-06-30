@@ -96,7 +96,7 @@
             <text class="sprite--rails--text" id="Rails-Application-+" font-family="Stem Text" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
                 <tspan x="-12" y="110">Rails Application</tspan>
                 <tspan x="-4" y="126">+ ActionCable</tspan>
-                <tspan class="i-anycable-text" x="6" y="142">+ AnyCable</tspan>
+                <tspan class="sprite--rails--text--anycable" x="6" y="142">+ AnyCable</tspan>
             </text>
             <text class="sprite--rails--cluster" id="Rails-on-Cluster" font-family="Stem Text" font-size="13" font-weight="normal" line-spacing="16" fill="#9E9E9E">
                 <tspan x="5" y="110">Your cluster</tspan>

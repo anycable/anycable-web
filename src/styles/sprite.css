@@ -196,6 +196,15 @@
       .frame-3 & {
         display: block;
       }
+
+      &--anycable {
+        opacity: 0;
+        transition: opacity 200ms easeOutCubic;
+
+        .frame-3 & {
+          opacity: 1;
+        }
+      }
     }
 
     &--cluster {
