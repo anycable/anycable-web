@@ -71,4 +71,9 @@
       display: block;
     }
   }
+
+  &--honeypot {
+    position: absolute;
+    left: -4000px;
+  }
 }
