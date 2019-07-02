@@ -7,6 +7,8 @@
         textarea(name="about", cols="30", rows="4", placeholder="Who are you and what do you do?", aria-label="Who are you and what do you do?", required)
       .form--control
         textarea(name="request", cols="30", rows="4", placeholder="What is your product and what do you want to build?", aria-label="What is your product and what do you want to build?", required)
+      .form--honeypot
+        input(type="text", name="name", id="name", placeholder="Your name", aria-label="Your name", autocomplete="nope", tabindex="-1")
       .form--control
         button.btn(type="submit") Send
       .form--error.error.small-text Something went wrong :(

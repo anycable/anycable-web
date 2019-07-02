@@ -14,7 +14,16 @@ application.component('.js-form', {
       e.preventDefault();
       this.hideError();
       this.startLoading();
-      this.submitData(new FormData(e.target));
+
+      const data = new FormData(e.target);
+      
+      if (Boolean(data.get('name'))) {
+        // Name field is honeypot to filter bots
+        this.stopLoading();
+        this.showError();
+      } else {
+        this.submitData(data);
+      }
     });
 
     // use "keyup" to handle IE
