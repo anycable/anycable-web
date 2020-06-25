@@ -8,14 +8,36 @@
       .slide--text.main-slide--text.small-text
         | Add real-time features to your Ruby on Rails application without ever having to switch to another platform or language.
         | Stay productive by writing clean, maintainable code in Ruby with the assurance that your application scales and won’t cost a fortune to run.
-      .nav.main-slide--btn.js-bubble(data-delta=50)
-        a.btn.js-scroll-link.gtm-link(data-target="#getting-started", data-gtm-category="landingButton", data-gtm-action="tryIt1")
-          span.btn--icon
-            include /images/play.svg
-          span Try it now
-        .topnav.desktop-only.js-bubble
-          .topnav--title AnyCable
-          a.btn.topnav--btn.js-scroll-link.gtm-link(data-target="#getting-started", data-gtm-category="landingMenu", data-gtm-action="tryIt") Try it now
+      div
+        .main-slide--buttons
+          .main-slide--btn-cta.js-bubble(data-delta=50)
+            a.btn.centered.js-scroll-link.gtm-link(data-target="#getting-started", data-gtm-category="landingButton", data-gtm-action="tryIt1")
+              span.btn--icon
+                include /images/play.svg
+              span.btn--text Try it now
+            .topnav.desktop-only.js-bubble
+              .topnav--title AnyCable
+              a.btn.small.topnav--btn.js-scroll-link.gtm-link(data-target="#getting-started", data-gtm-category="landingMenu", data-gtm-action="tryIt")
+                span.btn--icon
+                  include /images/play.svg
+                span.btn--text Try it now
+              a.btn.small.secondary.topnav--btn.js-scroll-link.gtm-link(data-target="#custom-solutions", data-gtm-category="landingMenu", data-gtm-action="support")
+                span.btn--icon
+                  include /images/support.svg
+                span.btn--text Support
+              a.btn.small.secondary.topnav--btn.gtm-link(href=sponsorUrl, target="_blank", rel="nofollow noopener", data-gtm-category="landingMenu", data-gtm-action="sponsor")
+                span.btn--icon
+                  include /images/heart.svg
+                span.btn--text Sponsor
+          .main-slide--buttons-secondary
+            a.btn.outline.centered.js-scroll-link.gtm-link(data-target="#custom-solutions", data-gtm-category="landingButton", data-gtm-action="support")
+              span.btn--icon
+                include /images/support.svg
+              span.btn--text Commercial Support
+            a.btn.outline.centered.gtm-link(href=sponsorUrl, target="_blank", rel="nofollow noopener", data-gtm-category="landingButton", data-gtm-action="sponsor")
+              span.btn--icon
+                include /images/heart.svg
+              span.btn--text Sponsor Us
       .slide--actions.desktop-only.js-scroll-link(data-target="#realtime")
         span.slide--action-arrow
           include /images/arrow.svg

@@ -15,11 +15,54 @@
   align-items: center;
   border-radius: 4px;
   border: none;
+  white-space: nowrap;
+  will-change: opacity;
 
   &:hover,
   &:focus {
     opacity: 0.8;
     transition: none;
+  }
+
+  &.centered {
+    justify-content: center;
+  }
+
+  &.outline {
+    background-color: transparent;
+    color: $darkest-red;
+    padding: 0 15px;
+    height: 30px;
+
+    &:visited,
+    &:hover,
+    &:active {
+      color: $darkest-red;
+      background-color: transparent;
+    }
+  }
+
+  &.secondary {
+    background-color: $grey-dark;
+    color: $default-color;
+
+    &:visited,
+    &:hover,
+    &:active {
+      color: $default-color;
+      background-color: $grey-dark;
+    }
+  }
+
+  &.small {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 14px;
+  }
+
+  &.small &--icon {
+    margin-left: -5px;
+    margin-right: 5px;
   }
 
   @media (hover: none) {
@@ -50,8 +93,18 @@
   }
 
   &--icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    line-height: 1;
     margin-right: 16px;
-    margin-top: 6px;
+  }
+
+  &--text {
+    line-height: 1;
+    margin-top: 3px;
   }
 
   @media (--mobile) {

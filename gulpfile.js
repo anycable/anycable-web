@@ -3,6 +3,7 @@ var browserSync = require("browser-sync");
 var reload = browserSync.reload;
 var options = {
   env: 'development',
+  sponsorUrl: 'http://sponsorUrl',
   formURL: 'https://evilmartians.typeform.com/to/wAHm0sRP'
 };
 
