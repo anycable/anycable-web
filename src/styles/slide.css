@@ -12,6 +12,10 @@
     min-height: auto;
     border-top: 1px solid $grey;
 
+    &.no-border {
+      border-top: none;
+    }
+
     @media (--mobile) {
       & {
         background: none;
@@ -73,6 +77,10 @@
           }
         }
       }
+    }
+
+    &.try-it-now {
+      padding-bottom: 0;
     }
   }
 

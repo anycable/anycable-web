@@ -13,13 +13,11 @@ application.component('.js-form', {
     this.form.addEventListener('submit', e => {
       e.preventDefault();
       this.hideError();
-      this.startLoading();
 
       const data = new FormData(e.target);
-      
+
       if (Boolean(data.get('name'))) {
         // Name field is honeypot to filter bots
-        this.stopLoading();
         this.showError();
       } else {
         this.submitData(data);
@@ -30,69 +28,11 @@ application.component('.js-form', {
     this.form.addEventListener('keyup', () => {
       this.invalidate();
     });
-
-    this.invalidate();
   },
 
   submitData(data) {
-    let promise;
-    if (this.actionURL === 'debug') {
-      promise = this.fakeSubmitData(data);
-    } else {
-      promise = fetch(
-        this.actionURL, {
-          method: 'POST',
-          body: data
-        }
-      ).then(response => {
-        if (response.status !== 200) {
-          throw new Error();
-        }
-        return response;
-      });
-    }
-    return promise.then(() => {
-      this.node.classList.add("is-submitted");
-    }).catch(() => {
-      this.stopLoading();
-      this.showError();
-    });
-  },
-
-  fakeSubmitData(formData) {
-    let payload = {};
-    formData.forEach(function(value, key){
-      payload[key] = value;
-    });
-    console.log("Submitting form:", payload);
-
-    const delay = (Math.random() * 3000) | 0;
-    return new Promise((resolve, reject) => {
-      if (payload.email === 'fail') {
-        setTimeout(reject, delay);
-      } else {
-        setTimeout(resolve, delay);
-      }
-    });
-  },
-
-  startLoading() {
-    this.prevSubmitText = this.submitBtn.textContent;
-    this.submitBtn.disabled = true;
-    this.submitBtn.textContent = ".";
-    let counter = 1;
-    this.loadingTid = setInterval(() => {
-      counter++;
-      if(counter > 5) counter = 1;
-      this.submitBtn.textContent = ".".repeat(counter);
-    },
-    200);
-  },
-
-  stopLoading() {
-    if (this.loadingTid) clearInterval(this.loadingTid);
-    this.submitBtn.textContent = this.prevSubmitText;
-    this.submitBtn.disabled = false;
+    window.open(this.actionURL + '?email=' + data.get('email'), '_blank');
+    this.node.classList.add('is-submitted');
   },
 
   showError() {
@@ -104,22 +44,30 @@ application.component('.js-form', {
   },
 
   invalidate() {
-    let valid = true;
+    let formIsValid = true;
 
     this.hideError();
 
     for(let input of this.inputs) {
-      if (input.required && !input.value) {
-        valid = false;
+      if (input.required) {
+        let value = input.value.trim();
+        let inputIsValid = true;
+
+        if (!value.length) {
+          inputIsValid = false;
+        }
+
+        input.classList.toggle('is-valid', inputIsValid);
+        input.classList.toggle('is-invalid', !inputIsValid);
+
+        if (formIsValid && !inputIsValid) {
+          formIsValid = false;
+        }
       }
     }
 
-    if (valid) {
-      this.submitBtn.disabled = false;
-    } else {
-      this.submitBtn.disabled = true;
-    }
+    this.submitBtn.disabled = !formIsValid;
 
-    return valid;
+    return formIsValid;
   }
 });

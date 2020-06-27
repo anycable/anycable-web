@@ -3,7 +3,7 @@ var browserSync = require("browser-sync");
 var reload = browserSync.reload;
 var options = {
   env: 'development',
-  formURL: 'debug'
+  formURL: 'https://evilmartians.typeform.com/to/wAHm0sRP'
 };
 
 function config(dir){
@@ -90,18 +90,18 @@ gulp.task('clean', function(){
 
 gulp.task('build',
   gulp.series(
-    'clean', 
+    'clean',
     gulp.parallel(
       'styles', 'html', 'copy'
     )
   )
 );
 
-gulp.task('build:prod', 
+gulp.task('build:prod',
   gulp.series(
     function(cb) {
       options.env = 'production';
-      options.formURL = 'https://hooks.zapier.com/hooks/catch/5193122/oy622xx/';
+      options.formURL = 'https://evilmartians.typeform.com/to/wAHm0sRP';
       cb();
     },
     'build'

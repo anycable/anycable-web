@@ -1,19 +1,16 @@
-.slide.full
+.slide.full.no-border
   .slide--item.fullscreen.contact-form.js-form
     form.contact-form.form.gtm-form#main-form(action=formURL, method="post", data-gtm-category="landingForm", data-gtm-action="formSend6")
-      .form--control
-        input(type="text", name="email", placeholder="Your email or phone number", aria-label="Your email or phone number", required)
-      .form--control
-        textarea(name="about", cols="30", rows="4", placeholder="Who are you and what do you do?", aria-label="Who are you and what do you do?", required)
-      .form--control
-        textarea(name="request", cols="30", rows="4", placeholder="What is your product and what do you want to build?", aria-label="What is your product and what do you want to build?", required)
       .form--honeypot
         input(type="text", name="name", id="name", placeholder="Your name", aria-label="Your name", autocomplete="nope", tabindex="-1")
-      .form--control
-        button.btn(type="submit") Send
+      .form--controls
+        .form--control
+          input(type="text", name="email", placeholder="Your email or phone number", aria-label="Your email or phone number", required)
+        .form--control
+          button.btn(type="submit", disabled) Send
       .form--error.error.small-text Something went wrong :(
+    .slide--text.initial-message We will email or call you back promptly.
     .slide--text.message
-      h3 Thanks for reaching out!
+      h3 Thanks for reaching out! Please continue in TypeForm.
       .logo
         include /images/logo.svg
-      h3 We’ll be in touch soon!
