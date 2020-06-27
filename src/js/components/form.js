@@ -15,7 +15,7 @@ application.component('.js-form', {
       this.hideError();
 
       const data = new FormData(e.target);
-      
+
       if (Boolean(data.get('name'))) {
         // Name field is honeypot to filter bots
         this.showError();
@@ -31,7 +31,7 @@ application.component('.js-form', {
   },
 
   submitData(data) {
-    window.open(this.actionURL + '' + data.get('email'), '_blank');
+    window.open(this.actionURL + '?email=' + data.get('email'), '_blank');
     this.node.classList.add('is-submitted');
   },
 
