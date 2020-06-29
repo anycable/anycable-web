@@ -3,7 +3,7 @@ var browserSync = require("browser-sync");
 var reload = browserSync.reload;
 var options = {
   env: 'development',
-  sponsorUrl: 'http://sponsorUrl',
+  sponsorUrl: 'https://github.com/sponsors/anycable',
   formURL: 'https://evilmartians.typeform.com/to/wAHm0sRP'
 };
 
