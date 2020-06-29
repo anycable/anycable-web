@@ -1,21 +1,23 @@
 .main-slide {
+  &--title-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
   &--title {
     display: inline;
     position: relative;
 
     &:after {
+      content: attr(data-version);
       position: absolute;
-      top: -8px;
-      right: -16px;
-      line-height: 0;
-    }
-
-    &.alpha:after {
-      content: url('/images/alpha.svg');
-    }
-
-    &.beta:after {
-      content: url('/images/beta.svg');
+      top: -3px;
+      right: -40px;
+      font-size: 20px;
+      line-height: 1;
+      text-transform: lowercase;
+      letter-spacing: 0.86px;
+      color: #ff2637;
     }
   }
 
@@ -33,6 +35,11 @@
   .main-slide {
     &--title {
       font-size: 6vw;
+
+      &:after {
+        top: 0;
+        font-size: 2vw;
+      }
     }
   }
 }
@@ -48,7 +55,7 @@
     }
 
     &--title {
-      display: block;
+      display: inline-block;
       margin-bottom: 7px;
     }
 
@@ -69,6 +76,10 @@
   .main-slide {
     min-height: 51vh;
     margin-top: 280px;
+
+    &--title-container {
+      justify-content: center;
+    }
 
     &--title {
       font-size: 72px;
