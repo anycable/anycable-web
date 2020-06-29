@@ -27,12 +27,11 @@
     font-weight: bold;
     letter-spacing: 2px;
     text-transform: uppercase;
+    margin-right: auto;
   }
 
-  &--btn {
-    height: 30px;
-    padding: 0 10px;
-    font-size: 14px;
+  &--btn + &--btn{
+    margin-left: 10px;
   }
 }
 

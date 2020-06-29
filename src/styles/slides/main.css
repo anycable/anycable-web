@@ -24,8 +24,27 @@
     margin-bottom: 30px;
   }
 
-  &--btn {
-    display: inline-block;
+  &--buttons {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+  }
+
+  &--buttons-secondary {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 1320px) {
+  .main-slide {
+    &--buttons-secondary {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: -15px;
+    }
   }
 }
 
