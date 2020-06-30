@@ -7,18 +7,17 @@
   &--title {
     display: inline;
     position: relative;
+  }
 
-    &:after {
-      content: attr(data-version);
-      position: absolute;
-      top: -3px;
-      right: -40px;
-      font-size: 20px;
-      line-height: 1;
-      text-transform: lowercase;
-      letter-spacing: 0.86px;
-      color: #ff2637;
-    }
+  &--title-label {
+    position: absolute;
+    top: -3px;
+    right: -40px;
+    font-size: 20px;
+    line-height: 1;
+    text-transform: lowercase;
+    letter-spacing: 0.86px;
+    color: #ff2637;
   }
 
   &--text {
@@ -35,11 +34,11 @@
   .main-slide {
     &--title {
       font-size: 6vw;
+    }
 
-      &:after {
-        top: 0;
-        font-size: 2vw;
-      }
+    &--title-label {
+      top: 0;
+      font-size: 2vw;
     }
   }
 }
