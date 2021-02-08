@@ -9,7 +9,7 @@
     "watch": "gulp watch",
     "build": "gulp build:prod && jspm bundle-sfx index build/js/app.min.js --minify --skip-source-maps",
     "devbuild": "jspm bundle-sfx index build/js/app.dev.js",
-    "postinstall": "jspm install"
+    "postinstall": "rm -rf node_modules/jspm-github && cp -r .github/deps/jspm-github node_modules/ && jspm install"
   },
   "author": "Vlad Dem <palkan@evl.ms>",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-useref": "^3.0.3",
-    "jspm": "^0.16.53",
+    "jspm": "0.16.55",
     "postcss-cssnext": "^2.9.0",
     "postcss-custom-media": "^7.0.8",
     "postcss-easings": "^0.3.0",
@@ -38,12 +38,13 @@
     },
     "configFile": "jspm.config.js",
     "dependencies": {
-      "lighty": "npm:lighty@^0.5.0"
+      "jump.js": "npm:jump@1.0.2",
+      "lighty": "npm:lighty@0.5.0"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
+      "babel": "npm:babel-core",
+      "babel-runtime": "npm:babel-runtime",
+      "core-js": "npm:core-js"
     }
   }
 }
