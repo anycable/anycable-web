@@ -26,9 +26,6 @@ jobs:
       - name: Build 🔨
         run: |
           yarn build
-      - name: Spellcheck
-        run: |
-          yarn spellcheck
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
