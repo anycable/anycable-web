@@ -38,7 +38,6 @@
     },
     "configFile": "jspm.config.js",
     "dependencies": {
-      "jump.js": "npm:jump.js@^1.0.1",
       "lighty": "npm:lighty@^0.5.0"
     },
     "devDependencies": {
