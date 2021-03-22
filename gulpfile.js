@@ -4,7 +4,7 @@ var reload = browserSync.reload;
 var options = {
   env: 'development',
   sponsorUrl: 'https://github.com/sponsors/anycable',
-  formURL: 'https://evilmartians.typeform.com/to/wAHm0sRP'
+  formURL: 'https://form.typeform.com/to/wAHm0sRP'
 };
 
 function config(dir){
@@ -102,7 +102,7 @@ gulp.task('build:prod',
   gulp.series(
     function(cb) {
       options.env = 'production';
-      options.formURL = 'https://evilmartians.typeform.com/to/wAHm0sRP';
+      options.formURL = 'https://form.typeform.com/to/wAHm0sRP';
       cb();
     },
     'build'
