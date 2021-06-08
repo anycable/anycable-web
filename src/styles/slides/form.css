@@ -88,13 +88,14 @@
       }
 
       &.is-invalid {
-        border-color: $darkest-red;
+        border-color: $red;
       }
     }
 
     & .btn {
       display: block;
       height: 50px;
+      line-height: 56px;
     }
   }
 

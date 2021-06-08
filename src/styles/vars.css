@@ -4,9 +4,10 @@ $headers-font: "Stem", $default-font-fallback;
 
 $default-color: #363636;
 $grey-text: #9e9e9e;
-$red: #ff5e5e;
+$light-red: #ff5e5e;
 $dark-red: #f64242;
-$darkest-red: #f64343;
+$pink: rgba(243, 43, 43, 0.2);
+$red: #f64343;
 $orange: #f6a623;
 $green: #7ed321;
 $code-green: #1f6526;

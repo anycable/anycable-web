@@ -6,7 +6,7 @@
   padding: 0 20px;
   text-align: center;
   background: $red;
-  transition: opacity 200ms;
+  transition: opacity 200ms, background-color 200ms, color 200ms;
   color: white;
   font-weight: bold;
   font-size: 16px;
@@ -30,39 +30,62 @@
 
   &.outline {
     background-color: transparent;
-    color: $darkest-red;
-    padding: 0 15px;
+    color: $red;
+    padding: 0 12px;
     height: 30px;
+    text-transform: none;
+    font-weight: bold;
+    letter-spacing: 0;
+    font-size: 15px;
 
     &:visited,
     &:hover,
     &:active {
-      color: $darkest-red;
+      color: $red;
       background-color: transparent;
     }
   }
 
+  &.outline &--icon:first-child {
+    margin-left: -5px;
+    margin-right: 5px;
+  }
+
+  &.outline &--icon:last-child {
+    margin-left: 5px;
+    margin-right: -5px;
+  }
+
   &.secondary {
-    background-color: $grey-dark;
-    color: $default-color;
+    background: $pink;
+    color: $red;
 
     &:visited,
     &:hover,
     &:active {
-      color: $default-color;
-      background-color: $grey-dark;
+      background: $pink;
+      color: $red;
     }
   }
 
-  &.small {
-    height: 30px;
-    padding: 0 10px;
-    font-size: 14px;
+  &.light {
+    background: $light-red;
   }
 
-  &.small &--icon {
+  &.small {
+    height: 40px;
+    padding: 0 15px;
+    font-size: 14px;
+  }F
+
+  &.small &--icon:first-child {
     margin-left: -5px;
     margin-right: 5px;
+  }
+
+  &.small &--icon:last-child {
+    margin-left: 5px;
+    margin-right: -5px;
   }
 
   @media (hover: none) {
@@ -99,7 +122,14 @@
     width: 20px;
     height: 20px;
     line-height: 1;
-    margin-right: 16px;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+
+    &:last-child {
+      margin-left: 16px;
+    }
   }
 
   &--text {

@@ -9,8 +9,16 @@
       padding-bottom: 20px;
     }
 
+    .slide--item.red & {
+      background-image: none;
+    }
+
     #howitworks & {
       margin-top: 350px;
+    }
+
+    #pro & {
+      margin-top: 0px;
     }
 
     #cloud & {
@@ -42,4 +50,9 @@
       }
     }
   }
+}
+
+.features--footer {
+  margin-left: 60px;
+  display: inline-block;
 }

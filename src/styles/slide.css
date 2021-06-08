@@ -23,6 +23,10 @@
     }
   }
 
+  &.red {
+    background-color: $red;
+  }
+
   &--block {
     margin-top: 60px;
 
@@ -77,6 +81,11 @@
           }
         }
       }
+    }
+
+    &.red {
+      background-color: $red;
+      color: $white;
     }
 
     &.try-it-now {
@@ -276,6 +285,10 @@
     flex-direction: column-reverse;
     justify-content: flex-start;
 
+    &.red {
+      margin-top: 40px;
+    }
+
     &--item {
       width: auto;
       border: none;
@@ -291,6 +304,12 @@
         &.with-images {
           margin: 0 -10vw;
           padding: 40px 10vw 0;
+        }
+      }
+
+      &.red {
+        & h2 {
+          background-image: none;
         }
       }
     }
