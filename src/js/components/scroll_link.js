@@ -10,13 +10,13 @@ application.component('.js-scroll-link', {
 
     window.addEventListener('scroll', (e) => {
       const y = nodeY(this.node);
-  
+
       const upperBound = y + h + DELTA;
       const lowerBound = y + h - DELTA;
-      
+
       const viewTop = document.body.scrollTop || document.documentElement.scrollTop;
       const viewBottom = viewTop + window.innerHeight;
-      
+
       if (viewTop > upperBound || viewBottom < lowerBound) {
         this.hide();
       } else {
@@ -28,7 +28,7 @@ application.component('.js-scroll-link', {
 
     this.node.addEventListener('click', () => {
       const target = document.querySelector(targetId);
-      jump(target);
+      jump(target, {offset: 1});
     });
   },
 

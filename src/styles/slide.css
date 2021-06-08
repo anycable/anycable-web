@@ -25,6 +25,13 @@
 
   &.red {
     background-color: $red;
+    padding-top: 90px;
+
+    @media (--mobile) {
+      & {
+        padding-top: 0;
+      }
+    }
   }
 
   &--block {
@@ -277,6 +284,28 @@
     color: $grey-text;
     margin-left: 10px;
   }
+
+  &--illustration {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 0;
+    width: 50vw; /* use viewport because of the fixed position (percentage could be incorrect) */
+    box-sizing: border-box;
+    border-right: solid 1px $grey-text;
+
+    &--content {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0 60px;
+      transition: transform 50ms linear;
+    }
+  }
 }
 
 @media (--mobile) {
@@ -347,3 +376,4 @@
 @import "./feedback.css";
 @import "./slides/form.css";
 @import "./slides/contacts.css";
+@import "./slides/pro.css";

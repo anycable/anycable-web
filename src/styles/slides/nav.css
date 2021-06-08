@@ -28,6 +28,10 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-right: auto;
+
+    .is-inverted & {
+      color: $white;
+    }
   }
 
   &--btn + &--btn{

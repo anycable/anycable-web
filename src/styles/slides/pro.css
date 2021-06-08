@@ -1,0 +1,23 @@
+.pro-badge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 20;
+
+  & a {
+    cursor: pointer;
+    display: inline-block;
+    margin-top: -2px;
+    transition: margin-top 200ms;
+
+    &:hover {
+      margin-top: 0;
+    }
+  }
+}
+
+#pro {
+  z-index: 25;
+}

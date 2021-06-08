@@ -1,0 +1,55 @@
+.pro-badge.desktop-only
+  a.js-scroll-link.gtm-link(data-target="#pro", data-gtm-category="proBadge", data-gtm-action="pro")
+    include /images/pro-badge.svg
+.slide.red.no-border#pro
+  .slide--illustration.desktop-only
+    .slide--illustration--content.js-slide-illustration
+      include /images/logo-pro.svg
+  .slide--item.red
+    .slide--content.js-animation-hook(data-frame="frame-4")
+      h2#opensource
+        | Try out PRO version
+      br
+      .slide--image.mobile-only
+        include /images/logo-pro.svg
+      .features--list
+        .features--item.align-center
+          .features--item--icon
+            include /images/speed.svg
+          .features--item--text
+            | Reduced memory usage.
+        .features--item.align-center
+          .features--item--icon
+            include /images/graphql.svg
+          .features--item--text
+            | Apollo GraphQL compatibility.
+        .features--item.align-center
+          .features--item--icon
+            include /images/binary.svg
+          .features--item--text
+            | Binary communication protocols for bandwidth savings.
+        .features--item.align-center
+          .features--item--icon
+            include /images/priority.svg
+          .features--item--text
+            | Priority support on GitHub.
+        .features--footer
+          a.btn.light.small.gtm-link(href="https://docs.anycable.io/pro", data-gtm-category="landingButton", data-gtm-action="proReadMore", target="_blank")
+            span.btn--text Read more
+            span.btn--icon
+              include /images/arrow-right.svg
+      .slide--text
+        | Request early beta access and get PRO features among the first (for free).
+      .pro-form.js-form.contact-form
+        form.form.gtm-form#pro-form(action=proFormUrl, method="post", data-gtm-category="landingForm", data-gtm-action="formProSend")
+          .form--honeypot
+            input(type="text", name="name", id="name", placeholder="Your name", aria-label="Your name", autocomplete="nope", tabindex="-1")
+          .form--controls
+            .form--control
+              input(type="text", name="email", placeholder="Your email", aria-label="Your email", required)
+            .form--control
+              button.btn.light(type="submit", disabled)
+                span.btn--text Send
+          .form--error.error.small-text.white-text Something went wrong :(
+        .slide--text.message
+          | Thanks for reaching out! Please continue in TypeForm.

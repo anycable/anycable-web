@@ -9,6 +9,10 @@
   box-sizing: border-box;
   border-right: solid 1px $grey;
 
+  &.no-border {
+    border-right: none;
+  }
+
   &--content {
     display: flex;
     align-items: center;

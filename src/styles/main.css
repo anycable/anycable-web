@@ -91,6 +91,10 @@ h4 {
   color: $grey-text;
 }
 
+.white-text {
+  color: $white !important;
+}
+
 .no-desktop {
   display: none;
 }
