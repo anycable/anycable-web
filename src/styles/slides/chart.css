@@ -31,6 +31,10 @@
       color: $dark-red;
     }
 
+    &.light-red {
+      color: $light-red;
+    }
+
     &.orange {
       color: $orange;
     }
