@@ -1,0 +1,23 @@
+.legal {
+  padding: 2em;
+
+  & p {
+    padding: 1em 0;
+  }
+
+  & .nested {
+    padding-left: 1em;
+  }
+
+  & .nested-2 {
+    padding-left: 1.5em;
+  }
+
+  & code {
+    display: block;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: scroll;
+    border: 1px black solid;
+  }
+}
