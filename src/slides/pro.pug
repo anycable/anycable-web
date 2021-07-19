@@ -8,7 +8,8 @@
   .slide--item.red
     .slide--content.js-animation-hook(data-frame="frame-4")
       h2#opensource
-        | Try out PRO version
+        | Get your PRO version
+      h3 for free*
       br
       .slide--image.mobile-only
         include /images/logo-pro.svg
@@ -39,7 +40,7 @@
             span.btn--icon
               include /images/arrow-right.svg
       .slide--text
-        | Request early access and get PRO features among the first (for free).
+        | Request early access and get PRO features for free.
       .pro-form.js-form.contact-form
         form.form.gtm-form#pro-form(action=proFormUrl, method="post", data-gtm-category="landingForm", data-gtm-action="formProSend")
           .form--honeypot
@@ -53,3 +54,6 @@
           .form--error.error.small-text.white-text Something went wrong :(
         .slide--text.message
           | Thanks for reaching out! Please continue in TypeForm.
+      .slide--text.small-text
+        em
+          | * The early access offer is available until August 31, 2021

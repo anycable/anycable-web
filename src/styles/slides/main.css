@@ -39,6 +39,15 @@
     flex-wrap: wrap;
   }
 
+  &--btn-cta {
+    padding: 18px;
+    background-color: $grey-bg;
+
+    & .btn {
+      margin-top: 18px;
+    }
+  }
+
   &--btn-cta.is-inverted {
     & .topnav--btn {
       background: $white;
