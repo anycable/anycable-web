@@ -292,7 +292,7 @@
     left: 0;
     bottom: 0;
     z-index: 0;
-    width: 50vw; /* use viewport because of the fixed position (percentage could be incorrect) */
+    width: calc(50vw - ((100vw - 100%)/2)); /* use viewport because of the fixed position (percentage could be incorrect); https://stackoverflow.com/a/34884924 */
     box-sizing: border-box;
     border-right: solid 1px $grey-text;
 
