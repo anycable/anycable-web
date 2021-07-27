@@ -1,0 +1,100 @@
+.blog {
+  &--nav {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    display: flex;
+    box-sizing: border-box;
+    padding: 30px;
+
+    &--link {
+      display: flex;
+      align-items: center;
+    }
+
+    &--arrow {
+      margin-right: 8px !important;
+    }
+
+    &--text {
+      color: black;
+      font-size: 18px;
+    }
+  }
+
+  &--content {
+    margin: 60px 0 30px 0;
+    padding: 0 15em;
+
+
+    @media (--tablet) {
+      & {
+        padding: 0 10em;
+      }
+    }
+
+    @media (--mobile) {
+      & {
+        padding: 0 10%;
+      }
+    }
+
+    font-size: 20px;
+
+    & h1 {
+      text-align: center;
+      text-transform: none;
+      font-size: 50px;
+      line-height: 60px;
+    }
+
+    & .date {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    & .intro {
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    & .divider {
+      border-bottom: 4px solid $red;
+      display: block;
+      margin-left: 5em;
+      margin-right: 5em;
+      margin-bottom: 30px;
+      height: 0;
+    }
+
+    & p {
+      padding: 0 0 1em 0;
+    }
+
+    & blockquote {
+      padding: 1em 2em 0 2em;
+      background: $grey-bg;
+      border-radius: 1em;
+      font-weight: 700;
+      margin-bottom: 1em;
+      position: relative;
+
+      &::before {
+        content: url('data:image/svg+xml; utf8, <svg fill="none" height="4" viewBox="0 0 80 4" width="80" xmlns="http://www.w3.org/2000/svg"><path d="m0 0h80v4h-80z" fill="%23f64343"/></svg>');
+        color: $red;
+        font-weight: bold;
+        position: absolute;
+        font-size: 10px;
+        left: calc(-40px - 1em);
+
+        @media (--tablet) {
+          left: initial;
+          position: relative;
+        }
+      }
+    }
+  }
+}
