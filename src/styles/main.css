@@ -5,9 +5,6 @@
 @import "vars.css";
 @import "button.css";
 
-@custom-media --mobile (max-width: 800px);
-@custom-media --tablet (max-width: 1080px);
-
 @import "media.css";
 
 html,

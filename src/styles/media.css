@@ -8,3 +8,5 @@
 @custom-media --tablet-small (max-width: 800px) and (min-width: 500px);
 
 @custom-media --small-height (max-height: 600px);
+
+@custom-media --wide (min-width: 1401px);
