@@ -8,7 +8,7 @@ The Callbell project was one of the first to reach out to us for early access to
 
 <div class="divider"></div>
 
-[Callbell][] is a shared inbox for teams that enables businesses to efficiently support their customer base through WhatsApp, Facebook Messenger, Instagram, and Telegram. The application is trusted by more than 75000 companies around the globe, including giants like LG and Hugo Boss.
+[Callbell][] is a shared inbox for teams that enables businesses to efficiently support their customer base through WhatsApp, Facebook Messenger, Instagram, and Telegram. The application is trusted by more than 75,000 companies around the globe, including giants like LG and Hugo Boss.
 
 They started their MVP by using ActionCable, which worked great until they hit around 200 concurrent clients in production with customers literally from all around the world. While they were pretty happy with the development cycle, the Callbell team quickly realized that the ActionCable and Rails bundle wasn't that great at scaling. The team even considered rewriting the application using Golang and gRPC ([sounds familiar][anycable-post], doesn’t it?)
 
