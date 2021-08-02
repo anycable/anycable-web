@@ -32,6 +32,11 @@
         padding-top: 0;
       }
     }
+
+    a {
+      color: white;
+      background: $light-red;
+    }
   }
 
   &--block {
