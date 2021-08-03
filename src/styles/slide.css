@@ -34,8 +34,12 @@
     }
 
     a {
-      color: white;
-      background: $light-red;
+      color: $yellow;
+
+      &:hover {
+        text-decoration: underline;
+        opacity: inherit;
+      }
     }
   }
 
