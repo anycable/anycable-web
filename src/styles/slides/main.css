@@ -93,9 +93,14 @@
       margin-top: 0;
     }
 
+    &--title-container {
+      justify-content: center;
+    }
+
     &--title {
       display: inline-block;
       margin-bottom: 7px;
+      font-size: 48px;
     }
 
     &--text {
