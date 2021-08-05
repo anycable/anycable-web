@@ -324,7 +324,7 @@
     justify-content: flex-start;
 
     &.red {
-      margin-top: 40px;
+      border-top: 40px solid $white;
     }
 
     &--item {
