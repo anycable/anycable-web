@@ -21,3 +21,25 @@
 #pro {
   z-index: 25;
 }
+
+.pro--price {
+  background: $white;
+  color: $red;
+  border-radius: 2px;
+  font-weight: bold;
+  padding: 2px;
+
+  &.old {
+    color: $white;
+    background: $light-red;
+    position: relative;
+
+    &::after {
+      content:"";
+      position: absolute;
+      top:50%; left:-5%; width:110%; height:2px;
+      background: $white;
+      transform:rotate(-15deg);
+    }
+  }
+}
