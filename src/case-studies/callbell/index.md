@@ -1,6 +1,6 @@
 # A call for Pro: Callbell
 
-August, 3, 2021
+August 3, 2021
 {date}
 
 The Callbell project was one of the first to reach out to us for early access to AnyCable Pro and became the first to launch the Pro version into production. In addition to new features, priority support, and reduced memory footprint, they also managed to halve the number of dyno instances in the Heroku infrastructure where they deployed their application and the product.
