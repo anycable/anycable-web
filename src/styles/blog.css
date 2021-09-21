@@ -109,4 +109,110 @@
       }
     }
   }
+
+  &--toc {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    & h3 {
+      font-weight: bold;
+    }
+
+    &--section {
+      flex-shrink: 1;
+      width: 48%;
+    }
+
+    &--item {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      &--desc {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      &--date {
+        font-size: 14px;
+      }
+
+      &.dev &--title::before {
+        content: url('data:image/svg+xml; utf8, <svg fill="none" height="2" viewBox="0 0 80 4" width="80" xmlns="http://www.w3.org/2000/svg"><path d="m0 0h80v4h-80z" fill="%23f64343"/></svg>');
+        color: $red;
+        font-weight: bold;
+        position: absolute;
+        font-size: 1px;
+        left: -86px;
+
+        @media (--tablet) {
+          display: none;
+        }
+      }
+
+      &.case-study {
+        padding: 1em 2em 1em 2em;
+        background: $grey-bg;
+        border-radius: 1em;
+
+        @media(--mobile) {
+          padding: 1em;
+        }
+      }
+
+      &.invert {
+        color: $white;
+
+        & a {
+          color: $white;
+
+          &:hover {
+            color: $red;
+          }
+        }
+      }
+
+      &.callbell {
+        background: #69bfa8;
+      }
+
+      &--logo {
+        flex-grow: 0;
+        margin-right: 24px;
+        width: 64px;
+        height: 64px;
+
+        & svg {
+          width: 64px;
+          height: 64px;
+        }
+      }
+    }
+
+    @media(--mobile) {
+      margin-top: 3rem;
+      flex-direction: column;
+
+      &--section {
+        width: 100%;
+
+        &:not(:first-child) {
+          margin-top:3rem;
+        }
+      }
+    }
+  }
+
+  &--banner {
+    margin-top: 3em;
+    text-align: center;
+    border: 4px solid $red;
+    border-radius: 1em;
+    padding: 10px;
+  }
 }
