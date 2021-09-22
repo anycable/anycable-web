@@ -69,6 +69,23 @@
       line-height: 60px;
     }
 
+    & h2 {
+      margin-bottom: 20px;
+    }
+
+    & ul {
+      padding: 0 0 1em 0;
+
+      & li {
+        list-style-type: disc;
+      }
+    }
+
+    & pre {
+      padding: 0 0 1em 0;
+      word-wrap: break-word;
+    }
+
     & .date {
       text-align: center;
       font-size: 14px;
@@ -115,6 +132,18 @@
         }
       }
     }
+  }
+
+  &--figure {
+    text-align: center;
+    padding: 0 0 1em 0;
+  }
+
+  &--media {
+    object-fit: contain;
+    width: auto;
+    height: auto;
+    max-width: 100%;
   }
 
   &--toc {
