@@ -3,17 +3,17 @@
 September 27, 2021
 {date}
 
-When we started collecting applications for the [AnyCable PRO][pro] early access program back in July, we asked respondents to share the way they use _cables_ and which features they would like us to provide out of the box. Analyzing these responses led to the development of two new PRO features, [JWT identification][jwt-id-docs] and [signed streams support][signed-streams-docs]. They might seem unrelated to each other at first glance, but when used together, they have the potential to bring about a huge performance boost. Continue reading to learn more!
+When we started collecting applications for the [AnyCable PRO][pro] early access program back in July, we asked respondents to share how they use _cables_ and which features they would like us to provide out of the box. Analyzing these responses led to the development of two new PRO features, [JWT identification][jwt-id-docs] and [signed streams support][signed-streams-docs]. They might seem unrelated to each other at first glance, but when used together, they have the potential to bring about a huge performance boost. Continue reading to learn more!
 {intro}
 
 <div class="divider"></div>
 
 ## Dealing with authentication
 
-Amongst all the asked about features, one of the leading requests was a "token-based authentication". Most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity–it just works. However, there are some drawbacks:
+Amongst all the requested features, one of the leading requests was a "token-based authentication". Most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity–it just works. However, there are some drawbacks:
 
 - Authenticating non-web clients (e.g., mobile apps) is becoming cumbersome.
-- Rails API-only apps usually do not use cookies for web clients authentication as well (they use tokens).
+- Rails API-only apps usually do not use cookies for web clients authentication (they use tokens).
 - WebSockets do not offer CORS support and, thus, are **vulnerable to cross-site request forgery** (or [cross-site WebSocket hijacking][cross-site-ws-hijack]).
 
 Using tokens could certainly help us solve these problems–but what's the catch? Well, we'd have to build everything ourselves, both the server and the client side (and good luck actually finding a library or gem which makes this process easier instead of harder).
@@ -24,7 +24,7 @@ Let's recall how Action Cable (and AnyCable) work in the context of authenticati
 
 Whenever a new connection opens, the `ApplicationCable::Connection#connect` method is called. This is the place where you can reject the connection ([`#reject_unathorized_connection`][reject-connection]) and where you configure the so-called _connection identifiers_ ([`.identifed_by`][ac-identifiers]). The identifiers represent the client state which could be used by channels (e.g., `current_user` or `current_tenant`). AnyCable obtains the identifiers during the `Authenticate` call and passes along all subsequent requests (in a [serialized form][identifiers-serialization]).
 
-To sum everything up, all we need from the `#connect` method is to accept-or-reject the connection and populate the identifiers. And we can encapsulate all this logic within a single [JWT][] token!
+To sum everything up, all we need from the `#connect` method is to accept or reject the connection and populate the identifiers. And we can encapsulate all this logic within a single [JWT][] token!
 
 This is how it might look written in pure Ruby. First, let's create a helper to build a connection URL with a token:
 
@@ -87,7 +87,7 @@ This is how AnyCable Go PRO JWT identification works:
 - A Go server retrieves a header, verifies its signature and TTL, and rejects the connection if token is invalid.
 - If the token is valid, we extract the identifiers, store them in the connection metadata and finalize the handshake (by sending a `{"type":"welcome"}` message).
 
-And we do not perform any RPC calls! Let's see how it affects the connection time:
+And we don't have to perform any RPC calls! Let's see how it affects the connection time:
 
 <figure class="blog--figure">
 <video loop="loop" muted="muted" autoplay="autoplay" playsinline="true" width="1221" height="800" class="blog--media">
@@ -101,7 +101,7 @@ It's more than 2x faster now! And even more importantly, we've reduced the stres
 
 Luckily, you don't need to write any of the code above yourself, even the token generation part a little companion gem, [anycable-rails-jwt][], which does this for you!
 
-The only question left is how to handle tokens expiration gracefully? AnyCable Go uses a specific disconnect reason to distinguish expiration from unauthorized access (sends a `{"type":"disconnect","reason":"token_expired"}` message). You can use it to refresh the token. Again, we're glad to provide an out-of-the-box solution for that in our brand new [anycable-client-refresh-tokens][]!
+The only question left: how can we gracefully handle token expiration? AnyCable Go uses a specific disconnect message to distinguish expiration from unauthorized access (sends a `{"type":"disconnect","reason":"token_expired"}` message). You can use it to refresh the token. Again, we're glad to provide an out-of-the-box solution for this in our brand new [anycable-client-refresh-tokens][]!
 
 ## Adding some "hot wires" to the equation
 
@@ -109,7 +109,7 @@ We've collected more than a hundred responses from Action Cable and AnyCable use
 
 What can AnyCable do for these users? Let's take a look at how Turbo Streams work with Rails.
 
-We have the [turbo-rails][] gem, which integrate Action Cable with Hotwire. All you need is to drop a helper into your template to start consuming streams:
+Let's start with the [turbo-rails][] gem, which integrates Action Cable with Hotwire. You just need to drop a helper into your template to start consuming streams:
 
 ```erb
 <%= turbo_stream_from some_model %>
