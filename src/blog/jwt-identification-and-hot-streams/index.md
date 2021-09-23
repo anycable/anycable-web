@@ -3,30 +3,30 @@
 September 27, 2021
 {date}
 
-When we started collecting applications for the [AnyCable PRO][pro] early access program back in July, we asked respondents to share the way they use _cables_ and which features they would like us to provide out-of-the-box. The analysis of their responses led to the development of two new PRO features, [JWT identification][jwt-id-docs] and [Signed streams support][signed-streams-docs], which might seem unrelated to each other from the first look but turned out to bring a huge performance boost when used together. Continue reading to learn more!
+When we started collecting applications for the [AnyCable PRO][pro] early access program back in July, we asked respondents to share the way they use _cables_ and which features they would like us to provide out of the box. Analyzing these responses led to the development of two new PRO features, [JWT identification][jwt-id-docs] and [signed streams support][signed-streams-docs]. They might seem unrelated to each other at first glance, but when used together, they have the potential to bring about a huge performance boost. Continue reading to learn more!
 {intro}
 
 <div class="divider"></div>
 
 ## Dealing with authentication
 
-Among the requested features, one of the leaders was "a token-based authentication". Most Action Cable applications relies on cookies as an authentication mechanism (directly or via sessions). The main benefit of the cookie-based authentication is the simplicity: it just works. However, there are some drawbacks:
+Amongst all the asked about features, one of the leading requests was a "token-based authentication". Most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity–it just works. However, there are some drawbacks:
 
 - Authenticating non-web clients (e.g., mobile apps) is becoming cumbersome.
-- Rails API-only apps usually do not use tokens for web clients authentication as well (they use tokens).
-- WebSockets have no CORS support and, thus, **vulnerable to cross-site request forgery** (or [cross-site WebSocket hijacking][cross-site-ws-hijack]).
+- Rails API-only apps usually do not use cookies for web clients authentication as well (they use tokens).
+- WebSockets do not offer CORS support and, thus, are **vulnerable to cross-site request forgery** (or [cross-site WebSocket hijacking][cross-site-ws-hijack]).
 
-Using tokens could help us to solve these problems. What's the cost? Well, we have to build everything ourselves, both server and client side (and good luck with finding a library or gem which makes it easier not harder).
+Using tokens could certainly help us solve these problems–but what's the catch? Well, we'd have to build everything ourselves, both the server and the client side (and good luck actually finding a library or gem which makes this process easier instead of harder).
 
-While I was thinking on how to incorporate tokens into AnyCable, I realized that we can also leverage this feature to improve the performance: tokens could also carry **identification** information, and thus, could be used instead of calling an RPC server (`Authenticate` method).
+While I was thinking about how to incorporate tokens into AnyCable, I realized that we could also leverage this feature to improve performance. Tokens could also be made to carry **identification** information, and therefore could be used instead of calling an RPC server (`Authenticate` method).
 
-Let's recall how Action Cable (and AnyCable) works in the context of authentication and identification.
+Let's recall how Action Cable (and AnyCable) work in the context of authentication and identification.
 
-Whenever a new connection opens, the `ApplicationCable::Connection#connect` method is called. That's the place where you can reject the connection ([`#reject_unathorized_connection`][reject-connection]) and where you configure so-called _connection identifiers_ ([`.identifed_by`][ac-identifiers]). Identifiers represent the client state which could be used by channels (e.g., `current_user` or `current_tenant`). AnyCable obtains identifiers during the `Authenticate` call and pass along all subsequent requests (in a [serialized form][identifiers-serialization]).
+Whenever a new connection opens, the `ApplicationCable::Connection#connect` method is called. This is the place where you can reject the connection ([`#reject_unathorized_connection`][reject-connection]) and where you configure the so-called _connection identifiers_ ([`.identifed_by`][ac-identifiers]). The identifiers represent the client state which could be used by channels (e.g., `current_user` or `current_tenant`). AnyCable obtains the identifiers during the `Authenticate` call and passes along all subsequent requests (in a [serialized form][identifiers-serialization]).
 
-To sum up, all we need from the `#connect` method is to accept-or-reject connection and populate identifiers. And we can encapsulate this logic within a single [JWT][] token!
+To sum everything up, all we need from the `#connect` method is to accept-or-reject the connection and populate the identifiers. And we can encapsulate all this logic within a single [JWT][] token!
 
-This is how it could look in pure Ruby. First, let's create a helper to build a connection url with a token:
+This is how it might look written in pure Ruby. First, let's create a helper to build a connection URL with a token:
 
 ```ruby
 class ApplicationHelper
@@ -79,13 +79,13 @@ module ApplicationCable
 end
 ```
 
-Doesn't look like a simple solution 😕 If you'll continue staring at this piece of code for a while, you may notice that the implementation has nothing specific to a particular application: we retrieve a token, verify it and extract identifiers. If so, why can't we re-implement this in Go? We can!
+This doesn't look like such a simple solution, after all 😕 If you continue staring at this piece of code for a bit longer, you might notice that this implementation contains nothing specific to a particular application: we retrieve a token, verify it, and extract the identifiers. If this is the case, why can't we just re-implement this in Go? Well, we can!
 
 This is how AnyCable Go PRO JWT identification works:
 
-- A client passes a token along the connection request (via a query string or a header).
-- Go server retrieves a header, verifies its signature and TTL, and rejects the connection if token is invalid.
-- If token is valid, we extract identifiers, store them in the connection metadata and finalize the handshake (by sending a `{"type":"welcome"}` message).
+- A client passes a token along with the connection request (via a query string or a header).
+- A Go server retrieves a header, verifies its signature and TTL, and rejects the connection if token is invalid.
+- If the token is valid, we extract the identifiers, store them in the connection metadata and finalize the handshake (by sending a `{"type":"welcome"}` message).
 
 And we do not perform any RPC calls! Let's see how it affects the connection time:
 
@@ -95,9 +95,9 @@ And we do not perform any RPC calls! Let's see how it affects the connection tim
 </video>
 </figure>
 
-More than 2x faster! What's more important, we reduce the stress on the RPC server. That could be especially useful during _connection avalanches_.
+It's more than 2x faster now! And even more importantly, we've reduced the stress on the RPC server. This could be especially useful during _connection avalanches_.
 
-> JWT identification allows you to standardize the authentication flow for WebSockets, saves from cross-site WebSocket hijacking and brings a performance boost!
+> JWT identification allows you to standardize the authentication flow for WebSockets, protects from cross-site WebSocket hijacking and results in a performance boost!
 
 And that's what you can get with AnyCable PRO and a little companion gem, [anycable-rails-jwt][], which adds helpers to generate tokens.
 
@@ -105,9 +105,9 @@ The only question left is how to handle tokens expiration gracefully? AnyCable G
 
 ## Adding some "hot wires" to the equation
 
-We've collected more than a hundred responses from Action Cable / AnyCable users around the world, and found that a good portion of them build applications on top of [Hotwire][hotwire] or [Stimulus Reflex][sr] (+ [CableReady][cr]). Which is pretty cool: [_frontendless_ Rails frontend][frontendless-rails] is getting more and more traction!
+We've collected more than a hundred responses from Action Cable and AnyCable users around the world, and we found that a good portion of them build applications on top of [Hotwire][hotwire] or [Stimulus Reflex][sr] (+ [CableReady][cr]). This is pretty cool: [_frontendless_ Rails frontend][frontendless-rails] is gaining more and more traction!
 
-What can AnyCable give to these users? Let's take a look at how Turbo Streams work with Rails.
+What can AnyCable do for these users? Let's take a look at how Turbo Streams work with Rails.
 
 We have the [turbo-rails][] gem, which integrate Action Cable with Hotwire. All you need is to drop a helper into your template to start consuming streams:
 
@@ -133,11 +133,11 @@ end
 
 The `#verified_stream_name` method uses an [`ActiveSupport::MessageVerifier`][message-verifier] to decode and verify the stream name. The subscription is rejected if the signed stream name is invalid.
 
-The code above is structurely the same as the one we wrote for JWT identification. What does it mean? We can "move" the implementation to AnyCable Go server and **create subscriptions without touching RPC**. Again.
+Structurally speaking, the code above is the same as the example we wrote for JWT identification. What does this mean? It means that, **once again**, we can "move" the implementation to an AnyCable Go server and **create subscriptions without touching RPC**. 
 
-That's exactly what we did as a part of the [Signed streams][signed-streams-docs] feature. And we did it not only for Turbo Streams, but for Cable Ready as well (since its [`#stream_from` implementation][cr-stream-from] is almost the same).
+This is exactly what we did as a part of the [signed streams][signed-streams-docs] feature. Further, we did it not only for Turbo Streams, but for Cable Ready as well (since its [`#stream_from` implementation][cr-stream-from] is nearly the same).
 
-> Combining JWT identification with signed streams, it is possible to avoid running RPC server at all in case you only use Hotwire/CableReady functionality.
+> By combining JWT identification with signed streams, it's possible to completely avoid running an RPC server, in case you only need to use Hotwire or CableReady functionality.
 
 Below is the visualization of the RPC server metrics during Hotwire benchmarks with four different configuration (blue markers), from left to rifght: baseline (AnyCable PRO w/o any features enabled), with JWT identification, with signed streams, and with both features enabled at the same time.
 
@@ -149,7 +149,7 @@ No surpises that the last one shows zeros for RPC metrics—it hasn't been bothe
 
 <div class="divider"></div>
 
-We added these features in response to our users needs. because we believe that together we can build a much better product. Want to join The Team? Give [AnyCable a try today](/)!
+We've added these features in response to our users needs, and because we believe that we're able to build a much better product by working together. Want to join the team? Give [AnyCable a try today](/)!
 
 [pro]: https://anycable.io/#pro
 [hotwire]: https://hotwired.dev
