@@ -139,13 +139,13 @@ This is exactly what we did as a part of the [signed streams][signed-streams-doc
 
 > By combining JWT identification with signed streams, it's possible to completely avoid running an RPC server, in case you only need to use Hotwire or CableReady functionality.
 
-Below is the visualization of the RPC server metrics during Hotwire benchmarks with four different configuration (blue markers), from left to rifght: baseline (AnyCable PRO w/o any features enabled), with JWT identification, with signed streams, and with both features enabled at the same time.
+Below is a visualization of RPC server metrics during Hotwire benchmarks with four different configurations (denoted by blue markers), from left to right: baseline (AnyCable PRO without any features enabled), with JWT identification, with signed streams, and with both features enabled at the same time.
 
 <figure class="blog--figure">
   <img class="blog--media" title="AnyCable metrics when running with and without JWT and 'hot' streams" src="./grafana.png" width="1364" height="624">
 </figure>
 
-No surpises that the last one shows zeros for RPC metrics—it hasn't been bothered at all. We can also notice that the AnyCable Go CPU usage is the lowest for the fourth scenario—**dealing with tokens and signatures is "cheaper" than performing gRPC calls**.
+It shouldn't come as any surprise that the last one shows zeros for RPC metrics—it wasn't impacted at all. We can also note that CPU usage with AnyCable Go is the lowest in the fourth scenario—**dealing with tokens and signatures is "cheaper" than performing gRPC calls**.
 
 <div class="divider"></div>
 
