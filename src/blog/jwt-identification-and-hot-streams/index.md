@@ -99,9 +99,9 @@ It's more than 2x faster now! And even more importantly, we've reduced the stres
 
 > JWT identification allows you to standardize the authentication flow for WebSockets, protects from cross-site WebSocket hijacking and results in a performance boost!
 
-And that's what you can get with AnyCable PRO and a little companion gem, [anycable-rails-jwt][], which adds helpers to generate tokens.
+Luckily, you don't need to write any of the code above yourself, even the token generation part a little companion gem, [anycable-rails-jwt][], which does this for you!
 
-The only question left is how to handle tokens expiration gracefully? AnyCable Go uses a specific disconnect reason to distinguish expiration from unauthorized access (sends a `{"type":"disconnect","reason":"token_expired"}` message). You can use it to refresh the token. We plan to add a built-in refresh functionality to our [anycable-client][] library soon. Stay tuned!
+The only question left is how to handle tokens expiration gracefully? AnyCable Go uses a specific disconnect reason to distinguish expiration from unauthorized access (sends a `{"type":"disconnect","reason":"token_expired"}` message). You can use it to refresh the token. Again, we're glad to provide an out-of-the-box solution for that in our brand new [anycable-client-refresh-tokens][]!
 
 ## Adding some "hot wires" to the equation
 
@@ -133,7 +133,7 @@ end
 
 The `#verified_stream_name` method uses an [`ActiveSupport::MessageVerifier`][message-verifier] to decode and verify the stream name. The subscription is rejected if the signed stream name is invalid.
 
-Structurally speaking, the code above is the same as the example we wrote for JWT identification. What does this mean? It means that, **once again**, we can "move" the implementation to an AnyCable Go server and **create subscriptions without touching RPC**. 
+Structurally speaking, the code above is the same as the example we wrote for JWT identification. What does this mean? It means that, **once again**, we can "move" the implementation to an AnyCable Go server and **create subscriptions without touching RPC**.
 
 This is exactly what we did as a part of the [signed streams][signed-streams-docs] feature. Further, we did it not only for Turbo Streams, but for Cable Ready as well (since its [`#stream_from` implementation][cr-stream-from] is nearly the same).
 
@@ -170,3 +170,4 @@ We've added these features in response to our users needs, and because we believ
 [turbo-cable-stream-source]: https://github.com/hotwired/turbo/blob/main/src/elements/stream_element.ts
 [message-verifier]: https://api.rubyonrails.org/v6.1.4/classes/ActiveSupport/MessageVerifier.html
 [cr-stream-from]: https://github.com/stimulusreflex/cable_ready/blob/master/app/channels/cable_ready/stream.rb
+[anycable-client-refresh-tokens]: https://github.com/anycable/anycable-client#refreshing-authentication-tokens
