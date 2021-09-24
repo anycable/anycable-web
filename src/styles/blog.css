@@ -67,6 +67,11 @@
       text-transform: none;
       font-size: 50px;
       line-height: 60px;
+
+      @media (--mobile) {
+        font-size: 2.5rem;
+        line-height: 2.5rem;
+      }
     }
 
     & h2 {
@@ -83,6 +88,15 @@
 
     & pre {
       padding: 0 0 1em 0;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+
+      @media (--mobile) {
+        font-size: 1rem;
+      }
+    }
+
+    & code {
       word-wrap: break-word;
       white-space: pre-wrap;
     }
