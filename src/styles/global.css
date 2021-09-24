@@ -16,6 +16,7 @@ body {
 a {
   text-decoration: none;
   color: $red;
+  transition: opacity 200ms;
 
   &:visited,
   &:active {

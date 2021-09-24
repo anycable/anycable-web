@@ -179,7 +179,8 @@
           color: $white;
 
           &:hover {
-            color: $red;
+            color: $white;
+            opacity: 0.8;
           }
         }
       }
