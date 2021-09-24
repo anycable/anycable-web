@@ -8,6 +8,13 @@
     display: flex;
     box-sizing: border-box;
     padding: 30px;
+    align-items: center;
+    justify-content: space-between;
+
+    &--section {
+      display: flex;
+      align-items: center;
+    }
 
     &--link {
       display: flex;
