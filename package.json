@@ -30,6 +30,7 @@
     "jspm": "0.16.55",
     "jstransformer-markdown-it": "^2.1.0",
     "markdown-it-classy": "^0.2.0",
+    "markdown-it-highlightjs": "^3.5.0",
     "postcss-cssnext": "^2.9.0",
     "postcss-custom-media": "^7.0.8",
     "postcss-easings": "^0.3.0",

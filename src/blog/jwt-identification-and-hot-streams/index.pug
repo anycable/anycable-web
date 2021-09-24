@@ -1,4 +1,4 @@
 extends /layout/blog
 
 block post
-  include:markdown-it(html=true, plugins=['markdown-it-classy']) ./index.md
+  include:markdown-it(html=true, plugins=['markdown-it-classy', 'markdown-it-highlightjs']) ./index.md
