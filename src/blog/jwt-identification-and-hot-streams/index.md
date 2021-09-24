@@ -10,13 +10,13 @@ When we started collecting applications for the [AnyCable PRO][pro] early access
 
 ## Dealing with authentication
 
-Amongst all the requested features, one of the leading requests was a "token-based authentication". Most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity–it just works. However, there are some drawbacks:
+Amongst all the requested features, one of the leading requests was a "token-based authentication". Most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity—it just works. However, there are some drawbacks:
 
 - Authenticating non-web clients (e.g., mobile apps) is cumbersome.
 - Rails API-only apps usually do not use cookies for web clients authentication (they use tokens).
 - WebSockets do not offer CORS support and, thus, are **vulnerable to cross-site request forgery** (or [cross-site WebSocket hijacking][cross-site-ws-hijack]).
 
-Using tokens could certainly help us solve these problems–but what's the catch? Well, we'd have to build everything ourselves, both the server and the client side (and good luck actually finding a library or gem which makes this process easier instead of harder).
+Using tokens could certainly help us solve these problems—but what's the catch? Well, we'd have to build everything ourselves, both the server and the client side (and good luck actually finding a library or gem which makes this process easier instead of harder).
 
 While I was thinking about how to incorporate tokens into AnyCable, I realized that we could also leverage this feature to improve performance. Tokens could also be made to carry **identification** information, and therefore could be used instead of calling an RPC server (`Authenticate` method).
 
