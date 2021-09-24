@@ -12,7 +12,7 @@ When we started collecting applications for the [AnyCable PRO][pro] early access
 
 Amongst all the requested features, one of the leading requests was a "token-based authentication". Most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicityâ€“it just works. However, there are some drawbacks:
 
-- Authenticating non-web clients (e.g., mobile apps) is becoming cumbersome.
+- Authenticating non-web clients (e.g., mobile apps) is cumbersome.
 - Rails API-only apps usually do not use cookies for web clients authentication (they use tokens).
 - WebSockets do not offer CORS support and, thus, are **vulnerable to cross-site request forgery** (or [cross-site WebSocket hijacking][cross-site-ws-hijack]).
 
@@ -103,7 +103,7 @@ Luckily, you don't need to write any of the code above yourself, even the token 
 
 The only question left: how can we gracefully handle token expiration? AnyCable Go uses a specific disconnect message to distinguish expiration from unauthorized access (sends a `{"type":"disconnect","reason":"token_expired"}` message). You can use it to refresh the token. Again, we're glad to provide an out-of-the-box solution for this in our brand new [anycable-client-refresh-tokens][]!
 
-## Adding some "hot wires" to the equation
+## "Hot-wiring" Action Cable subscriptions
 
 We've collected more than a hundred responses from Action Cable and AnyCable users around the world, and we found that a good portion of them build applications on top of [Hotwire][hotwire] or [Stimulus Reflex][sr] (+ [CableReady][cr]). This is pretty cool: [_frontendless_ Rails frontend][frontendless-rails] is gaining more and more traction!
 
@@ -149,7 +149,7 @@ It shouldn't come as any surprise that the last one shows zeros for RPC metricsâ
 
 <div class="divider"></div>
 
-We've added these features in response to our users needs, and because we believe that we're able to build a much better product by working together. Want to join the team? Give [AnyCable a try today](/)!
+We've added these features in response to your needs. We believe that, thanks to user feedback, we're able to build a much better product together. Who knows? Maybe your request will be the next feature we add! Ready to get started? Give [AnyCable a try today](/)!
 
 [pro]: https://anycable.io/#pro
 [hotwire]: https://hotwired.dev
