@@ -99,7 +99,7 @@ It's more than 2x faster now! And even more importantly, we've reduced the stres
 
 > JWT identification allows you to standardize the authentication flow for WebSockets, protects from cross-site WebSocket hijacking and results in a performance boost!
 
-Luckily, you don't need to write any of the code above yourself, even the token generation part a little companion gem, [anycable-rails-jwt][], which does this for you!
+Luckily, you don't need to write any of the code above yourself, even the token generation part is done for you via a little companion gem called [anycable-rails-jwt][].
 
 The only question left: how can we gracefully handle token expiration? AnyCable Go uses a specific disconnect message to distinguish expiration from unauthorized access (sends a `{"type":"disconnect","reason":"token_expired"}` message). You can use it to refresh the token. Again, we're glad to provide an out-of-the-box solution for this in our brand new [anycable-client-refresh-tokens][]!
 
