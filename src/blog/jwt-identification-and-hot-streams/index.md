@@ -10,7 +10,7 @@ We've just launched the final [AnyCable PRO][pro] release that brings advanced f
 
 ## Dealing with authentication
 
-Amongst all the requested features, one of the leading requests was a "token-based authentication". Most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity—it just works. However, there are some drawbacks:
+Amongst all the requested features, one of the leading requests was a "token-based authentication". AnyCable reckons upon the Action Cable API (although it can work outside of Rails), and most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity—it just works. However, there are some drawbacks:
 
 - Authenticating non-web clients (e.g., mobile apps) is cumbersome.
 - Rails API-only apps usually do not use cookies for web clients authentication (they use tokens).
