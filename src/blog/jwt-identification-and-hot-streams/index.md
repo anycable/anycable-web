@@ -3,7 +3,7 @@
 September 27, 2021
 {date}
 
-When we started collecting applications for the [AnyCable PRO][pro] early access program back in July, we asked respondents to share how they use _cables_ and which features they would like us to provide out of the box. Analyzing these responses led to the development of two new PRO features, [JWT identification][jwt-id-docs] and [signed streams support][signed-streams-docs]. They might seem unrelated to each other at first glance, but when used together, they have the potential to bring about a huge performance boost. Continue reading to learn more!
+We've just launched the final [AnyCable PRO][pro] release that brings advanced features and 40% less memory footprint to AnyCable—the product to build real-time features for Ruby on Rails apps. The two brand-new PRO features we're presenting in the post, [JWT identification][jwt-id-docs] and [signed streams support][signed-streams-docs], arrived from the Early Access program. We asked its adopters to share how they use _cables_ and which features they would like us to provide out of the box. They might seem unrelated to each other at first glance, but when used together, they have the potential to bring about a huge performance boost.
 {intro}
 
 <div class="divider"></div>
