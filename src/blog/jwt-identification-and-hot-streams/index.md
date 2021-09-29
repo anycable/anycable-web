@@ -3,20 +3,20 @@
 September 27, 2021
 {date}
 
-We've just launched the final [AnyCable PRO][pro] release that brings advanced features and 40% less memory footprint to AnyCable—the product to build real-time features for Ruby on Rails apps. The two brand-new PRO features we're presenting in the post, [JWT identification][jwt-id-docs] and [signed streams support][signed-streams-docs], arrived from the Early Access program. We asked its adopters to share how they use _cables_ and which features they would like us to provide out of the box. They might seem unrelated to each other at first glance, but when used together, they have the potential to bring about a huge performance boost.
+We've just launched the final [AnyCable PRO][pro] release, bringing advanced features and a 40% lower memory footprint to AnyCable—the product for building real-time features for Ruby on Rails apps. The two brand-new PRO features we're presenting in the post, [JWT identification][jwt-id-docs] and [signed streams support][signed-streams-docs], arrived from the Early Access program. We asked its adopters to share how they use _cables_ and which features they would like us to provide out of the box. They might seem unrelated to each other at first glance, but when used together, they have the potential to bring about a huge performance boost.
 {intro}
 
 <div class="divider"></div>
 
 ## Dealing with authentication
 
-Amongst all the requested features, one of the leading requests was a "token-based authentication". AnyCable reckons upon the Action Cable API (although it can work outside of Rails), and most Action Cable applications rely on cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity—it just works. However, there are some drawbacks:
+Amongst all the requested features, one of the leading requests was a "token-based authentication". AnyCable relies on the Action Cable API (although it can work outside of Rails), and most Action Cable applications utilize cookies as an authentication mechanism (either directly or via sessions). The main benefit of cookie-based authentication is simplicity—it just works. However, there are some drawbacks:
 
 - Authenticating non-web clients (e.g., mobile apps) is cumbersome.
 - Rails API-only apps usually do not use cookies for web clients authentication (they use tokens).
 - WebSockets do not offer CORS support and, thus, are **vulnerable to cross-site request forgery** (or [cross-site WebSocket hijacking][cross-site-ws-hijack]).
 
-Using tokens could certainly help us solve these problems—but what's the catch? Well, we'd have to build everything ourselves, both the server and the client side (and good luck actually finding a library or gem which makes this process easier instead of harder).
+Using tokens could certainly help us solve these problems—but what's the catch? Well, we'd have to build everything ourselves, both the server, and the client side (and good luck actually finding a library or gem which makes this process easier instead of harder).
 
 While I was thinking about how to incorporate tokens into AnyCable, I realized that we could also leverage this feature to improve performance. Tokens could also be made to carry **identification** information, and therefore could be used instead of calling an RPC server (`Authenticate` method).
 
@@ -135,7 +135,7 @@ The `#verified_stream_name` method uses an [`ActiveSupport::MessageVerifier`][me
 
 Structurally speaking, the code above is the same as the example we wrote for JWT identification. What does this mean? It means that, **once again**, we can "move" the implementation to an AnyCable Go server and **create subscriptions without touching RPC**.
 
-This is exactly what we did as a part of the [signed streams][signed-streams-docs] feature. Further, we did it not only for Turbo Streams, but for Cable Ready as well (since its [`#stream_from` implementation][cr-stream-from] is nearly the same).
+This is exactly what we did as a part of the [signed streams][signed-streams-docs] feature. Further, we did it not only for Turbo Streams, but for CableReady as well (since its [`#stream_from` implementation][cr-stream-from] is nearly the same).
 
 > By combining JWT identification with signed streams, it's possible to completely avoid running an RPC server, in case you only need to use Hotwire or CableReady functionality.
 
