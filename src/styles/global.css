@@ -16,6 +16,7 @@ body {
 a {
   text-decoration: none;
   color: $red;
+  transition: opacity 200ms;
 
   &:visited,
   &:active {
@@ -49,7 +50,6 @@ h1 {
   letter-spacing: 2px;
   font-weight: bold;
   font-family: $headers-font;
-  text-transform: uppercase;
 }
 
 h2 {

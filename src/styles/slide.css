@@ -107,6 +107,14 @@
     &.try-it-now {
       padding-bottom: 0;
     }
+
+    &.grey {
+      background-color: $grey-bg;
+
+      @media(--mobile) {
+        background-color: $white;
+      }
+    }
   }
 
   &--content > * {
