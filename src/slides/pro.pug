@@ -1,6 +1,6 @@
 .pro-badge.desktop-only
   a.js-scroll-link.gtm-link(data-target="#pro", data-gtm-category="proBadge", data-gtm-action="pro")
-    include /images/pro-badge.svg
+    include /images/pro-badge-no-free.svg
 .slide.red.no-border#pro
   .slide--illustration.desktop-only
     .slide--illustration--content.js-slide-illustration
@@ -44,12 +44,8 @@
             span.btn--icon
               include /images/arrow-right.svg
       .slide--text
-        | Request an Early Access till September 30, 2021, to get the PRO version benefits: run PRO for free for two months and enjoy the 1st year discount after that.
-        br
-        | 1st year subscription: 
-        span.pro--price.old $1,999
-        | 
-        span.pro--price $999
+        | One year subscription: 
+        span.pro--price $1,999
       .pro-form.js-form.contact-form
         form.form.gtm-form#pro-form(action=proFormUrl, method="post", data-gtm-category="landingForm", data-gtm-action="formProSend")
           .form--honeypot
