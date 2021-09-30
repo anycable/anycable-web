@@ -13,7 +13,19 @@
         | Stay productive by writing clean, maintainable code in Ruby with the assurance that your application scales and won’t cost a fortune to run.
       div
         .main-slide--buttons
-          .js-bubble(data-delta=50,data-invert-anchors="pro")
+          .main-slide--btn-cta.js-bubble(data-delta=50,data-invert-anchors="pro")
+            p.small-text
+              | Two new features for AnyCable PRO have just arrived! 
+              a(href="https://anycable.io/blog/jwt-identification-and-hot-streams/", target="_blank") Read more 
+              | about 
+              strong JWT identification 
+              | and 
+              strong signed streams 
+              | support.
+            a.btn.secondary.centered.js-scroll-link.gtm-link(data-target="#pro", data-gtm-category="landingButton", data-gtm-action="tryIt1")
+              span.btn--icon
+                include /images/play.svg
+              span.btn--text Try PRO now
             .topnav.desktop-only.js-bubble
               .topnav--title AnyCable
               a.btn.small.topnav--btn.js-scroll-link.gtm-link(data-target="#getting-started", data-gtm-category="landingMenu", data-gtm-action="tryIt")
