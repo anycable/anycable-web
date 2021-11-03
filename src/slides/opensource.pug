@@ -36,12 +36,15 @@
         .slide--text
           p
             | AnyCable brings transparency to your real-time features via smart metrics reporting support. Keep everything on the radar and under control by sending metrics to StatsD or Prometheus, and visualizing them in Grafana.
-          a.slide--text--video(href="https://evilmartians.com/chronicles/real-time-stress-anycable-k6-websockets-and-yabeda?utm_source=anycable-web", target="_blank",  data-gtm-category="landingLink", data-gtm-action="realTimeStressVideo", rel="noreferrer noopener")
-            video(loop="loop", muted="muted", autoplay="autoplay", playsinline="true", width="80%", height="auto")
-              source(src="https://cdn.evilmartians.com/front/posts/real-time-stress-anycable-k6-websockets-and-yabeda/k6-cable.av1-2beae7b.mp4", type="video/mp4; codecs=av01.0.05M.08,opus")
-              source(src="https://cdn.evilmartians.com/front/posts/real-time-stress-anycable-k6-websockets-and-yabeda/k6-cable.hevc-18f3467.mp4", type="video/mp4; codecs=hevc,mp4a.40.2")
-              source(src="https://cdn.evilmartians.com/front/posts/real-time-stress-anycable-k6-websockets-and-yabeda/k6-cable.h264-1726b48.mp4", type="video/mp4; codecs=avc1.4D401E,mp4a.40.2")
-              | Load testing AnyCable with xk6-cable
+          .slide--text--video
+            figure
+              a(href="https://evilmartians.com/chronicles/real-time-stress-anycable-k6-websockets-and-yabeda?utm_source=anycable-web", target="_blank",  data-gtm-category="landingLink", data-gtm-action="realTimeStressVideo", rel="noreferrer noopener")
+                video(loop="loop", muted="muted", autoplay="autoplay", playsinline="true", width="80%", height="auto")
+                  source(src="https://cdn.evilmartians.com/front/posts/real-time-stress-anycable-k6-websockets-and-yabeda/k6-cable.av1-2beae7b.mp4", type="video/mp4; codecs=av01.0.05M.08,opus")
+                  source(src="https://cdn.evilmartians.com/front/posts/real-time-stress-anycable-k6-websockets-and-yabeda/k6-cable.hevc-18f3467.mp4", type="video/mp4; codecs=hevc,mp4a.40.2")
+                  source(src="https://cdn.evilmartians.com/front/posts/real-time-stress-anycable-k6-websockets-and-yabeda/k6-cable.h264-1726b48.mp4", type="video/mp4; codecs=avc1.4D401E,mp4a.40.2")
+                  | Load testing AnyCable with xk6-cable and monitoring in Grafana
+            figcaption.caption Load testing AnyCable with xk6-cable and monitoring in Grafana
         .slide--text
           p
             | Keep everything on the radar and under control by sending metrics to StatsD or Prometheus, and visualizing them in Grafana.
