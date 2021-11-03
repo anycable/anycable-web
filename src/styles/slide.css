@@ -163,6 +163,16 @@
     }
   }
 
+  &--text--video {
+    text-align: center;
+    margin-top: 18px;
+    display: block;
+
+    & video {
+      border-radius: 5px;
+    }
+  }
+
   &--text--logo {
     & .logo {
       float: right;
