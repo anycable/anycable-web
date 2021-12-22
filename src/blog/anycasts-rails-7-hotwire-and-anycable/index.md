@@ -16,7 +16,7 @@ Our very first episode is dedicated to the recent [Rails 7 release][rails-7]. An
 In this episode, we're going to build a new Rails 7 application from scratch—a very first prototype of what could become a Discord-like multi-channel chat. We will see how the new `--css=tailwind` option makes generated templates look cool, give Turbo Frames and Streams a try, and, finally, configure AnyCable with its brand new [JWT authentication][jwt-id-docs] and [_speedy_ streams][signed-streams-docs] features.
 
 <figure class="blog--figure">
-  <iframe class="blog--youtube" src="https://www.youtube.com/embed/7Q51UKZSLwU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe class="blog--youtube" src="https://www.youtube.com/embed/0XTfL-iVLw4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </figure>
 
 <div class="divider"></div>
@@ -28,6 +28,7 @@ In this episode, we're going to build a new Rails 7 application from scratch—a
 - [turbo-rails][]
 - [AnyCable: JWT identification and "hot streams"](/blog/jwt-identification-and-hot-streams)
 - [anycable-rails-jwt][]
+- [Introducing Overmind & Hivemind](https://evilmartians.com/chronicles/introducing-overmind-and-hivemind)
 
 [rails-7]: https://rubyonrails.org/2021/12/15/Rails-7-fulfilling-a-vision
 [pro]: https://anycable.io/#pro
