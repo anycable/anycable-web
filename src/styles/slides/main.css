@@ -41,10 +41,10 @@
 
   &--btn-cta {
     padding: 18px;
-    background-color: $grey-bg;
+    /* background-color: $grey-bg; */
 
     & .btn {
-      margin-top: 18px;
+      /* margin-top: 18px; */
     }
   }
 
