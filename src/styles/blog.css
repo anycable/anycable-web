@@ -165,7 +165,6 @@
 
   &--media {
     object-fit: contain;
-    width: auto;
     height: auto;
     max-width: 100%;
   }
