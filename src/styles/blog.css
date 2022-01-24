@@ -243,6 +243,7 @@
         padding: 1em 2em 1em 2em;
         background: $grey-bg;
         border-radius: 1em;
+        align-items: center;
 
         @media(--mobile) {
           padding: 1em;
@@ -264,6 +265,14 @@
 
       &.callbell {
         background: #69bfa8;
+      }
+
+      &.vito {
+        background: #272F3E;
+
+        & a {
+          color: #F4B4B4;
+        }
       }
 
       &--logo {
