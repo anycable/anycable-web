@@ -13,7 +13,13 @@
         | Stay productive by writing clean, maintainable code in Ruby with the assurance that your application scales and won’t cost a fortune to run.
       div
         .main-slide--buttons
-          .main-slide--btn-cta.js-bubble(data-delta=50,data-invert-anchors="pro")
+          .main-slide--btn-cta.with-promo.js-bubble(data-delta=50,data-invert-anchors="pro")
+            p.small-text
+               | A new AnyCable PRO case study has arrived! 
+               br
+               | Check out how we helped Vito, an online event platform, 
+               a(href="/case-studies/vito") deploy AnyCable and implement some performance optimizations 
+               | to prepare for some upcoming events.
             a.btn.secondary.centered.js-scroll-link.gtm-link(data-target="#pro", data-gtm-category="landingButton", data-gtm-action="tryIt1")
               span.btn--icon
                 include /images/play.svg

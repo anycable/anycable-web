@@ -41,10 +41,13 @@
 
   &--btn-cta {
     padding: 18px;
-    /* background-color: $grey-bg; */
 
-    & .btn {
-      /* margin-top: 18px; */
+    &.with-promo {
+      background-color: $grey-bg;
+
+      & .btn {
+        margin-top: 18px;
+      }
     }
   }
 
