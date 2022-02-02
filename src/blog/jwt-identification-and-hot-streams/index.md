@@ -3,7 +3,7 @@
 September 29, 2021
 {date}
 
-**Update (2021-12-21)**: Both features, JWT auth and Hotwire/CableReady speedy streams, were moved into an OSS version of AnyCable. Enjoy!
+**Update (2021-12-21)**: Both features, JWT auth and Hotwire/CableReady speedy streams, were moved into the OSS version of AnyCable. Enjoy!
 
 <br/>
 
