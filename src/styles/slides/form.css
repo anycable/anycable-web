@@ -1,5 +1,5 @@
 .contact-form {
-  padding-top: 0 !important;
+  padding: 0 !important;
   min-width: 70%;
 
   .initial-message {
@@ -93,7 +93,6 @@
     }
 
     & .btn {
-      display: block;
       height: 50px;
       line-height: 56px;
     }

@@ -15,6 +15,14 @@
 }
 
 @font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: "Stem";
+  font-display: swap;
+  src: url("//cdn.evilmartians.com/front/fonts/subset-Stem-Regular.woff") format("woff");
+}
+
+@font-face {
   font-weight: 700;
   font-style: normal;
   font-family: "Stem";
