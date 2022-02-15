@@ -33,6 +33,10 @@
     }
   }
 
+  &--btn{
+    letter-spacing: 1.21px;
+  }
+
   &--btn + &--btn{
     margin-left: 10px;
   }

@@ -1,3 +1,8 @@
+.features--title {
+  font-weight: 700;
+  font-family: $headers-font;
+}
+
 .features--list {
   margin-top: 20px;
 
@@ -29,7 +34,7 @@
 
 .features--item {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 
   &.align-center {
     align-items: center;
@@ -60,6 +65,7 @@
     flex-shrink: 0;
     color: $white;
     line-height: 30px;
+    max-height: 40px;
 
     & svg {
       height: 40px;
@@ -69,6 +75,12 @@
 }
 
 .features--footer {
-  margin-left: 60px;
+  padding-bottom: 18px;
   display: inline-block;
+
+  @media (--mobile) {
+    & {
+      padding-bottom: 0;
+    }
+  }
 }

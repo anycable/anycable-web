@@ -10,7 +10,7 @@
   color: white;
   font-weight: bold;
   font-size: 16px;
-  letter-spacing: 1.5px;
+  letter-spacing: 0;
   display: flex;
   align-items: center;
   border-radius: 4px;
@@ -70,11 +70,21 @@
 
   &.light {
     background: $light-red;
+
+    &.gtm-link {
+      background-color: #fff;
+      color: $red;
+    }
+
+    &.gtm-link {
+      background-color: #fff;
+      color: $red;
+    }
   }
 
   &.small {
-    height: 40px;
-    padding: 0 15px;
+    height: 36px;
+    padding: 0 10px;
     font-size: 14px;
   }F
 
