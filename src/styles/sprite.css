@@ -318,6 +318,10 @@
       transform: translate(320px, 96px);
       opacity: 0;
     }
+
+    .frame-5 & {
+      opacity: 0;
+    }
   }
 
   &--ws {
@@ -332,6 +336,10 @@
     .frame-4 & {
       transition: opacity 500ms ease;
       transform: translate(100px, 96px);
+      opacity: 0;
+    }
+
+    .frame-5 & {
       opacity: 0;
     }
   }
