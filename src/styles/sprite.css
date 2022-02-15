@@ -305,20 +305,34 @@
   }
 
   &--client {
-    transition: transform 500ms easeOutCubic;
+    transition: transform 510ms ease-in-out;
     transform: translate(320px, -200vh);
 
     .frame-3 & {
+      transition: opacity 500ms, transform 500ms ease;
       transform: translate(320px, 96px);
+    }
+
+    .frame-4 & {
+      transition: opacity 500ms ease;
+      transform: translate(320px, 96px);
+      opacity: 0;
     }
   }
 
   &--ws {
-    transition: transform 500ms easeOutCubic;
+    transition: transform 510ms ease-in-out;
     transform: translate(100px, -200vh);
 
     .frame-3 & {
+      transition: opacity 500ms, transform 500ms ease;
       transform: translate(100px, 96px);
+    }
+
+    .frame-4 & {
+      transition: opacity 500ms ease;
+      transform: translate(100px, 96px);
+      opacity: 0;
     }
   }
 
