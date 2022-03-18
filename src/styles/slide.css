@@ -94,7 +94,7 @@
 
     &.fullscreen {
       width: 100%;
-      padding: 60px 25%;
+      padding: 60px 20.5%;
 
       @media (--mobile) {
         & {
@@ -108,6 +108,10 @@
             }
           }
         }
+      }
+
+      &.contact-form {
+        padding-top: 5px;
       }
     }
 
