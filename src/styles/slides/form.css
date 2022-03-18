@@ -1,9 +1,10 @@
 .contact-form {
-  padding: 0 !important;
+  width: 100%;
   min-width: 70%;
 
   .initial-message {
     margin-top: 0;
+    align-self:start;
   }
 
   .message {
