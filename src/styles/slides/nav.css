@@ -6,7 +6,7 @@
   right: 0;
   z-index: 30;
   display: flex;
-  transition: all 200ms ease-in-out;
+  transition: all .3s ease-in-out;
   justify-content: space-between;
   padding: 60px 60px 0 60px;
   pointer-events: none;
@@ -17,7 +17,6 @@
   }
 
   .is-bubbling & {
-    animation: bubble 200ms backwards ease-in-out;
     top: 0;
     opacity: 1;
   }
@@ -47,8 +46,3 @@
     left: 0;
   }
 }
-
-@keyframes bubble {
-  from {opacity:0; top: -200px;}
-  to {opacity:1;top: 0;}
-  }
