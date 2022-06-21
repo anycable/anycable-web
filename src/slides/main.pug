@@ -35,22 +35,26 @@
                   include /images/docs.svg
                 span.btn--text Docs
           .main-slide--buttons-secondary
-            a.btn.outline.centered.js-scroll-link.gtm-link(data-target="#custom-solutions", data-gtm-category="landingButton", data-gtm-action="support")
-              span.btn--icon
-                include /images/support.svg
-              span.btn--text Support
-            a.btn.outline.centered.gtm-link(href=sponsorUrl, target="_blank", rel="nofollow noopener", data-gtm-category="landingButton", data-gtm-action="sponsor")
-              span.btn--icon
-                include /images/heart.svg
-              span.btn--text Sponsor Us
+            //- a.btn.outline.centered.js-scroll-link.gtm-link(data-target="#custom-solutions", data-gtm-category="landingButton", data-gtm-action="support")
+            //-   span.btn--icon
+            //-     include /images/support.svg
+            //-   span.btn--text Support
             a.btn.outline.centered.gtm-link(href="https://docs.anycable.io", target="_blank", data-gtm-category="landingButton", data-gtm-action="docs")
               span.btn--icon
                 include /images/docs.svg
               span.btn--text Docs
-            a.btn.outline.centered.gtm-link(href="https://github.com/anycable/anycable_rails_demo", target="_blank", data-gtm-category="landingButton", data-gtm-action="demo")
+            a.btn.outline.centered.gtm-link(href="/blog", data-gtm-category="landingButton", data-gtm-action="blog")
+              span.btn--icon
+                include /images/comment.svg
+              span.btn--text Blog
+            a.btn.outline.centered.gtm-link(href="https://www.youtube.com/playlist?list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A", target="_blank", data-gtm-category="landingButton", data-gtm-action="screencasts")
               span.btn--icon
                 include /images/demo.svg
-              span.btn--text Demo
+              span.btn--text Screencast
+            a.btn.outline.centered.gtm-link(href="https://twitter.com/any_cable", target="_blank", rel="nofollow noopener", data-gtm-category="landingButton", data-gtm-action="sponsor")
+              span.btn--icon
+                include /images/twitter.svg
+              span.btn--text Twitter
       .slide--actions.desktop-only.js-scroll-link(data-target="#realtime")
         span.slide--action-arrow
           include /images/arrow.svg
