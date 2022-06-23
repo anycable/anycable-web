@@ -123,7 +123,7 @@ end
 
 Awesome! The only downside is that it's only available since Rails 7.1.
 
-> We made AnyCable compatible with this feature, but there's more: our Rails integration includes a backport for command callbacks for older Rails versions. Just drop [`anycable-rails`][anycable-rails] to your Gemfile and use future Rails APIs!
+> We made AnyCable compatible with this feature, but there's more: our Rails integration includes a backport for command callbacks for older Rails versions. Just drop [`anycable-rails`][anycable-rails] into your Gemfile and use future Rails APIs!
 
 <div class="divider"></div>
 
