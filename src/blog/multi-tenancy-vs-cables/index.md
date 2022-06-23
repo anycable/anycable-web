@@ -125,6 +125,61 @@ Awesome! The only downside is that it's only available since Rails 7.1.
 
 > We made AnyCable compatible with this feature, but there's more: our Rails integration includes a backport for command callbacks for older Rails versions. Just drop [`anycable-rails`][anycable-rails] into your Gemfile and use future Rails APIs!
 
+Finally, let's take about one importan thing that left—tests. How to make sure our command callbacks actually work? Below you can find the annotated snippet for RSpec:
+
+```ruby
+describe ApplicationCable::Connection do
+  let(:tenant) { create :tenant }
+  let(:user) { create(:user, tenant:) }
+  let(:chat_room) { create(:chat_room, tenant:) }
+
+  describe "#set_current_tenant callback" do
+    # We use a custom channel class just for these tests
+    # to avoid depending on real channels from the app
+    before do
+      stub_const("TestChatChannel", Class.new(ApplicationCable::Channel) do
+        cattr_accessor :found_user
+        cattr_accessor :subscribed
+
+        def subscribed
+          # Use this flag to make sure we reached the #subscribed callback
+          self.class.subscribed = true
+          # Use this value to verify that tenant scoping has been preserved
+          self.class.found_room = ChatRoom.find_by(id: params["id"])
+        end
+      end)
+    end
+
+    # Assume that we use cookies for authentication
+    before { cookies.signed["user_id"] = user.id }
+
+    # This is the client's command we want to process by the connection
+    let(:command) do
+      {
+        "identifier" => {channel: "TestChatChannel", id: room.id}.to_json,
+        "command" => "subscribe"
+      }
+    end
+
+    specify do
+      connection.handle_channel_command(command)
+      expect(TestChatChannel.subscribed).to be true
+      expect(TestChatChannel.found_room).to eq(room)
+    end
+
+    context "when user is from another tenant" do
+      let(:user) { create(:user) }
+
+      specify do
+        connection.handle_channel_command(command)
+        expect(TestChatChannel.subscribed).to be true
+        expect(TestChatChannel.found_room).to be_nil
+      end
+    end
+  end
+end
+```
+
 <div class="divider"></div>
 
 We only considered a single use case for command callbacks, though there are plenty of others. For example, you could set the current user's time zone or locale, or provide some context via [Current attributes][current] or [dry-effects][].
