@@ -5,18 +5,18 @@ June 29, 2022
 
 <br/>
 
-Introducing multi-tenancy to a web application usually comes at a price: we need to (re-)design a database schema, make sure all kinds of "requests" are bound to the right tenants, etc. Luckily, for Rails applications we have [battle-tested tools][ruby-toolbox-multitenancy] to make developer lives easier. However, all of them focus on classic Rails _components_, controllers, and background jobs. Who will take care of the channels?
+Introducing multi-tenancy to a web application usually comes at a price: we need to (re-)design a database schema, make sure all kinds of "requests" are bound to the right tenants, and so on. Luckily, for Rails applications we have [battle-tested tools][ruby-toolbox-multitenancy] to make developers' lives easier. However, all of them focus on classic Rails _components_, controllers, and background jobs. Who will take care of the channels?
 {intro}
 
 <div class="divider"></div>
 
 ## Execution context, or how tenant scoping is usually implemented
 
-Multi-tenancy could be implemented in many different ways, but most of them include the following phases: 1) retrieving a tenant (e.g., from request properties); 2) storing the current tenant within the current _execution context_.
+Multi-tenancy could be implemented in many different ways, but most of them include the following phases: 1) retrieving a tenant (e.g., from request properties), and 2) storing the current tenant within the current _execution context_.
 
-What is _execution context_? We may say that it's a _unit of work_ in a web application, with a clearly defined beginning and end. Web requests and background jobs are examples of execution contexts.
+What is _execution context_? We might say that it's a _unit of work_ in a web application, with a clearly defined beginning and end. Web requests and background jobs are examples of execution contexts.
 
-In Ruby, an execution context is usually _connected_ to a single Thread or [Fiber][]. Thus, most multi-tenancy libraries use [Fiber local variables][fiber-locals] to store the current tenant information. For example, [acts_as_tenant][] relies on a good-ole [request_store][] gem, which provides a wrapper for `Thread.current` and takes care of clearing the state when a [request completes](https://github.com/steveklabnik/request_store/blob/f79bd375e88f434428b876dbb5c8a51b569712aa/lib/request_store/middleware.rb#L29-L33). All you need is to set a tenant in your controller (usually, in a `before_action` hook):
+In Ruby, an execution context is usually _connected_ to a single Thread or [Fiber][]. Thus, most multi-tenancy libraries use [Fiber local variables][fiber-locals] to store the current tenant information. For example, [acts_as_tenant][] relies on the good ole [request_store][] gem, which provides a wrapper for `Thread.current` and takes care of clearing the state when a [request completes](https://github.com/steveklabnik/request_store/blob/f79bd375e88f434428b876dbb5c8a51b569712aa/lib/request_store/middleware.rb#L29-L33). All you need is to set a tenant in your controller (usually, in a `before_action` hook):
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -27,15 +27,15 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-Easy. We have lifecycle APIs in our controllers (action callbacks), which make injecting some logic before (or after) any _unit of work_ pretty straightforward. We can also go one step above and rely on Rack middlewares (like [Apartment does](https://github.com/influitive/apartment/blob/f266f73e58835f94e4ec7c16f28443fe5eada1ac/lib/apartment/elevators/generic.rb#L15)).
+Easily done. We have lifecycle APIs in our controllers (action callbacks), which make injecting some logic before (or after) any _unit of work_ pretty straightforward. We can also go one step above and rely on Rack middlewares (like [Apartment does](https://github.com/influitive/apartment/blob/f266f73e58835f94e4ec7c16f28443fe5eada1ac/lib/apartment/elevators/generic.rb#L15)).
 
 What about Action Cable?
 
-First, let's think of what is the execution context for sockets. Cable connections are persistent and long-lived; they have their beginnings (`connect`) and ends (`disconnect`), but these are not our execution context boundaries. So, what is then?
+First, let's think— what is the execution context for sockets? Cable connections are persistent and long-lived; they have a beginning (`connect`) and end (`disconnect`), but these are not our execution context boundaries. So, what are then?
 
-The way Action Cable works under the hood could give us a hint. How many concurrent clients could be handled by a Ruby server (not talking about AnyCable right now)? Maybe, we can spawn a Thread per connection? That would quickly blow up due to high resource usage. Instead, Action Cable relies on an [event loop][ac-event-loop] and a [Thread pool executor][ac-thread-pool] (i.e., a fixed number of worker threads). Whenever we need to process an incoming "message" from a client, we fetch a worker Thread from the pool and use it to process the message. And this is our _unit of work_ (and a random Thread from the pool is our _execution context_). I put the "message" in quotes because we also use the pool to process connection initialization (`Connection#connect`) and closure (`Connection#disconnect`) events, which are not messages.
+The way Action Cable works under the hood could give us a hint. How many concurrent clients could be handled by a Ruby server? (We're not talking about AnyCable right now). Maybe, we could spawn a Thread per connection? That would quickly blow up due to high resource usage. Instead, Action Cable relies on an [event loop][ac-event-loop] and a [Thread pool executor][ac-thread-pool] (i.e., a fixed number of worker threads). Whenever we need to process an incoming "message" from a client, we fetch a worker Thread from the pool and use it to process the message. And this is our _unit of work_ (and a random Thread from the pool is our _execution context_). I put the "message" in quotes because we also use the pool to process connection initialization (`Connection#connect`) and closure (`Connection#disconnect`) events, which are not messages.
 
-Now let's take a look at the naive approach to configure a tenant for Action Cable connections:
+Now, let's take a look at the naive approach to configuring a tenant for Action Cable connections:
 
 ```ruby
 module ApplicationCable
@@ -50,11 +50,11 @@ module ApplicationCable
 end
 ```
 
-Looks similar to what we do in controllers, right? The problem here is that when the next message (say, channel subscription) is processed by this connection, we may have incorrect tenant information because the execution context likely has changed (a different Thread is processing the message). That could make things messed up.
+Looks similar to what we do in controllers, right? The problem here is that when the next message (say, channel subscription) is processed by this connection, we may have incorrect tenant information because the execution context has likely changed (a different Thread is processing the message). This could mess things up.
 
 **NOTE:** AnyCable also uses a thread pool under the hood (it's a part of a gRPC server).
 
-We can probably fix it by adding `before_subscribe` to our `ApplicationCable::Channel` and calling `switch!(tenant)` there, too. And we should probably add `after_subscribe` to reset the state (otherwise our tenant could leak into `Connection#connect` and `Connection#disconnect` methods).
+We can probably fix this by adding `before_subscribe` to our `ApplicationCable::Channel` and calling `switch!(tenant)` there, too. And we should probably add `after_subscribe` to reset the state (otherwise our tenant could leak into `Connection#connect` and `Connection#disconnect` methods).
 
 Alternatively, we can hack around the Connection class and make sure the correct tenant is set up before we enter channels:
 
@@ -71,7 +71,7 @@ module ApplicationCable
 end
 ```
 
-This is my preferred way of dealing with multi-tenancy. I believe that connection is the right place of dealing with _scoping_, channels should not bother about it. The only problem with this approach is that it relies on Action Cable internals. And it's also incompatible with AnyCable (which doesn't use `#dispatch_websocket_message`), so we had to patch two methods to work with any cable:
+This is my preferred way of dealing with multi-tenancy. I believe that the connection is the right place for dealing with _scoping_, and that channels should not deal with it. The only problem with this approach is that it relies on Action Cable internals. And it's also incompatible with AnyCable (which doesn't use `#dispatch_websocket_message`), so we had to patch two methods to work with AnyCable:
 
 ```ruby
 module ApplicationCable
@@ -95,9 +95,9 @@ The patching and duplication didn't look good to me, so I decided to fix it once
 
 ## Action Cable `around_command` to the rescue
 
-The search for a better API wasn't too long: Rails is built on top of conventions, and there is no better way to extend the framework than to follow these conventions. In this particular case, I decided to go with _callbacks_. Every Rails developer is familiar with callbacks, right?
+The search for a better API didn't take too long: Rails is built on top of conventions, and there is no better way to extend the framework than to follow these conventions. In this particular case, I decided to go with _callbacks_. Every Rails developer is familiar with callbacks, right?
 
-I'm glad to introduce [**command callbacks** for Connection classes][rails-pr]: `before_command`, `after_command`, and `around_command`. They do literally what they say: let you execute the code before, after, or around channel commands.
+I'm glad to introduce [**command callbacks** for Connection classes][rails-pr]: `before_command`, `after_command`, and `around_command`. They do literally what they say: allow you to execute the code before, after, or around channel commands.
 
 And this is how our multi-tenancy problem could be solved via the `around_command` callback:
 
@@ -123,12 +123,13 @@ end
 
 Awesome! The only downside is that it's only available since Rails 7.1.
 
-> We made AnyCable compatible with this feature and even more: our Rails integration includes a backport for command callbacks for older Rails versions. Just drop [`anycable-rails`][anycable-rails] to your Gemfile and use future Rails APIs!
+> We made AnyCable compatible with this feature, but there's more: our Rails integration includes a backport for command callbacks for older Rails versions. Just drop [`anycable-rails`][anycable-rails] into your Gemfile and use future Rails APIs!
 
 <div class="divider"></div>
 
-We considered only a single use case for command callbacks, though there is plenty of others. For example, you can set up the current user's time zone or locale, or provide some context via [Current attributes][current] or [dry-effects][].
-Give this feature a try with [anycable-rails][] today! (Even if you're not using AnyCable. Yet 😉)
+We only considered a single use case for command callbacks, though there are plenty of others. For example, you could set the current user's time zone or locale, or provide some context via [Current attributes][current] or [dry-effects][].
+
+Give this feature a try with [anycable-rails][] today! (Even if you're not using AnyCable... yet 😉)
 
 [ruby-toolbox-multitenancy]: https://www.ruby-toolbox.com/categories/Multitenancy
 [rails-pr]: https://github.com/rails/rails/pull/44696
