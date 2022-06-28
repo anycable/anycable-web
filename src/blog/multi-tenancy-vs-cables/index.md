@@ -31,7 +31,7 @@ Easily done. We have lifecycle APIs in our controllers (action callbacks), which
 
 What about Action Cable?
 
-First, let's think—what is the execution context for sockets? Cable connections are persistent and long-lived; they have a beginning (`connect`) and end (`disconnect`), but these are not our execution context boundaries. So, what are then?
+First, let's think—what is the execution context for sockets? Cable connections are persistent and long-lived; they have a beginning (`connect`) and end (`disconnect`), but these are not our execution context boundaries. So, what are they then?
 
 The way Action Cable works under the hood could give us a hint. How many concurrent clients could be handled by a Ruby server? (We're not talking about AnyCable right now). Maybe, we could spawn a Thread per connection? That would quickly blow up due to high resource usage. Instead, Action Cable relies on an [event loop][ac-event-loop] and a [Thread pool executor][ac-thread-pool] (i.e., a fixed number of worker threads). Whenever we need to process an incoming "message" from a client, we fetch a worker Thread from the pool and use it to process the message. And this is our _unit of work_ (and a random Thread from the pool is our _execution context_). I put the "message" in quotes because we also use the pool to process connection initialization (`Connection#connect`) and closure (`Connection#disconnect`) events, which are not messages.
 
