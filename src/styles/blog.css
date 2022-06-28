@@ -274,6 +274,18 @@
         }
       }
 
+      &.healthie {
+        background: #E1E9F8;
+
+        & span {
+          color: #0e172b;
+        }
+
+        & a {
+          color: #6246ed;
+        }
+      }
+
       &--logo {
         flex-grow: 0;
         margin-right: 24px;
