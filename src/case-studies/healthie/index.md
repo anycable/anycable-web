@@ -1,6 +1,6 @@
 # Making a chat’s real-time functionality Healthie-r with AnyCable Pro
 
-June 25, 2022
+June 29, 2022
 {date}
 
 By implementing a gradual migration of the app's real-time features from Action Cable to AnyCable, we were able to solve Healthie's challenge and release a new version of AnyCable with dual broadcast strategy support.
