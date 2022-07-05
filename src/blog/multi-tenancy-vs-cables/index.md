@@ -5,7 +5,7 @@ July 5, 2022
 
 <br/>
 
-Introducing multi-tenancy to a web application usually comes at a price: we need to (re-)design a database schema, make sure all kinds of "requests" are bound to the right tenants, and so on. Luckily, for Rails applications we have [battle-tested tools][ruby-toolbox-multitenancy] to make developers' lives easier. However, all of them focus on classic Rails _components_, controllers, and background jobs. Who will take care of the channels?
+Introducing multi-tenancy to a web application usually comes at a price: we need to (re–)design a database schema, make sure all kinds of "requests" are bound to the right tenants, and so on. Luckily, for Rails applications we have [battle-tested tools][ruby-toolbox-multitenancy] to make developers' lives easier. However, all of them focus on classic Rails _components_, controllers, and background jobs. Who will take care of the channels?
 {intro}
 
 <div class="divider"></div>
