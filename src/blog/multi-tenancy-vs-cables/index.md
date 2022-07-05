@@ -1,6 +1,6 @@
 # Multi-tenancy vs. Cables:<br>Introducing Action Cable command callbacks
 
-June 29, 2022
+July 5, 2022
 {date}
 
 <br/>
