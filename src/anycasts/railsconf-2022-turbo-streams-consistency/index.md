@@ -1,6 +1,6 @@
 # <img src="/images/demo.svg" class="blog--title-icon"> AnyCasts, RailsConf special:<br>Turbo Streams vs. consistency
 
-July 10, 2022
+July 19, 2022
 {date}
 
 <br/>
