@@ -30,6 +30,7 @@ In this episode, we explore [Fly.io][fly] capabilities in deploying Rails real-t
 
 **Links**:
 
+- [Official Fly deployment guide for AnyCable](https://docs.anycable.io/deployment/fly)
 - [Fly.io Rails guides][fly-rails]
 - [Real-time stress: AnyCable, k6, WebSockets, and Yabeda][yabeda-post]
 
