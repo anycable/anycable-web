@@ -28,19 +28,19 @@
     margin-top: 10px;
 
     &.red {
-      color: $dark-red;
+      color: var(--dark-red);
     }
 
     &.light-red {
-      color: $light-red;
+      color: var(--light-red);
     }
 
     &.orange {
-      color: $orange;
+      color: var(--orange);
     }
 
     &.green {
-      color: $green;
+      color: var(--green);
     }
   }
 }
@@ -50,5 +50,3 @@
     font-size: 3vw;
   }
 }
-
-@import "memory.css"

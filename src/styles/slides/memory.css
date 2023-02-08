@@ -9,18 +9,18 @@
   display: block;
 
   &.red {
-    background: $dark-red;
+    background: var(--dark-red);
   }
 
   &.light-red {
-    background: $light-red;
+    background: var(--light-red);
   }
 
   &.green {
-    background: $green;
+    background: var(--green);
   }
 
   &.orange {
-    background: $orange;
+    background: var(--orange);
   }
 }

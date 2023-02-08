@@ -39,7 +39,7 @@
         }
       }
 
-      svg {
+      & svg {
         width: 50%;
 
         @media (--mobile) {

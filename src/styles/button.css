@@ -5,7 +5,7 @@
   text-transform: uppercase;
   padding: 0 20px;
   text-align: center;
-  background: $red;
+  background: var(--red);
   transition: opacity 200ms, background-color 200ms, color 200ms;
   color: white;
   font-weight: bold;
@@ -30,7 +30,7 @@
 
   &.outline {
     background-color: transparent;
-    color: $red;
+    color: var(--red);
     padding: 0 12px;
     height: 30px;
     text-transform: none;
@@ -41,7 +41,7 @@
     &:visited,
     &:hover,
     &:active {
-      color: $red;
+      color: var(--red);
       background-color: transparent;
     }
   }
@@ -57,28 +57,28 @@
   }
 
   &.secondary {
-    background: $pink;
-    color: $red;
+    background: var(--pink);
+    color: var(--red);
 
     &:visited,
     &:hover,
     &:active {
-      background: $pink;
-      color: $red;
+      background: var(--pink);
+      color: var(--red);
     }
   }
 
   &.light {
-    background: $light-red;
+    background: var(--light-red);
 
     &.gtm-link {
       background-color: #fff;
-      color: $red;
+      color: var(--red);
     }
 
     &.gtm-link {
       background-color: #fff;
-      color: $red;
+      color: var(--red);
     }
   }
 
@@ -86,7 +86,7 @@
     height: 36px;
     padding: 0 10px;
     font-size: 14px;
-  }F
+  }
 
   &.small &--icon:first-child {
     margin-left: -5px;
@@ -106,7 +106,7 @@
   }
 
   &:active {
-    background: $dark-red;
+    background: var(--dark-red);
   }
 
   &:visited,

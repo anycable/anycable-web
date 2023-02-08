@@ -29,3 +29,8 @@
   font-display: swap;
   src: url("//cdn.evilmartians.com/front/fonts/subset-Stem-Bold.woff") format("woff");
 }
+
+:root {
+  --default-font: "Stem Text", "Arial", sans-serif;
+  --headers-font: "Stem", "Arial", sans-serif;
+}

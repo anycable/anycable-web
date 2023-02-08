@@ -43,7 +43,7 @@
     padding: 18px;
 
     &.with-promo {
-      background-color: $grey-bg;
+      background-color: var(--grey-bg);
 
       & .btn {
         margin-top: 18px;
@@ -53,13 +53,13 @@
 
   &--btn-cta.is-inverted {
     & .topnav--btn {
-      background: $white;
-      color: $red;
+      background: var(--white);
+      color: var(--red);
     }
 
     & .topnav--btn.secondary {
-      background: $light-red;
-      color: $white !important;
+      background: var(--light-red);
+      color: var(--white) !important;
     }
   }
 }
@@ -90,7 +90,7 @@
   .main-slide {
     flex-direction: column;
     margin-top: 135px;
-    background-image: $fade_gradient_top;
+    background-image: var(--fade_gradient_top);
 
     &--item {
       margin-top: 0;

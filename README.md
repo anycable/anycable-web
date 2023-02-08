@@ -1,39 +1,16 @@
 ## About
 
-AnyCable website generator (https://anycable.io).
-
-Includes:
-- [Jade](http://jade-lang.com) HTML preprocessor;
-- [PostCSS](https://github.com/postcss/postcss) with [autoprefixer](https://github.com/postcss/autoprefixer), [precss](https://github.com/jonathantneal/precss) and [cssnext](http://cssnext.io);
-- [JSPM](http://jspm.io) with ES6 set up.
+AnyCable website (https://anycable.io).
 
 ## Usage
 
-Run `npm install` and then `npm start` or `gulp` to start dev server with livereload.
+Run `yarn` and then `yarn dev` to start dev server with livereload.
 
 ## SVG Optimization
 
 Use [svgo](https://github.com/svg/svgo) to optimize SVG images.
 
 For animated illustration use: `svgo --disable=moveGroupAttrsToElems --disable=convertTransform src/images/illustration.svg src/images/illustration.min.svg`
-
-## JSPM config issue
-
-When you run `yarn install` (or `jspm install` explicitly) it updates the `jspm.config.js` in the following way:
-
-```diff
-   },
-   paths: {
-     "*": "src/js/*.js",
--    "github:*": "/jspm_packages/github/*",
--    "npm:*": "/jspm_packages/npm/*"
-+    "github:*": "jspm_packages/github/*",
-+    "npm:*": "jspm_packages/npm/*"
-   },
-   baseUrl: "/",
-```
-
-This configuration breaks non-root pages; revert this change to use the absolute path.
 
 ## GTM Integration
 
