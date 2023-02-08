@@ -7,7 +7,7 @@
   z-index: 0;
   width: calc(50vw - ((100vw - 100%)/2)); /* use viewport because of the fixed position (percentage could be incorrect) */
   box-sizing: border-box;
-  border-right: solid 1px $grey;
+  border-right: solid 1px var(--grey);
 
   &.no-border {
     border-right: none;

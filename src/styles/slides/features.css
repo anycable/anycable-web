@@ -1,6 +1,6 @@
 .features--title {
   font-weight: 700;
-  font-family: $headers-font;
+  font-family: var(--headers-font);
 }
 
 .features--list {
@@ -10,7 +10,7 @@
     & {
       margin-top: 305px;
       padding-top: 15px;
-      background-image: $fade_gradient_top;
+      background-image: var(--fade_gradient_top);
       padding-bottom: 20px;
     }
 
@@ -48,8 +48,8 @@
     margin-right: 30px;
     flex-shrink: 0;
     font-weight: bold;
-    background: $red;
-    color: $white;
+    background: var(--red);
+    color: var(--white);
 
     @media (--tablet) {
       & {
@@ -63,7 +63,7 @@
   &--icon {
     margin-right: 20px;
     flex-shrink: 0;
-    color: $white;
+    color: var(--white);
     line-height: 30px;
     max-height: 40px;
 

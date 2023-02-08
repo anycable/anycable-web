@@ -22,13 +22,13 @@
   }
 
   &--title {
-    color: $red;
+    color: var(--red);
     font-size: 24px;
     font-weight: bold;
     margin-right: auto;
 
     .is-inverted & {
-      color: $white;
+      color: var(--white);
     }
   }
 

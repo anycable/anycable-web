@@ -1,5 +1,5 @@
 .slide--feedback {
-  background: $grey-bg;
+  background: var(--grey-bg);
   padding: 30px 120px 120px 60px;
   margin-top: 60px;
 

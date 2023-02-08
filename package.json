@@ -1,54 +1,26 @@
 {
   "name": "anycable-web",
-  "version": "0.0.1",
   "description": "AnyCable web app",
-  "main": "gulpfile.js",
   "private": true,
-  "scripts": {
-    "start": "gulp",
-    "watch": "gulp watch",
-    "build": "gulp build:prod && jspm bundle-sfx index build/js/app.min.js --minify --skip-source-maps",
-    "devbuild": "jspm bundle-sfx index build/js/app.dev.js",
-    "postinstall": "rm -rf node_modules/jspm-github && cp -r .github/deps/jspm-github node_modules/ && jspm install"
-  },
-  "author": "Vlad Dem <palkan@evl.ms>",
+  "version": "2.0.0",
+  "author": "Vladimir Dementyev <dementiev.vm@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "babel-plugin-transform-es2015-modules-systemjs": "^6.8.0",
-    "babel-preset-es2015": "^6.6.0",
-    "browser-sync": "^2.9.11",
-    "del": "^2.2.0",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-babel": "~>6.1.2",
-    "gulp-plumber": "~>1.1.0",
-    "gulp-postcss": "~>6.1.0",
-    "gulp-pug": "^3.1.0",
-    "gulp-sourcemaps": "^1.5.2",
-    "gulp-typograf": "^4.0.3",
-    "gulp-uglify": "^1.2.0",
-    "gulp-useref": "^3.0.3",
-    "jspm": "~> 0.16",
-    "jstransformer-markdown-it": "^2.1.0",
-    "markdown-it-classy": "^0.2.0",
-    "markdown-it-highlightjs": "^3.5.0",
-    "postcss-cssnext": "^2.9.0",
-    "postcss-custom-media": "^7.0.8",
-    "postcss-easings": "^0.3.0",
-    "precss": "^1.4.0"
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "jspm": {
-    "directories": {
-      "lib": "src/js"
-    },
-    "configFile": "jspm.config.js",
-    "dependencies": {
-      "jump.js": "npm:jump@1.0.2",
-      "lighty": "npm:lighty@0.5.0"
-    },
-    "devDependencies": {
-      "babel": "npm:babel-core",
-      "babel-runtime": "npm:babel-runtime",
-      "core-js": "npm:core-js"
-    }
+  "devDependencies": {
+    "postcss-custom-media": "^9.1.2",
+    "postcss-easings": "^3.0.1",
+    "postcss-nested": "^6.0.0",
+    "postcss-preset-env": "^8.0.1",
+    "vite": "^4.1.0",
+    "vite-plugin-pug": "^0.3.2"
+  },
+  "dependencies": {
+    "jump.js": "1.0.2",
+    "lighty": "0.5.0"
   }
 }

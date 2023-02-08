@@ -14,7 +14,7 @@
 
   .error {
     display: none;
-    color: $red;
+    color: var(--red);
   }
 
   &.is-error {
@@ -85,11 +85,11 @@
       height: 50px;
 
       &.is-valid {
-        border-color: $green;
+        border-color: var(--green);
       }
 
       &.is-invalid {
-        border-color: $red;
+        border-color: var(--red);
       }
     }
 

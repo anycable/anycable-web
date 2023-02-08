@@ -1,25 +1,23 @@
-$default-font-fallback: "Arial", sans-serif;
-$default-font: "Stem Text", $default-font-fallback;
-$headers-font: "Stem", $default-font-fallback;
+:root {
+  --default-color: #363636;
+  --grey-text: #9e9e9e;
+  --light-red: #ff5e5e;
+  --dark-red: #f64242;
+  --pink: rgba(243, 43, 43, 0.2);
+  --red: #f64343;
+  --orange: #f6a623;
+  --yellow: #ffd700;
+  --green: #7ed321;
+  --code-green: #1f6526;
+  --code-red: #a12a17;
+  --grey: #e3e3e3;
+  --grey-dark: #c3c3c3;
+  --grey-bg: #f3f3f3;
+  --white: #fff;
+  --transparent: rgba(255, 255, 255, 0);
 
-$default-color: #363636;
-$grey-text: #9e9e9e;
-$light-red: #ff5e5e;
-$dark-red: #f64242;
-$pink: rgba(243, 43, 43, 0.2);
-$red: #f64343;
-$orange: #f6a623;
-$yellow: #ffd700;
-$green: #7ed321;
-$code-green: #1f6526;
-$code-red: #a12a17;
-$grey: #e3e3e3;
-$grey-dark: #c3c3c3;
-$grey-bg: #f3f3f3;
-$white: #fff;
-$transparent: rgba(255, 255, 255, 0);
+  --footer-bg: #363636;
 
-$footer-bg: #363636;
-
-$fade_gradient_top: linear-gradient($transparent, $white 30px);
-$fade_gradient_bottom: linear-gradient(to top, $transparent, $white 30px);
+  --fade_gradient_top: linear-gradient(var(--transparent), var(--white) 30px);
+  --fade_gradient_bottom: linear-gradient(to top, var(--transparent), var(--white) 30px);
+}
