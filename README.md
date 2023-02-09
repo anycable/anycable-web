@@ -6,6 +6,8 @@ AnyCable website (https://anycable.io).
 
 Run `yarn` and then `yarn dev` to start dev server with livereload.
 
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/anycable/anycable-web)
+
 ## SVG Optimization
 
 Use [svgo](https://github.com/svg/svgo) to optimize SVG images.
