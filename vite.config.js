@@ -1,10 +1,11 @@
 // vite.config.(js|ts)
 import { defineConfig } from "vite"
 import pugPlugin from "vite-plugin-pug"
+import "process"
 
 const options = {basedir: ".", pretty: true}
 const locals = {
-  env: "development",
+  env: process.env.NODE_ENV || "development",
   sponsorUrl: "https://github.com/sponsors/anycable",
   formURL: "https://form.typeform.com/to/wAHm0sRP",
   proFormUrl: "https://form.typeform.com/to/BwBcZmdQ",
