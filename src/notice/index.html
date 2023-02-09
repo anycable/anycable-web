@@ -1,5 +1,11 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  {{> dochead }}
   <body>
-    <pug src="./index.pug" />
+    {{> gtm_body }}
+    <div class="legal">
+      <pug src="./notices.pug" />
+    </div>
+    <script type="module" src="/index.js"></script>
   </body>
 </html>

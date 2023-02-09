@@ -24,11 +24,9 @@ The Vito team didn't want to tinker away configuring Ruby on Rails to align with
 
 In October 2021, the Vito platform held one of their largest conferences yet, [Nuxt Nation][]. It saw a total of 8,000 visitors, with over 3,000 concurrent visitors at its peak. Advance preparations were necessary and began 3 months before the big day.
 
-
 <figure class="blog--figure">
-  <img class="blog--media" title="Nuxt Nation live on Vito" src="./nuxt-nation.png" width="800">
+  <img class="blog--media" title="Nuxt Nation live on Vito" src="/images/blog/nuxt-nation.png" width="800">
 </figure>
-
 
 Ahead of the event, with the help of Evil Martians, the Vito team went through some basic performance optimizations: checking for slow queries in the app's main API endpoints and ensuring that the database had all of the requisite indexes.
 

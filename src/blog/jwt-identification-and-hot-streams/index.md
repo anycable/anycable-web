@@ -95,7 +95,7 @@ And we don't have to perform any RPC calls! Let's see how it affects the connect
 
 <figure class="blog--figure">
 <video loop="loop" muted="muted" autoplay="autoplay" playsinline="true" width="1221" height="800" class="blog--media">
-  <source src="./connect-benchmark.h264.mp4" ttype="video/mp4; codecs=avc1.4D401E,mp4a.40.2">
+  <source src="/images/blog/connect-benchmark.h264.mp4" ttype="video/mp4; codecs=avc1.4D401E,mp4a.40.2">
 </video>
 </figure>
 
@@ -146,7 +146,7 @@ This is exactly what we did as a part of the [signed streams][signed-streams-doc
 Below is a visualization of RPC server metrics during Hotwire benchmarks with four different configurations (denoted by blue markers), from left to right: baseline (AnyCable PRO without any features enabled), with JWT identification, with signed streams, and with both features enabled at the same time.
 
 <figure class="blog--figure">
-  <img class="blog--media" title="AnyCable metrics when running with and without JWT and 'hot' streams" src="./grafana.png" width="1364" height="624">
+  <img class="blog--media" title="AnyCable metrics when running with and without JWT and 'hot' streams" src="/images/blog/grafana.png" width="1364" height="624">
 </figure>
 
 It shouldn't come as any surprise that the last one shows zeros for RPC metrics—it wasn't impacted at all. We can also note that CPU usage with AnyCable Go is the lowest in the fourth scenario—**dealing with tokens and signatures is "cheaper" than performing gRPC calls**.

@@ -1,6 +1,0 @@
-extends /layout/blog
-
-block post
-  .blog--cover
-    include /images/blog/anycallbell.svg
-  include:markdown-it(html=true, plugins=['markdown-it-classy']) ./index.md
