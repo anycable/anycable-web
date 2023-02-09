@@ -1,4 +1,4 @@
-# <img src="/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 4:<br>Using anycable-client to auto-refresh tokens
+# <img src="/public/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 4:<br>Using anycable-client to auto-refresh tokens
 
 May 10, 2022
 {date}

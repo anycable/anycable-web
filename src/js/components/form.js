@@ -7,7 +7,7 @@ application.component('.js-form', {
     this.submitBtn = this.form.querySelector('button[type="submit"]');
     this.actionURL = this.form.getAttribute('action');
 
-    this.form.removeAttribute('action');
+    // this.form.removeAttribute('action');
     this.form.removeAttribute('method');
 
     this.form.addEventListener('submit', e => {

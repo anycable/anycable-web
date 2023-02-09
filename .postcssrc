@@ -1,0 +1,7 @@
+{
+  "plugins": {
+    "postcss-nested": true,
+    "postcss-custom-media": true,
+    "postcss-easings": true
+  }
+}

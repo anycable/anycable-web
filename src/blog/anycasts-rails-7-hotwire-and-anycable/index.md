@@ -1,4 +1,4 @@
-# <img src="/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 1:<br>Exploring Rails 7, Hotwire and AnyCable speedy streams
+# <img src="/public/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 1:<br>Exploring Rails 7, Hotwire and AnyCable speedy streams
 
 December 22, 2021
 {date}

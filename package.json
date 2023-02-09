@@ -7,20 +7,32 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "parcel src/index.pug src/**/*/index.pug src/*/index.pug",
+    "build": "parcel build src/index.pug src/**/*/index.pug src/*/index.pug"
   },
   "devDependencies": {
+    "@parcel/packager-raw-url": "2.8.3",
+    "@parcel/transformer-jsonld": "2.8.3",
+    "@parcel/transformer-pug": "2.8.3",
+    "@parcel/transformer-webmanifest": "2.8.3",
+    "jstransformer-markdown-it": "^3.0.0",
+    "markdown-it-classy": "^0.2.0",
+    "markdown-it-highlightjs": "^4.0.1",
+    "parcel": "^2.8.3",
+    "parcel-reporter-static-files-copy": "^1.5.0",
+    "postcss": "^8.4.21",
     "postcss-custom-media": "^9.1.2",
     "postcss-easings": "^3.0.1",
     "postcss-nested": "^6.0.0",
-    "postcss-preset-env": "^8.0.1",
-    "vite": "^4.1.0",
-    "vite-plugin-pug": "^0.3.2"
+    "postcss-preset-env": "^8.0.1"
   },
   "dependencies": {
     "jump.js": "1.0.2",
     "lighty": "0.5.0"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "staticFiles": {
+    "staticPath": "public",
+    "staticOutDir": "/"
   }
 }

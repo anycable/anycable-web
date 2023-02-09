@@ -1,4 +1,4 @@
-# <img src="/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 6:<br>Learn to Fly.io with AnyCable
+# <img src="/public/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 6:<br>Learn to Fly.io with AnyCable
 
 September 6, 2022
 {date}
