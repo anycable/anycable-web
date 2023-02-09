@@ -1,114 +1,94 @@
-extends /layout/base
+.blog--content
+  h1 Articles
 
-block content
-  nav.blog--nav
-    a.btn.outline(href="/")
-      span.btn--icon.blog--nav--arrow
-        include /images/arrow-left.svg
-      strong.btn--text.blog--nav--text AnyCable
-    .blog--nav--section
-      a.btn.small.topnav--btn.gtm-link(href="/#getting-started", data-gtm-category="blogMenu", data-gtm-action="tryIt")
-        span.btn--icon
-          include /images/play.svg
-        span.btn--text Try it now
-      a.btn.small.topnav--btn.secondary.gtm-link(href="https://docs.anycable.io", target="_blank", data-gtm-category="blogButton", data-gtm-action="docs")
-        span.btn--icon
-          include /images/docs.svg
-        span.btn--text Docs
-  .blog--wrap
-    .blog--content
-      h1 Articles
-
-      .blog--toc
-        .blog--toc--section
-          h3 Engineering
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date September 6, 2022
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="/anycasts/learn-to-fly-io-with-anycable") Learn to Fly.io with AnyCable
-                i.blog--toc--item--video
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date July 19, 2022
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="/anycasts/railsconf-2022-turbo-streams-consistency") Turbo Streams vs. consistency
-                i.blog--toc--item--video
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date July 5, 2022
-              a.blog--toc--item--title(href="/blog/multi-tenancy-vs-cables") Multi-tenancy vs. Cables: Introducing Action Cable command callbacks
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date May 10, 2022
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="/blog/anycasts-using-anycable-client") Using anycable-client to auto-refresh tokens
-                i.blog--toc--item--video
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date April 5, 2022
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="/blog/anycasts-direct-messaging-part-2") Of users and direct messaging (pt. 2)
-                i.blog--toc--item--video
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date February 16, 2022
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="/blog/anycasts-direct-messaging-part-1") Of users and direct messaging (pt. 1)
-                i.blog--toc--item--video
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date December 22, 2021
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="/blog/anycasts-rails-7-hotwire-and-anycable") Exploring Rails 7, Hotwire and AnyCable speedy streams
-                i.blog--toc--item--video
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date September 29, 2021
-              a.blog--toc--item--title(href="/blog/jwt-identification-and-hot-streams") AnyCable v1.2: JWT identification and "hot streams"
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date September 07, 2021
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="https://evilmartians.com/chronicles/real-time-stress-anycable-k6-websockets-and-yabeda", target="_blank") Real-time stress: AnyCable, k6, WebSockets, and Yabeda
-                i.blog--toc--item--em
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date July 28, 2021
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="https://evilmartians.com/chronicles/introducing-anycable-javascript-and-typescript-client", target="_blank") Introducing JavaScript and TypeScript client for AnyCable
-                i.blog--toc--item--em
-          .blog--toc--item.dev
-            .blog--toc--item--desc
-              span.blog--toc--item--date June 16, 2021
-              span.blog--toc--item--title-with-icon
-                a.blog--toc--item--title(href="https://evilmartians.com/chronicles/anycable-goes-pro-fast-websockets-for-ruby-at-scale", target="_blank") AnyCable Goes Pro: Fast WebSockets for Ruby, at scale
-                i.blog--toc--item--em
-        .blog--toc--section
-          h3 Use Cases
-          .blog--toc--item.case-study.healthie
-            .blog--toc--item--logo
-              include /images/blog/healthie.svg
-            .blog--toc--item--desc
-              span.blog--toc--item--date June 29, 2022
-              a.blog--toc--item--title(href="/case-studies/healthie") Making a chat’s real-time functionality Healthie-r with AnyCable Pro
-          .blog--toc--item.case-study.vito.invert
-            .blog--toc--item--logo
-              include /images/blog/vito-logo.svg
-            .blog--toc--item--desc
-              span.blog--toc--item--date January 25, 2022
-              a.blog--toc--item--title(href="/case-studies/vito") Revitalizing Vito with AnyCable Pro
-          .blog--toc--item.case-study.callbell.invert
-            .blog--toc--item--logo
-              include /images/logos/callbell-white.svg
-            .blog--toc--item--desc
-              span.blog--toc--item--date August 3, 2021
-              a.blog--toc--item--title(href="/case-studies/callbell") A call for Pro: Callbell
-          .blog--toc--item.case-study
-            .blog--toc--item--logo
-              include /images/soon.svg
-            .blog--toc--item--desc
-              span.blog--toc--item--date Soon
-              span.blog--toc--item--title More announcements to come!
-
-    include /slides/footer
+  .blog--toc
+    .blog--toc--section
+      h3 Engineering
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date September 6, 2022
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="/anycasts/learn-to-fly-io-with-anycable") Learn to Fly.io with AnyCable
+            i.blog--toc--item--video
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date July 19, 2022
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="/anycasts/railsconf-2022-turbo-streams-consistency") Turbo Streams vs. consistency
+            i.blog--toc--item--video
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date July 5, 2022
+          a.blog--toc--item--title(href="/blog/multi-tenancy-vs-cables") Multi-tenancy vs. Cables: Introducing Action Cable command callbacks
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date May 10, 2022
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="/blog/anycasts-using-anycable-client") Using anycable-client to auto-refresh tokens
+            i.blog--toc--item--video
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date April 5, 2022
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="/blog/anycasts-direct-messaging-part-2") Of users and direct messaging (pt. 2)
+            i.blog--toc--item--video
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date February 16, 2022
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="/blog/anycasts-direct-messaging-part-1") Of users and direct messaging (pt. 1)
+            i.blog--toc--item--video
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date December 22, 2021
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="/blog/anycasts-rails-7-hotwire-and-anycable") Exploring Rails 7, Hotwire and AnyCable speedy streams
+            i.blog--toc--item--video
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date September 29, 2021
+          a.blog--toc--item--title(href="/blog/jwt-identification-and-hot-streams") AnyCable v1.2: JWT identification and "hot streams"
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date September 07, 2021
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="https://evilmartians.com/chronicles/real-time-stress-anycable-k6-websockets-and-yabeda", target="_blank") Real-time stress: AnyCable, k6, WebSockets, and Yabeda
+            i.blog--toc--item--em
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date July 28, 2021
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="https://evilmartians.com/chronicles/introducing-anycable-javascript-and-typescript-client", target="_blank") Introducing JavaScript and TypeScript client for AnyCable
+            i.blog--toc--item--em
+      .blog--toc--item.dev
+        .blog--toc--item--desc
+          span.blog--toc--item--date June 16, 2021
+          span.blog--toc--item--title-with-icon
+            a.blog--toc--item--title(href="https://evilmartians.com/chronicles/anycable-goes-pro-fast-websockets-for-ruby-at-scale", target="_blank") AnyCable Goes Pro: Fast WebSockets for Ruby, at scale
+            i.blog--toc--item--em
+    .blog--toc--section
+      h3 Use Cases
+      .blog--toc--item.case-study.healthie
+        .blog--toc--item--logo
+          include /images/blog/healthie.svg
+        .blog--toc--item--desc
+          span.blog--toc--item--date June 29, 2022
+          a.blog--toc--item--title(href="/case-studies/healthie") Making a chat’s real-time functionality Healthie-r with AnyCable Pro
+      .blog--toc--item.case-study.vito.invert
+        .blog--toc--item--logo
+          include /images/blog/vito-logo.svg
+        .blog--toc--item--desc
+          span.blog--toc--item--date January 25, 2022
+          a.blog--toc--item--title(href="/case-studies/vito") Revitalizing Vito with AnyCable Pro
+      .blog--toc--item.case-study.callbell.invert
+        .blog--toc--item--logo
+          include /images/logos/callbell-white.svg
+        .blog--toc--item--desc
+          span.blog--toc--item--date August 3, 2021
+          a.blog--toc--item--title(href="/case-studies/callbell") A call for Pro: Callbell
+      .blog--toc--item.case-study
+        .blog--toc--item--logo
+          include /images/soon.svg
+        .blog--toc--item--desc
+          span.blog--toc--item--date Soon
+          span.blog--toc--item--title More announcements to come!
