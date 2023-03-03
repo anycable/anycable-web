@@ -286,6 +286,14 @@
         }
       }
 
+      &.sera {
+        background: #005DF7;
+
+        & span {
+          color: rgb(244, 245, 245);
+        }
+      }
+
       &--logo {
         flex-grow: 0;
         margin-right: 24px;
