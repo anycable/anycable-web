@@ -1,0 +1,158 @@
+$className: 'about-slide';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+
+  &__wrapper {
+    width: 100%;
+    max-width: 1920px;
+    display: flex;
+  }
+
+  &__slide-show {
+    position: relative;
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100vh;
+  }
+
+  &__slide-show-frame {
+    display: flex;
+    visibility: hidden;
+    width: 0;
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    position: sticky;
+    top: 0;
+    padding-top: 238px;
+    transition: $opacitySecondaryTransition;
+
+    & > img {
+      width: 100%;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    width: 50%;
+    background-color: $backgroundSecondaryColor;
+    border-right: 1px solid $borderPrimaryColor;
+    padding: 120px 64px;
+
+    &_type {
+      &_slide-show {
+        padding: 0 64px 34px;
+        background-color: $backgroundPrimaryColor;
+
+        @include mediaMax($tablet) {
+          display: none;
+        }
+      }
+    }
+
+    @include mediaMax($tablet) {
+      width: 100%;
+      border-right: none;
+      padding: 88px 64px;
+    }
+
+    @include mediaMax($mobile) {
+      padding: 88px 0px;
+    }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &_type {
+      &_no-padding {
+        padding: 0;
+      }
+    }
+
+    @include mediaMax($mobile) {
+      padding: 0 24px;
+
+      &_type {
+        &_no-padding {
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    &_type {
+      &_with-padding {
+        @include mediaMax($mobile) {
+          padding: 0 24px;
+        }
+      }
+    }
+
+    @include mediaMax($mobile) {
+      font-size: 40px;
+      line-height: 1.3;
+    }
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    line-height: 1.6;
+    font-weight: 700;
+    align-self: flex-start;
+    margin-bottom: 24px;
+
+    &_type {
+      &_with-padding {
+        @include mediaMax($mobile) {
+          padding: 0 24px;
+        }
+      }
+    }
+  }
+
+  &__text {
+    font-size: 20px;
+    line-height: 1.6;
+    align-self: flex-start;
+    margin-bottom: 24px;
+
+    &_type {
+      &_with-padding {
+        @include mediaMax($mobile) {
+          padding: 0 24px;
+        }
+      }
+    }
+  }
+
+  &__section-image {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    @include mediaMin($tablet) {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &__video-tip {
+    margin-bottom: 24px;
+  }
+}

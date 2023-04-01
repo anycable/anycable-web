@@ -1,0 +1,35 @@
+$className: 'header';
+
+.#{$className} {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  transition: all 0.3s;
+
+  &_hidden {
+    // hide header
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+
+  &__content {
+    padding: 24px 64px 0;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include mediaMax($smallMobile) {
+      padding: 8px 24px 0;
+    }
+  }
+
+  &__logo {
+    color: $accentPrimaryColor;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+}

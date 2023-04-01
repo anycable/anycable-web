@@ -1,0 +1,14 @@
+<div class='popup {{coalesce popupClass "try-now-popup"}}'>
+  <div class='popup__container'>
+    <h2 class='popup__title'>{{coalesce popupTitle 'Try now'}}</h2>
+    <button
+      class='popup__close-btn'
+      type='button'
+      aria-label='Закрыть'
+    ></button>
+    <iframe
+      class='popup__iframe'
+      src='{{coalesce typeformLink "https://form.typeform.com/c/BwBcZmdQ"}}'
+    ></iframe>
+  </div>
+</div>

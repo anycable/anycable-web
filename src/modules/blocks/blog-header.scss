@@ -1,0 +1,32 @@
+$className: 'blog-header';
+
+.#{$className} {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+
+  &__content {
+    padding: 24px 30px 0;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include mediaMax($smallMobile) {
+      padding: 8px 24px 0;
+    }
+  }
+
+  &__link {
+    color: $fontPrimaryColor;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  &__link-icon {
+    margin-right: 8px;
+  }
+}

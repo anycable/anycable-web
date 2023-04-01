@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead pageTitle="AnyCasts, ep.1: Exploring Rails 7, Hotwire and AnyCable speedy streams" pageDescription="This is the very first episode of AnyCasts, in which we create a new Hotwire/AnyCable application from scratch." }}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/a11y-light.min.css" integrity="sha512-WDk6RzwygsN9KecRHAfm9HTN87LQjqdygDmkHSJxVkVI7ErCZ8ZWxP6T8RvBujY1n2/E4Ac+bn2ChXnp5rnnHA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  {{> dochead pageTitle="AnyCasts, ep.1: Exploring Rails 7, Hotwire and AnyCable
+  speedy streams" pageDescription="This is the very first episode of AnyCasts,
+  in which we create a new Hotwire/AnyCable application from scratch." }}
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/a11y-light.min.css"
+    integrity="sha512-WDk6RzwygsN9KecRHAfm9HTN87LQjqdygDmkHSJxVkVI7ErCZ8ZWxP6T8RvBujY1n2/E4Ac+bn2ChXnp5rnnHA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
-  <body>
-    {{> gtm_body }}
-    {{> blog_nav }}
-    <div class="blog--content">
-      {{ md './index.md' }}
-    </div>
-    {{> footer }}
-    <script type="module" src="/index.js"></script>
+  <!-- Inline style to prevent flickering on load -->
+  <body style="visibility: hidden">
+    {{> gtm_body }} {{> blog_nav }}
+    <div class="blog--content">{{ md './index.md' }}</div>
+    {{> footer }} {{> popup}}
+    <script type="module" src="/index.ts"></script>
   </body>
 </html>

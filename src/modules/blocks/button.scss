@@ -1,0 +1,46 @@
+$className: 'button';
+
+.#{$className} {
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  background-color: $accentPrimaryColor;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Stem', Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: $fontPrimaryInvertedColor;
+  box-shadow: 0px 12px 20px -12px rgba(154, 0, 0, 0.5);
+  cursor: pointer;
+  transition: $opacityPrimaryTransition;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  &:hover {
+    opacity: $opacityPrimaryValue;
+  }
+
+  &_size_big {
+    height: 56px;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  &_variant {
+    &_outlined {
+      box-shadow: none;
+      background-color: transparent;
+      color: $accentPrimaryColor;
+      border: 2px solid $accentPrimaryColor;
+    }
+  }
+
+  &_inverted {
+    background-color: $backgroundPrimaryColor;
+    color: $accentPrimaryColor;
+  }
+}

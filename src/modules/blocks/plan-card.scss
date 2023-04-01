@@ -1,0 +1,105 @@
+$className: 'plan-card';
+
+.#{$className} {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 16px;
+  padding: 16px 24px 24px;
+  min-height: 576px;
+  width: 256px;
+  border: 1px solid $borderPrimaryColor;
+  border-radius: 8px;
+  background-color: $backgroundSecondaryColor;
+
+  &_highlighted {
+    border: none;
+    background-color: $accentPrimaryColor;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      right: 13px;
+      width: 10px;
+      height: 25px;
+      background-repeat: no-repeat;
+      background-image: url(../../images/curved-right-arrow-white.svg);
+    }
+  }
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+
+    &_type {
+      &_open-source {
+        background-image: url(../../images/monoculus-icon.svg);
+      }
+      &_pro-basic {
+        background-image: url(../../images/sunglasses-icon.svg);
+      }
+      &_pro-standard {
+        background-image: url(../../images/binoculars-icon.svg);
+      }
+      &_custom {
+        background-image: url(../../images/microscope-icon.svg);
+      }
+    }
+  }
+
+  &__title {
+    font-size: 34.3px;
+    line-height: 0.9;
+    font-weight: 700;
+    color: $fontPrimaryColor;
+
+    &_inverted {
+      color: $fontPrimaryInvertedColor;
+    }
+  }
+
+  &__text {
+    font-size: 17px;
+    line-height: 1.4;
+
+    &_inverted {
+      color: $fontPrimaryInvertedColor;
+    }
+  }
+
+  &__text-accent {
+    font-weight: 700;
+
+    &_type {
+      &_big {
+        font-size: 20px;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  &__contact-text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+  }
+
+  &__list {
+    font-size: 17px;
+    line-height: 1.4;
+    list-style-type: '•  ';
+    margin-left: 25px;
+  }
+
+  &__action-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+}
