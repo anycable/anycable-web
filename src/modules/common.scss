@@ -11,16 +11,6 @@
   background-color: $backgroundPrimaryColor;
 }
 
-.visible {
-  visibility: visible;
-  width: 100%;
-  opacity: 1;
-}
-
-.hidden {
-  display: none;
-}
-
 .mobile-only {
   @include mediaMin($tablet) {
     display: none;

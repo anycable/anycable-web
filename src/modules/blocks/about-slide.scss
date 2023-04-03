@@ -27,14 +27,21 @@ $className: 'about-slide';
     justify-content: center;
     align-items: center;
     height: fit-content;
-    position: sticky;
+    position: absolute;
     top: 0;
     padding-top: 238px;
     transition: $opacitySecondaryTransition;
 
-    & > img {
+    &_visible {
+      position: sticky;
+      visibility: visible;
+      opacity: 1;
       width: 100%;
     }
+  }
+
+  &__slide-show-img {
+    width: 100%;
   }
 
   &__content {
