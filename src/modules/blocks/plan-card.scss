@@ -25,7 +25,7 @@ $className: 'plan-card';
       width: 10px;
       height: 25px;
       background-repeat: no-repeat;
-      background-image: url(../../images/curved-right-arrow-white.svg);
+      background-image: url(./images/curved-right-arrow-white.svg);
 
       @include mediaMax(1071px) {
         display: none;
@@ -41,16 +41,16 @@ $className: 'plan-card';
 
     &_type {
       &_open-source {
-        background-image: url(../../images/monoculus-icon.svg);
+        background-image: url(./images/monoculus-icon.svg);
       }
       &_pro-basic {
-        background-image: url(../../images/sunglasses-icon.svg);
+        background-image: url(./images/sunglasses-icon.svg);
       }
       &_pro-standard {
-        background-image: url(../../images/binoculars-icon.svg);
+        background-image: url(./images/binoculars-icon.svg);
       }
       &_custom {
-        background-image: url(../../images/microscope-icon.svg);
+        background-image: url(./images/microscope-icon.svg);
       }
     }
   }

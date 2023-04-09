@@ -41,7 +41,7 @@ $className: 'plans-slide';
       width: 39.5px;
       height: 64px;
       background-repeat: no-repeat;
-      background-image: url(../../images/curved-left-arrow-red.svg);
+      background-image: url(./images/curved-left-arrow-red.svg);
       z-index: 1;
 
       @include mediaMax(1071px) {
@@ -57,7 +57,7 @@ $className: 'plans-slide';
       width: 39.5px;
       height: 64px;
       background-repeat: no-repeat;
-      background-image: url(../../images/curved-right-arrow-red.svg.svg);
+      background-image: url(./images/curved-right-arrow-red.svg.svg);
       z-index: -1;
 
       @include mediaMax(1071px) {

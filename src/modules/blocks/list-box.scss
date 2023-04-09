@@ -22,25 +22,25 @@ $className: 'list-box';
     &_type {
       &_discord {
         &::before {
-          background-image: url('../../images/discord-icon.svg');
+          background-image: url('./images/discord-icon.svg');
         }
       }
 
       &_newsletter {
         &::before {
-          background-image: url('../../images/newsletter-icon.svg');
+          background-image: url('./images/newsletter-icon.svg');
         }
       }
 
       &_github {
         &::before {
-          background-image: url('../../images/github-mascot-icon.svg');
+          background-image: url('./images/github-mascot-icon.svg');
         }
       }
 
       &_twitter {
         &::before {
-          background-image: url('../../images/twitter-icon.svg');
+          background-image: url('./images/twitter-icon.svg');
         }
       }
     }
