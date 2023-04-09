@@ -26,6 +26,10 @@ $className: 'plan-card';
       height: 25px;
       background-repeat: no-repeat;
       background-image: url(../../images/curved-right-arrow-white.svg);
+
+      @include mediaMax(1071px) {
+        display: none;
+      }
     }
   }
 

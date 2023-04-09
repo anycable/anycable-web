@@ -15,4 +15,4 @@ const onEntry: IntersectionObserverCallback = entry => {
 
 const observer = new IntersectionObserver(onEntry, observerOptions);
 
-observer.observe(trigger);
+trigger && observer.observe(trigger);

@@ -28,6 +28,8 @@ $className: 'slide';
 
     @include mediaMax($mobile) {
       margin-bottom: 24px;
+      font-size: 40px;
+      line-height: 1.3;
     }
   }
 }

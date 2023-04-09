@@ -25,6 +25,7 @@
     "vite-plugin-handlebars": "^1.6.0"
   },
   "dependencies": {
+    "@splidejs/splide": "^4.1.4",
     "jump.js": "1.0.2",
     "lighty": "0.5.0",
     "sass": "^1.60.0"
