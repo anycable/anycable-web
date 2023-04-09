@@ -14,7 +14,6 @@ $className: 'about-slide';
   &__content {
     display: flex;
     flex-direction: column;
-    gap: 56px;
     width: 50%;
     background-color: $backgroundSecondaryColor;
     border-right: 1px solid $borderPrimaryColor;
@@ -48,6 +47,11 @@ $className: 'about-slide';
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 56px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
 
     &_type {
       &_no-padding {
@@ -70,6 +74,7 @@ $className: 'about-slide';
     font-size: 46px;
     line-height: 1.2;
     font-weight: 700;
+    margin-bottom: 56px;
 
     &_type {
       &_with-padding {
@@ -82,6 +87,7 @@ $className: 'about-slide';
     @include mediaMax($mobile) {
       font-size: 40px;
       line-height: 1.3;
+      margin-bottom: 24px;
     }
   }
 

@@ -5,8 +5,14 @@ $className: 'case-studies';
   flex-direction: column;
   gap: 16px;
 
+  @include mediaMax($tablet) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
   &__study {
     border-radius: 8px;
+    flex-grow: 1;
 
     &_color {
       &_blue {
