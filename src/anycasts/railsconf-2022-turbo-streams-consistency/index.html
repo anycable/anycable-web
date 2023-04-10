@@ -11,9 +11,7 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-
-  <!-- Inline style to prevent flickering on load -->
-  <body style="visibility: hidden">
+  <body>
     {{> gtm_body }} {{> blog_nav }}
     <div class="blog--content">{{ md './index.md' }}</div>
     {{> footer }} {{> popup}}

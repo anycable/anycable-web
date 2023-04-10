@@ -7,8 +7,3 @@ import './js/components/learn-more-scroll';
 import './js/components/slide-show';
 import './js/components/carousel';
 import './index.scss';
-
-//to prevent flickering on load
-window.addEventListener('load', () => {
-  document.body.style.visibility = 'visible';
-});

@@ -4,8 +4,3 @@ import './js/components/gtm-form';
 import './js/components/header-show-hide';
 import './js/components/popups-show-hide';
 import './index-blog.scss';
-
-//to prevent flickering on load
-window.addEventListener('load', () => {
-  document.body.style.visibility = 'visible';
-});
