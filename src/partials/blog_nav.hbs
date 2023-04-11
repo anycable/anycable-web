@@ -1,22 +1,9 @@
-<nav class="blog--nav">
-  <a class="btn outline" href="{{ coalesce backLink '/blog' }}">
-    <span class="btn--icon blog--nav--arrow">
-      {{ inline 'images/arrow-left.svg' }}
-    </span>
-    <strong class="btn--text blog--nav--text">{{ coalesce backLinkLabel 'Other Posts' }}</strong>
-  </a>
-  <div class="blog--nav--section">
-    <a class="btn small topnav--btn gtm-link" href="/#getting-started" data-gtm-category="blogMenu" data-gtm-action="tryIt">
-      <span class="btn--icon">
-        {{ inline 'images/play.svg' }}
-      </span>
-      <span class="btn--text">Try it now</span>
-    </a>
-    <a class="btn small topnav--btn secondary gtm-link" href="https://docs.anycable.io" target="_blank" data-gtm-category="blogButton" data-gtm-action="docs">
-      <span class="btn--icon">
-        {{ inline 'images/docs.svg' }}
-      </span>
-      <span class="btn--text">Docs</span>
-    </a>
-  </div>
-</nav>
+<header class='blog-header'>
+  <nav class='blog-header__content'>
+    <a class='link blog-header__link' href='{{coalesce backLink "/blog"}}'>
+      <span class='blog-header__link-icon'>
+        {{inline 'images/arrow-left.svg'}}
+      </span>{{coalesce backLinkLabel 'Other Posts'}}</a>
+    <button class='button try-now-btn'>Try it now</button>
+  </nav>
+</header>

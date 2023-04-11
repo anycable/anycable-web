@@ -1,0 +1,67 @@
+$className: 'videos';
+
+.#{$className} {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @include mediaMax($tablet) {
+    flex-direction: row;
+  }
+
+  @include mediaMax($mobile) {
+    flex-direction: column;
+  }
+
+  &__item {
+    display: grid;
+    align-items: end;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  &__image {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  &__overlay {
+    position: relative;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    display: grid;
+    align-items: flex-end;
+    height: 120px;
+    background: linear-gradient(360deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+    border-radius: 0 0 8px 8px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      bottom: 15px;
+      width: 32px;
+      height: 32px;
+      background-image: url('./images/play-icon.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+
+  &__title {
+    color: $fontPrimaryInvertedColor;
+    font-size: 20px;
+    line-height: 1.6;
+    margin: 0 24px 15px 64px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    @include mediaMax($mobile) {
+      font-size: 17px;
+      line-height: 1.4;
+    }
+  }
+}

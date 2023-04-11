@@ -1,0 +1,12 @@
+<li class='blog__article'>
+  <p class='blog__article-date'>{{coalesce date 'May 4, 1997'}}</p>
+  <a
+    class='link blog__article-title'
+    href='{{coalesce link "/blog"}}'
+    target="{{#if em-icon}}_blanc{{else}}_self{{/if}}"
+  >{{coalesce title 'title'}}
+    <span
+        class='blog__article-icon {{#if video-icon}}blog__article-icon_type_video{{/if}}{{#if em-icon}}blog__article-icon_type_em{{/if}}'
+      ></span>
+  </a>
+</li>

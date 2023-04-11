@@ -1,0 +1,49 @@
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: 'Stem Text';
+  font-display: swap;
+  src: url(./fonts/subset-StemText-Regular.woff2) format('woff2'),
+    url(./fonts/subset-StemText-Regular.woff) format('woff');
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: 'Stem Text';
+  font-display: swap;
+  src: url(./fonts/subset-StemText-Bold.woff2) format('woff2'),
+    url(./fonts/subset-StemText-Bold.woff) format('woff');
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: 'Stem';
+  font-display: swap;
+  src: url(./fonts/subset-Stem-Regular.woff2) format('woff2'),
+    url(./fonts/subset-Stem-Regular.woff) format('woff');
+}
+
+@font-face {
+  font-weight: 500;
+  font-style: normal;
+  font-family: 'Stem';
+  font-display: swap;
+  src: url(./fonts/subset-Stem-Medium.woff2) format('woff2'),
+    url(./fonts/subset-Stem-Medium.woff) format('woff');
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: 'Stem';
+  font-display: swap;
+  src: url(./fonts/subset-Stem-Bold.woff2) format('woff2'),
+    url(./fonts/subset-Stem-Bold.woff) format('woff');
+}
+
+:root {
+  --default-font: 'Stem Text', 'Arial', sans-serif;
+  --headers-font: 'Stem', 'Arial', sans-serif;
+}

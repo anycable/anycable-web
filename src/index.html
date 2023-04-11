@@ -3,8 +3,17 @@
   {{> dochead }}
   <body>
     {{> gtm_body }}
-    <pug src="./index.pug" />
-    {{> footer }}
-    <script type="module" src="/index.js"></script>
+    <div class="page">
+      {{> header}}
+      <main class="content">
+        {{> slides/main-slide}} {{> slides/about-slide}} {{>
+        slides/plans-slide}} {{> slides/resources-slide}}
+      </main>
+      {{> footer }}
+    </div>
+    {{> popup popupClass='try-now-popup'}} {{> popup
+    popupClass='contact-us-popup' popupTitle = 'Contact us'
+    typeformLink='https://form.typeform.com/c/wAHm0sRP'}}
+    <script type="module" src="/index.ts"></script>
   </body>
 </html>

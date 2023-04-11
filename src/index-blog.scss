@@ -1,0 +1,11 @@
+@import url(./vendor/reset.scss);
+@import url(./vendor/fonts.css);
+@import './blog/styles/main.scss'; //old blog styles
+@import './modules/veriables.scss';
+@import './modules/mixins.scss';
+@import './modules/blocks/button.scss';
+@import './modules/blocks/footer.scss';
+@import './modules/blocks/case-studies.scss';
+@import './modules/blocks/popup.scss';
+@import './modules/blocks/blog.scss';
+@import './modules/blocks/blog-header.scss';

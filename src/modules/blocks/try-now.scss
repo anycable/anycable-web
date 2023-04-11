@@ -1,0 +1,32 @@
+$className: 'try-now';
+
+.#{$className} {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 102px;
+
+  @include mediaMax($mobile) {
+    margin-top: 24px;
+  }
+
+  &__caption {
+    text-align: center;
+    font-size: 17.4px;
+    line-height: 1.4;
+
+    &_bolded {
+      font-weight: 700;
+    }
+  }
+
+  &__button {
+    margin-top: 24px;
+    width: 100%;
+    max-width: 472px;
+
+    @include mediaMin($tablet) {
+      margin-bottom: 90px;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@mixin breakPoint($className, $screenSize) {
+  @media screen and (max-width: $screenSize) {
+    .#{$className} {
+      @content;
+    }
+  }
+}
+
+@mixin reset {
+  margin: 0;
+  padding: 0;
+}
+
+@mixin mediaMax($screenSize) {
+  @media (max-width: $screenSize) {
+    @content;
+  }
+}
+
+@mixin mediaMin($screenSize) {
+  @media (min-width: calc($screenSize + 1px)) {
+    @content;
+  }
+}

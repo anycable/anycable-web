@@ -1,0 +1,25 @@
+@import './veriables.scss';
+@import './mixins.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'Stem', Arial, sans-serif;
+  font-size: 18px;
+  background-color: $backgroundPrimaryColor;
+  min-width: 375px;
+}
+
+.mobile-only {
+  @include mediaMin($tablet) {
+    display: none;
+  }
+}
+
+.desktop-only {
+  @include mediaMin($tablet) {
+    display: none;
+  }
+}
