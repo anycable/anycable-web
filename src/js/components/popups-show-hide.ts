@@ -7,6 +7,9 @@ const signUpBtn = document.querySelector('.sign-up-btn');
 const tryNowBtns = document.querySelectorAll('.try-now-btn');
 const contactUsBtn = document.querySelector('.contact-us-btn');
 
+tryNowPopup.init(); //prevents flickering while loading
+contactUsPopup.init(); //prevents flickering while loading
+
 signUpBtn?.addEventListener('click', () => {
   tryNowPopup.open();
 });

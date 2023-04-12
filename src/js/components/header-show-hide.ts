@@ -6,11 +6,12 @@ const observerOptions = {
 };
 
 const onEntry: IntersectionObserverCallback = entry => {
-  entry.forEach(change =>
+  entry.forEach(change => {
+    header.style.display = 'inherit'; //prevents flickering while loading
     change.isIntersecting
-      ? header.classList.add('header_hidden')
-      : header.classList.remove('header_hidden')
-  );
+      ? header.classList.remove('header_shown')
+      : header.classList.add('header_shown');
+  });
 };
 
 const observer = new IntersectionObserver(onEntry, observerOptions);
