@@ -1,19 +1,21 @@
 $className: 'header';
 
 .#{$className} {
-  display: flex;
+  display: none; //prevents flickering while loading
   justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 10;
+  transform: translateY(-100px);
+  opacity: 0;
   transition: all 0.3s;
 
-  &_hidden {
-    // hide header
-    transform: translateY(-100px);
-    opacity: 0;
+  &_shown {
+    // show header
+    transform: translateY(0);
+    opacity: 1;
   }
 
   &__content {

@@ -7,6 +7,12 @@ export default class Popup {
     this._handleEscClose = this._handleEscClose.bind(this);
   }
 
+  init() {
+    setTimeout(() => {
+      this._popup.style.display = 'inherit'; //prevents flickering while loading
+    }, 0);
+  }
+
   open() {
     const popupContainer = this._popup.querySelector(
       '.popup__container'
