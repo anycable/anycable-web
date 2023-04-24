@@ -47,7 +47,17 @@ const handlebarsHelpers = {
   },
   'coalesce': (...vars) => {
     return new Handlebars.SafeString(vars.find(v => v))
-  }
+  },
+  'youtube': (videoId, linkType) => {
+    switch(linkType) {
+      case 'video': {
+        return new Handlebars.SafeString(`https://youtube.com/watch?v=${videoId}`)
+      }
+      case 'thumbnail': {
+        return new Handlebars.SafeString(`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`)
+      }
+    }
+  },
 }
 
 export default defineConfig({
