@@ -18,7 +18,7 @@ $className: 'slide-show';
     position: absolute;
     top: 0;
     padding-top: 238px;
-    transition: opacity 0.6s, transform 0.4s ease;
+    transition: opacity 2s, transform 1s ease;
 
     &_type {
       &_down-scroll {
