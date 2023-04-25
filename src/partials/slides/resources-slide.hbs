@@ -10,66 +10,37 @@
     >
       <p class='resources-slide__heading'>Case Studies</p>
       <ul class='case-studies'>
-        <li class='case-studies__study case-studies__study_color_blue'>
-          <a
-            class='link case-studies__study-link'
-            href='/case-studies/healthie'
-          >
-            <img
-              src='./images/healthie-r-logo.svg'
-              class='case-studies__study-logo'
-              alt='Healthie-r logo'
-            />
-            <div class='case-studies__study-content'>
-              <p
-                class='case-studies__study-date case-studies__study-date_color_dark'
-              >
-                January 20, 2022
-              </p>
-              <p
-                class='case-studies__study-title case-studies__study-title_color_purple'
-              >
-                Making a chat’s real-time functionality Healthie-r with
-                AnyCable&nbsp;Pro
-              </p>
-            </div>
-          </a>
-        </li>
-        <li class='case-studies__study case-studies__study_color_midnight'>
-          <a
-            class='link case-studies__study-link'
-            href='/case-studies/vito'
-          ><img
-              src='./images/revitalizing-vito-logo.svg'
-              class='case-studies__study-logo'
-              alt='Revitalizing Vito logo'
-            />
-            <div class='case-studies__study-content'>
-              <p class='case-studies__study-date'>January 20, 2022</p>
-              <p
-                class='case-studies__study-title case-studies__study-title_color_pink'
-              >
-                Revitalizing Vito with AnyCable&nbsp;Pro
-              </p>
-            </div>
-          </a>
-        </li>
-        <li class='case-studies__study case-studies__study_color_mint'>
-          <a
-            class='link case-studies__study-link'
-            href='/case-studies/callbell'
-          ><img
-              src='./images/a-call-for-pro-logo.svg'
-              class='case-studies__study-logo'
-              alt='A call for Pro logo'
-            />
-            <div class='case-studies__study-content'>
-              <p class='case-studies__study-date'>August 3, 2021</p>
-              <p class='case-studies__study-title'>
-                A call for Pro: Callbell
-              </p>
-            </div></a>
-        </li>
+        {{>
+            use_case
+              background-color='royal-blue'
+              text-color='white'
+              url='https://evilmartians.com/chronicles/real-time-magic-no-elixirs-optimizing-sera-with-anycable'
+              img-src='../images/sera-logo.png'
+              img-alt='Sera logo'
+              date='March 1, 2023'
+              title='Real-time magic, no elixirs: optimizing Sera with AnyCable'
+        }}
+        {{>
+            use_case
+              background-color='blue'
+              text-color='purple'
+              date-color='dark'
+              url='/case-studies/healthie'
+              img-src='../images/healthie-r-logo.svg'
+              img-alt='Healthie-r logo'
+              date='January 20, 2022'
+              title='Making a chat’s real-time functionality Healthie-r with AnyCable&nbsp;Pro'
+        }}
+        {{>
+            use_case
+              background-color='midnight'
+              text-color='pink'
+              url='/case-studies/vito'
+              img-src='../images/revitalizing-vito-logo.svg'
+              img-alt='Revitalizing Vito logo'
+              date='January 20, 2022'
+              title='Revitalizing Vito with AnyCable&nbsp;Pro'
+        }}
       </ul>
     </div>
     <div class='resources-slide__section resources-slide__section_type_docs'>
