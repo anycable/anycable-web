@@ -58,6 +58,9 @@ const handlebarsHelpers = {
       }
     }
   },
+  'currentYear': () => {
+    return (new Date()).getFullYear()
+  }
 }
 
 export default defineConfig({
