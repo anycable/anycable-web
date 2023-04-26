@@ -3,16 +3,12 @@ $className: 'docs';
 .#{$className} {
   display: grid;
   gap: 16px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 128px 21px 96px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    'firstBlock secondBlock'
-    'thirdBlock secondBlock'
-    'thirdBlock fourthBlock';
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
 
   @include mediaMax($smallMobile) {
-    grid-template-rows: 120px 37px 96px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
   }
 
   &__item {
@@ -20,23 +16,11 @@ $className: 'docs';
     border: 1px solid $borderPrimaryColor;
     background-color: $backgroundPrimaryColor;
 
-    &_position {
-      &_first {
-        grid-area: firstBlock;
-      }
-      &_second {
-        grid-area: secondBlock;
-      }
-      &_third {
-        grid-area: thirdBlock;
-      }
-      &_fourth {
-        grid-area: fourthBlock;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: 700;
-      }
+    &_all_docs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
     }
   }
 
