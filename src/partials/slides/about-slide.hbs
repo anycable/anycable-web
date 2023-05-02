@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle'>Better real-time UX</h3>
+        <h3 class='about-slide__subtitle anim-trigger'>Better real-time UX</h3>
         <p class='about-slide__text'>
           Real-time comes with its own problems and nuances, but when
           using AnyCable, you don't need to worry about any of those. When your
@@ -179,6 +179,44 @@
               src='./images/real-time-chart-wide.svg'
               alt='Real time chart'
             />
+          </div>
+        </div>
+        <div class='slide-show__frame anim-frame'>
+          <div class='chart' data-controller='demo'>
+            <p class='chart__heading'>
+              The emulation below demonstarates how AnyCable handles connection failures and catches up messages.
+              You can try this feature yourself in our <a href='https://demo.anycable.io' target='_blank' rel='nofollow'>Demo application</a>.
+            </p>
+            <div class='demo'>
+              <div class='demo__chat' data-demo-target='any'>
+                <div class='demo__chat__header demo__chat__header_online'>
+                  <div class='demo__chat__user_details'>
+                    <h3 class='demo__chat__username'>Alice</h3>
+                    <span class='demo__chat__via'>via AnyCable</span>
+                  </div>
+                  <a class='demo__chat__status' href='javascript:void();'>online</a>
+                </div>
+                <div class='demo__chat__messages'>
+                  <form class='demo__chat__form'>
+                    <input class='demo__chat__input' type='text' />
+                  </form>
+                </div>
+              </div>
+              <div class='demo__chat' data-demo-target='action'>
+                <div class='demo__chat__header demo__chat__header_online'>
+                  <div class='demo__chat__user_details'>
+                    <h3 class='demo__chat__username'>Bob</h3>
+                    <span class='demo__chat__via'>via Action Cable</span>
+                  </div>
+                  <a class='demo__chat__status' href='javascript:void();'>online</a>
+                </div>
+                <div class='demo__chat__messages'>
+                  <form class='demo__chat__form'>
+                    <input class='demo__chat__input' type='text' />
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class='slide-show__frame anim-frame'>{{inline
