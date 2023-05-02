@@ -8,7 +8,7 @@ const slideShowFrames = new AnimationController({
     down: 'slide-show__frame_type_down-scroll',
     up: 'slide-show__frame_type_up-scroll',
   },
-  scrollOffsets: [0, 200],
+  scrollOffsets: [0, 0],
   showFirstFrame: true,
 });
 

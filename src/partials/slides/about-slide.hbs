@@ -6,18 +6,18 @@
       </h2>
       <div class='about-slide__section'>
         <h3 class='about-slide__subtitle anim-trigger'>
-          Radically better performance, radically lower costs
+          Better performance, lower costs
         </h3>
         <p class='about-slide__text'>
           AnyCable transforms your Rails application’s real-time performance,
-          making it on par with Go, Elixir, and Node.js-based solutions so you
+          making it on par with Go, Elixir, and Node.js–based solutions so you
           can focus on implementing the business logic. Scale efficiently with
           AnyCable by leveraging its much lower RAM usage and better CPU
-          utilization compared to built-in ActionCable.
+          utilization than Action Cable.
         </p>
         <div class='chart mobile-only'>
           <p class='chart__heading'>
-            AnyCable Pro uses 4X less RAM compared to Action Cable handling 20K
+            AnyCable Pro uses 4X less RAM compared to Action Cable while handling 20K
             connections
           </p>
           <div class='chart__columns'>
@@ -55,29 +55,13 @@
         </div>
       </div>
       <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle anim-trigger'>Better real-time UX</h3>
+        <h3 class='about-slide__subtitle'>Better real-time UX</h3>
         <p class='about-slide__text'>
-          Real-time comes with its own set of problems and nuances, but when
+          Real-time comes with its own problems and nuances, but when
           using AnyCable, you don't need to worry about any of those. When your
           clients go offline and re-connect, they will receive all the updates
-          they missed: instantly, with a delivery and order guarantee.
+          they missed.
         </p>
-        <a
-          class='video-tip about-slide__video-tip link'
-          href='https://www.youtube.com/watch?v=0XTfL-iVLw4&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A'
-          target='_blank'
-        >
-          <div class='video-tip__play-icon'></div>
-          <img
-            class='video-tip__preview'
-            src='./images/video-tip-preview.jpg'
-            alt='video tip preview image'
-          />
-          <p class='video-tip__description'>
-            Build reactive Rails applications with Hotwire or StimulusReflex,
-            and scale them efficiently with AnyCable
-          </p>
-        </a>
         <div class='chart mobile-only'>
           <p class='chart__heading'>
             One instance of AnyCable guarantees low broadcast latency for up to
@@ -107,7 +91,7 @@
           }}</div>
       </div>
       <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle anim-trigger'>Own your data</h3>
+        <h3 class='about-slide__subtitle'>Own your data</h3>
         <p class='about-slide__text'>
           Like with any data, being strategic when handling real-time data is
           super important. With AnyCable, you remain the owner: you store and
@@ -117,27 +101,40 @@
       </div>
       <div class='about-slide__section about-slide__section_type_no-padding'>
         <h3
-          class='about-slide__subtitle about-slide__subtitle_type_with-padding'
+          class='about-slide__subtitle about-slide__subtitle_type_with-padding anim-trigger'
         >
           And it’s still Ruby
         </h3>
         <p class='about-slide__text about-slide__text_type_with-padding'>
           Write clean and maintainable Ruby code instead of piling up yet
-          another 3rd-party integration.
+          another 3rd-party integration. AnyCable plays nice with Rails and Hotwire, so you
+          focus on shipping features without worrying about scale issues.
         </p>
-        <img
-          class='about-slide__section-image'
-          src='./images/ruby-img-narrow.svg'
-          alt='Ruby code demo'
-        />
+        <a
+          class='video-tip about-slide__video-tip link'
+          href='https://www.youtube.com/watch?v=0XTfL-iVLw4&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A'
+          target='_blank'
+        >
+          <div class='video-tip__play-icon'></div>
+          <img
+            class='video-tip__preview'
+            src='./images/video-tip-preview.jpg'
+            alt='video tip preview image'
+          />
+          <p class='video-tip__description'>
+            Build reactive Rails applications with Hotwire or StimulusReflex,
+            and scale them efficiently with AnyCable
+          </p>
+        </a>
       </div>
     </div>
     <div class='about-slide__content about-slide__content_type_slide-show'>
+      <div class='slide-show__header'></div>
       <div class='slide-show'>
         <div class='slide-show__frame anim-frame'>
           <div class='chart'>
             <p class='chart__heading'>
-              AnyCable Pro uses 4X less RAM compared to Action Cable handling
+              AnyCable Pro uses 4X less RAM compared to Action Cable while handling
               20K connections
             </p>
             <div class='chart__columns'>
@@ -172,10 +169,7 @@
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-        <div class='slide-show__frame anim-frame'>
-          <div class='chart'>
+            <br/>
             <p class='chart__heading'>
               One instance of AnyCable guarantees low broadcast latency for up
               to 10K simultaneous connections

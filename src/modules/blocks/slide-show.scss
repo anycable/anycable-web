@@ -7,6 +7,11 @@ $className: 'slide-show';
   height: 100vh;
   padding-left: 64px;
 
+  &__header {
+    display: block;
+    height: 120px;
+  }
+
   &__frame {
     display: flex;
     visibility: hidden;
@@ -17,7 +22,8 @@ $className: 'slide-show';
     height: fit-content;
     position: absolute;
     top: 0;
-    padding-top: 238px;
+    align-self: center;
+    padding-top: 38px;
     transition: opacity 2s, transform 1s ease;
 
     &_type {
