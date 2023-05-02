@@ -50,6 +50,35 @@ class Chat {
     return this._isOnline;
   }
 
+  emulateFormSubmit(text: string) {
+    let input = this._input;
+    let chars = text.split('');
+    let pos = 0;
+
+    return new Promise<void>(resolve => {
+      let type = () => {
+        setTimeout(() => {
+          if (chars.length) {
+            input.focus();
+            if (input.setSelectionRange) {
+              input.setSelectionRange(pos, pos);
+            }
+            input.value += chars.shift();
+            pos++;
+            input.scrollLeft = input.scrollWidth;
+            type();
+          } else {
+            input.value = '';
+            input.blur();
+            resolve();
+          }
+        }, 50 + Math.random() * 50);
+      };
+
+      type();
+    });
+  }
+
   addMessage(text: string, mine: boolean) {
     if (!mine && !this._isOnline) {
       if (this._hasHistory) {
@@ -163,7 +192,7 @@ export default class DemoController {
     }, event.delay);
   }
 
-  private playEvent(event: Event): void {
+  private async playEvent(event: Event): void {
     switch (event.type) {
       case 'status':
         let target = event.from === 'any' ? this._anyChat : this._actionChat;
@@ -179,6 +208,7 @@ export default class DemoController {
             ? [this._anyChat, this._actionChat]
             : [this._actionChat, this._anyChat];
 
+        await author.emulateFormSubmit(event.text);
         author.addMessage(event.text, true);
         recipient.addMessage(event.text, false);
 
