@@ -1,0 +1,35 @@
+$className: 'illustration';
+
+.#{$className} {
+  &__coin {
+    animation: coin-throw 1500ms linear infinite;
+  }
+}
+
+@keyframes coin-throw {
+  0% {
+    transform: translate(100px, 83px);
+  }
+  25% {
+    transform: translate(100px, 83px);
+  }
+
+  50% {
+    transform: translate(85px, 95px);
+    opacity: 1;
+  }
+
+  51% {
+    opacity: 0;
+  }
+
+  75% {
+    transform: translate(110px, 83px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(100px, 83px);
+    opacity: 1;
+  }
+}

@@ -3,6 +3,6 @@ export default function triggerGTMEvent(event) {
     dataLayer.push(event);
   } else {
     // for development
-    console.info("GTM event:", event);
+    console.info('GTM event:', event);
   }
 }

@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -20,12 +20,15 @@
     "postcss-easings": "^3.0.1",
     "postcss-nested": "^6.0.0",
     "postcss-preset-env": "^8.0.1",
+    "prettier": "^2.8.7",
     "vite": "^4.1.0",
     "vite-plugin-handlebars": "^1.6.0",
     "vite-plugin-pug": "^0.3.2"
   },
   "dependencies": {
+    "@splidejs/splide": "^4.1.4",
     "jump.js": "1.0.2",
-    "lighty": "0.5.0"
+    "lighty": "0.5.0",
+    "sass": "^1.60.0"
   }
 }

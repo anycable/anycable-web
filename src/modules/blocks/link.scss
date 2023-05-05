@@ -1,0 +1,17 @@
+$className: 'link';
+
+.#{$className} {
+  text-decoration: none;
+  transition: opacity 200ms;
+  color: $accentPrimaryColor;
+  cursor: pointer;
+
+  &:active {
+    text-decoration: none;
+    color: $accentPrimaryColor;
+  }
+
+  &:hover {
+    opacity: $opacityPrimaryValue;
+  }
+}

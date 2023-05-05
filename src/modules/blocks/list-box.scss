@@ -1,0 +1,48 @@
+$className: 'list-box';
+
+.#{$className} {
+  list-style-type: '•  ';
+  margin-left: 29px;
+
+  &__item {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  &__icon-link {
+    &::before {
+      content: '....';
+      color: transparent;
+      background-repeat: no-repeat;
+      background-position: right;
+      background-size: cover;
+      margin-right: 2px;
+    }
+
+    &_type {
+      &_discord {
+        &::before {
+          background-image: url('./images/discord-icon.svg');
+        }
+      }
+
+      &_newsletter {
+        &::before {
+          background-image: url('./images/letter-icon.svg');
+        }
+      }
+
+      &_github {
+        &::before {
+          background-image: url('./images/github-mascot-icon.svg');
+        }
+      }
+
+      &_twitter {
+        &::before {
+          background-image: url('./images/twitter-icon.svg');
+        }
+      }
+    }
+  }
+}

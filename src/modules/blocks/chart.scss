@@ -1,0 +1,78 @@
+$className: 'chart';
+
+.#{$className} {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__heading {
+    color: $fontSecondaryColor;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 17px;
+  }
+
+  &__columns {
+    position: relative;
+    display: flex;
+    gap: 8px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  &__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border-radius: 0px 0px 4px 4px;
+    &_color {
+      &_red {
+        background-color: $accentPrimaryColor;
+        height: 52px;
+      }
+      &_orange {
+        background-color: #ff6a3a;
+        height: 80px;
+      }
+      &_grey {
+        background-color: #a0a0a0;
+        height: 206px;
+      }
+    }
+  }
+
+  &__column-text {
+    font-size: 14px;
+    line-height: 1.4;
+
+    &_type {
+      &_heading {
+        color: $fontPrimaryInvertedColor;
+        margin-top: 3px;
+      }
+      &_caption {
+        color: $fontSecondaryColor;
+      }
+    }
+  }
+
+  &__img-chart {
+    width: 100%;
+  }
+}

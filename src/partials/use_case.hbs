@@ -1,0 +1,23 @@
+<li class='case-studies__study case-studies__study_color_{{background-color}}'>
+  <a
+    class='link case-studies__study-link'
+    href={{url}}
+    target='_blank'
+  >
+    <img
+      src={{img-src}}
+      class='case-studies__study-logo'
+      alt={{img-alt}}
+    />
+    <div class='case-studies__study-content'>
+      <p class='case-studies__study-date case-studies__study-date_color_{{coalesce date-color text-color}}'>
+        {{date}}
+      </p>
+      <p
+        class='case-studies__study-title case-studies__study-title_color_{{text-color}}'
+      >
+       {{{title}}}
+      </p>
+    </div>
+  </a>
+</li>

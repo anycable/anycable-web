@@ -1,0 +1,226 @@
+<section class='slide resources-slide'>
+  <div class='slide__title-wrapper'>
+    <h2 class='slide__title'>Resources</h2>
+  </div>
+  <div
+    class='resources-slide__content resources-slide__content_place_resources'
+  >
+    <div
+      class='resources-slide__section resources-slide__section_type_case-studies'
+    >
+      <p class='resources-slide__heading'>Case Studies</p>
+      <ul class='case-studies'>
+        {{>
+            use_case
+              background-color='royal-blue'
+              text-color='white'
+              url='https://evilmartians.com/chronicles/real-time-magic-no-elixirs-optimizing-sera-with-anycable'
+              img-src='/images/sera-logo.png'
+              img-alt='Sera logo'
+              date='March 1, 2023'
+              title='Real-time magic, no elixirs: optimizing Sera with AnyCable'
+        }}
+        {{>
+            use_case
+              background-color='blue'
+              text-color='purple'
+              date-color='dark'
+              url='/case-studies/healthie'
+              img-src='/images/healthie-r-logo.svg'
+              img-alt='Healthie-r logo'
+              date='January 20, 2022'
+              title='Making a chat’s real-time functionality Healthie-r with AnyCable&nbsp;Pro'
+        }}
+        {{>
+            use_case
+              background-color='midnight'
+              text-color='pink'
+              url='/case-studies/vito'
+              img-src='/images/revitalizing-vito-logo.svg'
+              img-alt='Revitalizing Vito logo'
+              date='January 20, 2022'
+              title='Revitalizing Vito with AnyCable&nbsp;Pro'
+        }}
+      </ul>
+    </div>
+    <div class='resources-slide__section resources-slide__section_type_docs'>
+      <p class='resources-slide__heading'>Docs</p>
+      <ul class='docs'>
+        <li class='docs__item'>
+          <a
+            class='link docs__link'
+            href='https://docs.anycable.io/pro?id=installation'
+            target='_blank'
+          >
+            <img
+              src='./images/Installation-icon.svg'
+              class='docs__icon'
+              alt='Instalation icon'
+            />
+            <p class='docs__title'>Installation</p>
+          </a>
+        </li>
+        <li class='docs__item'>
+          <a
+            class='link docs__link'
+            href='https://docs.anycable.io/rails/getting_started'
+            target='_blank'
+          >
+            <img
+              src='./images/rails-icon.svg'
+              class='docs__icon'
+              alt='Rails icon'
+            />
+            <p class='docs__title'>Getting started with Rails</p>
+          </a>
+        </li>
+        <li class='docs__item'>
+          <a
+            class='link docs__link'
+            href='https://docs.anycable.io/rails/hotwire'
+            target='_blank'
+          >
+            <img
+              src='./images/hotwire-icon.svg'
+              class='docs__icon'
+              alt='Hotwire icon'
+            />
+            <p class='docs__title'>Using with Hotwire</p>
+          </a>
+        </li>
+        <li class='docs__item docs__item_all_docs'>
+          <a
+            class='link docs__link'
+            href='https://docs.anycable.io'
+            target='_blank'
+          >
+            <p class='docs__title docs__title_type_with-arrow'>
+              All docs
+            </p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div
+      class='resources-slide__section resources-slide__section_type_learn-more'
+    >
+      <p class='resources-slide__heading'>Learn more</p>
+      <ul class='list-box'>
+        <li class='list-box__item'>
+          Check
+          <a class='link list-box__link' href='/blog'>our blog</a>
+          for new posts on building real-time functionality.
+        </li>
+        <li class='list-box__item'>
+          Check the
+          <a
+            class='link list-box__link'
+            href='https://demo.anycable.io/'
+            target='_blank'
+          >demo app</a>, and its
+          <a
+            class='link list-box__link'
+            href='https://github.com/anycable/anycable_rails_demo'
+            target='_blank'
+          >repo</a>.
+        </li>
+        <li class='list-box__item'>
+          Watch
+          <a
+            class='link list-box__link'
+            href='https://www.youtube.com/playlist?list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A'
+            target='_blank'
+          >screencast</a>
+          on YouTube.
+        </li>
+        <li class='list-box__item'>
+          Watch the RailConf 2022 talk
+          <a
+            class='link list-box__link'
+            href='https://www.youtube.com/watch?v=TgpSs2ffJL0'
+            target='_blank'
+          >“The pitfalls of realtime-ification”</a>.
+        </li>
+      </ul>
+    </div>
+    <div class='resources-slide__section resources-slide__section_type_videos'>
+      <div class='videos'>
+        <a
+          class='link videos__item'
+          href="{{youtube "TUHL5jb9jBo" "video"}}"
+          target='_blank'
+        >
+          <img
+            class='videos__image'
+            src="{{youtube "TUHL5jb9jBo" "thumbnail"}}"
+            alt='AnyCast Ep. 7 video screenshot'
+          />
+          <div class='videos__overlay'>
+            <p class='videos__title'>[AnyCasts, Ep. 7] Flying multi-regionally with NATS</p>
+          </div>
+          <a
+            class="link button"
+            href="https://www.youtube.com/watch?v=TUHL5jb9jBo&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A"
+            target="_blank">
+            Watch previous episodes
+          </a>
+        </a>
+        <a
+          class='link videos__item'
+          href='https://www.youtube.com/watch?v=TgpSs2ffJL0'
+          target='_blank'
+        >
+          <img
+            class='videos__image'
+            src='./images/railsConf-video-screenshot.jpg'
+            alt='RailsConf 2022 video screenshot'
+          />
+          <div class='videos__overlay'>
+            <p class='videos__title'>
+              RailsConf 2022 - The pitfalls of realtime-ification
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div
+      class='resources-slide__section resources-slide__section_type_community'
+    >
+      <p class='resources-slide__heading'>Community</p>
+      <ul class='list-box'>
+        <li class='list-box__item'>
+          Join the discussion on
+          <a
+            class='link list-box__icon-link list-box__icon-link_type_discord'
+            href='https://discord.gg/stimulus-reflex'
+            target='_blank'
+          >Discord</a>
+        </li>
+        <li class='list-box__item'>
+          Sign up for the
+          <a
+            class='link list-box__icon-link list-box__icon-link_type_newsletter'
+            href='https://anycable.substack.com/'
+            target='_blank'
+          >Any Cables newsletter</a>
+        </li>
+        <li class='list-box__item'>
+          Add a request, report an issue, and contribute on
+          <a
+            class='link list-box__icon-link list-box__icon-link_type_github'
+            href='https://github.com/anycable/anycable'
+            target='_blank'
+          >GitHub</a>
+        </li>
+        <li class='list-box__item'>
+          Make sure you follow us on
+          <a
+            class='link list-box__icon-link list-box__icon-link_type_twitter'
+            href='https://twitter.com/any_cable'
+            target='_blank'
+          >Twitter</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

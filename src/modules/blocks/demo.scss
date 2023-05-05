@@ -1,0 +1,112 @@
+$className: 'demo';
+
+.#{$className} {
+  display: flex;
+  flex-direction: row;
+  height: 60vh;
+  width: 100%;
+  position: relative;
+  justify-content: space-around;
+
+  &__chat {
+    border: 1px solid $accentSecondaryColor;
+    border-radius: 5px;
+    width: 45%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &__messages {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    &__form {
+      padding: 0.5rem;
+      background-color: $backgroundSecondaryColor;
+      border-radius: 8px;
+      margin-bottom: 2px;
+      margin-left: 2px;
+      margin-right: 2px;
+    }
+
+    &__input {
+      width: 100%;
+      appearance: none;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    &__message {
+      border-radius: 8px;
+      border: 1px solid $accentPrimaryColor;
+      padding: 0.5rem;
+      max-width: 70%;
+      margin: 0 5px 5px 5px;
+      color: $accentPrimaryColor;
+
+      &_theirs {
+        color: $fontSecondaryColor;
+        border-color: $fontSecondaryColor;
+        align-self: flex-end;
+      }
+    }
+
+    &__status_message {
+      color: $fontSecondaryColor;
+      font-size: 0.8rem;
+      text-align: center;
+      margin: 0 0 5px 0;
+    }
+
+    &__header {
+      background-color: $accentPrimaryColor;
+      color: white;
+      text-align: center;
+      padding: 5px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &_offline {
+        background-color: $accentSecondaryColor;
+        color: $fontPrimaryColor;
+        font-weight: normal;
+
+        & h3 {
+          font: inherit;
+        }
+      }
+    }
+
+    &__user_details {
+      align-self: center;
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+    }
+
+    &__via {
+      font-size: 0.8rem;
+      font-weight: normal;
+      margin-left: 5px;
+    }
+
+    &__status {
+      font-size: 0.8rem;
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

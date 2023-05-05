@@ -1,0 +1,11 @@
+$className: 'content';
+
+.#{$className} {
+  width: 100%;
+  min-height: 100%;
+  flex: 1 1 auto;
+
+  &_type_blog {
+    padding-top: 60px;
+  }
+}

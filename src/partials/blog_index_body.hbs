@@ -1,0 +1,70 @@
+<main class='content content_type_blog'>
+  <section class='blog'>
+    <h1 class='blog__title'>Articles</h1>
+    <div class='blog__content'>
+      <div class='blog__section'>
+        <h2 class='blog__section-title'>Engineering</h2>
+        <ul class='blog__articles'>
+          {{> blog_article date='March 24, 2023' video-icon=true title='Flying multi-regionally with NATS' link="/anycasts/flying-multi-regionally-with-nats"}}
+          {{> blog_article date='March 21, 2023' em-icon=true title='AnyCable off Rails: connecting Twilio streams with Hanami' link="https://evilmartians.com/chronicles/anycable-goes-off-rails-connecting-twilio-streams-with-hanami"}}
+          {{> blog_article date='September 6, 2022' video-icon=true title='Learn to Fly.io with AnyCable' link="/anycasts/learn-to-fly-io-with-anycable"}}
+          {{> blog_article date='July 19, 2022' video-icon=true title='Turbo Streams vs. consistency' link="/anycasts/railsconf-2022-turbo-streams-consistency"}}
+          {{> blog_article date='July 5, 2022' title='Multi-tenancy vs. Cables: Introducing Action Cable command callbacks' link="/blog/multi-tenancy-vs-cables"}}
+          {{> blog_article date='May 10, 2022' video-icon=true title='Using anycable-client to auto-refresh tokens' link="/blog/anycasts-using-anycable-client"}}
+          {{> blog_article date='April 5, 2022' video-icon=true title='Of users and direct messaging (pt. 2)' link="/blog/anycasts-direct-messaging-part-2"}}
+          {{> blog_article date='February 16, 2022' video-icon=true title='Of users and direct messaging (pt. 1)' link="/blog/anycasts-direct-messaging-part-1"}}
+          {{> blog_article date='December 22, 2021' video-icon=true title='Exploring Rails 7, Hotwire and AnyCable speedy streams' link="/blog/anycasts-rails-7-hotwire-and-anycable"}}
+          {{> blog_article date='September 29, 2021' title='AnyCable v1.2: JWT identification and "hot streams"' link="/blog/jwt-identification-and-hot-streams"}}
+          {{> blog_article date='September 07, 2021' em-icon=true title='Real-time stress: AnyCable, k6, WebSockets, and Yabeda' link="https://evilmartians.com/chronicles/real-time-stress-anycable-k6-websockets-and-yabeda"}}
+          {{> blog_article date='July 28, 2021' em-icon=true title='Introducing JavaScript and TypeScript client for AnyCable' link="https://evilmartians.com/chronicles/introducing-anycable-javascript-and-typescript-client"}}
+          {{> blog_article date='June 16, 2021' em-icon=true title='AnyCable Goes Pro: Fast WebSockets for Ruby, at scale' link="https://evilmartians.com/chronicles/anycable-goes-pro-fast-websockets-for-ruby-at-scale"}}
+        </ul>
+      </div>
+      <div class='blog__section'>
+        <h2 class='blog__section-title'>Use Cases</h2>
+        <ul class='case-studies'>
+          {{>
+              use_case
+                background-color='royal-blue'
+                text-color='white'
+                url='https://evilmartians.com/chronicles/real-time-magic-no-elixirs-optimizing-sera-with-anycable'
+                img-src='../images/sera-logo.png'
+                img-alt='Sera logo'
+                date='March 1, 2023'
+                title='Real-time magic, no elixirs: optimizing Sera with AnyCable'
+          }}
+          {{>
+              use_case
+                background-color='blue'
+                text-color='purple'
+                date-color='dark'
+                url='/case-studies/healthie'
+                img-src='../images/healthie-r-logo.svg'
+                img-alt='Healthie-r logo'
+                date='January 20, 2022'
+                title='Making a chat’s real-time functionality Healthie-r with AnyCable&nbsp;Pro'
+          }}
+          {{>
+              use_case
+                background-color='midnight'
+                text-color='pink'
+                url='/case-studies/vito'
+                img-src='../images/revitalizing-vito-logo.svg'
+                img-alt='Revitalizing Vito logo'
+                date='January 20, 2022'
+                title='Revitalizing Vito with AnyCable&nbsp;Pro'
+          }}
+          {{>
+              use_case
+                background-color='mint'
+                url='/case-studies/callbell'
+                img-src='../images/a-call-for-pro-logo.svg'
+                img-alt='A call for Pro logo'
+                date='August 3, 2021'
+                title='A call for Pro: Callbell'
+          }}
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead pageTitle="AnyCasts, ep.4: Using anycable-client to auto-refresh tokens" pageDescription="This episode focuses on the authentication token refreshing problem for Action Cable clients and introduces an official AnyCable JS library." }}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/a11y-light.min.css" integrity="sha512-WDk6RzwygsN9KecRHAfm9HTN87LQjqdygDmkHSJxVkVI7ErCZ8ZWxP6T8RvBujY1n2/E4Ac+bn2ChXnp5rnnHA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  {{> dochead pageTitle="AnyCasts, ep.4: Using anycable-client to auto-refresh
+  tokens" pageDescription="This episode focuses on the authentication token
+  refreshing problem for Action Cable clients and introduces an official
+  AnyCable JS library." }}
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/a11y-light.min.css"
+    integrity="sha512-WDk6RzwygsN9KecRHAfm9HTN87LQjqdygDmkHSJxVkVI7ErCZ8ZWxP6T8RvBujY1n2/E4Ac+bn2ChXnp5rnnHA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   <body>
-    {{> gtm_body }}
-    {{> blog_nav }}
-    <div class="blog--content">
-      {{ md './index.md' }}
-    </div>
-    {{> footer }}
-    <script type="module" src="/index.js"></script>
+    {{> gtm_body }} {{> blog_nav }}
+    <div class="blog--content">{{ md './index.md' }}</div>
+    {{> footer }} {{> popup}}
+    <script type="module" src="/index-blog.ts"></script>
   </body>
 </html>

@@ -1,0 +1,51 @@
+$className: 'video-tip';
+
+.#{$className} {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid $borderPrimaryColor;
+  background-color: $backgroundPrimaryColor;
+  border-radius: 8px;
+  overflow: hidden;
+  color: $fontPrimaryColor;
+
+  &__preview {
+    width: 96px;
+  }
+
+  &__description {
+    font-size: 17px;
+    line-height: 1.4;
+    margin: 12px 24px 12px 16px;
+
+    @include mediaMax($mobile) {
+      font-size: 14px;
+      margin: 8px;
+    }
+  }
+
+  &__play-icon {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    width: 24px;
+    height: 24px;
+    background-image: url(./images/play-icon.svg);
+  }
+}
+
+.element-animation {
+  margin: 2rem 0;
+  font-size: 3rem;
+
+  /* Скроем элемент в начальном состоянии */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.element-animation.element-show {
+  opacity: 1;
+  transition: all 1.5s;
+  transform: translateY(0%);
+}
