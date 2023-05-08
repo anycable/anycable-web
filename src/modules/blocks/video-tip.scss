@@ -9,6 +9,8 @@ $className: 'video-tip';
   border-radius: 8px;
   overflow: hidden;
   color: $fontPrimaryColor;
+  // Hack to make borders visible on mobile Safari (which doesn't compute the width correclty
+  margin: 0 2px;
 
   &__preview {
     width: 96px;

@@ -8,7 +8,7 @@ $className: 'docs';
 
   @include mediaMax($smallMobile) {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
   }
 
   &__item {
