@@ -13,21 +13,6 @@ $className: 'case-studies';
   &__study {
     border-radius: 8px;
     flex-grow: 1;
-
-    &_color {
-      &_blue {
-        background-color: rgba(223, 233, 250, 1);
-      }
-      &_midnight {
-        background-color: rgba(39, 47, 62, 1);
-      }
-      &_mint {
-        background-color: rgba(105, 191, 168, 1);
-      }
-      &_royal-blue {
-        background-color: rgba(50, 87, 223, 1);
-      }
-    }
   }
 
   &__study-link {
@@ -51,12 +36,6 @@ $className: 'case-studies';
     font-size: 14.3px;
     line-height: 1.4;
     font-weight: 400;
-
-    &_color {
-      &_dark {
-        color: rgba(14, 23, 43, 1);
-      }
-    }
   }
 
   &__study-title {
@@ -64,19 +43,5 @@ $className: 'case-studies';
     font-size: 20px;
     line-height: 1.6;
     font-weight: 400;
-
-    &_color {
-      &_white {
-        color: rgba(255, 255, 255, 1);
-      }
-
-      &_purple {
-        color: rgba(98, 70, 237, 1);
-      }
-
-      &_pink {
-        color: rgba(244, 180, 180, 1);
-      }
-    }
   }
 }
