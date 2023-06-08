@@ -161,12 +161,26 @@
   &--figure {
     text-align: center;
     padding: 0 0 1em 0;
+    display: flex;
+    flex-direction: column;
+
+    &-rows {
+      @media (--desktop) {
+        flex-direction: row;
+      }
+    }
   }
 
   &--media {
     object-fit: contain;
     height: auto;
     max-width: 100%;
+
+    @media (--desktop) {
+      &-half-n-half {
+        width: 50%;
+      }
+    }
   }
 
   &--youtube {

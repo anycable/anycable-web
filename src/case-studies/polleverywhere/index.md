@@ -10,7 +10,10 @@ Poll Everywhere, the leading platform for live audience engagement and direct fe
 
 But first, some background: [Poll Everywhere][] is a Software-as-a-Service company that built an audience engagement tool for creating interactive live polls, surveys, Q&As, word clouds, and quizzes. It’s used in presentations, meetings, classrooms, and events of any size (for instance, our team at Evil Martians has used it during internal team-building exercises!)
 
-TODO: images
+<figure class="blog--figure blog--figure-rows">
+  <img class="blog--media blog--media-half-n-half" title="Poll Everywhere UI example" src="/images/blog/poll-martian-products.png">
+  <img class="blog--media blog--media-half-n-half" title="Poll Everywhere UI example" src="/images/blog/poll-book.png">
+</figure>
 
 Poll Everywhere was founded in 2008 with the goal of changing how audiences engage during presentations and events. Its founders recognized the need for a dynamic, interactive way to gather real-time feedback, create discussions, and enhance audience participation through more engaging and interactive experiences.
 
