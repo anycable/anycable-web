@@ -29,7 +29,7 @@ Initially, Healthie used Action Cable for their real-time feature implementation
 
 The Poll Everywhere team initially tested ActionCable but was nervous about its performance for such a workload and wanted to make sure they chose a tool that met the real-time needs of the product.
 
-TODO: video
+<!-- TODO: video -->
 
 They started to explore what the market could offer regarding high-performing solutions for building real-time communications. Since they had read about some Ruby on Rails applications whose teams had great results with AnyCable and had some experience with another Evil Martians open source product—[Overmind][]—they gave AnyCable Pro’s trial a shot to perform load-testing and to compare the results with their in-house solution.
 
