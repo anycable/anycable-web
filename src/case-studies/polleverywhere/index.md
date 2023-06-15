@@ -25,7 +25,7 @@ The main feature of the Poll Everywhere product is a set of visualizations that 
 
 For visualization streaming, the team uses a home-grown, [open source solution](https://github.com/firehoseio/firehose) built on top of [EventMachine][]. Migrating their main real-time chart visualizations to Hotwire means using ActionCable for streaming updates. The product deals with highly burst-prone traffic since it’s centered around live audience engagement during presentations. It can’t take 1 second to process the vote of a participant from an audience of 20,000 because the presenter will have moved on to the next slide by the time all the votes come in.
 
-Initially, Healthie used Action Cable for their real-time feature implementation. However, as their userbase started growing, it became increasingly disadvantageous to have the same web service responsible for handling both WebSockets connections, and ActionCable channel logic, as well as HTTP traffic on top of that.
+Initially, Poll Everywhere used Action Cable for their real-time feature implementation. However, as their userbase started growing, it became increasingly disadvantageous to have the same web service responsible for handling both WebSockets connections, and ActionCable channel logic, as well as HTTP traffic on top of that.
 
 The Poll Everywhere team initially tested ActionCable but was nervous about its performance for such a workload and wanted to make sure they chose a tool that met the real-time needs of the product.
 
