@@ -1,8 +1,11 @@
 export default function triggerGTMEvent(event) {
-  if (window.dataLayer) {
-    dataLayer.push(event);
+  if (window.posthog) {
+    const type = event.event;
+    delete event.event;
+
+    posthog.capture(type, event);
   } else {
     // for development
-    console.info('GTM event:', event);
+    console.info('Analytics event:', event);
   }
 }
