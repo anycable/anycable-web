@@ -1,4 +1,4 @@
-# <img src="/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 7:<br>Flying multi-regionally with NATS
+# <img src="/images/demo.svg" class="blog--title-icon"> Flying multi-regionally with NATS
 
 March 24, 2023
 {date}
@@ -8,8 +8,6 @@ March 24, 2023
 <div class="divider"></div>
 
 In this episode, we explore the recently released [embedded NATS support][enats] in AnyCable-Go and see how it can be used to simplify building multi-regional Rails/AnyCable applications on [Fly.io][fly].
-
-> You can support us on [GitHub Sponsors][sponsors] (and get access to the source code) ❤️
 
 <figure class="blog--figure">
   <iframe class="blog--youtube" src="https://youtube.com/embed/TUHL5jb9jBo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

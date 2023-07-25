@@ -1,4 +1,4 @@
-# <img src="/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 2:<br>Of users and direct messaging (pt. 1)
+# <img src="/images/demo.svg" class="blog--title-icon"> Of users and direct messaging (pt. 1)
 
 February 16, 2022
 {date}

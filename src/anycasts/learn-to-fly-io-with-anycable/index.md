@@ -1,4 +1,4 @@
-# <img src="/images/demo.svg" class="blog--title-icon"> AnyCasts, Ep. 6:<br>Learn to Fly.io with AnyCable
+# <img src="/images/demo.svg" class="blog--title-icon"> Learn to Fly.io with AnyCable
 
 September 6, 2022
 {date}
@@ -14,8 +14,6 @@ In this episode, we explore [Fly.io][fly] capabilities in deploying Rails real-t
 - Deploying [RPC-less][rpc-less-post] version of AnyCable and load-testing it.
 - Adding RPC server to the equation with just a couple of configuration changes.
 - Exporting [AnyCable metrics][anycable-metrics] to [fly-metrics.io][fly-metrics].
-
-> You can support us on [GitHub Sponsors][sponsors] (and get access to the source code) ❤️
 
 <figure class="blog--figure">
   <iframe class="blog--youtube" src="https://youtube.com/embed/j9JqlbMAQKY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
