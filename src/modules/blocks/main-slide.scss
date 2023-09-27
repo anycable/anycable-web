@@ -122,6 +122,11 @@ $className: 'main-slide';
     margin-top: 24px;
   }
 
+  &__list-item {
+      text-align: center;
+      padding: 8px;
+  }
+
   &__learn-more-btn {
     position: absolute;
     bottom: 30px;
