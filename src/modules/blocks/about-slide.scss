@@ -122,6 +122,29 @@ $className: 'about-slide';
     }
   }
 
+  &__tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__btn {
+    padding: 0 12px;
+    box-shadow: none;
+  }
+
+  &__btn-inactive {
+    background-color: $accentSecondaryColor !important;
+    color: black !important;
+  }
+
+  &__btn-js {
+    // js logo yellow color
+    background-color: #f7df1e;
+    color: black;
+  }
+
   &__section-image {
     display: flex;
     justify-content: center;

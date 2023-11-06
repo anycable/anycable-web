@@ -9,7 +9,7 @@
           Better performance, lower costs
         </h3>
         <p class='about-slide__text'>
-          AnyCable brings the real-time performance of a Ruby or Rails app to match Go, Elixir, and Node.js–based solutions. Written in Go, AnyCable scales efficiently with much lower RAM usage and drastically better CPU utilization than the Rails default Action Cable.
+          Written in Go, AnyCable scales efficiently while keeping RAM and CPU usage low. For Ruby on Rails, AnyCable the difference compared to Action Cable is hard to underestimate both in terms of resources required and quality of service.
         </p>
         <div class='chart mobile-only'>
           <p class='chart__heading'>
@@ -90,10 +90,14 @@
         <h3
           class='about-slide__subtitle about-slide__subtitle_type_with-padding anim-trigger'
         >
-          And it’s still Ruby
+          <span class='about-slide__tabs'>
+          <span>And it’s still</span>
+          <button id="btn-rb" class='button about-slide__btn about-slide__btn-ruby' onclick="document.getElementById('code-rb').style.display = 'block'; document.getElementById('code-js').style.display = 'none'; document.getElementById('btn-rb').classList.remove('about-slide__btn-inactive'); document.getElementById('btn-js').classList.add('about-slide__btn-inactive')">Ruby</button>
+          <button id="btn-js" class='button about-slide__btn about-slide__btn-inactive about-slide__btn-js' onclick="document.getElementById('code-rb').style.display = 'none'; document.getElementById('code-js').style.display = 'block'; document.getElementById('btn-js').classList.remove('about-slide__btn-inactive'); document.getElementById('btn-rb').classList.add('about-slide__btn-inactive')">JavaScript</button>
+          </span>
         </h3>
         <p class='about-slide__text about-slide__text_type_with-padding'>
-          Write clean and maintainable Ruby code instead of piling up yet another 3rd-party integration. AnyCable plays nice with Rails and Hotwire, so you focus on shipping features without worrying about scaling issues.
+          Write clean and maintainable code in your favorite language instead of piling up yet another 3rd-party integration. AnyCable plays nice with Rails, Next.js, and Hotwire applications, so you focus on shipping features without worrying about scaling issues.
         </p>
         <a
           class='video-tip about-slide__video-tip link'
@@ -120,7 +124,7 @@
         <div class='slide-show__frame anim-frame'>
           <div class='chart'>
             <p class='chart__heading'>
-              AnyCable Pro uses 4X less RAM compared to Action Cable while handling
+              AnyCable Pro uses 4X less RAM compared to Rails Action Cable while handling
               20K connections
             </p>
             <div class='chart__columns'>
@@ -211,9 +215,19 @@
         <div class='slide-show__frame anim-frame'>
           <img
             class='slide-show__img'
+            id="code-rb"
             src='./images/ruby-img-wide.svg'
             alt='Ruby code demo'
           />
-        </div></div></div>
+          <img
+            class='slide-show__img'
+            id="code-js"
+            style="display:none"
+            src='./images/js-img-wide.svg'
+            alt='JS code demo'
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </section>
