@@ -1,0 +1,20 @@
+$className: 'trusted-slide';
+
+.#{$className} {
+  background-color: $backgroundSecondaryColor;
+
+  &__list {
+    width: 100%;
+    max-width: 1920px;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 48px;
+    margin-bottom: 80px;
+    overflow-x: auto;
+  }
+
+  &__logo {
+    height: 80px;
+    width: auto;
+  }
+}
