@@ -122,6 +122,18 @@ $className: 'main-slide';
     margin-top: 24px;
   }
 
+  &__banner {
+    margin-top: 32px;
+    border-left: 3px solid $accentPrimaryColor;
+    padding-left: 20px;
+  }
+
+  &__banner_title {
+    color: $accentPrimaryColor;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
   &__list-item {
       text-align: center;
       padding: 8px;
