@@ -2,89 +2,38 @@
   <div class='about-slide__wrapper'>
     <div class='about-slide__content'>
       <h2 class='about-slide__title about-slide__title_type_with-padding'>
-        Why AnyCable?
+        How It Works
       </h2>
       <div class='about-slide__section'>
         <h3 class='about-slide__subtitle anim-trigger'>
-          Better performance, lower costs
+          Take a load off
         </h3>
         <p class='about-slide__text'>
-          Written in Go, AnyCable scales efficiently while keeping RAM and CPU usage low. For Ruby on Rails, AnyCable the difference compared to Action Cable is hard to underestimate both in terms of resources required and quality of service.
+          Realtime features like chats, collaboration, data streams, HTML-over-WebSockets require low latency and persistent connection between client and server, which is a burden for your main app. AnyCable is a Go application that stands next to your main app and takes the realtime load off of it. It scales horizontally and solves realtime-spefic issues like avoiding reconnection avalanches on deployments.
         </p>
         <div class='chart mobile-only'>
-          <p class='chart__heading'>
-            AnyCable Pro uses 4X less RAM compared to Action Cable while handling 20K
-            connections
-          </p>
-          <div class='chart__columns'>
-            <div class='chart__column'>
-              <div class='chart__figure chart__figure_color_red'>
-                <p class='chart__column-text chart__column-text_type_heading'>
-                  AnyCable PRO
-                </p>
-              </div>
-              <p class='chart__column-text chart__column-text_type_caption'>
-                470 MB
-              </p>
-            </div>
-            <div class='chart__column'>
-              <div class='chart__figure chart__figure_color_orange'>
-                <p class='chart__column-text chart__column-text_type_heading'>
-                  AnyCable
-                </p>
-              </div>
-              <p class='chart__column-text chart__column-text_type_caption'>
-                720 MB
-              </p>
-            </div>
-            <div class='chart__column'>
-              <div class='chart__figure chart__figure_color_grey'>
-                <p class='chart__column-text chart__column-text_type_heading'>
-                  Action Cable
-                </p>
-              </div>
-              <p class='chart__column-text chart__column-text_type_caption'>
-                1.8 GB
-              </p>
-            </div>
-          </div>
         </div>
       </div>
       <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle anim-trigger'>Better real-time UX</h3>
+        <h3 class='about-slide__subtitle anim-trigger'>Delivery guarantees</h3>
         <p class='about-slide__text'>
-          AnyCable brings consistency and reliability to real-time communication and collaboration. When users go offline and re-connect, AnyCable will make sure that they receive all the updates they missed. 
+          If you don't want to occasionally miss realtime updates–like chat messages or notifications–AnyCable is your choice. When a client experiences connectivity issues, which are very common on a micro scale, AnyCable restores not only the connection itself, but also any missed data. So you don't have to think about it.
         </p>
         <div class='chart mobile-only'>
-          <p class='chart__heading'>
-            One instance of AnyCable guarantees low broadcast latency for up to
-            10K simultaneous connections
-          </p>
-          <img
-            class='chart__img-chart'
-            src='./images/real-time-chart.svg'
-            alt='Real time chart'
-          />
         </div>
       </div>
       <div class='about-slide__section about-slide__section_type_no-padding'>
         <h3
           class='about-slide__subtitle about-slide__subtitle_type_with-padding anim-trigger'
-        >
-          Control PaaS expenses
-        </h3>
+        >Keep cost and data under control</h3>
         <p class='about-slide__text about-slide__text_type_with-padding'>
-          As your business grows and serves more customers, expenses on PaaS tend to explode and limit your options. With AnyCable, you get the best of both worlds from the beginning: start with a simple setup (or <a href="https://plus.anycable.io" target="_blank">AnyCable+</a>) and move on to a more complex one as you grow and scale. The cost is always under your control as you only purchase a license to run AnyCable Pro.
+          As your business grows, expenses on PaaS tend to explode. With AnyCable, you always have a choice: start with a SaaS <a href="https://plus.anycable.io" target="_blank">AnyCable+</a> and switch to on premise, open source or commercial, whenever you want to. <br>
+          With on premise AnyCable, all data is stored on your servers and is never sent to a 3rd-party. Simple and secure.
         </p>
+
         <div class='about-slide__section-image'>{{inline
             'images/illustration.svg'
           }}</div>
-      </div>
-      <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle'>Own your data</h3>
-        <p class='about-slide__text'>
-          Finally, with AnyCable, all data is stored on your servers and is never sent to a 3rd-party. Simple and secure, always in your control. Perfect for secure on-premise installations of your software. Proven efficiency in Healthcare, Legal, Security, and other industries.
-        </p>
       </div>
       <div class='about-slide__section about-slide__section_type_no-padding'>
         <h3
@@ -97,7 +46,7 @@
           </span>
         </h3>
         <p class='about-slide__text about-slide__text_type_with-padding'>
-          Write clean and maintainable code in your favorite language instead of piling up yet another 3rd-party integration. AnyCable plays nice with Rails, Next.js, and Hotwire applications, so you focus on shipping features without worrying about scaling issues.
+          Use tested abstactions: channels and subscriptions, and get out of the box reliability and delivery gurantees, when writing code with Rails, Next.js, and as any other JS/TS frameworks. For any Hotwire applications, AnyCable is a power-up that only requires a few changes in configuration.
         </p>
         <a
           class='video-tip about-slide__video-tip link'
@@ -122,54 +71,7 @@
       <div class='slide-show__header'></div>
       <div class='slide-show'>
         <div class='slide-show__frame anim-frame'>
-          <div class='chart'>
-            <p class='chart__heading'>
-              AnyCable Pro uses 4X less RAM compared to Rails Action Cable while handling
-              20K connections
-            </p>
-            <div class='chart__columns'>
-              <div class='chart__column'>
-                <div class='chart__figure chart__figure_color_red'>
-                  <p class='chart__column-text chart__column-text_type_heading'>
-                    AnyCable PRO
-                  </p>
-                </div>
-                <p class='chart__column-text chart__column-text_type_caption'>
-                  470 MB
-                </p>
-              </div>
-              <div class='chart__column'>
-                <div class='chart__figure chart__figure_color_orange'>
-                  <p class='chart__column-text chart__column-text_type_heading'>
-                    AnyCable
-                  </p>
-                </div>
-                <p class='chart__column-text chart__column-text_type_caption'>
-                  720 MB
-                </p>
-              </div>
-              <div class='chart__column'>
-                <div class='chart__figure chart__figure_color_grey'>
-                  <p class='chart__column-text chart__column-text_type_heading'>
-                    Action Cable
-                  </p>
-                </div>
-                <p class='chart__column-text chart__column-text_type_caption'>
-                  1.8 GB
-                </p>
-              </div>
-            </div>
-            <br/>
-            <p class='chart__heading'>
-              One instance of AnyCable guarantees low broadcast latency for up
-              to 10K simultaneous connections
-            </p>
-            <img
-              class='chart__img-chart'
-              src='./images/real-time-chart-wide.svg'
-              alt='Real time chart'
-            />
-          </div>
+
         </div>
         <div class='slide-show__frame anim-frame'>
           <div class='chart' data-controller='demo'>
