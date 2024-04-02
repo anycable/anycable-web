@@ -1,117 +1,110 @@
 <section class='slide plans-slide'>
   <div class='slide__title-wrapper'>
-    <h2 class='slide__title plans-slide__title'>Plans</h2>
+    <h3 class='plans-slide__pretitle'>Pricing</h4>
+    <h2 class='slide__title plans-slide__title'>Choose option</h2>
   </div>
-  <div class='splide'>
-    <div class='splide__track'>
-      <ul class='splide__list plans-slide__content'>
-        <li class='splide__slide plan-card'>
-          <div class='plan-card__icon plan-card__icon_type_open-source'></div>
-          <h3 class='plan-card__title'>Open-<br />source</h3>
-          <p class='plan-card__text'>
-            AnyCable is open source and an important part of the Rails ecosystem. Perfect to deploy to Heroku, Fly, or with Docker or K8s.
-          </p>
-          <p class='plan-card__text'>Key features:</p>
-            <ul class='plan-card__list'>
-              <li>Hotwire support out-of-the-box</li>
-              <li>Consistency (reliable streams)</li>
-              <li>JWT authentication</li>
-              <li>Simplified setup (RPC over HTTP)</li>
-              <li>Observability with Prometheus and StatsD</li>
-            </ul>
-          <div class='plan-card__action-wrapper'>
-            <p class='plan-card__text'>
-              <span
-                class='plan-card__text-accent plan-card__text-accent_type_big'
-              >Free</span>
-            </p>
-            <a
-              class='link button button_variant_outlined'
-              href='https://github.com/anycable/anycable'
-              target='_blank'
-              data-ph-capture-attribute-link-id='plan-free'
-            >
-              Learn more
-            </a>
-          </div>
-        </li>
-        <li class='splide__slide plan-card'>
-          <div class='plan-card__icon plan-card__icon_type_pro-basic'></div>
-          <h3 class='plan-card__title'>Pro <br />Basic</h3>
-          <div>
-            <p class='plan-card__text'>
-              AnyCable Pro has all the benefits of open source and is almost twice <span class='plan-card__text-accent'>more memory efficient</span>.
-            </p>
-            <p class='plan-card__text'>Pro Basic is smooth at scale and improves DX:</p>
-            <ul class='plan-card__list'>
-              <li>Consistency (reliable streams) in cluster mode</li>
-              <li>Adaptive scaling</li>
-              <li>Slow drain on shutdown</li>
-              <li>Binary compression</li>
-              <li>Fallback transport for networks behind firewalls</li>
-              <li>Apollo GraphQL support (clients, Studio)</li>
-            </ul>
-          </div>
-          <div class='plan-card__action-wrapper'>
-            <p class='plan-card__text'>
-              <span
-                class='plan-card__text-accent plan-card__text-accent_type_big'
-              >$590</span>
-              per year Unlimited&nbsp;instances
-            </p>
-            <button class='button try-now-btn' data-ph-capture-attribute-link-id='plan-basic'>
-              Try now
-            </button>
-          </div>
-        </li>
-        <li class='splide__slide plan-card plan-card_highlighted'>
-          <div class='plan-card__icon plan-card__icon_type_pro-standard'></div>
-          <h3 class='plan-card__title plan-card__title_inverted'>
-            Pro
-            <br />Standard
-          </h3>
-          <p class='plan-card__text plan-card__text_inverted'>
-            Pro Standard has all the benefits of Pro Basic and also features dedicated <span class='plan-card__text-accent'>Slack-based support</span>.
-          </p>
-          <div class='plan-card__action-wrapper'>
-            <p class='plan-card__text plan-card__text_inverted'>
-              <span
-                class='plan-card__text-accent plan-card__text-accent_type_big'
-              >$1,490</span>
-              per year Unlimited&nbsp;instances
-            </p>
-            <button class='button button_inverted try-now-btn' data-ph-capture-attribute-link-id='plan-standard'>
-              Try now
-            </button>
-          </div>
-        </li>
-        <li class='splide__slide plan-card'>
-          <div class='plan-card__icon plan-card__icon_type_custom'></div>
-          <h3 class='plan-card__title' id="custom-solutions">Custom <br />solutions</h3>
-          <p class='plan-card__text'>
-            As part of Evil Martians, we are experts in building real-time
-            functionality for our clients. We set up infrastructure, bring tools
-            and best practices, and train your team.
-          </p>
-          <div class='plan-card__action-wrapper'>
-            <p class='plan-card__text'>
-              <span
-                class='plan-card__text-accent plan-card__text-accent_type_big'
-              >Price on request</span>
-              <span
-                class='plan-card__contact-text'
-              >anycable@evilmartians.com</span>
-            </p>
-            <button class='button contact-us-btn' data-ph-capture-attribute-link-id='plan-custom'>
-              Contact us
-            </button>
-          </div>
-        </li>
-      </ul></div>
-  </div>
-  <p class='plans-slide__action-text'>
-    Start your
-    <span class='plans-slide__highlighted-text'>free 2-month trial</span>
-    of AnyCable&nbsp;Pro today
-  </p>
+  <ul class='plans-slide__content'>
+    <li class='plan-card'>
+      <div class='plan-card__icon plan-card__icon_type_open-source'></div>
+      <h3 class='plan-card__title'>Open-<br />source</h3>
+      <p class='plan-card__text'>
+        Deploy to Heroku, Fly, AWS, and anywhere with Docker or K8s.
+      </p>
+      <p class='plan-card__text'>Key features:</p>
+        <ul class='plan-card__list'>
+          <li>Hotwire support out-of-the-box</li>
+          <li>Consistency</li>
+          <li>JWT authentication</li>
+          <li>Prometheus and StatsD instrumentation</li>
+        </ul>
+      <div class='plan-card__action-wrapper'>
+        <p class='plan-card__text'>
+          <span
+            class='plan-card__text-accent plan-card__text-accent_type_big'
+          >Free</span>
+        </p>
+        <a
+          class='link button button_variant_outlined'
+          href='https://docs.anycable.io'
+          target='_blank'
+          data-ph-capture-attribute-link-id='plan-free'
+        >
+          Learn more
+        </a>
+      </div>
+    </li>
+    <li class='plan-card plan-card_highlighted'>
+      <div class='plan-card__icon plan-card__icon_type_pro-basic'></div>
+      <h3 class='plan-card__title plan-card__title_inverted'>Pro</h3>
+      <div>
+        <p class='plan-card__text plan-card__text_inverted'>
+          <span class='plan-card__text-accent'>Twice more memory efficient</span> than open source, and:
+        </p>
+        <ul class='plan-card__list plan-card__text_inverted'>
+          <li>Consistency in cluster mode</li>
+          <li>Adaptive scaling</li>
+          <li>Slow drain on shutdown</li>
+          <li>Binary compression</li>
+          <li>Long-polling fallback</li>
+          <li>Apollo GraphQL support (clients, Studio)</li>
+          <li>Dedicated Slack-based support</li>
+        </ul>
+      </div>
+      <div class='plan-card__action-wrapper'>
+        <p class='plan-card__text plan-card__text_inverted'>
+          <span
+            class='plan-card__text-accent plan-card__text-accent_type_big'
+          >$1490</span>
+          per year
+          <br/>
+          Unlimited&nbsp;instances
+          <br/>
+          Free 2-month trial
+        </p>
+        <button class='button button_inverted try-now-btn' data-ph-capture-attribute-link-id='plan-basic'>
+          Sign up
+        </button>
+      </div>
+    </li>
+    <li class='plan-card'>
+      <div class='plan-card__icon plan-card__icon_type_pro-standard'></div>
+      <h3 class='plan-card__title'>
+        Managed
+      </h3>
+      <p class='plan-card__text'>
+        We run and support AnyCable Pro for you.
+      </p>
+      <div class='plan-card__action-wrapper'>
+        <p class='plan-card__text'>
+          <span
+            class='plan-card__text-accent plan-card__text-accent_type_big'
+          >Free for early users</span>
+        </p>
+        <button class='button try-now-btn' data-ph-capture-attribute-link-id='plan-standard'>
+          Sign up
+        </button>
+      </div>
+    </li>
+    <li class='plan-card'>
+      <div class='plan-card__icon plan-card__icon_type_custom'></div>
+      <h3 class='plan-card__title' id="custom-solutions">Consulting</h3>
+      <ul class='plan-card__list'>
+        <li>Setup and deploy AnyCable</li>
+        <li>Load test setup to prepare for scale</li>
+      </ul>
+      <div class='plan-card__action-wrapper'>
+        <p class='plan-card__text'>
+          <span
+            class='plan-card__text-accent plan-card__text-accent_type_big'
+          >$200 per hour</span>
+          <span
+            class='plan-card__contact-text'
+          >anycable@evilmartians.com</span>
+        </p>
+        <button class='button contact-us-btn' data-ph-capture-attribute-link-id='plan-custom'>
+          Contact us
+        </button>
+      </div>
+    </li>
+  </ul>
 </section>
