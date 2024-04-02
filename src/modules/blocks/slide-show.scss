@@ -14,35 +14,12 @@ $className: 'slide-show';
 
   &__frame {
     display: flex;
-    visibility: hidden;
-    width: 0;
-    opacity: 0;
+    width: 100%;
     justify-content: center;
     align-items: center;
     height: fit-content;
-    position: absolute;
-    top: 0;
-    align-self: center;
     padding-top: 38px;
     transition: opacity 2s, transform 1s ease;
-
-    &_type {
-      &_down-scroll {
-        transform: translate(0, +100%);
-      }
-
-      &_up-scroll {
-        transform: translate(0, -100%);
-      }
-    }
-
-    &_visible {
-      position: sticky;
-      visibility: visible;
-      opacity: 1;
-      width: 100%;
-      transform: translate(0);
-    }
   }
 
   &__img {
