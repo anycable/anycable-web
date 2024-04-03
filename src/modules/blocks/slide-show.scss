@@ -22,6 +22,11 @@ $className: 'slide-show';
     transition: opacity 2s, transform 1s ease;
   }
 
+  &__code-wrapper {
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
   &__img {
     width: 100%;
   }

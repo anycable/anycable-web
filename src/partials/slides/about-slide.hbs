@@ -95,21 +95,34 @@
           AnyCable doesn't require any additional infrastructure components for its operation and scalability: good old HTTP API and embedded NATS pub/sub server got you covered. And if you already have Redis or NATS, you can use it as well.
         </p>
       </div>
-      <div class='about-slide__media about-slide__media-align-top'>
-        <div class='slide-show__frame'>
-          <img
-            class='slide-show__img'
-            id="code-rb"
-            src='./images/ruby-img-wide.svg'
-            alt='Ruby code demo'
-          />
-          <img
-            class='slide-show__img'
-            id="code-js"
-            style="display:none"
-            src='./images/js-img-wide.svg'
-            alt='JS code demo'
-          />
+      <div class='about-slide__media about-slide__media-align-top' data-controller="tabs">
+        <div class='about-slide__tabs'>
+          <button data-tabs-target="code-pubsub" class='button about-slide__btn about-slide__btn-pubsub active-tab'>Pub/Sub</button>
+          <button data-tabs-target="code-rb" class='button about-slide__btn about-slide__btn-ruby'>Ruby Channels</button>
+          <button data-tabs-target="code-js" class='button about-slide__btn about-slide__btn-js'>JS Channels</button>
+        </div>
+        <div class='slide-show__frame' id="codes">
+          <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
+            <img
+              class='slide-show__img'
+              src='./images/pubsub.png'
+              alt='Pub/Sub demo'
+            />
+          </div>
+          <div data-tabs-id="code-rb" style="display:none" class='slide-show__code-wrapper'>
+            <img
+              class='slide-show__img'
+              src='./images/ruby-channels.png'
+              alt='Ruby channels code demo'
+            />
+          </div>
+          <div data-tabs-id="code-js" style="display:none" class='slide-show__code-wrapper'>
+            <img
+              class='slide-show__img'
+              src='./images/js-channels.png'
+              alt='JS channels code demo'
+            />
+          </div>
         </div>
       </div>
     </div>

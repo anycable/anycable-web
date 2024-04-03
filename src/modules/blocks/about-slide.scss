@@ -72,6 +72,7 @@ $className: 'about-slide';
 
     &-align-top {
       align-self: flex-start;
+      margin-bottom: 48px;
     }
 
     @include mediaMax($tablet) {
@@ -135,14 +136,23 @@ $className: 'about-slide';
   &__btn {
     padding: 0 12px;
     box-shadow: none;
+    background-color: $accentSecondaryColor;
+    color: black;
   }
 
-  &__btn-inactive {
-    background-color: $accentSecondaryColor !important;
-    color: black !important;
+  &__btn-ruby.active-tab {
+    background-color: $accentPrimaryColor;
+    color: $backgroundPrimaryColor;
   }
 
-  &__btn-js {
+  &__btn-pubsub.active-tab {
+    box-shadow: none;
+    background-color: transparent;
+    color: $accentPrimaryColor;
+    border: 2px solid $accentPrimaryColor;
+  }
+
+  &__btn-js.active-tab {
     // js logo yellow color
     background-color: #f7df1e;
     color: black;
