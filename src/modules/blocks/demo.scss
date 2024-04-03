@@ -1,5 +1,17 @@
 $className: 'demo';
 
+@keyframes status-blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .#{$className} {
   display: flex;
   flex-direction: row;
@@ -20,8 +32,8 @@ $className: 'demo';
   }
 
   &__chat {
-    border: 1px solid $accentSecondaryColor;
-    border-radius: 5px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 8px;
     width: 45%;
     position: relative;
     display: flex;
@@ -35,24 +47,24 @@ $className: 'demo';
       position: relative;
       justify-content: flex-end;
       overflow: hidden;
+      background-color: $backgroundSecondaryColor;
     }
 
     &__form {
       padding: 0.5rem;
-      background-color: $backgroundSecondaryColor;
-      border-radius: 8px;
-      margin-bottom: 2px;
-      margin-left: 2px;
-      margin-right: 2px;
+      background-color: $backgroundPrimaryColor;
     }
 
     &__input {
       width: 100%;
       appearance: none;
       border: none;
-      border-radius: 8px;
       font-size: 1rem;
       line-height: 1.5rem;
+
+      &:focus {
+        outline: none;
+      }
     }
 
     &__message {
@@ -61,11 +73,13 @@ $className: 'demo';
       padding: 0.5rem;
       max-width: 70%;
       margin: 0 5px 5px 5px;
-      color: $accentPrimaryColor;
+      color: $fontPrimaryInvertedColor;
+      background-color: $accentPrimaryColor;
 
       &_theirs {
-        color: $fontSecondaryColor;
-        border-color: $fontSecondaryColor;
+        color: $fontPrimaryColor;
+        border-color: #dcdcdc;
+        background-color: #dcdcdc;
         align-self: flex-end;
       }
     }
@@ -78,21 +92,21 @@ $className: 'demo';
     }
 
     &__header {
-      background-color: $accentPrimaryColor;
-      color: white;
-      text-align: center;
-      padding: 5px 0;
+      background-color: $backgroundPrimaryColor;
+      padding: 12px 16px;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid $borderPrimaryColor;
 
       &_offline {
-        background-color: $accentSecondaryColor;
-        color: $fontPrimaryColor;
-        font-weight: normal;
+        & [role=status] {
+          color: $fontSecondaryColor;
 
-        & h3 {
-          font: inherit;
+          &::before {
+            animation: none;
+          }
         }
       }
     }
@@ -104,6 +118,10 @@ $className: 'demo';
       align-items: baseline;
     }
 
+    &__username {
+      font-weight: bold;
+    }
+
     &__via {
       font-size: 0.8rem;
       font-weight: normal;
@@ -112,11 +130,18 @@ $className: 'demo';
 
     &__status {
       font-size: 0.8rem;
-      color: inherit;
+      color: #48BE00;
+      font-weight: bold;
       text-decoration: none;
+      position: relative;
 
-      &:hover {
-        text-decoration: underline;
+      &::before {
+        content: "•";
+        font-size: 40px;
+        position: absolute;
+        left: -14px;
+        top: -16px;
+        animation: status-blink 1s infinite;
       }
     }
   }

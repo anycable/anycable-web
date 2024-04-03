@@ -20,6 +20,8 @@ type TDemoControllerOptions = {
   scenario: Event[];
 };
 
+const PUBSUBS = ['Action Cable', 'Pusher', 'Socket.io'];
+
 class Chat {
   private readonly _el: HTMLElement;
   private readonly _header: HTMLElement;
@@ -108,7 +110,7 @@ class Chat {
   markOnline() {
     this._header.classList.remove('demo__chat__header_offline');
     this._header.classList.add('demo__chat__header_online');
-    this._statusLink.textContent = 'online';
+    this._statusLink.textContent = 'Online';
     this._isOnline = true;
     this.addStatusMessage('Connection restored');
 
@@ -122,7 +124,7 @@ class Chat {
   markOffline() {
     this._header.classList.remove('demo__chat__header_online');
     this._header.classList.add('demo__chat__header_offline');
-    this._statusLink.textContent = 'offline';
+    this._statusLink.textContent = 'Offline';
     this._isOnline = false;
     this.addStatusMessage('No connection');
   }
@@ -145,6 +147,8 @@ export default class DemoController {
   private readonly _roomId: string;
   private readonly _anyChat: Chat;
   private readonly _actionChat: Chat;
+  private readonly _pubsubLabel: HTMLElement;
+  private _pubsubs: string[] = [];
   private readonly _scenario: Event[];
   private _currentScenario: Event[];
 
@@ -158,6 +162,9 @@ export default class DemoController {
     this._actionChat = new Chat(
       this._el.querySelector('[data-demo-target="action"]')!
     );
+    this._pubsubLabel = this._el.querySelector(
+      '[data-demo-target="another-pubsub"]'
+    )!;
 
     this._scenario = options.scenario;
   }
@@ -173,7 +180,20 @@ export default class DemoController {
 
   private playScenario(): void {
     this._currentScenario = this._scenario.slice();
+    this._setNextPubsub();
     this.scheduleNextEvent();
+  }
+
+  private _setNextPubsub() {
+    if (!this._pubsubs.length) {
+      this._pubsubs = PUBSUBS.slice();
+    }
+
+    const pubsub =
+      this._pubsubs[Math.floor(Math.random() * this._pubsubs.length)];
+    this._pubsubs = this._pubsubs.filter(p => p !== pubsub);
+
+    this._pubsubLabel.textContent = `via ${pubsub}`;
   }
 
   private scheduleNextEvent(): void {
