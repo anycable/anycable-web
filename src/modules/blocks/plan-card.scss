@@ -7,30 +7,17 @@ $className: 'plan-card';
   flex-shrink: 0;
   gap: 16px;
   padding: 16px 24px 24px;
-  min-height: 576px;
-  width: 256px;
   border: 1px solid $borderPrimaryColor;
   border-radius: 8px;
   background-color: $backgroundSecondaryColor;
 
+  @include mediaMax($tablet) {
+    border-radius: 0;
+  }
+
   &_highlighted {
     border: none;
     background-color: $accentPrimaryColor;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0px;
-      right: 13px;
-      width: 10px;
-      height: 25px;
-      background-repeat: no-repeat;
-      background-image: url(./images/curved-right-arrow-white.svg);
-
-      @include mediaMax(1071px) {
-        display: none;
-      }
-    }
   }
 
   &__icon {
@@ -105,5 +92,9 @@ $className: 'plan-card';
     gap: 16px;
     height: 100%;
     justify-content: flex-end;
+
+    @include mediaMax($tablet) {
+      margin-top: 24px;
+    }
   }
 }

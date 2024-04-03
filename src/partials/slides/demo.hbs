@@ -1,0 +1,37 @@
+<div class='chart' data-controller='demo'>
+  <p class='chart__heading'>
+    The emulation below demonstrates how AnyCable handles connection failures and restores missed messages.
+    You can try this feature yourself in our <a href='https://demo.anycable.io' target='_blank'
+      rel='nofollow'>Demo application</a>.
+  </p>
+  <div class='demo'>
+    <div class='demo__chat' data-demo-target='any'>
+      <div class='demo__chat__header demo__chat__header_online'>
+        <div class='demo__chat__user_details'>
+          <span class='demo__chat__username'>Alice</span>
+          <span class='demo__chat__via'>via AnyCable</span>
+        </div>
+        <a class='demo__chat__status' role='status' href='javascript:void();'>Online</a>
+      </div>
+      <div class='demo__chat__messages'>
+        <form class='demo__chat__form'>
+          <input class='demo__chat__input' type='text' />
+        </form>
+      </div>
+    </div>
+    <div class='demo__chat' data-demo-target='action'>
+      <div class='demo__chat__header demo__chat__header_online'>
+        <div class='demo__chat__user_details'>
+          <span class='demo__chat__username'>Bob</span>
+          <span class='demo__chat__via' data-demo-target='another-pubsub'></span>
+        </div>
+        <a class='demo__chat__status' role='status' href='javascript:void();'>Online</a>
+      </div>
+      <div class='demo__chat__messages'>
+        <form class='demo__chat__form'>
+          <input class='demo__chat__input' type='text' />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

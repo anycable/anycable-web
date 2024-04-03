@@ -19,7 +19,7 @@
 }
 
 .desktop-only {
-  @include mediaMin($tablet) {
+  @include mediaMax($tablet) {
     display: none;
   }
 }

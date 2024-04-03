@@ -22,3 +22,16 @@
     @content;
   }
 }
+
+@mixin mediaHeightMax($screenSize) {
+  @media (max-height: $screenSize) {
+    @content;
+  }
+}
+
+
+@mixin mediaHeightMin($screenSize) {
+  @media (min-height: calc($screenSize + 1px)) {
+    @content;
+  }
+}

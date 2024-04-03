@@ -1,231 +1,93 @@
 <section class='slide about-slide'>
   <div class='about-slide__wrapper'>
-    <div class='about-slide__content'>
-      <h2 class='about-slide__title about-slide__title_type_with-padding'>
-        Why AnyCable?
-      </h2>
-      <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle anim-trigger'>
-          Better performance, lower costs
+    <div class='about-slide__section'>
+      <div class='about-slide__content'>
+        <h2 class='about-slide__title'>
+          Why AnyCable?
+        </h2>
+        <h3 class='about-slide__subtitle'>
+          Low-latency of realtime at scale
         </h3>
         <p class='about-slide__text'>
-          Written in Go, AnyCable scales efficiently while keeping RAM and CPU usage low. For Ruby on Rails, AnyCable the difference compared to Action Cable is hard to underestimate both in terms of resources required and quality of service.
+          If your product needs low latency interactivity, communication, or collaboration, AnyCable can be the perfect solution at any stage: start building with a managed (SaaS) version, and move on to the cost efficient Pro version, or move off to open source. AnyCable has been around for 7+ years, and it is powering large-scale applications around the world (see use cases).
         </p>
-        <div class='chart mobile-only'>
-          <p class='chart__heading'>
-            AnyCable Pro uses 4X less RAM compared to Action Cable while handling 20K
-            connections
-          </p>
-          <div class='chart__columns'>
-            <div class='chart__column'>
-              <div class='chart__figure chart__figure_color_red'>
-                <p class='chart__column-text chart__column-text_type_heading'>
-                  AnyCable PRO
-                </p>
-              </div>
-              <p class='chart__column-text chart__column-text_type_caption'>
-                470 MB
-              </p>
-            </div>
-            <div class='chart__column'>
-              <div class='chart__figure chart__figure_color_orange'>
-                <p class='chart__column-text chart__column-text_type_heading'>
-                  AnyCable
-                </p>
-              </div>
-              <p class='chart__column-text chart__column-text_type_caption'>
-                720 MB
-              </p>
-            </div>
-            <div class='chart__column'>
-              <div class='chart__figure chart__figure_color_grey'>
-                <p class='chart__column-text chart__column-text_type_heading'>
-                  Action Cable
-                </p>
-              </div>
-              <p class='chart__column-text chart__column-text_type_caption'>
-                1.8 GB
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle anim-trigger'>Better real-time UX</h3>
-        <p class='about-slide__text'>
-          AnyCable brings consistency and reliability to real-time communication and collaboration. When users go offline and re-connect, AnyCable will make sure that they receive all the updates they missed. 
-        </p>
-        <div class='chart mobile-only'>
-          <p class='chart__heading'>
-            One instance of AnyCable guarantees low broadcast latency for up to
-            10K simultaneous connections
-          </p>
-          <img
-            class='chart__img-chart'
-            src='./images/real-time-chart.svg'
-            alt='Real time chart'
-          />
-        </div>
-      </div>
-      <div class='about-slide__section about-slide__section_type_no-padding'>
-        <h3
-          class='about-slide__subtitle about-slide__subtitle_type_with-padding anim-trigger'
-        >
-          Control PaaS expenses
+        <h3 class='about-slide__subtitle'>
+          Reliable realtime delivery
         </h3>
-        <p class='about-slide__text about-slide__text_type_with-padding'>
-          As your business grows and serves more customers, expenses on PaaS tend to explode and limit your options. With AnyCable, you get the best of both worlds from the beginning: start with a simple setup (or <a href="https://plus.anycable.io" target="_blank">AnyCable+</a>) and move on to a more complex one as you grow and scale. The cost is always under your control as you only purchase a license to run AnyCable Pro.
-        </p>
-        <div class='about-slide__section-image'>{{inline
-            'images/illustration.svg'
-          }}</div>
-      </div>
-      <div class='about-slide__section'>
-        <h3 class='about-slide__subtitle'>Own your data</h3>
         <p class='about-slide__text'>
-          Finally, with AnyCable, all data is stored on your servers and is never sent to a 3rd-party. Simple and secure, always in your control. Perfect for secure on-premise installations of your software. Proven efficiency in Healthcare, Legal, Security, and other industries.
+          Most WebSocket solutions do not have delivery guarantees, but AnyCable automatically recovers any messages missed during micro connectivity issues, common even for stable connections, as well as longer ones that happen when users commute, ride a subway, etc. We solve all realtime-specific problems, so that you don’t have!
         </p>
       </div>
-      <div class='about-slide__section about-slide__section_type_no-padding'>
-        <h3
-          class='about-slide__subtitle about-slide__subtitle_type_with-padding anim-trigger'
-        >
-          <span class='about-slide__tabs'>
-          <span>And it’s still</span>
-          <button id="btn-rb" class='button about-slide__btn about-slide__btn-ruby' onclick="document.getElementById('code-rb').style.display = 'block'; document.getElementById('code-js').style.display = 'none'; document.getElementById('btn-rb').classList.remove('about-slide__btn-inactive'); document.getElementById('btn-js').classList.add('about-slide__btn-inactive')">Ruby</button>
-          <button id="btn-js" class='button about-slide__btn about-slide__btn-inactive about-slide__btn-js' onclick="document.getElementById('code-rb').style.display = 'none'; document.getElementById('code-js').style.display = 'block'; document.getElementById('btn-js').classList.remove('about-slide__btn-inactive'); document.getElementById('btn-rb').classList.add('about-slide__btn-inactive')">JavaScript</button>
-          </span>
-        </h3>
-        <p class='about-slide__text about-slide__text_type_with-padding'>
-          Write clean and maintainable code in your favorite language instead of piling up yet another 3rd-party integration. AnyCable plays nice with Rails, Next.js, and Hotwire applications, so you focus on shipping features without worrying about scaling issues.
-        </p>
-        <a
-          class='video-tip about-slide__video-tip link'
-          href='https://www.youtube.com/watch?v=0XTfL-iVLw4&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A'
-          target='_blank'
-          data-ph-capture-attribute-link-id='anycasts-1'
-        >
-          <div class='video-tip__play-icon'></div>
-          <img
-            class='video-tip__preview'
-            src='./images/video-tip-preview.jpg'
-            alt='video tip preview image'
-          />
-          <p class='video-tip__description'>
-            Build reactive Ruby on Rails applications with Hotwire,
-            and scale them efficiently with AnyCable
-          </p>
-        </a>
+      <div class='about-slide__media about-slide__media-top demo__slide'>
+        {{> slides/demo }}
       </div>
     </div>
-    <div class='about-slide__content about-slide__content_type_slide-show'>
-      <div class='slide-show__header'></div>
-      <div class='slide-show'>
-        <div class='slide-show__frame anim-frame'>
-          <div class='chart'>
-            <p class='chart__heading'>
-              AnyCable Pro uses 4X less RAM compared to Rails Action Cable while handling
-              20K connections
-            </p>
-            <div class='chart__columns'>
-              <div class='chart__column'>
-                <div class='chart__figure chart__figure_color_red'>
-                  <p class='chart__column-text chart__column-text_type_heading'>
-                    AnyCable PRO
-                  </p>
-                </div>
-                <p class='chart__column-text chart__column-text_type_caption'>
-                  470 MB
-                </p>
-              </div>
-              <div class='chart__column'>
-                <div class='chart__figure chart__figure_color_orange'>
-                  <p class='chart__column-text chart__column-text_type_heading'>
-                    AnyCable
-                  </p>
-                </div>
-                <p class='chart__column-text chart__column-text_type_caption'>
-                  720 MB
-                </p>
-              </div>
-              <div class='chart__column'>
-                <div class='chart__figure chart__figure_color_grey'>
-                  <p class='chart__column-text chart__column-text_type_heading'>
-                    Action Cable
-                  </p>
-                </div>
-                <p class='chart__column-text chart__column-text_type_caption'>
-                  1.8 GB
-                </p>
-              </div>
-            </div>
-            <br/>
-            <p class='chart__heading'>
-              One instance of AnyCable guarantees low broadcast latency for up
-              to 10K simultaneous connections
-            </p>
+    <div class='about-slide__section'>
+      <div class='about-slide__content'>
+        <h3
+          class='about-slide__subtitle'
+        >
+          Managed, open source, or on-premise Pro
+        </h3>
+        <p class='about-slide__text'>
+          We recommend to start tinkering with AnyCable in its SaaS form, but consider switching to the on premise Pro version later one. You can always switch to open source, which is, of course, free. In any case, no changes in code are needed to make a switch. Choose what’s best for you today.
+        </p>
+        <h3 class='about-slide__subtitle'>Secure and HIPAA compliant messaging</h3>
+        <p class='about-slide__text'>
+          Using on premise AnyCable, Pro and open source, you store all realtime data, such as chat messages, on your servers and never have to send it to a 3rd-party. Simple, secure and compliant with HIPAA.
+        </p>
+      </div>
+      <div class='about-slide__media'>
+        <div class='slide-show__frame'>{{inline
+          'images/illustration.svg'
+        }}</div>
+      </div>
+    </div>
+    <div class='about-slide__section'>
+      <div class='about-slide__content'>
+        <h3 class='about-slide__subtitle'>Time-tested abstractions</h3>
+        <p class='about-slide__text'>
+          Write clean and maintainable code, leveraging clear abstractions: channels and subscriptions. Higher-level APIs like presence, collaboration: coming soon!
+        </p>
+        <div class='about-slide__arrow'>
+          <svg width="171" height="20" viewBox="0 0 171 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M168 1H159C160.351 2.00994 161.217 2.84532 161.805 3.72314C162.441 4.67378 162.752 5.67419 163 7L168 1Z" fill="#F64343"/>
+            <path d="M1 1C73.0118 31.8187 139.167 14.5697 168 1M168 1H159C161.814 3.10366 162.523 4.44994 163 7L168 1Z" stroke="#F64343" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class='about-slide__subtitle'>Reuse your existing infra components</h3>
+        <p class='about-slide__text'>
+          AnyCable doesn't require any additional infrastructure components for its operation and scalability: good old HTTP API and embedded NATS pub/sub server got you covered. And if you already have Redis or NATS, you can use it as well.
+        </p>
+      </div>
+      <div class='about-slide__media about-slide__media-align-top' data-controller="tabs">
+        <div class='about-slide__tabs'>
+          <button data-tabs-target="code-pubsub" class='button about-slide__btn about-slide__btn-pubsub active-tab'>Pub/Sub</button>
+          <button data-tabs-target="code-rb" class='button about-slide__btn about-slide__btn-ruby'>Ruby Channels</button>
+          <button data-tabs-target="code-js" class='button about-slide__btn about-slide__btn-js'>JS Channels</button>
+        </div>
+        <div class='slide-show__frame' id="codes">
+          <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
             <img
-              class='chart__img-chart'
-              src='./images/real-time-chart-wide.svg'
-              alt='Real time chart'
+              class='slide-show__img'
+              src='./images/pubsub.png'
+              alt='Pub/Sub demo'
             />
           </div>
-        </div>
-        <div class='slide-show__frame anim-frame'>
-          <div class='chart' data-controller='demo'>
-            <p class='chart__heading'>
-              The emulation below demonstrates how AnyCable handles connection failures and restores missed messages.
-              You can try this feature yourself in our <a href='https://demo.anycable.io' target='_blank' rel='nofollow'>Demo application</a>.
-            </p>
-            <div class='demo'>
-              <div class='demo__chat' data-demo-target='any'>
-                <div class='demo__chat__header demo__chat__header_online'>
-                  <div class='demo__chat__user_details'>
-                    <h3 class='demo__chat__username'>Alice</h3>
-                    <span class='demo__chat__via'>via AnyCable</span>
-                  </div>
-                  <a class='demo__chat__status' href='javascript:void();'>online</a>
-                </div>
-                <div class='demo__chat__messages'>
-                  <form class='demo__chat__form'>
-                    <input class='demo__chat__input' type='text' />
-                  </form>
-                </div>
-              </div>
-              <div class='demo__chat' data-demo-target='action'>
-                <div class='demo__chat__header demo__chat__header_online'>
-                  <div class='demo__chat__user_details'>
-                    <h3 class='demo__chat__username'>Bob</h3>
-                    <span class='demo__chat__via'>via Action Cable</span>
-                  </div>
-                  <a class='demo__chat__status' href='javascript:void();'>online</a>
-                </div>
-                <div class='demo__chat__messages'>
-                  <form class='demo__chat__form'>
-                    <input class='demo__chat__input' type='text' />
-                  </form>
-                </div>
-              </div>
-            </div>
+          <div data-tabs-id="code-rb" style="display:none" class='slide-show__code-wrapper'>
+            <img
+              class='slide-show__img'
+              src='./images/ruby-channels.png'
+              alt='Ruby channels code demo'
+            />
           </div>
-        </div>
-        <div class='slide-show__frame anim-frame'>{{inline
-            'images/illustration.svg'
-          }}</div>
-        <div class='slide-show__frame anim-frame'>
-          <img
-            class='slide-show__img'
-            id="code-rb"
-            src='./images/ruby-img-wide.svg'
-            alt='Ruby code demo'
-          />
-          <img
-            class='slide-show__img'
-            id="code-js"
-            style="display:none"
-            src='./images/js-img-wide.svg'
-            alt='JS code demo'
-          />
+          <div data-tabs-id="code-js" style="display:none" class='slide-show__code-wrapper'>
+            <img
+              class='slide-show__img'
+              src='./images/js-channels.png'
+              alt='JS channels code demo'
+            />
+          </div>
         </div>
       </div>
     </div>

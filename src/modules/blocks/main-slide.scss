@@ -9,6 +9,8 @@ $className: 'main-slide';
 
   &__content-wrapper {
     display: grid;
+    width: 100%;
+    max-width: 1920px;
     grid-template-columns: 1fr 1fr;
     justify-content: start;
     position: relative;
@@ -62,6 +64,12 @@ $className: 'main-slide';
 
     @include mediaMax($mobile) {
       padding: 12px 24px 32px;
+    }
+
+    @include mediaMin(1000px) {
+      @include mediaHeightMin($extremeMaximumHeight) {
+        padding-top: 34vh;
+      }
     }
   }
 
@@ -118,8 +126,24 @@ $className: 'main-slide';
 
   &__text {
     font-size: 17px;
-    line-height: 1.4;
-    margin-top: 24px;
+    line-height: 1.8;
+    margin-top: 78px;
+
+    @include mediaMax($desktop) {
+      margin-top: 38px;
+    }
+
+    @include mediaMax($tablet) {
+      margin-top: 18px;
+    }
+
+    @include mediaMax($mobile) {
+      margin-top: 18px;
+    }
+
+    @media screen and (max-height: 800px) {
+      margin-top: 18px;
+    }
   }
 
   &__banner {
@@ -140,10 +164,6 @@ $className: 'main-slide';
   }
 
   &__learn-more-btn {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
     align-self: center;
     width: 0;
     height: 0;
@@ -153,8 +173,8 @@ $className: 'main-slide';
     border-color: #e0e0e0 transparent transparent transparent;
     background-color: transparent;
     cursor: pointer;
-    margin-top: 91px;
     transition: $opacityPrimaryTransition;
+    position: relative;
 
     &:hover {
       opacity: $opacityPrimaryValue;
@@ -185,6 +205,20 @@ $className: 'main-slide';
 
     @include mediaMax($tablet) {
       display: none;
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+
+    @include mediaMax($tablet) {
+      width: 80%;
     }
   }
 }
