@@ -23,7 +23,7 @@ $className: 'about-slide';
       margin-bottom: 0;
     }
 
-    @include mediaMax($mobile) {
+    @include mediaMax($tablet) {
       padding: 0 24px;
       background-color: $backgroundSecondaryColor;
     }
@@ -65,7 +65,7 @@ $className: 'about-slide';
     &-top {
       margin-top: 120px;
 
-      @include mediaMax($mobile) {
+      @include mediaMax($tablet) {
         margin-top: 24px;
       }
     }

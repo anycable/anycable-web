@@ -37,8 +37,11 @@ $className: 'plans-slide';
     grid-auto-rows: 1fr;
 
     @include mediaMax($tablet) {
-      grid-template-columns: 1fr;
       gap: 0;
+    }
+
+    @include mediaMax($mobile) {
+      grid-template-columns: 1fr;
       grid-auto-rows: initial;
     }
   }

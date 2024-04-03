@@ -1,6 +1,8 @@
 $className: 'resources-slide';
 
 .#{$className} {
+  padding: 0;
+
   @include mediaMax($tablet) {
     padding: 0;
   }
@@ -11,6 +13,7 @@ $className: 'resources-slide';
   }
 
   &__media {
+    padding-top: 64px;
     padding-bottom: 64px;
 
     @include mediaMax($tablet) {

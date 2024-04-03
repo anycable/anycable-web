@@ -8,6 +8,17 @@ $className: 'demo';
   position: relative;
   justify-content: space-around;
 
+  @include mediaHeightMin($extremeMaximumHeight) {
+    max-height: 500px;
+  }
+
+  &__slide {
+    @include mediaHeightMin($extremeMaximumHeight) {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+
   &__chat {
     border: 1px solid $accentSecondaryColor;
     border-radius: 5px;

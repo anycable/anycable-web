@@ -10,6 +10,14 @@ $className: 'try-now';
     margin-top: 24px;
   }
 
+  @include mediaMax(380px) {
+    display: none;
+  }
+
+  @include mediaHeightMax(600px) {
+    display: none;
+  }
+
   &__caption {
     text-align: center;
     font-size: 17.4px;
