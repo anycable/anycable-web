@@ -5,6 +5,11 @@ $className: 'plans-slide';
   padding-left: 0;
   padding-right: 0;
 
+  @include mediaMax($tablet) {
+    padding-top: 24px;
+    padding-bottom: 0;
+  }
+
   &__pretitle {
     font-size: 20px;
     line-height: 1.6;
@@ -30,6 +35,12 @@ $className: 'plans-slide';
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px;
     grid-auto-rows: 1fr;
+
+    @include mediaMax($tablet) {
+      grid-template-columns: 1fr;
+      gap: 0;
+      grid-auto-rows: initial;
+    }
   }
 
   &__highlighted-text {

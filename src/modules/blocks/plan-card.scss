@@ -11,6 +11,10 @@ $className: 'plan-card';
   border-radius: 8px;
   background-color: $backgroundSecondaryColor;
 
+  @include mediaMax($tablet) {
+    border-radius: 0;
+  }
+
   &_highlighted {
     border: none;
     background-color: $accentPrimaryColor;
@@ -88,5 +92,9 @@ $className: 'plan-card';
     gap: 16px;
     height: 100%;
     justify-content: flex-end;
+
+    @include mediaMax($tablet) {
+      margin-top: 24px;
+    }
   }
 }

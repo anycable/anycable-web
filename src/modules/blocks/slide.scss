@@ -8,11 +8,11 @@ $className: 'slide';
   border-top: 1px solid $borderPrimaryColor;
 
   @include mediaMax($tablet) {
-    padding: 88px 64px 0;
+    padding: 48px 64px 0;
   }
 
   @include mediaMax($mobile) {
-    padding: 88px 24px 0;
+    padding: 48px 24px 0;
   }
 
   &__title-wrapper {

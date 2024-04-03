@@ -23,8 +23,16 @@ $className: 'cases-slide';
       margin-bottom: 0;
     }
 
-    @include mediaMax($mobile) {
+    @include mediaMax($tablet) {
+      flex-direction: column;
       padding: 0 24px;
+      border-bottom: 1px solid $borderPrimaryColor;
+    }
+
+    &-mobile-reverse {
+      @include mediaMax($tablet) {
+        flex-direction: column-reverse;
+      }
     }
   }
 
@@ -42,13 +50,11 @@ $className: 'cases-slide';
 
     @include mediaMax($tablet) {
       width: 100%;
-      border-right: none;
-      padding: 88px 64px;
+      border: none;
+      background-color: $backgroundPrimaryColor;
+      padding: 48px 0px;
     }
 
-    @include mediaMax($mobile) {
-      padding: 88px 0px;
-    }
   }
 
   &__media {
@@ -62,6 +68,9 @@ $className: 'cases-slide';
     justify-content: center;
 
     @include mediaMax($tablet) {
+      width: 100%;
+      padding: 0;
+      margin-bottom: 48px;
     }
   }
 
@@ -105,6 +114,10 @@ $className: 'cases-slide';
     & li:not(:last-child) {
       margin-bottom: 8px;
     }
+
+    @include mediaMax($tablet) {
+      margin-bottom: 24px;
+    }
   }
 
   &__logos {
@@ -117,6 +130,14 @@ $className: 'cases-slide';
     & img:nth-child(3) {
       margin: auto 0;
       grid-column-start: span 2;
+    }
+  }
+
+  &__logo {
+    &-desktop-only {
+      @include mediaMax($tablet) {
+        display: none;
+      }
     }
   }
 }

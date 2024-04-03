@@ -25,6 +25,7 @@ $className: 'about-slide';
 
     @include mediaMax($mobile) {
       padding: 0 24px;
+      background-color: $backgroundSecondaryColor;
     }
   }
 
@@ -43,11 +44,11 @@ $className: 'about-slide';
     @include mediaMax($tablet) {
       width: 100%;
       border-right: none;
-      padding: 88px 64px;
-    }
+      padding: 0;
 
-    @include mediaMax($mobile) {
-      padding: 88px 0px;
+      &:first-child {
+        padding-top: 48px;
+      }
     }
   }
 
@@ -117,6 +118,11 @@ $className: 'about-slide';
     line-height: 1.6;
     align-self: flex-start;
     margin-bottom: 84px;
+
+
+    @include mediaMax($mobile) {
+      margin-bottom: 48px;
+    }
   }
 
   &__tabs {

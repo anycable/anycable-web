@@ -133,6 +133,10 @@ $className: 'main-slide';
     @include mediaMax($mobile) {
       margin-top: 18px;
     }
+
+    @media screen and (max-height: 800px) {
+      margin-top: 18px;
+    }
   }
 
   &__banner {
