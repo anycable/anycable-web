@@ -59,7 +59,7 @@ class Chat {
       let type = () => {
         setTimeout(() => {
           if (chars.length) {
-            input.focus();
+            input.focus({ preventScroll: true });
             if (input.setSelectionRange) {
               input.setSelectionRange(pos, pos);
             }
