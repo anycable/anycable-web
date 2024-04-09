@@ -378,10 +378,10 @@ acorn@^7.1.1:
   resolved "https://registry.npmjs.org/acorn/-/acorn-7.4.1.tgz"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-anycable-elements@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/anycable-elements/-/anycable-elements-0.2.0.tgz#bcc6f08aab4dd58a7f83d34eebf1f22ca09eb747"
-  integrity sha512-f71qJIWxd48xhQrl9VC3hiuT36ENoC87BHxkOsu3694wa1D8RI/q4CGvoKF1wx0QKCi2dEmSN2JDsU6CIareBw==
+anycable-elements@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/anycable-elements/-/anycable-elements-0.2.1.tgz#d493c6bbaf5de6a5cc36427310835e3a7e7df27e"
+  integrity sha512-UumfTvEO07WyzWNwh5aEWqQli58cEsxHbvuOS6HD9n6l7jawfjiTsV6Ixact6A4B/A0L4zk7dF8DwIX1TRoasQ==
   dependencies:
     "@github/mini-throttle" "^2.1.1"
     apcach "^0.6.4"
