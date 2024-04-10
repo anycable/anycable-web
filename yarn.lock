@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anycable/core@^0.8.0", "@anycable/core@^0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@anycable/core/-/core-0.8.2.tgz#518c964047b5b2650c527ea3baafab3b229c8882"
-  integrity sha512-TKgqoLjDteH87jDQklejUGWaV3Ftcb3SRX2QKQXRvxX0oXDc21BiUDl01SAJFQz74BUgm7XMu+kvRrKceCA2sg==
+"@anycable/core@^0.8.0", "@anycable/core@^0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@anycable/core/-/core-0.8.3.tgz#d84fb10fa8cf20139140fdab28c84feda5ddf22c"
+  integrity sha512-hbrGSrc2i7N65dGmNTgG7xmDvlqhMCA7tfFl+wJYc21OeHGqKuwZDaaNaWJlg8zjNGbOVsQq/jZvG15CCjcMJQ==
   dependencies:
     nanoevents "^7.0.1"
 
@@ -378,10 +378,10 @@ acorn@^7.1.1:
   resolved "https://registry.npmjs.org/acorn/-/acorn-7.4.1.tgz"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-anycable-elements@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/anycable-elements/-/anycable-elements-0.2.1.tgz#d493c6bbaf5de6a5cc36427310835e3a7e7df27e"
-  integrity sha512-UumfTvEO07WyzWNwh5aEWqQli58cEsxHbvuOS6HD9n6l7jawfjiTsV6Ixact6A4B/A0L4zk7dF8DwIX1TRoasQ==
+anycable-elements@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/anycable-elements/-/anycable-elements-0.2.2.tgz#6787dd836e1356c4c99341a54e50c7e5190192ad"
+  integrity sha512-fAkVU3mLSpBtOwnJBcFyWrMNWHjH7vRvMnE0ZH932NbWXhb5DK7yQhdknKXHcYjxJTlaOqlXX+GJnYkJ98FC/A==
   dependencies:
     "@github/mini-throttle" "^2.1.1"
     apcach "^0.6.4"
