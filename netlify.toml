@@ -2,3 +2,78 @@
   base=""
   publish="/dist"
   command="yarn build"
+
+[[redirects]]
+  from = "/anycasts/anycable-v1-4-reliable-real-time-for-all/"
+  to = "https://blog.anycable.io/p/anycable-v14-reliable-real-time-for-all"
+  status = 301
+
+[[redirects]]
+  from = "/case-studies/polleverywhere/"
+  to = "https://blog.anycable.io/p/anycable-everywhere-real-time-visualization"
+  status = 301
+
+[[redirects]]
+  from = "/case-studies/healthie/"
+  to = "https://blog.anycable.io/p/making-real-time-chat-functionality-healthie-r"
+  status = 301
+
+[[redirects]]
+  from = "/case-studies/vito/"
+  to = "https://blog.anycable.io/p/revitalizing-vito-with-anycable-pro"
+  status = 301
+
+[[redirects]]
+  from = "/case-studies/callbell/"
+  to = "https://blog.anycable.io/p/a-call-for-pro-callbell"
+  status = 301
+
+[[redirects]]
+  from = "/anycasts/flying-multi-regionally-with-nats/"
+  status = 301
+  to = "https://blog.anycable.io/p/flying-multi-regionally-with-nats"
+
+[[redirects]]
+  from = "/anycasts/learn-to-fly-io-with-anycable/"
+  status = 301
+  to = "https://blog.anycable.io/p/learn-to-flyio-with-anycable"
+
+[[redirects]]
+  from = "/anycasts/railsconf-2022-turbo-streams-consistency/"
+  to = "https://blog.anycable.io/p/turbo-streams-vs-consistency"
+  status = 301
+
+[[redirects]]
+  from = "/blog/multi-tenancy-vs-cables/"
+  to = "https://blog.anycable.io/p/multi-tenancy-vs-cables-introducing"
+  status = 301
+
+[[redirects]]
+  from = "/blog/anycasts-using-anycable-client/"
+  to = "https://blog.anycable.io/p/using-anycable-client-to-auto-refresh"
+  status = 301
+
+[[redirects]]
+  from = "/blog/anycasts-direct-messaging-part-2/"
+  to = "https://blog.anycable.io/p/of-users-and-direct-messaging-pt-d98"
+  status = 301
+
+[[redirects]]
+  from = "/blog/anycasts-direct-messaging-part-1/"
+  to = "https://blog.anycable.io/p/of-users-and-direct-messaging-pt"
+  status = 301
+
+[[redirects]]
+  from = "/blog/anycasts-rails-7-hotwire-and-anycable/"
+  to = "https://blog.anycable.io/p/exploring-rails-7-hotwire-and-anycable"
+  status = 301
+
+[[redirects]]
+  from = "/blog/jwt-identification-and-hot-streams/"
+  to = "https://blog.anycable.io/p/anycable-v12-jwt-and-hot-streams"
+  status = 301
+
+[[redirects]]
+  from = "/blog"
+  to = "https://blog.anycable.io"
+  status = 301
