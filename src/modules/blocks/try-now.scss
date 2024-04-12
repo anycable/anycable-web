@@ -10,10 +10,6 @@ $className: 'try-now';
     margin-top: 24px;
   }
 
-  @include mediaMax(380px) {
-    display: none;
-  }
-
   @include mediaHeightMax(600px) {
     display: none;
   }
@@ -25,6 +21,10 @@ $className: 'try-now';
 
     &_bolded {
       font-weight: 700;
+    }
+
+    @include mediaMax(380px) {
+      display: none;
     }
   }
 
