@@ -19,6 +19,7 @@ $className: 'button';
   transition: $opacityPrimaryTransition;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  text-decoration: none;
 
   &:hover {
     opacity: $opacityPrimaryValue;
