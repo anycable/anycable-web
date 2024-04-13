@@ -2,12 +2,18 @@
   <nav class='header__content'>
     <div class='header__left'>
       <p class='header__logo'>AnyCable</p>
-      <div class='header__links'>
-        <a href="https://docs.anycable.io" target="_blank" class="header__link no-mobile" data-ph-capture-attribute-link-id="nav-docs">Docs</a>
-        <a href="https://blog.anycable.io" target="_blank" class="header__link no-mobile" data-ph-capture-attribute-link-id="nav-blog">Blog</a>
+      <div class='header__links no-mobile'>
+        <a href="https://docs.anycable.io" target="_blank" class="header__link" data-ph-capture-attribute-link-id="nav-docs">Docs</a>
+        <a href="https://blog.anycable.io" target="_blank" class="header__link" data-ph-capture-attribute-link-id="nav-blog">Blog</a>
         <a href="#pricing" class="header__link" data-ph-capture-attribute-link-id="nav-pricing">Pricing</a>
       </div>
     </div>
-    <a href="https://plus.anycable.io/pro" target="_blank" class="button" data-ph-capture-attribute-link-id='go-pro'>Sign up</a>
+    <div class='header__right'>
+      <a class='header__stars' href="https://github.com/anycable/anycable" target="_blank" data-ph-capture-attribute-link-id="nav-github">
+        {{inline 'images/github.svg'}}
+        <span class='header__stars__count' id="gh-stars-counter">1.9K</span>
+      </a>
+      <a href="https://plus.anycable.io/pro" target="_blank" class="button" data-ph-capture-attribute-link-id='go-pro'>Sign up</a>
+    </div>
   </nav>
 </header>

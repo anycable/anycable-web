@@ -36,6 +36,30 @@ $className: 'header';
     align-items: center;
   }
 
+  &__right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__stars {
+    margin-right: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: $fontSecondaryColor;
+    transition: color 200ms ease-in-out;
+
+    &:hover {
+      color: $fontPrimaryColor;
+    }
+
+    &__count {
+      margin-left: 8px;
+    }
+  }
+
   &__links {
     margin-left: 64px;
 
