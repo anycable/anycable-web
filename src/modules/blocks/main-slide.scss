@@ -23,6 +23,7 @@ $className: 'main-slide';
   }
 
   &__left-content {
+    margin-top: -60px;
     box-sizing: border-box;
     width: 100%;
     max-width: 960px;
@@ -34,6 +35,7 @@ $className: 'main-slide';
 
     @include mediaMax($tablet) {
       max-width: 100%;
+      margin-top: -12px;
       padding-top: 43px;
       border-left: none;
     }
@@ -48,7 +50,7 @@ $className: 'main-slide';
     width: 100%;
     max-width: 960px;
     height: 100%;
-    padding: 120px 64px 30px;
+    padding: 60px 64px 30px;
 
     @include mediaMax($tablet) {
       background-color: $backgroundPrimaryColor;

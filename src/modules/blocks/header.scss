@@ -1,27 +1,25 @@
 $className: 'header';
 
 .#{$className} {
-  display: none; //prevents flickering while loading
+  height: 60px;
   justify-content: center;
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 10;
-  transform: translateY(-100px);
-  opacity: 0;
   transition: all 0.3s;
+  background: $backgroundPrimaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
 
-  &_shown {
-    // show header
-    transform: translateY(0);
-    opacity: 1;
+  @include mediaMax($mobile) {
+    position: fixed;
   }
 
   &__content {
     flex-grow: 1;
     max-width: 1920px;
-    padding: 24px 64px 0;
+    padding: 12px 64px;
     min-height: 40px;
     display: flex;
     align-items: center;
@@ -32,8 +30,42 @@ $className: 'header';
     }
   }
 
-  &__logo {
+  &__left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__links {
+    margin-left: 64px;
+
+    @include mediaMax($tablet) {
+      margin-left: 24px;
+    }
+
+    @include mediaMax($mobile) {
+      margin-left: 12px;
+    }
+  }
+
+  &__link {
     color: $accentPrimaryColor;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity $opacityPrimaryTransition;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    &:not(:first-child) {
+      margin-left: 24px;
+    }
+  }
+
+  &__logo {
+    color: $fontPrimaryColor;
     font-weight: 700;
     font-size: 20px;
     line-height: 1.6;

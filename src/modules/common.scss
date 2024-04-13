@@ -18,6 +18,12 @@
   }
 }
 
+.no-mobile {
+  @include mediaMax($mobile) {
+    display: none;
+  }
+}
+
 .desktop-only {
   @include mediaMax($tablet) {
     display: none;
