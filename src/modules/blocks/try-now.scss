@@ -36,5 +36,9 @@ $className: 'try-now';
     @include mediaMin($tablet) {
       margin-bottom: 90px;
     }
+
+    @include mediaMax(380px) {
+      margin-top: 0;
+    }
   }
 }

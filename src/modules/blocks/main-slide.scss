@@ -221,6 +221,7 @@ $className: 'main-slide';
 
     @include mediaMax($tablet) {
       width: 80%;
+      bottom: auto;
     }
   }
 }
