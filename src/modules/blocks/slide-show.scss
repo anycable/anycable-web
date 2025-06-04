@@ -23,8 +23,19 @@ $className: 'slide-show';
   }
 
   &__code-wrapper {
-    overflow: hidden;
-    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    width: 100%;
+
+    & pre {
+      border-radius: 6px;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      width: 100%;
+      min-height: 100%;
+      margin: 0 !important;
+    }
   }
 
   &__img {

@@ -1,6 +1,14 @@
 @import './veriables.scss';
 @import './mixins.scss';
 
+@font-face {
+  font-family: 'Martian Mono';
+  font-display: swap;
+  src: url('/fonts/MartianMono.woff2') format('woff2');
+  font-weight: 100 800;
+  font-stretch: 75% 150%;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -10,6 +18,10 @@
   font-size: 18px;
   background-color: $backgroundPrimaryColor;
   min-width: 375px;
+}
+
+code {
+  font-family: 'Martian Mono', monospace;
 }
 
 .mobile-only {

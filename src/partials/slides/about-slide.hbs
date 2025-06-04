@@ -47,7 +47,7 @@
       <div class='about-slide__content'>
         <h3 class='about-slide__subtitle'>Time-tested abstractions</h3>
         <p class='about-slide__text'>
-          Write clean and maintainable code, leveraging clear abstractions: channels and subscriptions. Higher-level APIs like presence, collaboration: coming soon!
+          Write clean and maintainable code, leveraging clear abstractions: channels, subscriptions, presence tracking. Higher-level APIs like collaboration: coming soon!
         </p>
         <div class='about-slide__arrow'>
           <svg width="171" height="20" viewBox="0 0 171 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,25 +68,13 @@
         </div>
         <div class='slide-show__frame' id="codes">
           <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
-            <img
-              class='slide-show__img'
-              src='./images/pubsub.png'
-              alt='Pub/Sub demo'
-            />
+{{> slides/code-snippets/pubsub}}
           </div>
           <div data-tabs-id="code-rb" style="display:none" class='slide-show__code-wrapper'>
-            <img
-              class='slide-show__img'
-              src='./images/ruby-channels.png'
-              alt='Ruby channels code demo'
-            />
+{{> slides/code-snippets/ruby}}
           </div>
           <div data-tabs-id="code-js" style="display:none" class='slide-show__code-wrapper'>
-            <img
-              class='slide-show__img'
-              src='./images/js-channels.png'
-              alt='JS channels code demo'
-            />
+{{> slides/code-snippets/js}}
           </div>
         </div>
       </div>

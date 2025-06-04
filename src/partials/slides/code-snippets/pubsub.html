@@ -1,0 +1,18 @@
+<pre class="shiki github-dark-high-contrast" style="background-color:#0a0c10;color:#f0f3f6" tabindex="0"><code style="padding:1em;overflow-x: auto;"><span class="line"><span style="color:#FF9492">import</span><span style="color:#F0F3F6"> { createCable } </span><span style="color:#FF9492">from</span><span style="color:#ADDCFF"> "@anycable/web"</span><span style="color:#F0F3F6">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF9492">const</span><span style="color:#91CBFF"> cable</span><span style="color:#FF9492"> =</span><span style="color:#DBB7FF"> createCable</span><span style="color:#F0F3F6">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BDC4CC">// Basic pub/sub interface</span></span>
+<span class="line"><span style="color:#FF9492">let</span><span style="color:#F0F3F6"> channel </span><span style="color:#FF9492">=</span><span style="color:#F0F3F6"> cable.</span><span style="color:#DBB7FF">streamFrom</span><span style="color:#F0F3F6">(</span><span style="color:#ADDCFF">"chatty/2025"</span><span style="color:#F0F3F6">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F0F3F6">channel.</span><span style="color:#DBB7FF">on</span><span style="color:#F0F3F6">(</span><span style="color:#ADDCFF">"message"</span><span style="color:#F0F3F6">, (</span><span style="color:#FFB757">msg</span><span style="color:#F0F3F6">) </span><span style="color:#FF9492">=&gt;</span><span style="color:#F0F3F6"> {</span></span>
+<span class="line"><span style="color:#BDC4CC">  // handle notification</span></span>
+<span class="line"><span style="color:#F0F3F6">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BDC4CC">// join the channel's presence set</span></span>
+<span class="line"><span style="color:#F0F3F6">channel.presence.</span><span style="color:#DBB7FF">join</span><span style="color:#F0F3F6">(user.id, { name: user.name })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F0F3F6">channel.</span><span style="color:#DBB7FF">on</span><span style="color:#F0F3F6">(</span><span style="color:#ADDCFF">"presence"</span><span style="color:#F0F3F6">, (</span><span style="color:#FFB757">event</span><span style="color:#F0F3F6">) </span><span style="color:#FF9492">=&gt;</span><span style="color:#F0F3F6"> {</span></span>
+<span class="line"><span style="color:#BDC4CC">  // handle presence updates</span></span>
+<span class="line"><span style="color:#F0F3F6">})</span></span>
+<span class="line"></span></code></pre>
