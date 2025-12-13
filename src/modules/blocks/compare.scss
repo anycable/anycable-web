@@ -1,0 +1,892 @@
+// Compare Hero
+$className: 'compare-hero';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 40vh;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  &__content {
+    max-width: 1200px;
+    padding: 100px 64px 60px;
+    text-align: center;
+
+    @include mediaMax($tablet) {
+      padding: 80px 24px 40px;
+    }
+  }
+
+  &__title {
+    font-size: 69px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 24px;
+
+    @include mediaMax($tablet) {
+      font-size: 46px;
+    }
+
+    @include mediaMax($mobile) {
+      font-size: 40px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 24px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+
+    @include mediaMax($mobile) {
+      font-size: 20px;
+    }
+  }
+}
+
+// Compare Options
+$className: 'compare-options';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 32px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 48px;
+
+    @include mediaMax($mobile) {
+      font-size: 24px;
+      margin-bottom: 32px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+
+    @include mediaMax($tablet) {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+}
+
+// Compare Card
+$className: 'compare-card';
+
+.#{$className} {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  background-color: $backgroundPrimaryColor;
+  border: 2px solid $borderPrimaryColor;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 200ms;
+  position: relative;
+
+  &:hover {
+    border-color: $accentPrimaryColor;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  &_coming-soon {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-size: 28px;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  &__badge {
+    padding: 4px 12px;
+    background-color: #e0e0e0;
+    color: $fontSecondaryColor;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+
+    &_saas {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+
+    &_node {
+      background-color: #e8f5e9;
+      color: #388e3c;
+    }
+  }
+
+  &__description {
+    font-size: 17px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+
+  &__highlights {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  &__highlight {
+    padding: 8px 16px;
+    background-color: $backgroundSecondaryColor;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+
+    strong {
+      color: $accentPrimaryColor;
+    }
+  }
+
+  &__link {
+    font-size: 17px;
+    line-height: 1.4;
+    color: $accentPrimaryColor;
+    font-weight: 600;
+  }
+
+  &__coming-soon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 700;
+    color: $fontSecondaryColor;
+    background-color: $backgroundPrimaryColor;
+    padding: 16px 32px;
+    border-radius: 8px;
+  }
+}
+
+// Comparison Matrix
+$className: 'comparison-matrix';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 48px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+  }
+
+  &__note {
+    margin-top: 32px;
+    padding: 24px;
+    background-color: $backgroundPrimaryColor;
+    border-left: 4px solid $accentPrimaryColor;
+    border-radius: 4px;
+
+    p {
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+}
+
+// Compare Tools
+$className: 'compare-tools';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 48px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+
+    @include mediaMax($desktop) {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+}
+
+// Compare Tool Card
+$className: 'compare-tool-card';
+
+.#{$className} {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 32px;
+  background-color: $backgroundSecondaryColor;
+  border: 1px solid $borderPrimaryColor;
+  border-radius: 8px;
+  text-align: center;
+
+  &__icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  &__description {
+    font-size: 17px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+
+  &__link {
+    font-size: 17px;
+    line-height: 1.4;
+    color: $accentPrimaryColor;
+    text-decoration: none;
+    font-weight: 600;
+    transition: $opacityPrimaryTransition;
+
+    &:hover {
+      opacity: $opacityPrimaryValue;
+    }
+  }
+}
+
+// Comparison Hero (detailed pages)
+$className: 'comparison-hero';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 40vh;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  &__content {
+    max-width: 1200px;
+    padding: 100px 64px 60px;
+    text-align: center;
+
+    @include mediaMax($tablet) {
+      padding: 80px 24px 40px;
+    }
+  }
+
+  &__title {
+    font-size: 69px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 24px;
+
+    @include mediaMax($tablet) {
+      font-size: 46px;
+    }
+
+    @include mediaMax($mobile) {
+      font-size: 40px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 24px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+
+    @include mediaMax($mobile) {
+      font-size: 20px;
+    }
+  }
+}
+
+// TL;DR Section
+$className: 'tldr-section';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+  background-color: #fffbf0;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 32px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  &__main {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  &__recommendations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+
+    @include mediaMax($tablet) {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  &__recommendation {
+    padding: 24px;
+    background-color: $backgroundPrimaryColor;
+    border: 2px solid $borderPrimaryColor;
+    border-radius: 8px;
+
+    &_highlight {
+      border-color: $accentPrimaryColor;
+      background-color: #fff5f5;
+    }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    ul {
+      list-style: '✓ ';
+      padding-left: 20px;
+
+      li {
+        font-size: 17px;
+        line-height: 1.6;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+// Comparison Detail
+$className: 'comparison-detail';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  &__content {
+    margin-bottom: 48px;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 32px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+    }
+  }
+
+  &__text {
+    font-size: 17px;
+    line-height: 1.8;
+
+    p {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+// Benchmark Cards
+$className: 'benchmark-cards';
+
+.#{$className} {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+
+  @include mediaMax($tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Benchmark Card
+$className: 'benchmark-card';
+
+.#{$className} {
+  padding: 32px;
+  background-color: $backgroundSecondaryColor;
+  border: 2px solid $borderPrimaryColor;
+  border-radius: 8px;
+  text-align: center;
+
+  &__metric {
+    font-size: 48px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: $accentPrimaryColor;
+    margin-bottom: 12px;
+  }
+
+  &__label {
+    font-size: 17px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    margin-bottom: 16px;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background-color: #e0e0e0;
+    color: $fontSecondaryColor;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+
+    &_anycable {
+      background-color: $accentPrimaryColor;
+      color: $fontPrimaryInvertedColor;
+    }
+  }
+}
+
+// Comparison Features
+$className: 'comparison-features';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 48px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+  }
+}
+
+// Migration Section
+$className: 'migration-section';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 32px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+    }
+  }
+
+  &__intro {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  &__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+  }
+}
+
+// Migration Checklist
+$className: 'migration-checklist';
+
+.#{$className} {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background-color: $backgroundSecondaryColor;
+    border-left: 4px solid $accentPrimaryColor;
+    border-radius: 4px;
+  }
+
+  &__icon {
+    font-size: 24px;
+    color: $accentPrimaryColor;
+    flex-shrink: 0;
+  }
+
+  &__text {
+    font-size: 17px;
+    line-height: 1.6;
+
+    strong {
+      font-weight: 700;
+    }
+  }
+}
+
+// How It Works
+$className: 'how-it-works';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 48px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+
+    @include mediaMax($tablet) {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  &__text {
+    font-size: 17px;
+    line-height: 1.8;
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: '→ ';
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 12px;
+      }
+    }
+  }
+}
+
+// Architecture Diagram
+$className: 'architecture-diagram';
+
+.#{$className} {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  background-color: $backgroundPrimaryColor;
+  border: 1px solid $borderPrimaryColor;
+  border-radius: 8px;
+
+  &__layer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__box {
+    padding: 20px 40px;
+    background-color: #f8f8f8;
+    border: 2px solid $borderPrimaryColor;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 200px;
+
+    &_highlight {
+      background-color: $accentPrimaryColor;
+      color: $fontPrimaryInvertedColor;
+      border-color: $accentPrimaryColor;
+    }
+  }
+
+  &__note {
+    margin-top: 8px;
+    font-size: 14px;
+    color: $fontSecondaryColor;
+    text-align: center;
+  }
+
+  &__arrow {
+    padding: 16px 0;
+    font-size: 24px;
+    color: $fontSecondaryColor;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+}
+
+// Getting Started Section
+$className: 'getting-started-section';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 32px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+    }
+  }
+
+  &__intro {
+    font-size: 20px;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  &__links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 48px;
+    flex-wrap: wrap;
+
+    @include mediaMax($mobile) {
+      flex-direction: column;
+    }
+  }
+}
+
+// Steps Grid
+$className: 'steps-grid';
+
+.#{$className} {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+
+  @include mediaMax($desktop) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mediaMax($mobile) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Step Card
+$className: 'step-card';
+
+.#{$className} {
+  padding: 24px;
+  background-color: $backgroundSecondaryColor;
+  border: 1px solid $borderPrimaryColor;
+  border-radius: 8px;
+  text-align: center;
+
+  &__number {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 16px;
+    background-color: $accentPrimaryColor;
+    color: $fontPrimaryInvertedColor;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  &__code {
+    padding: 12px;
+    background-color: $backgroundPrimaryColor;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 4px;
+    text-align: left;
+
+    code {
+      font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #333;
+    }
+  }
+
+  &__description {
+    font-size: 17px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+  }
+}

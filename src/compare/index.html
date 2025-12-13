@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{> dochead title="Compare | AnyCable" description="Compare AnyCable with other real-time solutions: Action Cable, Pusher, Ably, and Socket.io"}}
+  <body>
+    <div class="page">
+      {{> header}}
+      <main class="content">
+        <!-- Hero Section -->
+        <section class='slide'>
+          <div class='compare-hero'>
+            <div class='compare-hero__content'>
+              <h1 class='compare-hero__title'>Find the Right Real-Time Solution</h1>
+              <p class='compare-hero__subtitle'>
+                Compare AnyCable with other popular WebSocket solutions
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Comparison Options -->
+        <section class='slide compare-options'>
+          <div class='compare-options__wrapper'>
+            <h2 class='compare-options__title'>Compare AnyCable with:</h2>
+
+            <div class='compare-options__grid'>
+              <a href="/compare/action-cable" class='compare-card' data-ph-capture-attribute-link-id='compare-action-cable'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Action Cable</h3>
+                  <span class='compare-card__badge'>Rails Default</span>
+                </div>
+                <p class='compare-card__description'>
+                  The built-in Rails WebSocket solution. Compare performance, features, and when to upgrade.
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>10x</strong> better performance
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Drop-in</strong> replacement
+                  </div>
+                </div>
+                <span class='compare-card__link'>Compare →</span>
+              </a>
+
+              <a href="/compare/pusher" class='compare-card' data-ph-capture-attribute-link-id='compare-pusher'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Pusher</h3>
+                  <span class='compare-card__badge compare-card__badge_saas'>SaaS</span>
+                </div>
+                <p class='compare-card__description'>
+                  Popular managed WebSocket service. Compare costs, control, and features.
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>60%</strong> cost savings at scale
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Full</strong> control
+                  </div>
+                </div>
+                <span class='compare-card__link'>Compare →</span>
+              </a>
+
+              <a href="/compare/ably" class='compare-card' data-ph-capture-attribute-link-id='compare-ably'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Ably</h3>
+                  <span class='compare-card__badge compare-card__badge_saas'>Enterprise SaaS</span>
+                </div>
+                <p class='compare-card__description'>
+                  Enterprise-grade managed platform. Compare pricing, Rails integration, and flexibility.
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>Native</strong> Rails support
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Self-host</strong> or managed
+                  </div>
+                </div>
+                <span class='compare-card__link'>Compare →</span>
+              </a>
+
+              <div class='compare-card compare-card_coming-soon'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Socket.io</h3>
+                  <span class='compare-card__badge compare-card__badge_node'>Node.js</span>
+                </div>
+                <p class='compare-card__description'>
+                  Popular Node.js WebSocket library. Compare ecosystem, performance, and backend flexibility.
+                </p>
+                <span class='compare-card__coming-soon'>Coming Soon</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Comparison Matrix -->
+        <section class='slide comparison-matrix'>
+          <div class='comparison-matrix__wrapper'>
+            <h2 class='comparison-matrix__title'>Quick Feature Comparison</h2>
+
+            <div class='comparison-table'>
+              <table class='comparison-table__table'>
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>AnyCable</th>
+                    <th>Action Cable</th>
+                    <th>Pusher</th>
+                    <th>Ably</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Deployment</strong></td>
+                    <td>Self-hosted + Managed</td>
+                    <td>Self-hosted only</td>
+                    <td>Managed only</td>
+                    <td>Managed only</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rails Integration</strong></td>
+                    <td>✓ Native</td>
+                    <td>✓ Built-in</td>
+                    <td>✗ SDK only</td>
+                    <td>✗ SDK only</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Concurrent Connections</strong></td>
+                    <td>10,000+</td>
+                    <td>~500</td>
+                    <td>100,000+</td>
+                    <td>100,000+</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Presence Tracking</strong></td>
+                    <td>✓</td>
+                    <td>✗</td>
+                    <td>✓</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Message History</strong></td>
+                    <td>✓</td>
+                    <td>✗</td>
+                    <td>✓</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Open Source</strong></td>
+                    <td>✓</td>
+                    <td>✓</td>
+                    <td>✗</td>
+                    <td>✗</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Starting Price</strong></td>
+                    <td>Free / $29/mo</td>
+                    <td>Free</td>
+                    <td>$49/mo</td>
+                    <td>$29/mo</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class='comparison-matrix__note'>
+              <p>
+                💡 <strong>Need help choosing?</strong> Each solution has its strengths.
+                Click through to see detailed comparisons for your specific use case.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section class='slide compare-tools'>
+          <div class='compare-tools__wrapper'>
+            <h2 class='compare-tools__title'>Comparison Tools</h2>
+
+            <div class='compare-tools__grid'>
+              <div class='compare-tool-card'>
+                <div class='compare-tool-card__icon'>💰</div>
+                <h3 class='compare-tool-card__title'>Pricing Calculator</h3>
+                <p class='compare-tool-card__description'>
+                  Estimate your costs across different solutions based on your connection volume.
+                </p>
+                <a href="/#pricing" class='compare-tool-card__link' data-ph-capture-attribute-link-id='compare-calculator'>Try Calculator →</a>
+              </div>
+
+              <div class='compare-tool-card'>
+                <div class='compare-tool-card__icon'>📚</div>
+                <h3 class='compare-tool-card__title'>Migration Guides</h3>
+                <p class='compare-tool-card__description'>
+                  Step-by-step guides for migrating from Action Cable, Pusher, or other solutions.
+                </p>
+                <a href="https://docs.anycable.io/guides/migration" target="_blank" class='compare-tool-card__link' data-ph-capture-attribute-link-id='compare-migration'>View Guides →</a>
+              </div>
+
+              <div class='compare-tool-card'>
+                <div class='compare-tool-card__icon'>⚡</div>
+                <h3 class='compare-tool-card__title'>Performance Benchmarks</h3>
+                <p class='compare-tool-card__description'>
+                  Real-world performance data comparing throughput, latency, and resource usage.
+                </p>
+                <a href="https://docs.anycable.io/misc/benchmarks" target="_blank" class='compare-tool-card__link' data-ph-capture-attribute-link-id='compare-benchmarks'>See Benchmarks →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class='slide cta-section'>
+          <div class='cta-section__wrapper'>
+            <h2 class='cta-section__title'>Ready to Try AnyCable?</h2>
+            <p class='cta-section__subtitle'>
+              Start with open source or try our managed service
+            </p>
+            <div class='cta-section__buttons'>
+              <a href="https://docs.anycable.io/getting-started" target="_blank" class='button button_size_big' data-ph-capture-attribute-link-id='compare-get-started'>Get Started - Free</a>
+              <a href="https://plus.anycable.io/pro" target="_blank" class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='compare-try-plus'>Try AnyCable+ Free</a>
+            </div>
+          </div>
+        </section>
+      </main>
+      {{> footer }}
+    </div>
+    <script type="module" src="/index.ts"></script>
+  </body>
+</html>

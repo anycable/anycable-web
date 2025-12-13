@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{> dochead title="AnyCable vs Ably | Rails Real-Time Comparison" description="Compare AnyCable and Ably for Rails applications. Native integration vs managed service."}}
+  <body>
+    <div class="page">
+      {{> header}}
+      <main class="content">
+        <!-- Hero Section -->
+        <section class='slide'>
+          <div class='comparison-hero'>
+            <div class='comparison-hero__content'>
+              <h1 class='comparison-hero__title'>AnyCable vs Ably</h1>
+              <p class='comparison-hero__subtitle'>
+                Native Rails integration vs enterprise managed platform
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- TL;DR Section -->
+        <section class='slide tldr-section'>
+          <div class='tldr-section__wrapper'>
+            <h2 class='tldr-section__title'>TL;DR</h2>
+            <div class='tldr-section__content'>
+              <p class='tldr-section__main'>
+                AnyCable offers <strong>native Rails integration</strong> and full control, while Ably provides an enterprise-grade managed platform with extensive SDKs.
+              </p>
+              <div class='tldr-section__recommendations'>
+                <div class='tldr-section__recommendation'>
+                  <h3>Use Ably if:</h3>
+                  <ul>
+                    <li>Need enterprise SLAs</li>
+                    <li>Want managed infrastructure</li>
+                    <li>Using multiple platforms/languages</li>
+                    <li>Need global edge delivery</li>
+                  </ul>
+                </div>
+                <div class='tldr-section__recommendation tldr-section__recommendation_highlight'>
+                  <h3>Use AnyCable if:</h3>
+                  <ul>
+                    <li>Building with Rails</li>
+                    <li>Want native Action Cable compatibility</li>
+                    <li>Prefer self-hosting option</li>
+                    <li>Need flexible deployment</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Feature Comparison -->
+        <section class='slide comparison-features'>
+          <div class='comparison-features__wrapper'>
+            <h2 class='comparison-features__title'>Feature Comparison</h2>
+
+            <div class='comparison-table'>
+              <table class='comparison-table__table'>
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Ably</th>
+                    <th>AnyCable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Deployment</strong></td>
+                    <td>Managed only</td>
+                    <td>Self-hosted or Managed (AnyCable+)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rails Integration</strong></td>
+                    <td>SDK/Adapter</td>
+                    <td>✓ Native Action Cable</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Presence</strong></td>
+                    <td>✓</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Message History</strong></td>
+                    <td>✓ Extensive</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Open Source</strong></td>
+                    <td>✗</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Starting Price</strong></td>
+                    <td>$29/mo</td>
+                    <td>Free / $29/mo / $490/yr</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SDKs</strong></td>
+                    <td>25+ languages</td>
+                    <td>Rails, JavaScript, any via RPC</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data Control</strong></td>
+                    <td>Ably's infrastructure</td>
+                    <td>Your infrastructure</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class='slide cta-section'>
+          <div class='cta-section__wrapper'>
+            <h2 class='cta-section__title'>Rails-Native Real-Time</h2>
+            <p class='cta-section__subtitle'>
+              Get started with AnyCable's native Rails integration
+            </p>
+            <div class='cta-section__buttons'>
+              <a href="https://docs.anycable.io/getting-started" target="_blank" class='button button_size_big' data-ph-capture-attribute-link-id='ably-cta-start'>Get Started - Free</a>
+              <a href="/#pricing" class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='ably-cta-pricing'>View Pricing</a>
+            </div>
+          </div>
+        </section>
+      </main>
+      {{> footer }}
+    </div>
+    <script type="module" src="/index.ts"></script>
+  </body>
+</html>

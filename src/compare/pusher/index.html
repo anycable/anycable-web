@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{> dochead title="AnyCable vs Pusher | Cost & Feature Comparison" description="AnyCable gives you full control and costs 60% less at scale. Compare features, pricing, and Rails integration."}}
+  <body>
+    <div class="page">
+      {{> header}}
+      <main class="content">
+        <!-- Hero Section -->
+        <section class='slide'>
+          <div class='comparison-hero'>
+            <div class='comparison-hero__content'>
+              <h1 class='comparison-hero__title'>AnyCable vs Pusher</h1>
+              <p class='comparison-hero__subtitle'>
+                Full control, better Rails integration, lower costs
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- TL;DR Section -->
+        <section class='slide tldr-section'>
+          <div class='tldr-section__wrapper'>
+            <h2 class='tldr-section__title'>TL;DR</h2>
+            <div class='tldr-section__content'>
+              <p class='tldr-section__main'>
+                AnyCable gives you <strong>full control</strong> and costs <strong>60% less at scale</strong>, but you manage infrastructure (or use AnyCable+).
+              </p>
+              <div class='tldr-section__recommendations'>
+                <div class='tldr-section__recommendation'>
+                  <h3>Use Pusher if:</h3>
+                  <ul>
+                    <li>Just getting started</li>
+                    <li>Want zero ops overhead</li>
+                    <li>Need global edge network</li>
+                    <li>Don't use Rails</li>
+                  </ul>
+                </div>
+                <div class='tldr-section__recommendation tldr-section__recommendation_highlight'>
+                  <h3>Use AnyCable if:</h3>
+                  <ul>
+                    <li>Cost-conscious at scale</li>
+                    <li>Need Rails integration</li>
+                    <li>Want full control over data</li>
+                    <li>Prefer self-hosting</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pricing Comparison -->
+        <section class='slide comparison-detail'>
+          <div class='comparison-detail__wrapper'>
+            <div class='comparison-detail__content'>
+              <h2 class='comparison-detail__title'>Pricing Comparison</h2>
+              <div class='comparison-detail__text'>
+                <p>
+                  <strong>Pusher's pricing scales with connections</strong>, which can become expensive as your app grows.
+                  With AnyCable, you pay once for the Pro license or a flat monthly fee for managed hosting.
+                </p>
+              </div>
+
+              <div class='benchmark-cards'>
+                <div class='benchmark-card'>
+                  <div class='benchmark-card__metric'>$29-299</div>
+                  <div class='benchmark-card__label'>Per month (100-10K connections)</div>
+                  <div class='benchmark-card__badge benchmark-card__badge_anycable'>AnyCable+ (Managed)</div>
+                </div>
+                <div class='benchmark-card'>
+                  <div class='benchmark-card__metric'>$49-499</div>
+                  <div class='benchmark-card__label'>Per month (100-10K connections)</div>
+                  <div class='benchmark-card__badge'>Pusher</div>
+                </div>
+              </div>
+
+              <div class='benchmark-cards'>
+                <div class='benchmark-card'>
+                  <div class='benchmark-card__metric'>$490/yr</div>
+                  <div class='benchmark-card__label'>One-time license (unlimited)</div>
+                  <div class='benchmark-card__badge benchmark-card__badge_anycable'>AnyCable Pro</div>
+                </div>
+                <div class='benchmark-card'>
+                  <div class='benchmark-card__metric'>~$50-100</div>
+                  <div class='benchmark-card__label'>Monthly infrastructure (self-hosted)</div>
+                  <div class='benchmark-card__badge benchmark-card__badge_anycable'>AnyCable Open Source</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Feature Comparison -->
+        <section class='slide comparison-features'>
+          <div class='comparison-features__wrapper'>
+            <h2 class='comparison-features__title'>Feature Comparison</h2>
+
+            <div class='comparison-table'>
+              <table class='comparison-table__table'>
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Pusher</th>
+                    <th>AnyCable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Deployment</strong></td>
+                    <td>Managed only</td>
+                    <td>Self-hosted or Managed (AnyCable+)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rails Integration</strong></td>
+                    <td>SDK only</td>
+                    <td>✓ Native Action Cable compatibility</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Presence</strong></td>
+                    <td>✓</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Message History</strong></td>
+                    <td>✓</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data Control</strong></td>
+                    <td>Pusher's servers</td>
+                    <td>Your infrastructure</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Open Source</strong></td>
+                    <td>✗</td>
+                    <td>✓</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Price Scaling</strong></td>
+                    <td>Increases with connections</td>
+                    <td>Flat (Pro) or predictable tiers (AnyCable+)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SDKs</strong></td>
+                    <td>20+ languages</td>
+                    <td>Rails, JavaScript, any backend via RPC</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Global Edge</strong></td>
+                    <td>✓ Built-in</td>
+                    <td>Via deployment strategy</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Migration -->
+        <section class='slide getting-started-section'>
+          <div class='getting-started-section__wrapper'>
+            <h2 class='getting-started-section__title'>Migrating from Pusher</h2>
+            <div class='getting-started-section__content'>
+              <p class='getting-started-section__intro'>
+                If you're using Pusher with Rails, migrating to AnyCable gives you better integration and lower costs:
+              </p>
+
+              <div class='migration-checklist'>
+                <div class='migration-checklist__item'>
+                  <div class='migration-checklist__icon'>→</div>
+                  <div class='migration-checklist__text'>
+                    <strong>Replace Pusher SDK</strong> with native Action Cable channels
+                  </div>
+                </div>
+                <div class='migration-checklist__item'>
+                  <div class='migration-checklist__icon'>→</div>
+                  <div class='migration-checklist__text'>
+                    <strong>Use cable_ready or turbo_stream</strong> for server-to-client updates
+                  </div>
+                </div>
+                <div class='migration-checklist__item'>
+                  <div class='migration-checklist__icon'>→</div>
+                  <div class='migration-checklist__text'>
+                    <strong>Deploy AnyCable-Go</strong> for high-performance WebSocket handling
+                  </div>
+                </div>
+                <div class='migration-checklist__item'>
+                  <div class='migration-checklist__icon'>→</div>
+                  <div class='migration-checklist__text'>
+                    <strong>Keep your business logic</strong> in Rails where it belongs
+                  </div>
+                </div>
+              </div>
+
+              <div class='getting-started-section__links'>
+                <a href="https://docs.anycable.io" target="_blank" class='button button_size_big' data-ph-capture-attribute-link-id='pusher-get-started'>View Documentation →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class='slide cta-section'>
+          <div class='cta-section__wrapper'>
+            <h2 class='cta-section__title'>Ready to Save on Real-Time?</h2>
+            <p class='cta-section__subtitle'>
+              Try AnyCable+ free or self-host with open source
+            </p>
+            <div class='cta-section__buttons'>
+              <a href="https://plus.anycable.io/pro" target="_blank" class='button button_size_big' data-ph-capture-attribute-link-id='pusher-cta-try'>Try AnyCable+ Free</a>
+              <a href="https://docs.anycable.io/getting-started" target="_blank" class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='pusher-cta-docs'>Get Started - Open Source</a>
+            </div>
+          </div>
+        </section>
+      </main>
+      {{> footer }}
+    </div>
+    <script type="module" src="/index.ts"></script>
+  </body>
+</html>

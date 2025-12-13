@@ -1,0 +1,610 @@
+// Learn Hero
+$className: 'learn-hero';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 40vh;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  &__content {
+    max-width: 1200px;
+    padding: 100px 64px 60px;
+    text-align: center;
+
+    @include mediaMax($tablet) {
+      padding: 80px 24px 40px;
+    }
+  }
+
+  &__title {
+    font-size: 69px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 24px;
+
+    @include mediaMax($tablet) {
+      font-size: 46px;
+    }
+
+    @include mediaMax($mobile) {
+      font-size: 40px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 24px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+
+    @include mediaMax($mobile) {
+      font-size: 20px;
+    }
+  }
+}
+
+// Learning Paths
+$className: 'learning-paths';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 64px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+      margin-bottom: 48px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+
+    @include mediaMax($desktop) {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+}
+
+// Learning Path Card
+$className: 'learning-path-card';
+
+.#{$className} {
+  padding: 40px 32px;
+  background-color: $backgroundSecondaryColor;
+  border: 2px solid $borderPrimaryColor;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+
+  &_advanced {
+    background-color: $accentPrimaryColor;
+    border-color: $accentPrimaryColor;
+    color: $fontPrimaryInvertedColor;
+
+    .#{$className}__badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: $fontPrimaryInvertedColor;
+    }
+
+    .#{$className}__description,
+    .#{$className}__duration {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .#{$className}__list {
+      color: $fontPrimaryInvertedColor;
+    }
+  }
+
+  &__badge {
+    display: inline-block;
+    width: fit-content;
+    padding: 6px 12px;
+    background-color: #e0e0e0;
+    color: $fontSecondaryColor;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-size: 28px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  &__description {
+    font-size: 17px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    margin-bottom: 24px;
+  }
+
+  &__list {
+    list-style: '→ ';
+    padding-left: 20px;
+    margin-bottom: 24px;
+    flex-grow: 1;
+
+    li {
+      font-size: 17px;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+  }
+
+  &__duration {
+    font-size: 14px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+}
+
+// Documentation Section
+$className: 'documentation-section';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 64px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+      margin-bottom: 48px;
+    }
+  }
+}
+
+// Doc Grid
+$className: 'doc-grid';
+
+.#{$className} {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @include mediaMax($desktop) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mediaMax($tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Doc Card
+$className: 'doc-card';
+
+.#{$className} {
+  padding: 32px 24px;
+  background-color: $backgroundPrimaryColor;
+  border: 1px solid $borderPrimaryColor;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 200ms;
+  text-align: center;
+
+  &:hover {
+    border-color: $accentPrimaryColor;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &__icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+  }
+}
+
+// Blog Section
+$className: 'blog-section';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 64px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+      margin-bottom: 48px;
+    }
+  }
+
+  &__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+  }
+}
+
+// Blog Grid
+$className: 'blog-grid';
+
+.#{$className} {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+
+  @include mediaMax($desktop) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+// Blog Card
+$className: 'blog-card';
+
+.#{$className} {
+  padding: 32px;
+  background-color: $backgroundSecondaryColor;
+  border: 1px solid $borderPrimaryColor;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 200ms;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    border-color: $accentPrimaryColor;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &__category {
+    display: inline-block;
+    width: fit-content;
+    padding: 4px 12px;
+    background-color: $accentPrimaryColor;
+    color: $fontPrimaryInvertedColor;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__excerpt {
+    font-size: 17px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__reading-time {
+    font-size: 14px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+  }
+}
+
+// Video Section
+$className: 'video-section';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+  background-color: $backgroundSecondaryColor;
+  border-bottom: 1px solid $borderPrimaryColor;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 16px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    text-align: center;
+    margin-bottom: 64px;
+
+    @include mediaMax($mobile) {
+      font-size: 17px;
+      margin-bottom: 48px;
+    }
+  }
+
+  &__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+  }
+}
+
+// Video Grid
+$className: 'video-grid';
+
+.#{$className} {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+
+  @include mediaMax($desktop) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+// Video Card
+$className: 'video-card';
+
+.#{$className} {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: all 200ms;
+
+  &:hover {
+    transform: translateY(-2px);
+
+    .#{$className}__thumbnail {
+      border-color: $accentPrimaryColor;
+    }
+  }
+
+  &__thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #000;
+    border: 2px solid $borderPrimaryColor;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    transition: border-color 200ms;
+  }
+
+  &__play {
+    font-size: 48px;
+    color: $fontPrimaryInvertedColor;
+    opacity: 0.9;
+  }
+
+  &__duration {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: $fontPrimaryInvertedColor;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+  }
+
+  &__title {
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  &__description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+  }
+}
+
+// Community Support
+$className: 'community-support';
+
+.#{$className} {
+  display: flex;
+  justify-content: center;
+  padding: 80px 64px;
+
+  @include mediaMax($tablet) {
+    padding: 60px 24px;
+  }
+
+  &__wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 16px;
+
+    @include mediaMax($mobile) {
+      font-size: 32px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    text-align: center;
+    margin-bottom: 64px;
+
+    @include mediaMax($mobile) {
+      font-size: 17px;
+      margin-bottom: 48px;
+    }
+  }
+}
+
+// Support Grid
+$className: 'support-grid';
+
+.#{$className} {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+
+  @include mediaMax($tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Support Card
+$className: 'support-card';
+
+.#{$className} {
+  padding: 32px;
+  background-color: $backgroundSecondaryColor;
+  border: 2px solid $borderPrimaryColor;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  transition: all 200ms;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    border-color: $accentPrimaryColor;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &_pro {
+    background-color: #fff5f5;
+    border-color: $accentPrimaryColor;
+  }
+
+  &__icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__description {
+    font-size: 17px;
+    line-height: 1.6;
+    color: $fontSecondaryColor;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+
+  &__link {
+    font-size: 17px;
+    line-height: 1.4;
+    color: $accentPrimaryColor;
+    font-weight: 600;
+  }
+}
