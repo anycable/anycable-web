@@ -28,8 +28,10 @@ const connectionsSlider = document.getElementById(
 const connectionsValue = document.getElementById('connections-value');
 const anycablePrice = document.getElementById('anycable-price');
 const pusherPrice = document.getElementById('pusher-price');
+const ablyPrice = document.getElementById('ably-price');
 const selfHostedPrice = document.getElementById('self-hosted-price');
 const pusherSavings = document.getElementById('pusher-savings');
+const ablySavings = document.getElementById('ably-savings');
 
 function formatNumber(num: number): string {
   if (num >= 1000) {
@@ -60,27 +62,43 @@ function calculatePricing(connections: number) {
     anycableTier = 'Enterprise';
   }
 
-  // Pusher pricing (approximate)
+  // Pusher pricing (approximate based on their pricing page)
   let pusherCost = 0;
   if (connections <= 100) {
-    pusherCost = 0;
+    pusherCost = 0; // Free tier
   } else if (connections <= 500) {
-    pusherCost = 49;
+    pusherCost = 49; // Standard plan
   } else if (connections <= 1000) {
     pusherCost = 49;
   } else if (connections <= 2000) {
-    pusherCost = 99;
+    pusherCost = 99; // Pro plan
   } else if (connections <= 5000) {
     pusherCost = 199;
   } else if (connections <= 10000) {
-    pusherCost = 299;
+    pusherCost = 299; // Business plan
   } else if (connections <= 20000) {
     pusherCost = 499;
   } else {
     pusherCost = Math.ceil(connections / 20000) * 499;
   }
 
-  // Self-hosted (rough estimate)
+  // Ably pricing (approximate based on their pricing page)
+  let ablyCost = 0;
+  if (connections <= 200) {
+    ablyCost = 0; // Free tier (200 concurrent connections)
+  } else if (connections <= 500) {
+    ablyCost = 29; // Starter
+  } else if (connections <= 2000) {
+    ablyCost = 79; // Growth
+  } else if (connections <= 10000) {
+    ablyCost = 299; // Business
+  } else if (connections <= 50000) {
+    ablyCost = 799;
+  } else {
+    ablyCost = Math.ceil(connections / 50000) * 799;
+  }
+
+  // Self-hosted (rough estimate - AWS/infrastructure costs)
   let selfHostedCost = 0;
   if (connections <= 1000) {
     selfHostedCost = 85; // t3.medium + redis
@@ -88,13 +106,16 @@ function calculatePricing(connections: number) {
     selfHostedCost = 150; // t3.large + redis
   } else if (connections <= 10000) {
     selfHostedCost = 250; // t3.xlarge + redis
+  } else if (connections <= 50000) {
+    selfHostedCost = 450; // t3.2xlarge + redis cluster
   } else {
-    selfHostedCost = 350 + Math.floor((connections - 10000) / 10000) * 100;
+    selfHostedCost = 450 + Math.floor((connections - 50000) / 50000) * 200;
   }
 
   return {
     anycable: { cost: anycableCost, tier: anycableTier },
     pusher: pusherCost,
+    ably: ablyCost,
     selfHosted: selfHostedCost,
   };
 }
@@ -105,8 +126,10 @@ function updateCalculator() {
     !connectionsValue ||
     !anycablePrice ||
     !pusherPrice ||
+    !ablyPrice ||
     !selfHostedPrice ||
-    !pusherSavings
+    !pusherSavings ||
+    !ablySavings
   ) {
     return;
   }
@@ -153,10 +176,17 @@ function updateCalculator() {
     pusherPrice.innerHTML = `$${pricing.pusher}<span>/month</span>`;
   }
 
+  // Update Ably
+  if (pricing.ably === 0) {
+    ablyPrice.innerHTML = '$0<span>/month</span>';
+  } else {
+    ablyPrice.innerHTML = `$${pricing.ably}<span>/month</span>`;
+  }
+
   // Update Self-hosted
   selfHostedPrice.innerHTML = `~$${pricing.selfHosted}<span>/month</span>`;
 
-  // Calculate savings
+  // Calculate Pusher savings
   if (pricing.anycable.cost === 0 || pricing.pusher === 0) {
     pusherSavings.textContent = '';
   } else {
@@ -167,11 +197,24 @@ function updateCalculator() {
       pusherSavings.textContent = `Save ${savings}%`;
       pusherSavings.style.color = '#4caf50';
     } else {
-      const extraCost = Math.round(
-        (Math.abs(savings) / 100) * pricing.anycable.cost
-      );
-      pusherSavings.textContent = `+${Math.abs(savings)}% cost`;
+      pusherSavings.textContent = `+${Math.abs(savings)}% more`;
       pusherSavings.style.color = '#d32f2f';
+    }
+  }
+
+  // Calculate Ably savings
+  if (pricing.anycable.cost === 0 || pricing.ably === 0) {
+    ablySavings.textContent = '';
+  } else {
+    const savings = Math.round(
+      ((pricing.ably - pricing.anycable.cost) / pricing.ably) * 100
+    );
+    if (savings > 0) {
+      ablySavings.textContent = `Save ${savings}%`;
+      ablySavings.style.color = '#4caf50';
+    } else {
+      ablySavings.textContent = `+${Math.abs(savings)}% more`;
+      ablySavings.style.color = '#d32f2f';
     }
   }
 }
