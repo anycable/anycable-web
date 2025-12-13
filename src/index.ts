@@ -4,4 +4,5 @@ import './js/components/demo';
 import './js/components/tabs';
 import './js/components/cursors';
 import './js/components/github-button';
+import './js/components/pricing-calculator';
 import './index.scss';
