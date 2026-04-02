@@ -22,7 +22,100 @@
     "@type": "SoftwareApplication",
     "image": "https://anycable.io/images/logos/anycable.png",
     "name": "AnyCable",
-    "applicationCategory": "Web",
-    "operatingSystem": "Any"
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "description": "Open-source WebSocket server with delivery guarantees, presence tracking, and message ordering. Works with any backend via HTTP API.",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Open Source",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free, deploy anywhere. Hotwire support, JWT authentication, Prometheus instrumentation."
+      },
+      {
+        "@type": "Offer",
+        "name": "Managed AnyCable",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free managed hosting, up to 2,000 connections."
+      },
+      {
+        "@type": "Offer",
+        "name": "AnyCable Pro",
+        "price": "1490",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "description": "$1,490 per year. Unlimited instances and connections. Cluster mode, binary compression, long-polling fallback, adaptive scaling, dedicated support."
+      },
+      {
+        "@type": "Offer",
+        "name": "Enterprise",
+        "description": "Custom pricing for enterprise deployments."
+      },
+      {
+        "@type": "Offer",
+        "name": "Consulting",
+        "price": "200",
+        "priceCurrency": "USD",
+        "description": "$200 per hour. Setup, deployment, load testing, and architecture consulting."
+      }
+    ]
+  }
+</script>
+<script type=application/ld+json>
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is AnyCable?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AnyCable is an open-source WebSocket server written in Go with built-in delivery guarantees, presence tracking, and message ordering. It works with any backend — Ruby on Rails, Laravel, Node.js/TypeScript, Python/FastAPI, or any language that can make HTTP requests — via its pub/sub HTTP API. AnyCable handles 10,000+ concurrent connections per server and has been in production since 2017, powering 50+ companies including Doximity, CoinGecko, Jobber, and Circle."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does AnyCable cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AnyCable open source is free. Managed AnyCable is free for up to 2,000 connections. AnyCable Pro costs $1,490 per year for unlimited connections and instances — flat pricing that doesn't grow with your user count. Enterprise plans have custom pricing. Consulting is available at $200 per hour."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does AnyCable work with Python, Laravel, or Node.js?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. AnyCable works with any backend language. For Rails, it's a drop-in Action Cable replacement. For Laravel, there's a native SDK with broadcasting and channels. For Python/FastAPI, Node.js, or any other backend, you broadcast messages via AnyCable's HTTP pub/sub API — a simple HTTP POST from your application delivers messages to all connected WebSocket clients with ordering and delivery guarantees."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is AnyCable HIPAA compliant?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. AnyCable Pro and open source run on your infrastructure — real-time data never leaves your servers. This makes AnyCable compliant with HIPAA, SOC2, and other data sovereignty requirements. Nine healthcare companies use AnyCable in production, including Doximity (professional network for 80% of US physicians), Healthie, and Headway ($2.3B valuation)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is AnyCable different from Socket.io?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Socket.io is a JavaScript library that provides WebSocket transport — you build reliability, presence, and authentication yourself. AnyCable is a standalone server with delivery guarantees, presence tracking, message ordering, and authentication built in. AnyCable works with any backend (not just Node.js), and because it's a separate process, WebSocket connections survive application deploys."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is AnyCable different from Pusher or Ably?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pusher and Ably are managed services that route your data through third-party servers — a problem for HIPAA and SOC2 compliance. Their pricing grows linearly with connections. AnyCable runs on your infrastructure (or use Managed AnyCable), offers flat pricing ($1,490/year for unlimited connections with Pro), and provides native SDKs for Rails and Laravel rather than generic client libraries."
+        }
+      }
+    ]
   }
 </script>

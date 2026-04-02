@@ -63,8 +63,9 @@
       <div class='about-slide__media about-slide__media-align-top' data-controller="tabs">
         <div class='about-slide__tabs'>
           <button data-tabs-target="code-pubsub" class='button button_variant_outlined about-slide__tab active-tab'>Pub/Sub</button>
-          <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Ruby Channels</button>
-          <button data-tabs-target="code-js" class='button button_variant_outlined about-slide__tab'>JS Channels</button>
+          <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Ruby</button>
+          <button data-tabs-target="code-js" class='button button_variant_outlined about-slide__tab'>JS/TS</button>
+          <button data-tabs-target="code-py" class='button button_variant_outlined about-slide__tab'>Python</button>
         </div>
         <div class='slide-show__frame' id="codes">
           <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
@@ -75,6 +76,9 @@
           </div>
           <div data-tabs-id="code-js" style="display:none" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/js}}
+          </div>
+          <div data-tabs-id="code-py" style="display:none" class='slide-show__code-wrapper'>
+{{> slides/code-snippets/python}}
           </div>
         </div>
       </div>

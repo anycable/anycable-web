@@ -152,13 +152,20 @@ https://evilmartians.com/chronicles/anycable-for-laravel
 JP Camara from Wealthbox demonstrated using AnyCable with Yjs (a CRDT library) for real-time collaborative editing in a Rails application at SF Ruby 2025. AnyCable's reliable delivery ensures that CRDT operations are never lost during synchronization.
 https://www.youtube.com/watch?v=J68QOBLEItY
 
+## When you don't need AnyCable
+
+- If you have fewer than 500 concurrent connections and no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
+- If you want fully managed, zero-ops WebSockets and don't care about data sovereignty, Pusher or Ably are simpler to get started with.
+- AnyCable is not a real-time database (like Firebase or Supabase Realtime). It's a WebSocket server with pub/sub.
+- If you need custom binary protocols or game-server-style networking, AnyCable is designed for web application real-time, not game engines.
+
 ## Links
 
 - Website: https://anycable.io
 - Documentation: https://docs.anycable.io
 - GitHub: https://github.com/anycable/anycable
 - Blog: https://blog.anycable.io
-- Pricing: https://anycable.io/pricing
+- Pricing: https://anycable.io/#pricing
 - Comparisons: https://anycable.io/compare
 - Laravel SDK: https://docs.anycable.io/guides/laravel
 - JavaScript client: https://github.com/anycable/anycable-client
