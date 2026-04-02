@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead title="Compare | AnyCable" description="Compare AnyCable with other real-time solutions: Action Cable, Pusher, Ably, and Socket.io"}}
+  {{> dochead title="Compare AnyCable vs Socket.io, Pusher, Ably, Action Cable, Centrifugo" description="Compare AnyCable with Socket.io, Pusher, Ably, Action Cable, Laravel Reverb, Django Channels, and Centrifugo. Built-in delivery guarantees, presence tracking, and message ordering for any backend."}}
   <body>
     <div class="page">
       {{> header}}
@@ -23,72 +23,117 @@
             <h2 class='compare-options__title'>Compare AnyCable with:</h2>
 
             <div class='compare-options__grid'>
-              <a href="/compare/action-cable" class='compare-card' data-ph-capture-attribute-link-id='compare-action-cable'>
-                <div class='compare-card__header'>
-                  <h3 class='compare-card__title'>Action Cable</h3>
-                  <span class='compare-card__badge'>Rails Default</span>
-                </div>
-                <p class='compare-card__description'>
-                  The built-in Rails WebSocket solution. Compare performance, features, and when to upgrade.
-                </p>
-                <div class='compare-card__highlights'>
-                  <div class='compare-card__highlight'>
-                    <strong>10x</strong> better performance
-                  </div>
-                  <div class='compare-card__highlight'>
-                    <strong>Drop-in</strong> replacement
-                  </div>
-                </div>
-                <span class='compare-card__link'>Compare →</span>
-              </a>
-
-              <a href="/compare/pusher" class='compare-card' data-ph-capture-attribute-link-id='compare-pusher'>
-                <div class='compare-card__header'>
-                  <h3 class='compare-card__title'>Pusher</h3>
-                  <span class='compare-card__badge compare-card__badge_saas'>SaaS</span>
-                </div>
-                <p class='compare-card__description'>
-                  Popular managed WebSocket service. Compare costs, control, and features.
-                </p>
-                <div class='compare-card__highlights'>
-                  <div class='compare-card__highlight'>
-                    <strong>60%</strong> cost savings at scale
-                  </div>
-                  <div class='compare-card__highlight'>
-                    <strong>Full</strong> control
-                  </div>
-                </div>
-                <span class='compare-card__link'>Compare →</span>
-              </a>
-
-              <a href="/compare/ably" class='compare-card' data-ph-capture-attribute-link-id='compare-ably'>
-                <div class='compare-card__header'>
-                  <h3 class='compare-card__title'>Ably</h3>
-                  <span class='compare-card__badge compare-card__badge_saas'>Enterprise SaaS</span>
-                </div>
-                <p class='compare-card__description'>
-                  Enterprise-grade managed platform. Compare pricing, Rails integration, and flexibility.
-                </p>
-                <div class='compare-card__highlights'>
-                  <div class='compare-card__highlight'>
-                    <strong>Native</strong> Rails support
-                  </div>
-                  <div class='compare-card__highlight'>
-                    <strong>Self-host</strong> or managed
-                  </div>
-                </div>
-                <span class='compare-card__link'>Compare →</span>
-              </a>
-
-              <div class='compare-card compare-card_coming-soon'>
+              <a href="/compare/socket-io" class='compare-card' data-ph-capture-attribute-link-id='compare-socket-io'>
                 <div class='compare-card__header'>
                   <h3 class='compare-card__title'>Socket.io</h3>
                   <span class='compare-card__badge compare-card__badge_node'>Node.js</span>
                 </div>
                 <p class='compare-card__description'>
-                  Popular Node.js WebSocket library. Compare ecosystem, performance, and backend flexibility.
+                  Popular Node.js WebSocket library. Compare built-in primitives vs DIY, Go vs Node.js performance.
                 </p>
-                <span class='compare-card__coming-soon'>Coming Soon</span>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>Built-in</strong> delivery &amp; presence
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Any</strong> backend
+                  </div>
+                </div>
+                <span class='compare-card__link'>Compare &rarr;</span>
+              </a>
+            </div>
+
+            <h2 class='compare-options__title'>More comparisons</h2>
+
+            <div class='compare-options__grid'>
+              <div class='compare-card'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Action Cable</h3>
+                  <span class='compare-card__badge'>Rails</span>
+                </div>
+                <p class='compare-card__description'>
+                  Action Cable tops out at ~500 concurrent connections and drops all WebSocket connections on every deploy. AnyCable is a drop-in replacement — zero code changes, 10,000+ connections per server, connections survive deploys.
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>15x</strong> less RAM per connection
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Zero</strong> code changes
+                  </div>
+                </div>
+              </div>
+
+              <div class='compare-card'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Pusher &amp; Ably</h3>
+                  <span class='compare-card__badge'>Managed</span>
+                </div>
+                <p class='compare-card__description'>
+                  Pusher and Ably route data through third-party servers — a non-starter for HIPAA, SOC2, and data sovereignty. Pricing grows linearly with connections. AnyCable runs on your infrastructure with flat Pro pricing ($1,490/year unlimited).
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>Self-hosted</strong> HIPAA compliant
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Flat</strong> pricing
+                  </div>
+                </div>
+              </div>
+
+              <div class='compare-card'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Centrifugo</h3>
+                  <span class='compare-card__badge'>Go</span>
+                </div>
+                <p class='compare-card__description'>
+                  Both are Go-based WebSocket servers with pub/sub. AnyCable has native Rails and Laravel SDKs, Action Cable protocol compatibility, and a managed SaaS option (AnyCable+). Centrifugo uses its own protocol and is self-hosted only.
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>Native</strong> Rails &amp; Laravel SDKs
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Managed</strong> SaaS option
+                  </div>
+                </div>
+              </div>
+
+              <div class='compare-card'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Laravel Reverb</h3>
+                  <span class='compare-card__badge'>Laravel</span>
+                </div>
+                <p class='compare-card__description'>
+                  Laravel Reverb does not provide delivery guarantees, message ordering, or presence tracking. AnyCable's native Laravel SDK provides all three out of the box, plus embedded NATS for zero-infrastructure clustering.
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>Reliable</strong> delivery
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>Presence</strong> tracking
+                  </div>
+                </div>
+              </div>
+
+              <div class='compare-card'>
+                <div class='compare-card__header'>
+                  <h3 class='compare-card__title'>Django Channels &amp; FastAPI WebSockets</h3>
+                  <span class='compare-card__badge'>Python</span>
+                </div>
+                <p class='compare-card__description'>
+                  Django Channels and FastAPI's built-in WebSocket support give you transport — delivery guarantees, presence, and message ordering are DIY. AnyCable runs alongside your Python app as a standalone server, broadcasting via HTTP API.
+                </p>
+                <div class='compare-card__highlights'>
+                  <div class='compare-card__highlight'>
+                    <strong>Standalone</strong> server
+                  </div>
+                  <div class='compare-card__highlight'>
+                    <strong>HTTP API</strong> broadcasting
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -105,60 +150,74 @@
                   <tr>
                     <th>Feature</th>
                     <th>AnyCable</th>
+                    <th>Socket.io</th>
+                    <th>Pusher / Ably</th>
                     <th>Action Cable</th>
-                    <th>Pusher</th>
-                    <th>Ably</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>Deployment</strong></td>
-                    <td>Self-hosted + Managed</td>
-                    <td>Self-hosted only</td>
-                    <td>Managed only</td>
-                    <td>Managed only</td>
+                    <td><strong>Type</strong></td>
+                    <td>Standalone server (Go)</td>
+                    <td>Library (Node.js)</td>
+                    <td>Managed service</td>
+                    <td>Built into Rails</td>
                   </tr>
                   <tr>
-                    <td><strong>Rails Integration</strong></td>
-                    <td>✓ Native</td>
+                    <td><strong>Reliable Delivery</strong></td>
                     <td>✓ Built-in</td>
-                    <td>✗ SDK only</td>
-                    <td>✗ SDK only</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Concurrent Connections</strong></td>
-                    <td>10,000+</td>
-                    <td>~500</td>
-                    <td>100,000+</td>
-                    <td>100,000+</td>
+                    <td>✗ Build your own</td>
+                    <td>✓ Built-in</td>
+                    <td>✗ No</td>
                   </tr>
                   <tr>
                     <td><strong>Presence Tracking</strong></td>
-                    <td>✓</td>
-                    <td>✗</td>
-                    <td>✓</td>
-                    <td>✓</td>
+                    <td>✓ Built-in</td>
+                    <td>✗ Build your own</td>
+                    <td>✓ Built-in</td>
+                    <td>✗ No</td>
                   </tr>
                   <tr>
-                    <td><strong>Message History</strong></td>
-                    <td>✓</td>
-                    <td>✗</td>
-                    <td>✓</td>
-                    <td>✓</td>
+                    <td><strong>Missed Message Recovery</strong></td>
+                    <td>✓ Automatic catch-up</td>
+                    <td>✗ No</td>
+                    <td>✓ Built-in</td>
+                    <td>✗ No</td>
                   </tr>
                   <tr>
-                    <td><strong>Open Source</strong></td>
-                    <td>✓</td>
-                    <td>✓</td>
-                    <td>✗</td>
-                    <td>✗</td>
+                    <td><strong>Backend Language</strong></td>
+                    <td>Any (Rails, Laravel, Python, Node, HTTP API)</td>
+                    <td>Node.js only</td>
+                    <td>Any (SDK/API)</td>
+                    <td>Rails only</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Deploy Resilience</strong></td>
+                    <td>✓ Connections survive</td>
+                    <td>✗ Restart = disconnect</td>
+                    <td>✓ Managed</td>
+                    <td>✗ Restart = disconnect</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Self-Hosted / HIPAA</strong></td>
+                    <td>✓ On your servers</td>
+                    <td>✓ Self-hosted</td>
+                    <td>✗ Third-party servers</td>
+                    <td>✓ Self-hosted</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling</strong></td>
+                    <td>10,000+ per server</td>
+                    <td>Varies (Node.js)</td>
+                    <td>Managed</td>
+                    <td>~500 per server</td>
                   </tr>
                   <tr>
                     <td><strong>Starting Price</strong></td>
-                    <td>Free / $29/mo</td>
-                    <td>Free</td>
-                    <td>$49/mo</td>
-                    <td>$29/mo</td>
+                    <td>Free / Pro $1,490/yr</td>
+                    <td>Free (+ infra)</td>
+                    <td>From $49/mo (grows with connections)</td>
+                    <td>Free (included in Rails)</td>
                   </tr>
                 </tbody>
               </table>

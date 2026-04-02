@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{> dochead title="AnyCable vs Socket.io | WebSocket Server Comparison" description="Compare AnyCable and Socket.io for real-time applications. Built-in reliability, presence tracking, and framework-agnostic architecture vs DIY on Node.js."}}
+  <body>
+    <div class="page">
+      {{> header}}
+      <main class="content">
+        <!-- Hero Section -->
+        <section class='slide'>
+          <div class='comparison-hero'>
+            <div class='comparison-hero__content'>
+              <h1 class='comparison-hero__title'>AnyCable vs Socket.io</h1>
+              <p class='comparison-hero__subtitle'>
+                Built-in reliability and high-level primitives vs roll-your-own on Node.js
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reliability Section -->
+        <section class='slide comparison-details'>
+          <div class='comparison-details__wrapper'>
+            <h2 class='comparison-details__title'>The reliability problem</h2>
+            <div class='comparison-details__intro'>
+              <p>
+                WebSocket connections are not as reliable as they appear. On a real-time scale, connectivity is not that solid and smooth: micro-disconnections happen even on stable connections, longer interruptions occur during commutes and subway rides, and every server deploy severs active connections. Most WebSocket libraries, including Socket.io, give you a transport layer and leave you to solve these problems yourself.
+              </p>
+            </div>
+
+            <div class='comparison-details__grid'>
+              <div class='comparison-detail-card'>
+                <h3 class='comparison-detail-card__title'>Message ordering</h3>
+                <p class='comparison-detail-card__description'>
+                  When you broadcast multiple messages to the same client in rapid succession, concurrent threads can deliver them out of order. This is especially critical for AI/LLM streaming, where chunks must arrive sequentially. Socket.io provides no ordering guarantees. AnyCable maintains publication logs with position metadata, ensuring messages always arrive in order.
+                </p>
+              </div>
+
+              <div class='comparison-detail-card'>
+                <h3 class='comparison-detail-card__title'>Missed messages during disconnections</h3>
+                <p class='comparison-detail-card__description'>
+                  When a client briefly loses connection — even for a few hundred milliseconds — any messages sent during that gap are lost forever. Socket.io offers automatic reconnection but no catch-up mechanism. AnyCable provides at-least-once delivery: publications are stored in logs, the client tracks its position, and automatically recovers all missed messages on reconnection.
+                </p>
+              </div>
+
+              <div class='comparison-detail-card'>
+                <h3 class='comparison-detail-card__title'>Deploys drop all connections</h3>
+                <p class='comparison-detail-card__description'>
+                  When you deploy your Socket.io server, every WebSocket connection is severed and clients must reconnect. For products like video calls, live collaboration, or real-time monitoring, this is unacceptable. AnyCable's Go server stays up during application deploys — connections are never interrupted, and users never notice a deployment.
+                </p>
+              </div>
+
+              <div class='comparison-detail-card'>
+                <h3 class='comparison-detail-card__title'>AnyCable's solution</h3>
+                <p class='comparison-detail-card__description'>
+                  AnyCable implements the Action Cable Extended protocol with built-in reliable delivery. Your application code stays the same — broadcast messages one by one, and the client receives all of them in the same order, even through disconnections. No custom retry logic, no client-side reordering, no accumulated state management.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Why a Separate Server -->
+        <section class='slide comparison-details'>
+          <div class='comparison-details__wrapper'>
+            <h2 class='comparison-details__title'>Why a separate WebSocket server</h2>
+            <div class='comparison-details__intro'>
+              <p>
+                Think of your server as a phone line: HTTP requests are like brief phone calls that come and go. WebSocket connections are like a dial-up modem — they stay connected and consume resources the entire time. When both compete for the same process, WebSockets consume everything. Real-time connections should be serviced and scaled independently from your HTTP application.
+              </p>
+              <p>
+                Socket.io runs inside your Node.js application process, coupling WebSocket handling with your business logic. AnyCable is a standalone server: it handles WebSocket connections independently while your application (Rails, Node, or anything else) handles business logic via gRPC or HTTP. This separation means you can scale, deploy, and restart your application without affecting real-time connections.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Why Go -->
+        <section class='slide comparison-details'>
+          <div class='comparison-details__wrapper'>
+            <h2 class='comparison-details__title'>Why Go</h2>
+            <div class='comparison-details__intro'>
+              <p>
+                WebSocket connections are long-lived — a single user can hold a connection open for hours. In Node.js (Socket.io) or Ruby (Action Cable), each connection consumes significant memory in the runtime. Go's goroutine-based concurrency model handles long-lived connections with minimal memory overhead: AnyCable serves 10,000+ concurrent connections per server using a fraction of the memory that Node.js or Ruby would need.
+              </p>
+              <p>
+                Go also compiles to a single binary — no dependency management, no runtime version conflicts. Deploy AnyCable as a Docker image or a standalone binary alongside your application in any language.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Why AnyCable -->
+        <section class='slide comparison-details'>
+          <div class='comparison-details__wrapper'>
+            <h2 class='comparison-details__title'>Why AnyCable</h2>
+            <div class='comparison-details__intro'>
+              <p>
+                AnyCable is not a new project. It has been in production since 2017, powering real-time features for companies like Doximity (telehealth for 80% of US physicians), CoinGecko (crypto market data), Jobber ($167M revenue field service platform), and 50+ others across healthcare, fintech, and SaaS.
+              </p>
+              <p>
+                The project is actively developed with regular releases (v1.6 is the current stable line, with patch releases every few weeks), a dedicated team, commercial support via AnyCable Pro, and a growing ecosystem including Laravel support, Pusher protocol compatibility, and the emerging Durable Streams standard.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Feature Comparison -->
+        <section class='slide comparison-features'>
+          <div class='comparison-features__wrapper'>
+            <h2 class='comparison-features__title'>Feature Comparison</h2>
+
+            <div class='comparison-table'>
+              <table class='comparison-table__table'>
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Socket.io</th>
+                    <th>AnyCable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Type</strong></td>
+                    <td>JavaScript library (Node.js)</td>
+                    <td>Standalone server (Go binary)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Protocol</strong></td>
+                    <td>Custom (not standard WebSocket)</td>
+                    <td>Standard WebSocket + Action Cable protocol</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Reliable Delivery</strong></td>
+                    <td>Build your own</td>
+                    <td>Built-in with automatic recovery</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Missed Message Recovery</strong></td>
+                    <td>No catch-up mechanism</td>
+                    <td>Automatic recovery on reconnection</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Presence Tracking</strong></td>
+                    <td>Build your own</td>
+                    <td>Built-in</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Authentication</strong></td>
+                    <td>Build your own middleware</td>
+                    <td>JWT, signed streams, Action Cable auth</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pub/Sub Clustering</strong></td>
+                    <td>Redis adapter (separate setup)</td>
+                    <td>Embedded NATS (zero extra infra)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Backend Language</strong></td>
+                    <td>Node.js only</td>
+                    <td>Any (Rails, Node, Laravel, HTTP pub/sub API)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Deploy Resilience</strong></td>
+                    <td>Restart = disconnect all clients</td>
+                    <td>Connections survive app deploys</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Memory per 10K connections</strong></td>
+                    <td>High (Node.js runtime overhead)</td>
+                    <td>Minimal (Go goroutines)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Binary Compression</strong></td>
+                    <td>No</td>
+                    <td>Yes (Pro)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Monitoring</strong></td>
+                    <td>Add your own</td>
+                    <td>Prometheus and StatsD built-in</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Open Source</strong></td>
+                    <td>Yes</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <td><strong>In production since</strong></td>
+                    <td>2014</td>
+                    <td>2016</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Price</strong></td>
+                    <td>Free (+ infrastructure)</td>
+                    <td>Free / Pro $1,490/yr / Managed from $29/mo</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Migration Section -->
+        <section class='slide comparison-migration'>
+          <div class='comparison-migration__wrapper'>
+            <h2 class='comparison-migration__title'>Migrating from Socket.io</h2>
+            <div class='comparison-migration__content'>
+              <p>
+                If you're currently using Socket.io with a Node.js backend, AnyCable's HTTP pub/sub API lets you keep your existing backend and offload WebSocket handling to AnyCable. If you're using Rails, the migration is even simpler — AnyCable is a drop-in replacement for Action Cable.
+              </p>
+              <ul>
+                <li>Replace Socket.io server with AnyCable (single Go binary or Docker image)</li>
+                <li>Use AnyCable's pub/sub HTTP API to broadcast from any backend</li>
+                <li>Get presence, reliable delivery, and authentication for free</li>
+                <li>Remove custom reconnection/retry code from your clients</li>
+              </ul>
+              <a href="https://docs.anycable.io" target="_blank" class='button button_variant_outlined' data-ph-capture-attribute-link-id='socketio-docs'>Read the Docs</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Further Reading -->
+        <section class='slide comparison-details'>
+          <div class='comparison-details__wrapper'>
+            <h2 class='comparison-details__title'>Further reading</h2>
+            <div class='comparison-details__intro'>
+              <ul>
+                <li><a href="https://evilmartians.com/chronicles/anycable-rails-and-the-pitfalls-of-llm-streaming" target="_blank">AnyCable, Rails, and the pitfalls of LLM-streaming</a> — deep dive into reliability problems and how AnyCable solves them</li>
+                <li><a href="https://evilmartians.com/chronicles/anycable-1-0-four-years-of-real-time-web-with-ruby-and-go" target="_blank">AnyCable 1.0: Four years of real-time web with Ruby and Go</a> — the architecture of separating WebSocket handling from application logic</li>
+                <li><a href="https://www.youtube.com/watch?v=7WJFTvgnmWA&t=1083s" target="_blank">Evolution of Real-Time, AnyCable Pro and... me</a> — talk by Irina Nazarova at Rocky Mountain Ruby 2024</li>
+                <li><a href="https://www.youtube.com/watch?v=J68QOBLEItY" target="_blank">Real-time collaboration with Rails, AnyCable and Yjs</a> — talk by JP Camara (Wealthbox) at SF Ruby 2025</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class='slide cta-section'>
+          <div class='cta-section__wrapper'>
+            <h2 class='cta-section__title'>Stop Building Infrastructure</h2>
+            <p class='cta-section__subtitle'>
+              Get reliable delivery, presence, and authentication out of the box
+            </p>
+            <div class='cta-section__buttons'>
+              <a href="https://docs.anycable.io/getting-started" target="_blank" class='button button_size_big' data-ph-capture-attribute-link-id='socketio-cta-start'>Get Started - Free</a>
+              <a href="/#pricing" class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='socketio-cta-pricing'>View Pricing</a>
+            </div>
+          </div>
+        </section>
+      </main>
+      {{> footer }}
+    </div>
+    <script type="module" src="/index.ts"></script>
+  </body>
+</html>

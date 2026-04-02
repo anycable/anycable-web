@@ -33,6 +33,10 @@ $className: 'main-slide';
     align-items: center;
     border-right: 1px solid $borderPrimaryColor;
 
+    & > svg {
+      animation: logo-float 4s ease-in-out infinite;
+    }
+
     @include mediaMax($tablet) {
       max-width: 100%;
       margin-top: -12px;
@@ -223,5 +227,14 @@ $className: 'main-slide';
       width: 80%;
       bottom: auto;
     }
+  }
+}
+
+@keyframes logo-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
   }
 }

@@ -1,4 +1,4 @@
-<section class='slide about-slide'>
+<section class='slide about-slide' id="features">
   <div class='about-slide__wrapper'>
     <div class='about-slide__section'>
       <div class='about-slide__content'>
@@ -6,16 +6,16 @@
           Why AnyCable?
         </h2>
         <h3 class='about-slide__subtitle'>
-          Low-latency of realtime at scale
+          Delivery guarantees, out of the box
         </h3>
         <p class='about-slide__text'>
-          If your product needs low latency interactivity, communication, or collaboration, AnyCable can be the perfect solution at any stage: start building with a managed (SaaS) version, and move on to the cost efficient Pro version, or move off to open source. AnyCable has been around for 7+ years, and it is powering large-scale applications around the world (see use cases).
+          Most WebSocket solutions don't guarantee delivery. AnyCable does. Missed messages are automatically recovered during connectivity issues — micro-disconnections, subway rides, or network switches. Your connections also stay alive during deploys, so users never notice a deployment.
         </p>
         <h3 class='about-slide__subtitle'>
-          Reliable realtime delivery
+          10,000+ connections per server
         </h3>
         <p class='about-slide__text'>
-          Most WebSocket solutions do not have delivery guarantees, but AnyCable automatically recovers any messages missed during micro connectivity issues, common even for stable connections, as well as longer ones that happen when users commute, ride a subway, etc. We solve all realtime-specific problems, so that you don’t have to!
+          Written in Go for minimal memory overhead on long-lived connections. Works with any backend — Rails, Laravel, Node.js, Python, or any language via HTTP pub/sub API. In production since 2017, powering 50+ companies.
         </p>
       </div>
       <div class='about-slide__media about-slide__media-top demo__slide'>
@@ -30,7 +30,7 @@
           Managed, open source, or on-premise Pro
         </h3>
         <p class='about-slide__text'>
-          We recommend to start tinkering with AnyCable in its SaaS form, but consider switching to the on premise Pro version later one. You can always switch to open source, which is, of course, free. In any case, no changes in code are needed to make a switch. Choose what’s best for you today.
+          Start with AnyCable in its managed (SaaS) form, then switch to the on-premise Pro version as you scale. You can always move to open source, which is free. No code changes are needed to switch between any option — choose what's best for you today.
         </p>
         <h3 class='about-slide__subtitle'>Secure and HIPAA compliant messaging</h3>
         <p class='about-slide__text'>
@@ -45,9 +45,9 @@
     </div>
     <div class='about-slide__section'>
       <div class='about-slide__content'>
-        <h3 class='about-slide__subtitle'>Time-tested abstractions</h3>
+        <h3 class='about-slide__subtitle'>Works with any backend</h3>
         <p class='about-slide__text'>
-          Write clean and maintainable code, leveraging clear abstractions: channels, subscriptions, presence tracking. Higher-level APIs like collaboration: coming soon!
+          AnyCable runs as a standalone server alongside your application. Broadcast from any backend via HTTP API — or use native SDKs for Rails and Laravel. Works with Hotwire, Turbo Streams, and any JavaScript framework out of the box.
         </p>
         <div class='about-slide__arrow'>
           <svg width="171" height="20" viewBox="0 0 171 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -62,9 +62,9 @@
       </div>
       <div class='about-slide__media about-slide__media-align-top' data-controller="tabs">
         <div class='about-slide__tabs'>
-          <button data-tabs-target="code-pubsub" class='button about-slide__btn about-slide__btn-pubsub active-tab'>Pub/Sub</button>
-          <button data-tabs-target="code-rb" class='button about-slide__btn about-slide__btn-ruby'>Ruby Channels</button>
-          <button data-tabs-target="code-js" class='button about-slide__btn about-slide__btn-js'>JS Channels</button>
+          <button data-tabs-target="code-pubsub" class='button button_variant_outlined about-slide__tab active-tab'>Pub/Sub</button>
+          <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Ruby Channels</button>
+          <button data-tabs-target="code-js" class='button button_variant_outlined about-slide__tab'>JS Channels</button>
         </div>
         <div class='slide-show__frame' id="codes">
           <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
