@@ -54,7 +54,9 @@ const handlebarsHelpers = {
         return new Handlebars.SafeString(`https://youtube.com/watch?v=${videoId}`)
       }
       case 'thumbnail': {
-        return new Handlebars.SafeString(`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`)
+        // hqdefault.jpg is universally available (maxresdefault often 404s for older videos).
+        // CSS crops the 4:3 image to 16:9 via object-fit to hide black bars.
+        return new Handlebars.SafeString(`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`)
       }
     }
   },

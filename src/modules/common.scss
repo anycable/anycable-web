@@ -1,4 +1,4 @@
-@import './veriables.scss';
+@import './variables.scss';
 @import './mixins.scss';
 
 @font-face {
@@ -11,6 +11,10 @@
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 :root {

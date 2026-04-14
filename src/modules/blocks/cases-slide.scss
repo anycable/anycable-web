@@ -4,6 +4,7 @@ $className: 'cases-slide';
   display: flex;
   justify-content: center;
   padding: 0;
+  border-top: 1px solid $borderPrimaryColor;
 
   &__wrapper {
     width: 100%;
@@ -18,6 +19,16 @@ $className: 'cases-slide';
     width: 100%;
     align-items: stretch;
     position: relative;
+    border-bottom: 1px solid $borderPrimaryColor;
+
+    // Vertical border between the two halves
+    & > :first-child {
+      border-right: 1px solid $borderPrimaryColor;
+
+      @include mediaMax($tablet) {
+        border-right: none;
+      }
+    }
 
     &:last-of-type {
       margin-bottom: 0;
@@ -26,7 +37,6 @@ $className: 'cases-slide';
     @include mediaMax($tablet) {
       flex-direction: column;
       padding: 0 24px;
-      border-bottom: 1px solid $borderPrimaryColor;
     }
 
     &-mobile-reverse {
@@ -43,14 +53,12 @@ $className: 'cases-slide';
     align-items: stretch;
     height: auto;
     background-color: $backgroundSecondaryColor;
-    border-right: 1px solid $borderPrimaryColor;
     padding: 64px;
     z-index: 2;
     position: relative;
 
     @include mediaMax($tablet) {
       width: 100%;
-      border: none;
       background-color: $backgroundPrimaryColor;
       padding: 48px 0px;
     }
@@ -138,6 +146,169 @@ $className: 'cases-slide';
       @include mediaMax($tablet) {
         display: none;
       }
+    }
+  }
+
+  &__logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: $fontPrimaryColor;
+  }
+
+  &__quote-section {
+    justify-content: center;
+    background-color: $backgroundSecondaryColor;
+  }
+
+  &__quote-block {
+    max-width: 900px;
+    padding: 80px 64px;
+    text-align: center;
+
+    @include mediaMax($tablet) {
+      padding: 60px 24px;
+    }
+  }
+
+  &__quote {
+    font-size: 24px;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 32px;
+    color: $fontPrimaryColor;
+
+    @include mediaMax($tablet) {
+      font-size: 20px;
+    }
+
+    @include mediaMax($mobile) {
+      font-size: 18px;
+    }
+  }
+
+  &__quote-attribution {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__quote-author {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  &__quote-role {
+    font-size: 15px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+
+    a {
+      color: $accentPrimaryColor;
+      text-decoration: none;
+    }
+  }
+
+  &__quote-source {
+    font-size: 14px;
+    line-height: 1.4;
+
+    a {
+      color: $accentPrimaryColor;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__companies {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    padding: 32px 0;
+
+    @include mediaMax($mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__company-card {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: left;
+    color: inherit;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 200ms;
+
+    &:hover {
+      border-color: $accentPrimaryColor;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    &_cta {
+      background-color: $accentPrimaryColor;
+      border-color: $accentPrimaryColor;
+
+      .#{$className}__company-name {
+        color: $fontPrimaryInvertedColor;
+      }
+
+      .#{$className}__company-desc {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      &:hover {
+        border-color: $accentPrimaryColor;
+        opacity: 0.9;
+      }
+    }
+  }
+
+  &__company-name {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  &__company-desc {
+    display: block;
+    font-size: 13px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+  }
+
+  // Direct link to a case study, injected on tiles that have one.
+  // Clicking this opens the case study; clicking elsewhere on the tile
+  // opens the company popup.
+  &__company-case-study {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $accentPrimaryColor;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover {
+      text-decoration: underline;
+      opacity: $opacityPrimaryValue;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 2px;
+      border-radius: 2px;
     }
   }
 }
