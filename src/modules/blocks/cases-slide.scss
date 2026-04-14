@@ -287,4 +287,28 @@ $className: 'cases-slide';
     line-height: 1.4;
     color: $fontSecondaryColor;
   }
+
+  // Direct link to a case study, injected on tiles that have one.
+  // Clicking this opens the case study; clicking elsewhere on the tile
+  // opens the company popup.
+  &__company-case-study {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $accentPrimaryColor;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover {
+      text-decoration: underline;
+      opacity: $opacityPrimaryValue;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
 }

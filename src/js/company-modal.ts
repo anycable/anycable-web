@@ -51,6 +51,33 @@ if (modal) {
   const linkEl = document.getElementById('company-modal-link') as HTMLAnchorElement;
   const caseStudyEl = document.getElementById('company-modal-case-study') as HTMLAnchorElement;
 
+  // Inject a "Read case study →" element into every tile that has one.
+  // We use a <span> (not <a>) because the tile is a <button>, and <a> inside
+  // <button> is invalid HTML that Chrome/Safari block from navigating.
+  // Clicking this span opens the case study in a new tab via window.open;
+  // clicking anywhere else on the tile opens the company popup.
+  document.querySelectorAll<HTMLElement>('.cases-slide__company-card[data-case-study]').forEach(card => {
+    const caseStudyUrl = card.getAttribute('data-case-study');
+    if (!caseStudyUrl) return;
+    const link = document.createElement('span');
+    link.className = 'cases-slide__company-case-study';
+    link.setAttribute('role', 'link');
+    link.setAttribute('tabindex', '0');
+    link.textContent = 'Read case study →';
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.open(caseStudyUrl, '_blank', 'noopener');
+    });
+    link.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open(caseStudyUrl, '_blank', 'noopener');
+      }
+    });
+    card.appendChild(link);
+  });
+
   document.querySelectorAll<HTMLElement>('.cases-slide__company-card').forEach(card => {
     card.addEventListener('click', (e) => {
       e.preventDefault();

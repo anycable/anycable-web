@@ -98,26 +98,31 @@ $className: 'popup';
 $className: 'company-modal';
 
 .#{$className} {
+  // The base .popup never gets display:flex (uses display:inherit), so we
+  // need to position the dialog manually instead of relying on parent flex.
   &__container {
+    position: absolute;
+    top: 15vh;
+    left: 50%;
     width: 90%;
     max-width: 520px;
     height: auto;
-    margin-top: 15vh;
+    max-height: 80vh;
     border-radius: 8px;
     overflow-y: auto;
-    transform: translateY(20px);
+    transform: translate(-50%, 20px);
     opacity: 0;
     transition: transform 200ms, opacity 200ms;
 
     .popup_opened & {
-      transform: translateY(0);
+      transform: translate(-50%, 0);
       opacity: 1;
     }
 
     @include mediaMax($tablet) {
-      width: 100%;
-      margin-top: 10vh;
-      border-radius: 0;
+      top: 10vh;
+      width: calc(100% - 24px);
+      border-radius: 8px;
     }
   }
 
