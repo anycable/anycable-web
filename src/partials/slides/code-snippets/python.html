@@ -1,0 +1,15 @@
+<pre class="shiki github-dark-high-contrast" style="background-color:#0a0c10;color:#f0f3f6" tabindex="0"><code style="padding:1em;overflow-x: auto;"><span class="line"><span style="color:#BDC4CC"># Broadcast from FastAPI via HTTP API</span></span>
+<span class="line"><span style="color:#FF9492">import</span><span style="color:#F0F3F6"> httpx</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F0F3F6">@app.</span><span style="color:#DBB7FF">post</span><span style="color:#F0F3F6">(</span><span style="color:#ADDCFF">"/messages"</span><span style="color:#F0F3F6">)</span></span>
+<span class="line"><span style="color:#FF9492">async def</span><span style="color:#DBB7FF"> create_message</span><span style="color:#F0F3F6">(msg: Message):</span></span>
+<span class="line"><span style="color:#FF9492">    async with</span><span style="color:#F0F3F6"> httpx.AsyncClient() </span><span style="color:#FF9492">as</span><span style="color:#F0F3F6"> client:</span></span>
+<span class="line"><span style="color:#FF9492">        await</span><span style="color:#F0F3F6"> client.</span><span style="color:#DBB7FF">post</span><span style="color:#F0F3F6">(</span></span>
+<span class="line"><span style="color:#ADDCFF">            f"</span><span style="color:#F0F3F6">{ANYCABLE_URL}</span><span style="color:#ADDCFF">/api/v1/broadcasts"</span><span style="color:#F0F3F6">,</span></span>
+<span class="line"><span style="color:#F0F3F6">            json={</span></span>
+<span class="line"><span style="color:#ADDCFF">                "stream"</span><span style="color:#F0F3F6">: </span><span style="color:#FF9492">f</span><span style="color:#ADDCFF">"chat/</span><span style="color:#F0F3F6">{msg.room_id}</span><span style="color:#ADDCFF">"</span><span style="color:#F0F3F6">,</span></span>
+<span class="line"><span style="color:#ADDCFF">                "data"</span><span style="color:#F0F3F6">: msg.</span><span style="color:#DBB7FF">json</span><span style="color:#F0F3F6">()</span></span>
+<span class="line"><span style="color:#F0F3F6">            }</span></span>
+<span class="line"><span style="color:#F0F3F6">        )</span></span>
+<span class="line"><span style="color:#FF9492">    return</span><span style="color:#F0F3F6"> {</span><span style="color:#ADDCFF">"ok"</span><span style="color:#F0F3F6">: </span><span style="color:#91CBFF">True</span><span style="color:#F0F3F6">}</span></span>
+<span class="line"></span></code></pre>

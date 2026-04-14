@@ -14,7 +14,23 @@
     {{> popup popupClass='try-now-popup'}} {{> popup
     popupClass='contact-us-popup' popupTitle = 'Contact us'
     typeformLink='https://form.typeform.com/c/wAHm0sRP'}}
+    <div class="popup company-modal" id="company-modal">
+      <div class="popup__container company-modal__container">
+        <button class="popup__close-btn" type="button" aria-label="Close"></button>
+        <div class="company-modal__content">
+          <img class="company-modal__logo" id="company-modal-logo" src="" alt="" style="display:none" />
+          <h2 class="company-modal__name" id="company-modal-name"></h2>
+          <p class="company-modal__desc" id="company-modal-desc"></p>
+          <div class="company-modal__detail" id="company-modal-detail"></div>
+          <div class="company-modal__links">
+            <a class="company-modal__link" id="company-modal-case-study" href="#" target="_blank" style="display:none">Read case study</a>
+            <a class="company-modal__link" id="company-modal-link" href="#" target="_blank">Visit website</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/index.ts"></script>
+    <script type="module" src="/js/company-modal.ts"></script>
     <anycable-cursors
       url="wss://stackblitz-demo-sx9f.fly.dev/cable"
       stream-name="anycable-io-cursors"

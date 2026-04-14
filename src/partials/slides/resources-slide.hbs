@@ -1,182 +1,128 @@
-<section class='slide resources-slide'>
+<section class='slide cases-slide' id="resources">
   <div class='cases-slide__wrapper'>
-    <div class='resources-slide__header mobile-only'>
-      <h3 class='cases-slide__pretitle'>Read more</h3>
-      <h2 class='cases-slide__title'>Resources</h2>
-    </div>
-    <div class='cases-slide__section resources-slide__section-wrapper'>
-      <div class='cases-slide__media resources-slide__media'>
-        <div class='resources-slide__section resources-slide__section_type_docs'>
-          <ul class='docs'>
-            <li class='docs__item'>
-              <a class='link docs__link' href='https://docs.anycable.io/rails/getting_started' target='_blank'
-                data-ph-capture-attribute-link-id='docs-rails'>
-                <img src='./images/rails-icon.svg' class='docs__icon' alt='Rails icon' />
-                <p class='docs__title'>Getting started with Rails</p>
-              </a>
-            </li>
-            <li class='docs__item'>
-              <a class='link docs__link' href='https://docs.anycable.io/guides/serverless' target='_blank'
-                data-ph-capture-attribute-link-id='docs-install'>
-                <img src='./images/serverless-icon.svg' class='docs__icon' alt='Instalation icon' />
-                <p class='docs__title'>Using with serverless JavaScript</p>
-              </a>
-            </li>
-            <li class='docs__item'>
-              <a class='link docs__link' href='https://docs.anycable.io/guides/hotwire' target='_blank'
-                data-ph-capture-attribute-link-id='docs-hotwire'>
-                <img src='./images/hotwire-icon.svg' class='docs__icon' alt='Hotwire icon' />
-                <p class='docs__title'>Using with Hotwire</p>
-              </a>
-            </li>
-            <li class='docs__item docs__item_all_docs'>
-              <a class='link docs__link' href='https://docs.anycable.io' target='_blank'
-                data-ph-capture-attribute-link-id='docs-all'>
-                <p class='docs__title docs__title_type_with-arrow'>
-                  All docs
-                </p>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class='resources-slide__section resources-slide__section_type_videos'>
-          <div class='videos'>
-            <a class='link videos__item' href="{{youtube "4n1SxfK0Uqg" "video"}}" target='_blank'
-              data-ph-capture-attribute-link-id='anycasts-8-video'>
-              <img class='videos__image' src="{{youtube "4n1SxfK0Uqg" "thumbnail"}}"
-                alt='AnyCast Ep. 8 video screenshot' />
-              <div class='videos__overlay'>
-                <p class='videos__title'>AnyCable v1.4: reliable real-time for all: Ruby, Rails, Hotwire and beyond</p>
-              </div>
-              <a class="link button button_variant_outlined"
-                href="https://www.youtube.com/watch?v=4n1SxfK0Uqg&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A"
-                target="_blank" data-ph-capture-attribute-link-id='anycasts-previous-episodes'>
-                Screencasts on YouTube
-              </a>
-            </a>
-          </div>
-        </div>
-        <div class='resources-slide__section resources-slide__section_type_case-studies'>
-          <ul class='case-studies'>
-            {{>
-              use_case
-                background-color='#f5f5f5'
-                text-color='rgb(15, 23, 42)'
-                date-color='rgb(71, 85, 105)'
-                url='https://blog.anycable.io/p/livevoice-shares-how-they-use-anycable'
-                img-src='/images/logos/live-voice.png'
-                img-alt='LiveVoice logo'
-                date='April 11, 2024'
-                title='Simultaneous interpretation and guided tours powered by AnyCable Pro'
-            }}
-            {{>
-            use_case
-              background-color='rgba(226, 232, 240, 1)'
-              text-color='rgb(15, 23, 42)'
-              date-color='rgb(71, 85, 105)'
-              url='https://blog.anycable.io/p/anycable-everywhere-real-time-visualization'
-              img-src='/images/polleverywhere.svg'
-              img-alt='Poll Everywhere logo'
-              date='June 9, 2023'
-              title='AnyCable everywhere: real-time visualization streaming for Poll Everywhere'
-            }}
-            {{>
-            use_case
-              background-color='rgba(223, 233, 250, 1)'
-              text-color='rgba(98, 70, 237, 1)'
-              date-color='rgba(14, 23, 43, 1)'
-              url='https://blog.anycable.io/p/making-real-time-chat-functionality-healthie-r'
-              img-src='/images/healthie-r-logo.svg'
-              img-alt='Healthie-r logo'
-              date='January 20, 2022'
-              title='Making a chat’s real-time functionality Healthie-r with AnyCable&nbsp;Pro'
-        }}
-          </ul>
-          <br />
-          <a class="link button button_variant_outlined" href="https://blog.anycable.io/t/case-study" target="_blank"
-            data-ph-capture-attribute-link-id='case-studies'>
-            Case studies
+
+    {{!-- Docs --}}
+    <div class='cases-slide__section cases-slide__section-mobile-reverse'>
+      <div class='cases-slide__media'>
+        <div class='resource-cards'>
+          <a href='https://docs.anycable.io/rails/getting_started' target='_blank' class='resource-card' data-ph-capture-attribute-link-id='docs-rails'>
+            <img src='./images/rails-icon.svg' class='resource-card__icon' alt='Rails' />
+            <span class='resource-card__title'>Getting started with Rails</span>
+          </a>
+          <a href='https://docs.anycable.io/guides/laravel' target='_blank' class='resource-card' data-ph-capture-attribute-link-id='docs-laravel'>
+            <img src='./images/laravel-icon.svg' class='resource-card__icon' alt='Laravel' />
+            <span class='resource-card__title'>Using with Laravel</span>
+          </a>
+          <a href='https://docs.anycable.io/guides/serverless' target='_blank' class='resource-card' data-ph-capture-attribute-link-id='docs-js'>
+            <img src='./images/js-icon.svg' class='resource-card__icon' alt='JavaScript' />
+            <span class='resource-card__title'>Using with JavaScript</span>
+          </a>
+          <a href='https://docs.anycable.io/guides/hotwire' target='_blank' class='resource-card' data-ph-capture-attribute-link-id='docs-hotwire'>
+            <img src='./images/hotwire-icon.svg' class='resource-card__icon' alt='Hotwire' />
+            <span class='resource-card__title'>Using with Hotwire</span>
+          </a>
+          <a href='https://docs.anycable.io' target='_blank' class='resource-card resource-card_all' data-ph-capture-attribute-link-id='docs-all'>
+            <span class='resource-card__title'>All docs</span>
           </a>
         </div>
       </div>
       <div class='cases-slide__content'>
-        <div class='desktop-only'>
-          <h3 class='cases-slide__pretitle'>Read more</h3>
-          <h2 class='cases-slide__title'>Resources & Support</h2>
-        </div>
+        <h3 class='cases-slide__pretitle'>Resources</h3>
+        <h2 class='cases-slide__title'>Documentation</h2>
         <div class='cases-slide__text'>
-          <div class='resources-slide__section resources-slide__section_type_learn-more'>
-            <p class='resources-slide__heading'>Learn more</p>
-            <ul class='list-box'>
-              <li class='list-box_item'>
-                Read <a class='link' href='https://docs.anycable.io' target='_blank'
-                  data-ph-capture-attribute-link-id='docs'>the docs</a>
-              </li>
-              <li class='list-box_item'>
-                Check <a class='link' href='https://blog.anycable.io' target='_blank'
-                  data-ph-capture-attribute-link-id='blog'>our blog</a>
-              </li>
-              <li class='list-box_item'>
-                Watch <a class='link'
-                  href='https://www.youtube.com/watch?v=4n1SxfK0Uqg&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A'
-                  target='_blank' data-ph-capture-attribute-link-id='screencasts'>screencasts</a> on YouTube
-              </li>
-              <li class='list-box_item'>
-                Check out our <a class='link' href='https://github.com/anycable/anycable_rails_demo' target='_blank'
-                  data-ph-capture-attribute-link-id='rails-demo'>Rails</a> and
-                <a class='link' href='https://github.com/anycable/vercel-anycable-demo' target='_blank'
-                  data-ph-capture-attribute-link-id='vercel-demo'>Next.js</a> demos
-              </li>
-              <li class='list-box__item'>
-                Watch this talk:
-              </li>
-              <a class='link videos__item' href='https://www.youtube.com/watch?v=TgpSs2ffJL0' target='_blank'
-                data-ph-capture-attribute-link-id='railsconf-2022-video'>
-                <img class='videos__image' src='./images/railsConf-video-screenshot.jpg'
-                  alt='RailsConf 2022 video screenshot' />
-                <div class='videos__overlay'>
-                  <p class='videos__title'>
-                    RailsConf 2022 - The pitfalls of realtime-ification
-                  </p>
-                </div>
-              </a>
-            </ul>
-          </div>
-          <div class='resources-slide__section resources-slide__section_type_community'>
-            <p class='resources-slide__heading'>Stay in the loop</p>
-            <ul class='list-box'>
-              <li class='list-box__item'>
-                Sign up for
-                <a class='link'
-                  href='https://blog.anycable.io/' target='_blank' data-ph-capture-attribute-link-id='substack'>our
-                  newsletter</a>
-              </li>
-              <li class='list-box__item'>
-                Follow us on
-                <a class='link'
-                  href='https://twitter.com/any_cable' data-ph-capture-attribute-link-id='twitter' target='_blank'>X (Twitter)</a>
-              </li>
-            </ul>
-          </div>
-          <div class='resources-slide__section resources-slide__section_type_community'>
-            <p class='resources-slide__heading'>Get help</p>
-            <ul class='list-box'>
-              <li class='list-box__item'>
-                Ask a question on
-                <a class='link'
-                  href='https://discord.gg/stimulus-reflex' target='_blank'
-                  data-ph-capture-attribute-link-id='discord'>Discord</a>
-              </li>
-              <li class='list-box__item'>
-                Submit an issue on
-                <a class='link'
-                  href='https://github.com/anycable/anycable' data-ph-capture-attribute-link-id='github-2'
-                  target='_blank'>GitHub</a>
-              </li>
-            </ul>
-          </div>
+          <ul>
+            <li>Works with Rails, Laravel, JavaScript, and any backend via HTTP API.</li>
+            <li>Deploy with Docker, Kubernetes, Heroku, Fly.io, or as a standalone binary.</li>
+            <li>Comprehensive guides for every integration.</li>
+          </ul>
         </div>
       </div>
     </div>
+
+    {{!-- Talks --}}
+    <div class='cases-slide__section'>
+      <div class='cases-slide__content'>
+        <h3 class='cases-slide__pretitle'>Resources</h3>
+        <h2 class='cases-slide__title'>Talks & Videos</h2>
+        <div class='cases-slide__text'>
+          <ul>
+            <li>Conference talks, screencasts, and deep dives on real-time architecture.</li>
+            <li>Learn from AnyCable users and maintainers.</li>
+          </ul>
+          <br />
+          <a class="link" href="https://www.youtube.com/watch?v=4n1SxfK0Uqg&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A" target="_blank" data-ph-capture-attribute-link-id='screencasts-all'>All screencasts on YouTube</a>
+        </div>
+      </div>
+      <div class='cases-slide__media'>
+        <div class='video-cards'>
+          <a href="{{youtube "4n1SxfK0Uqg" "video"}}" target='_blank' class='video-card' data-ph-capture-attribute-link-id='video-v14'>
+            <img class='video-card__thumb' src="{{youtube "4n1SxfK0Uqg" "thumbnail"}}" alt='AnyCable v1.4 screencast' />
+            <div class='video-card__overlay'>
+              <div class='video-card__play'></div>
+              <p class='video-card__title'>AnyCable v1.4: reliable real-time for all</p>
+              <p class='video-card__speaker'>Vladimir Dementyev</p>
+            </div>
+          </a>
+          <a href='https://www.youtube.com/watch?v=7WJFTvgnmWA&t=1083s' target='_blank' class='video-card' data-ph-capture-attribute-link-id='video-evolution'>
+            <img class='video-card__thumb' src="{{youtube "7WJFTvgnmWA" "thumbnail"}}" alt='Rocky Mountain Ruby 2024' />
+            <div class='video-card__overlay'>
+              <div class='video-card__play'></div>
+              <p class='video-card__title'>Evolution of Real-Time, AnyCable Pro and... me</p>
+              <p class='video-card__speaker'>Irina Nazarova — Rocky Mountain Ruby 2024</p>
+            </div>
+          </a>
+          <a href='https://www.youtube.com/watch?v=J68QOBLEItY' target='_blank' class='video-card' data-ph-capture-attribute-link-id='video-collab'>
+            <img class='video-card__thumb' src="{{youtube "J68QOBLEItY" "thumbnail"}}" alt='SF Ruby 2025' />
+            <div class='video-card__overlay'>
+              <div class='video-card__play'></div>
+              <p class='video-card__title'>Real-time collaboration with AnyCable and Yjs</p>
+              <p class='video-card__speaker'>JP Camara (Wealthbox) — SF Ruby 2025</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {{!-- Newsletter & Community --}}
+    <div class='cases-slide__section cases-slide__section-mobile-reverse'>
+      <div class='cases-slide__media'>
+        <div class='cases-slide__companies'>
+          <a href="https://blog.anycable.io/p/any-cables-33-durable-at-once" target="_blank" class="cases-slide__company-card" data-ph-capture-attribute-link-id="newsletter-33">
+            <span class="cases-slide__company-name">Any Cables #33: Durable at Once</span>
+            <span class="cases-slide__company-desc">Feb 2026</span>
+          </a>
+          <a href="https://blog.anycable.io/p/any-cables-32-2025-is-over" target="_blank" class="cases-slide__company-card" data-ph-capture-attribute-link-id="newsletter-32">
+            <span class="cases-slide__company-name">Any Cables #32: 2025 is over</span>
+            <span class="cases-slide__company-desc">Dec 2025</span>
+          </a>
+          <a href="https://blog.anycable.io/p/any-cables-monthly-31-whyjs" target="_blank" class="cases-slide__company-card" data-ph-capture-attribute-link-id="newsletter-31">
+            <span class="cases-slide__company-name">Any Cables #31: Why.js?</span>
+            <span class="cases-slide__company-desc">Oct 2025</span>
+          </a>
+          <a href="https://blog.anycable.io/p/building-bridges-announcing-anycable" target="_blank" class="cases-slide__company-card" data-ph-capture-attribute-link-id="newsletter-laravel">
+            <span class="cases-slide__company-name">Announcing AnyCable for Laravel</span>
+            <span class="cases-slide__company-desc">Jun 2025</span>
+          </a>
+          <a href="https://blog.anycable.io" target="_blank" class="cases-slide__company-card cases-slide__company-card_cta" data-ph-capture-attribute-link-id="newsletter-all">
+            <span class="cases-slide__company-name">All issues & subscribe</span>
+            <span class="cases-slide__company-desc">Monthly updates on AnyCable and real-time</span>
+          </a>
+        </div>
+      </div>
+      <div class='cases-slide__content'>
+        <h3 class='cases-slide__pretitle'>Resources</h3>
+        <h2 class='cases-slide__title'>Newsletter & Community</h2>
+        <div class='cases-slide__text'>
+          <ul>
+            <li><a class='link' href='https://blog.anycable.io' target='_blank'>Subscribe to our newsletter</a> — monthly releases, tips, and case studies.</li>
+            <li>Follow on <a class='link' href='https://twitter.com/any_cable' target='_blank'>X (Twitter)</a>.</li>
+            <li>Submit issues on <a class='link' href='https://github.com/anycable/anycable' target='_blank'>GitHub</a>.</li>
+          </ul>
+          <br />
+          <a class="link" href="https://github.com/anycable/slide-quiz" target="_blank" data-ph-capture-attribute-link-id="slide-quiz">Try Slide Quiz</a> — live polls for Sli.dev and Reveal.js web presentations powered by AnyCable
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
