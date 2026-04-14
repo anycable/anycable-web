@@ -59,11 +59,12 @@ if (modal) {
   document.querySelectorAll<HTMLElement>('.cases-slide__company-card[data-case-study]').forEach(card => {
     const caseStudyUrl = card.getAttribute('data-case-study');
     if (!caseStudyUrl) return;
+    const ctaText = card.getAttribute('data-case-study-cta') || 'Read case study →';
     const link = document.createElement('span');
     link.className = 'cases-slide__company-case-study';
     link.setAttribute('role', 'link');
     link.setAttribute('tabindex', '0');
-    link.textContent = 'Read case study →';
+    link.textContent = ctaText;
     link.addEventListener('click', (e) => {
       e.stopPropagation();
       window.open(caseStudyUrl, '_blank', 'noopener');
