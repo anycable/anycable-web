@@ -1,5 +1,3 @@
-import Popup from './components/Popup';
-
 const LOGOS: Record<string, string> = {
   'Doximity': '/images/logos/doximity.svg',
   'Healthie': '/images/logos/healthie-text.png',
@@ -39,11 +37,9 @@ const LOGOS: Record<string, string> = {
   'Vito': '/images/logos/vito.png',
 };
 
-const modal = document.getElementById('company-modal');
-if (modal) {
-  const popup = new Popup('#company-modal');
-  popup.init();
+const dialog = document.getElementById('company-modal') as HTMLDialogElement;
 
+if (dialog) {
   const logoEl = document.getElementById('company-modal-logo') as HTMLImageElement;
   const nameEl = document.getElementById('company-modal-name');
   const descEl = document.getElementById('company-modal-desc');
@@ -51,74 +47,62 @@ if (modal) {
   const linkEl = document.getElementById('company-modal-link') as HTMLAnchorElement;
   const caseStudyEl = document.getElementById('company-modal-case-study') as HTMLAnchorElement;
 
-  // Inject a "Read case study →" element into every tile that has one.
-  // We use a <span> (not <a>) because the tile is a <button>, and <a> inside
-  // <button> is invalid HTML that Chrome/Safari block from navigating.
-  // Clicking this span opens the case study in a new tab via window.open;
-  // clicking anywhere else on the tile opens the company popup.
-  document.querySelectorAll<HTMLElement>('.cases-slide__company-card[data-case-study]').forEach(card => {
-    const caseStudyUrl = card.getAttribute('data-case-study');
-    if (!caseStudyUrl) return;
-    const ctaText = card.getAttribute('data-case-study-cta') || 'Read case study →';
-    const link = document.createElement('span');
-    link.className = 'cases-slide__company-case-study';
-    link.setAttribute('role', 'link');
-    link.setAttribute('tabindex', '0');
-    link.textContent = ctaText;
-    link.addEventListener('click', (e) => {
-      e.stopPropagation();
-      window.open(caseStudyUrl, '_blank', 'noopener');
-    });
-    link.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        e.stopPropagation();
-        window.open(caseStudyUrl, '_blank', 'noopener');
-      }
-    });
-    card.appendChild(link);
+  // Close on backdrop click (native <dialog> only closes on Escape by default)
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
   });
 
-  document.querySelectorAll<HTMLElement>('.cases-slide__company-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      const name = card.querySelector('.cases-slide__company-name')?.textContent || '';
-      const desc = card.querySelector('.cases-slide__company-desc')?.textContent || '';
-      const detail = card.getAttribute('data-detail') || '';
-      const url = card.getAttribute('data-url') || '#';
-      const caseStudyUrl = card.getAttribute('data-case-study');
-      const caseStudyTitle = card.getAttribute('data-case-study-title');
-      const logo = LOGOS[name];
+  dialog.querySelector('.company-modal__close')?.addEventListener('click', () => {
+    dialog.close();
+  });
 
-      if (logoEl) {
-        if (logo) {
-          logoEl.src = logo;
-          logoEl.alt = name;
-          logoEl.style.display = '';
-        } else {
-          logoEl.style.display = 'none';
-        }
+  // Single event listener — opens modal when a customer card is clicked,
+  // but ignores clicks on <a> tags inside the card (case study links navigate normally).
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+
+    // Don't intercept real links
+    if (target.closest('a')) return;
+
+    const card = target.closest('.cases-slide__company-card[data-detail]');
+    if (!card) return;
+
+    const name = card.querySelector('.cases-slide__company-name')?.textContent || '';
+    const desc = card.querySelector('.cases-slide__company-desc')?.textContent || '';
+    const detail = card.getAttribute('data-detail') || '';
+    const url = card.getAttribute('data-url') || '#';
+    const caseStudyUrl = card.getAttribute('data-case-study');
+    const caseStudyTitle = card.getAttribute('data-case-study-title');
+    const logo = LOGOS[name];
+
+    if (logoEl) {
+      if (logo) {
+        logoEl.src = logo;
+        logoEl.alt = name;
+        logoEl.style.display = '';
+      } else {
+        logoEl.style.display = 'none';
       }
+    }
 
-      if (nameEl) nameEl.textContent = name;
-      if (descEl) descEl.textContent = desc;
-      if (detailEl) detailEl.textContent = detail;
-      if (linkEl) {
-        linkEl.href = url;
-        linkEl.textContent = `Visit ${name}`;
+    if (nameEl) nameEl.textContent = name;
+    if (descEl) descEl.textContent = desc;
+    if (detailEl) detailEl.textContent = detail;
+    if (linkEl) {
+      linkEl.href = url;
+      linkEl.textContent = `Visit ${name}`;
+    }
+
+    if (caseStudyEl) {
+      if (caseStudyUrl) {
+        caseStudyEl.href = caseStudyUrl;
+        caseStudyEl.textContent = caseStudyTitle || 'Read case study';
+        caseStudyEl.style.display = '';
+      } else {
+        caseStudyEl.style.display = 'none';
       }
+    }
 
-      if (caseStudyEl) {
-        if (caseStudyUrl) {
-          caseStudyEl.href = caseStudyUrl;
-          caseStudyEl.textContent = caseStudyTitle || 'Read case study';
-          caseStudyEl.style.display = '';
-        } else {
-          caseStudyEl.style.display = 'none';
-        }
-      }
-
-      popup.open();
-    });
+    dialog.showModal();
   });
 }

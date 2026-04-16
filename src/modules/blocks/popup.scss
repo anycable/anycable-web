@@ -94,35 +94,63 @@ $className: 'popup';
   }
 }
 
-// Company Modal
+// Company Modal — native <dialog> element
+// Browser provides: backdrop, Escape key, focus trapping, centering.
 $className: 'company-modal';
 
 .#{$className} {
-  // The base .popup never gets display:flex (uses display:inherit), so we
-  // need to position the dialog manually instead of relying on parent flex.
-  &__container {
-    position: absolute;
-    top: 15vh;
-    left: 50%;
-    width: 90%;
-    max-width: 520px;
-    height: auto;
-    max-height: 80vh;
-    border-radius: 8px;
-    overflow-y: auto;
-    transform: translate(-50%, 20px);
-    opacity: 0;
-    transition: transform 200ms, opacity 200ms;
+  width: 90%;
+  max-width: 520px;
+  max-height: 80vh;
+  margin: 15vh auto auto;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  overflow-y: auto;
+  background-color: $backgroundPrimaryColor;
 
-    .popup_opened & {
-      transform: translate(-50%, 0);
-      opacity: 1;
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  @include mediaMax($tablet) {
+    width: calc(100% - 24px);
+    margin-top: 10vh;
+  }
+
+  &__close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      top: 11px;
+      width: 22.5px;
+      height: 2px;
+      background-color: $accentPrimaryColor;
     }
 
-    @include mediaMax($tablet) {
-      top: 10vh;
-      width: calc(100% - 24px);
-      border-radius: 8px;
+    &::after {
+      left: 1px;
+      transform: rotate(45deg);
+    }
+
+    &::before {
+      right: 1px;
+      transform: rotate(-45deg);
+    }
+
+    &:hover {
+      opacity: $opacityPrimaryValue;
     }
   }
 
