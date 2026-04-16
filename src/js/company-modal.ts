@@ -12,7 +12,7 @@ const LOGOS: Record<string, string> = {
   'Dext': '/images/logos/dext.png',
   'FreeAgent': '/images/logos/freeagent.png',
   'Wealthbox': '/images/logos/wealthbox.png',
-  'Floatcard': '/images/logos/floatcard.png',
+  'Float': '/images/logos/floatcard.png',
   'Jobber': '/images/logos/jobber.png',
   'CompanyCam': '/images/logos/companycam.png',
   'EV Connection': '/images/logos/ev-connection.png',
