@@ -6,18 +6,8 @@
       {{> header}}
       <main class="content compare-page">
 
-        {{!-- Floating in-page nav: highlights the section currently in view.
-             Hidden below 1280px (no room next to the content column). --}}
-        <nav class='compare-nav' aria-label='Page sections'>
-          <a href='#delivery' data-section='delivery'>Delivery</a>
-          <a href='#deploys' data-section='deploys'>Deploys</a>
-          <a href='#capacity' data-section='capacity'>Capacity</a>
-          <a href='#migration' data-section='migration'>Migration</a>
-          <a href='#faq-heading' data-section='faq-heading'>FAQ</a>
-        </nav>
-
         {{!-- Comparison hero — focused on the comparison, not branding --}}
-        <section class='slide' style="padding: 80px 24px 60px; background: $backgroundSecondaryColor;">
+        <section class='slide' style="padding: 80px 24px 60px;">
           <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 48px;">
               <p style="color: #F64343; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px;">Comparison</p>
@@ -596,31 +586,5 @@ t=0.0s → users don't notice</pre>
       {{> footer }}
     </div>
     <script type="module" src="/index.ts"></script>
-    <script>
-      // Highlight the floating-nav item for whichever section is in view.
-      (() => {
-        const nav = document.querySelector('.compare-nav');
-        if (!nav) return;
-        const links = Array.from(nav.querySelectorAll('a[data-section]'));
-        const sectionIds = links.map(a => a.dataset.section);
-        const targets = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
-        if (!targets.length) return;
-
-        const setActive = (id) => {
-          links.forEach(a => a.classList.toggle('is-active', a.dataset.section === id));
-        };
-
-        const obs = new IntersectionObserver((entries) => {
-          // Pick the first heading whose top is above the viewport's upper third.
-          // Stable behavior: we keep track of the most recent intersection.
-          const visible = entries.filter(e => e.isIntersecting);
-          if (!visible.length) return;
-          const top = visible.reduce((a, b) => a.boundingClientRect.top < b.boundingClientRect.top ? a : b);
-          if (top.target.id) setActive(top.target.id);
-        }, { rootMargin: '-20% 0px -75% 0px', threshold: 0 });
-
-        targets.forEach(t => obs.observe(t));
-      })();
-    </script>
   </body>
 </html>

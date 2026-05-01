@@ -107,17 +107,6 @@
 
 
 // ---------------------------------------------------------------------
-// Floating in-page nav: built but disabled. The about-slide pillars are
-// full-width 50/50 columns with no gutter, so a fixed-right nav overlaps
-// table content. Anchor links above cover deep-linking; keep the markup
-// in case we revisit (e.g. as a sticky-top horizontal bar).
-// ---------------------------------------------------------------------
-.compare-nav {
-  display: none;
-}
-
-
-// ---------------------------------------------------------------------
 // Hero stat cards — three side-by-side comparison cards, each a small
 // table (label → 3 rows → footnote). One "worst" cell highlighted per
 // card so all three results can be scanned in one glance.
