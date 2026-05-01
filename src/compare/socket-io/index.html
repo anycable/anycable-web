@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead pageTitle="AnyCable vs Socket.io | Delivery Guarantees, Replay Latency, Deploy Resilience" pageDescription="Default Socket.io loses 13% of messages under jitter at 10,000 clients. Connection State Recovery catches up — but with a 9-second p99 replay tail. AnyCable: 100% delivery, sub-second replay. Benchmarked on identical Railway infrastructure."}}
+  {{> dochead pageTitle="AnyCable vs Socket.io | Delivery Guarantees, Replay Latency, Deploy Resilience" pageDescription="Default Socket.io loses 13% of messages under jitter at 10,000 clients. Connection State Recovery catches up — but with a 9-second p99 replay tail. AnyCable: 100% delivery, sub-second replay. Benchmarked on identical Railway infrastructure." pageUrl="https://anycable.io/compare/socket-io"}}
   <body>
     <div class="page">
       {{> header}}
@@ -585,6 +585,81 @@ t=0.0s → users don't notice</pre>
       </main>
       {{> footer }}
     </div>
+
+    {{!-- FAQPage structured data — LLM and search-engine readable Q-A pairs.
+         Mirrors the visible <details> accordion above. --}}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does AnyCable replace Socket.io, or work alongside it?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It replaces Socket.io. Your Node.js app broadcasts to AnyCable via HTTP instead of calling io.emit(). Clients connect to AnyCable over its protocol (actioncable-v1-ext-json, via @anycable/core) instead of socket.io-client."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What's the operational cost of running AnyCable?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "One extra process — a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does AnyCable compare on performance?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held 50,000 idle connections on under 2 GB of memory and ~0.3 vCPU (1% of available compute). At 10,000 dynamic clients with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. We hit a test-client ceiling before anycable-go's. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What backends can use AnyCable?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is AnyCable open source?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support — free for small deployments."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a managed (hosted) AnyCable?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. AnyCable+ is the managed tier — zero ops, free up to 2,000 concurrent connections, paid plans above that. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you handle authentication?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe — your app stays the source of truth for identity without being on the hot path."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens if AnyCable itself restarts?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Clients reconnect and resume from the last offset they saw — missed messages are replayed (up to a configurable retention window). Restarting AnyCable is rare: you deploy your app, not the WebSocket layer, because they're decoupled."
+            }
+          }
+        ]
+      }
+    </script>
     <script type="module" src="/index.ts"></script>
   </body>
 </html>
