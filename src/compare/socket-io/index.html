@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{> dochead pageTitle="AnyCable vs Socket.io | Delivery Guarantees, Replay Latency, Deploy Resilience" pageDescription="Default Socket.io loses 13% of messages under jitter at 10,000 clients. Connection State Recovery catches up — but with a 9-second p99 replay tail. AnyCable: 100% delivery, sub-second replay. Benchmarked on identical Railway infrastructure."}}
+  <body>
+    <div class="page">
+      {{> header}}
+      <main class="content compare-page">
+
+        {{!-- Floating in-page nav: highlights the section currently in view.
+             Hidden below 1280px (no room next to the content column). --}}
+        <nav class='compare-nav' aria-label='Page sections'>
+          <a href='#delivery' data-section='delivery'>Delivery</a>
+          <a href='#deploys' data-section='deploys'>Deploys</a>
+          <a href='#capacity' data-section='capacity'>Capacity</a>
+          <a href='#migration' data-section='migration'>Migration</a>
+          <a href='#faq-heading' data-section='faq-heading'>FAQ</a>
+        </nav>
+
+        {{!-- Comparison hero — focused on the comparison, not branding --}}
+        <section class='slide' style="padding: 80px 24px 60px; background: $backgroundSecondaryColor;">
+          <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 48px;">
+              <p style="color: #F64343; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px;">Comparison</p>
+              <h1 style="font-size: clamp(28px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.02em;">
+                AnyCable <span style="color: #aaa; font-weight: 400;">vs</span> Socket.io
+              </h1>
+              <p style="font-size: 22px; line-height: 1.5; color: #555; max-width: 760px; margin: 0 auto;">
+                10,000 clients on Railway, including Socket.io's Connection State Recovery. CSR and AnyCable both hit 100% delivery. Replay latency tells the story.
+              </p>
+              <p style="font-size: 14px; color: #888; margin-top: 16px;">
+                <a href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank' style="color: #888; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #ccc;">Open source — run it yourself</a>
+              </p>
+            </div>
+
+            {{!-- Headline numbers — three cards. Each is a small comparison
+                 table with a single highlighted "worst" cell so the analytical
+                 reader can scan all three results in one glance. --}}
+            <div class='hero-cards'>
+              <div class='hero-card'>
+                <div class='hero-card__label'>Delivery rate at 10,000 clients</div>
+                <dl class='hero-card__rows'>
+                  <div class='hero-card__row'><dt>Default Socket.io</dt><dd class='is-worst'>87.4%</dd></div>
+                  <div class='hero-card__row'><dt>Socket.io + CSR</dt><dd>100%</dd></div>
+                  <div class='hero-card__row'><dt>AnyCable</dt><dd>100%</dd></div>
+                </dl>
+                <div class='hero-card__footnote'>1.2M expected deliveries; default lost 150,642.</div>
+              </div>
+
+              <div class='hero-card'>
+                <div class='hero-card__label'>Replay latency p99</div>
+                <dl class='hero-card__rows'>
+                  <div class='hero-card__row'><dt>Default Socket.io</dt><dd class='is-na'>n/a <span style="font-size: 12px; color: #aaa;">(lost)</span></dd></div>
+                  <div class='hero-card__row'><dt>Socket.io + CSR</dt><dd class='is-worst'>9.0 s</dd></div>
+                  <div class='hero-card__row'><dt>AnyCable</dt><dd>1.0 s</dd></div>
+                </dl>
+                <div class='hero-card__footnote'>Time for replayed messages to arrive on reconnect.</div>
+              </div>
+
+              <div class='hero-card'>
+                <div class='hero-card__label'>Idle connection capacity</div>
+                <dl class='hero-card__rows'>
+                  <div class='hero-card__row'><dt>AnyCable, single instance</dt><dd>50,000</dd></div>
+                  <div class='hero-card__row'><dt>Memory used</dt><dd>1.98 GB</dd></div>
+                  <div class='hero-card__row'><dt>CPU used (of 32 vCPU)</dt><dd>~0.3</dd></div>
+                </dl>
+                <div class='hero-card__footnote'>We hit a test-client ceiling at ~56K — not anycable-go's.</div>
+              </div>
+            </div>
+
+            {{!-- About this comparison: methodology + authorship + reproducibility --}}
+            <div class='compare-about'>
+              <p><strong>About this comparison.</strong> This is the AnyCable team's own scrutiny — where AnyCable wins on measurable terms, and where Socket.io is enough. All three setups run on identical Railway infrastructure (Pro tier, 32 vCPU / 32 GB); every parameter, script, and raw result is reproducible from the <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>open-source bench repo</a>.</p>
+              <p>AnyCable has been in production since 2017 at <a class='link' href='https://anycable.io/' target='_blank'>Doximity, CompanyCam, Headway, Jobber, CoinGecko, ClickFunnels, and 30+ other companies</a>.</p>
+            </div>
+          </div>
+        </section>
+
+        {{!-- Delivery guarantees — two-halves like about-slide --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h2 class='about-slide__title' id='delivery'>1. Only AnyCable delivers every message on time<a class='heading-anchor' href='#delivery' aria-label='Permalink'>#</a></h2>
+                <p class='about-slide__text'>
+                  Two questions matter on the open internet: <strong>does every message arrive</strong>, and <strong>does it arrive when the user expects it</strong>? Under simulated mobile-network jitter — 1-second TCP drops every ~15 seconds, the pattern WiFi handoffs and cellular blips produce — default Socket.io fails the first: ~13% of messages never arrive. CSR fixes delivery, but replay takes up to 12 seconds. AnyCable: 100% delivery, 1-second p99 replay tail.
+                </p>
+                <h3 class='about-slide__subtitle'>Default Socket.io: messages sent during a disconnect aren't recoverable</h3>
+                <p class='about-slide__text'>
+                  From the Socket.io <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank'>delivery-guarantees doc</a>: "if the connection is broken while an event is being sent, then there is no guarantee that the other side has received it." No buffering, no catch-up protocol. This is the default — and what most production Socket.io apps ship.
+                </p>
+                <h3 class='about-slide__subtitle'>Socket.io + CSR: opt-in catch-up with adapter and replay constraints</h3>
+                <p class='about-slide__text'>
+                  <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Connection State Recovery</a> (Socket.io 4.6+) buffers per-socket state — id, rooms, <code>socket.data</code> — for up to <code>maxDisconnectionDuration</code> (default 2 min). The server appends an opaque per-packet offset; on reconnect the client passes pid + last-seen offset, and the server replays missed packets.
+                </p>
+                <p class='about-slide__text' style="margin-bottom: 20px;">
+                  Four caveats from the Socket.io docs:
+                </p>
+                <ul style="margin: 0 0 84px; padding: 0; list-style: none; line-height: 1.6;">
+                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>Opt-in.</strong> Most apps don't enable it.</li>
+                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>Adapter constraints.</strong> Doesn't work with Socket.io's most common scaling adapter (Redis pub/sub). Multi-node needs Redis Streams or MongoDB.</li>
+                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>Restart-fragile.</strong> The default in-memory adapter wipes all state on every server restart.</li>
+                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>"The recovery will not always be successful"</strong> — their words. Application-level reconciliation is still required.</li>
+                </ul>
+                <h3 class='about-slide__subtitle'>AnyCable: at-least-once by default, replay is per-stream</h3>
+                <p class='about-slide__text'>
+                  AnyCable's protocol (<code>actioncable-v1-ext-json</code>) tracks each stream by <strong>epoch</strong> (broker state identifier) and <strong>offset</strong> (message position). The client stores <code>(stream, epoch, offset)</code>. On reconnect it sends a <code>history</code> command; the server replays the missed range as a batch and acks with <code>confirm_history</code> (or <code>reject_history</code> if evicted).
+                </p>
+                <p class='about-slide__text'>
+                  Retention is per stream: <code>history_limit</code> (default 100), <code>history_ttl</code> (default 300 s), <code>sessions_ttl</code> (separate). With NATS JetStream or Redis brokers, history survives restart and works across nodes. None of this is opt-in or experimental.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
+                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.7; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #888;"># Default Socket.io — 10K clients, 120 msgs each</span>
+Client 0: missing <span style="color: #ff6b6b;">6, 7, 36, 37, 73, 74, 104, 105</span>
+Client 1: missing <span style="color: #ff6b6b;">3, 4, 38, 39, 69, 70, 108, 109</span>
+Client 2: missing <span style="color: #ff6b6b;">4, 5, 41, 42, 76, 77, 111-113</span>
+
+<span style="color: #888;"># Each cluster = one jitter event. ~15 lost per client.</span>
+<span style="color: #888;"># Total: 150,642 of 1,200,000 expected. 87.4% delivery.</span>
+
+<span style="color: #888;"># Socket.io + CSR — same workload</span>
+Client 0: <span style="color: #fcd34d;">all 120 received</span>  (replay tail: max 12.0s)
+Client 1: <span style="color: #fcd34d;">all 120 received</span>  (p99: 9.0s)
+Client 2: <span style="color: #fcd34d;">all 120 received</span>  (p95: 4.9s)
+
+<span style="color: #888;"># AnyCable — same workload</span>
+Client 0: <span style="color: #86efac;">all 120 received</span>  (replay tail: max 3.5s)
+Client 1: <span style="color: #86efac;">all 120 received</span>  (p99: 1.0s)
+Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 0.7s)</pre>
+              </div>
+            </div>
+
+            {{!-- Benchmark table --}}
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h3 class='about-slide__subtitle'>Benchmark: 10,000 clients under simulated jitter</h3>
+                <p class='about-slide__text'>
+                  10,000 clients on Railway. Publisher broadcasts 120 numbered messages at 2/sec — <strong>1.2M expected deliveries</strong>. Each client force-closes its TCP socket for <strong>1 second every ~15 seconds</strong> (no clean close — like a WiFi drop). Over the publishing window: ~10 jitter events per client, ~13% blind time.
+                </p>
+                <p class='about-slide__text'>
+                  <strong>Default Socket.io: 87.41% delivery.</strong> 150,642 messages lost. The loss pattern matches the blind window — nothing arrives during the outage, nothing comes back after.
+                </p>
+                <p class='about-slide__text'>
+                  <strong>Socket.io + CSR: 100% delivery, 9-second p99 latency.</strong> 99.5% of jitter events successfully resume the session; replayed messages arrive in seconds, worst case 12.
+                </p>
+                <p class='about-slide__text'>
+                  <strong>AnyCable: 100% delivery, 1-second p99 latency.</strong> 7&times; faster than CSR. The history replay is per-stream — clients receive the missed range as a batch.
+                </p>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why default Socket.io's 13% loss is structural</h3>
+                <p class='about-slide__text'>
+                  Each jitter event creates <em>d</em> seconds of blind window. Clients see <em>N</em> events over publishing window <em>T</em>. Expected loss = (<em>d</em> &times; <em>N</em>) / <em>T</em>. For our run: 1.3 s &times; 10 / 60 ≈ 22% upper bound. We measured 13% — lower because not every event fully overlaps publishing. This isn't a configuration bug; default Socket.io loses messages in proportion to frequency &times; disruption duration.
+                </p>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why CSR's replay tail is multi-second at 10K</h3>
+                <p class='about-slide__text'>
+                  CSR replays per-socket: the server drains a buffered packet list over each re-established WebSocket, one socket at a time. At 10,000 reconnecting clients, replays serialize. AnyCable's history replay is per-stream and parallel — clients request missed ranges and receive them as batches. That's the 7&times; gap.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
+                <div class='slide-show__frame' style="padding: 0; overflow: hidden;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                        <th style="padding: 12px 14px; text-align: left;"></th>
+                        <th style="padding: 12px 14px; text-align: right;">Default Socket.io</th>
+                        <th style="padding: 12px 14px; text-align: right;">Socket.io + CSR</th>
+                        <th style="padding: 12px 14px; text-align: right;">AnyCable</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;">Clients</td>
+                        <td style="padding: 12px 14px; text-align: right;">10,000</td>
+                        <td style="padding: 12px 14px; text-align: right;">10,000</td>
+                        <td style="padding: 12px 14px; text-align: right;">10,000</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;">Expected deliveries</td>
+                        <td style="padding: 12px 14px; text-align: right;">1,200,000</td>
+                        <td style="padding: 12px 14px; text-align: right;">1,200,000</td>
+                        <td style="padding: 12px 14px; text-align: right;">1,200,000</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;">Jitter events</td>
+                        <td style="padding: 12px 14px; text-align: right;">98,889</td>
+                        <td style="padding: 12px 14px; text-align: right;">103,430</td>
+                        <td style="padding: 12px 14px; text-align: right;">83,862</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;">CSR resume rate</td>
+                        <td style="padding: 12px 14px; text-align: right; color: #888;">n/a</td>
+                        <td style="padding: 12px 14px; text-align: right;">99.5%</td>
+                        <td style="padding: 12px 14px; text-align: right; color: #888;">n/a</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;"><strong>Deliveries lost</strong></td>
+                        <td style="padding: 12px 14px; text-align: right; color: #F64343;"><strong>150,642</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;"><strong>0</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;"><strong>0</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;"><strong>Delivery rate</strong></td>
+                        <td style="padding: 12px 14px; text-align: right; color: #F64343;"><strong>87.41%</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;"><strong>100%</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;"><strong>100%</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;">Latency p50</td>
+                        <td style="padding: 12px 14px; text-align: right;">167 ms</td>
+                        <td style="padding: 12px 14px; text-align: right;">279 ms</td>
+                        <td style="padding: 12px 14px; text-align: right;">246 ms</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;">Latency p95</td>
+                        <td style="padding: 12px 14px; text-align: right;">1.19 s</td>
+                        <td style="padding: 12px 14px; text-align: right;">4.92 s</td>
+                        <td style="padding: 12px 14px; text-align: right;">0.68 s</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px 14px;"><strong>Latency p99</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;">1.66 s</td>
+                        <td style="padding: 12px 14px; text-align: right; color: #F64343;"><strong>8.99 s</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;"><strong>1.04 s</strong></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 14px;"><strong>Latency max</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;">2.29 s</td>
+                        <td style="padding: 12px 14px; text-align: right; color: #F64343;"><strong>12.03 s</strong></td>
+                        <td style="padding: 12px 14px; text-align: right;">3.53 s</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- Use cases / impact --}}
+        <section class='slide cases-slide'>
+          <div class='cases-slide__wrapper'>
+            <div class='cases-slide__section'>
+              <div class='cases-slide__content'>
+                <h3 class='cases-slide__pretitle'>Impact</h3>
+                <h2 class='cases-slide__title'>Loss and slow replay break workflows where the next message depends on the previous one</h2>
+                <div class='cases-slide__text'>
+                  <p>Lost messages cluster around network events — exactly when the user is watching. CSR recovers them, but 9 seconds late reads as "the app froze." For sequential workloads, both loss and delay break the experience.</p>
+                </div>
+              </div>
+              <div class='cases-slide__media'>
+                <div class='cases-slide__companies'>
+                  <div class='cases-slide__company-card'>
+                    <span class='cases-slide__company-name'>Live chat & notifications</span>
+                    <span class='cases-slide__company-desc'>Messages disappear during network blips. Users see incomplete conversations with no indication anything is missing.</span>
+                  </div>
+                  <div class='cases-slide__company-card'>
+                    <span class='cases-slide__company-name'>LLM / AI streaming</span>
+                    <span class='cases-slide__company-desc'>Responses stream word by word. A mid-sentence disconnect leaves output truncated or garbled — chunks lost, no recovery.</span>
+                  </div>
+                  <div class='cases-slide__company-card'>
+                    <span class='cases-slide__company-name'>Real-time collaboration & presence</span>
+                    <span class='cases-slide__company-desc'>Lost operations make documents diverge silently. Cursors jump, presence flickers; users lose trust in what they see.</span>
+                  </div>
+                  <div class='cases-slide__company-card'>
+                    <span class='cases-slide__company-name'>Dashboards & monitoring</span>
+                    <span class='cases-slide__company-desc'>Permanent gaps in time-series data. The 200 ms blip during a traffic spike is the data point you needed.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- Standalone server — second pillar --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h2 class='about-slide__title' id='deploys'>2. Every Socket.io deploy severs every connection. This is architectural.<a class='heading-anchor' href='#deploys' aria-label='Permalink'>#</a></h2>
+                <h3 class='about-slide__subtitle'>Socket.io's WebSocket server is your application server</h3>
+                <p class='about-slide__text'>
+                  One Node.js process handles HTTP, business logic, and WebSocket connections — competing for the same event loop. HTTP requests come and go; WebSockets stay open for hours. Restart the process to deploy and every WebSocket terminates with it.
+                </p>
+                <h3 class='about-slide__subtitle'>AnyCable's WebSocket server is a separate process</h3>
+                <p class='about-slide__text'>
+                  Anycable-go is a separate Go binary. Your app — Node.js, Laravel, FastAPI, Django, anything that speaks HTTP — broadcasts to it. Deploy your app: the WebSocket layer doesn't restart, the connections don't drop.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-top'>
+                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.8; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #ff6b6b; font-weight: 700;"># Socket.io deploy — 5,000 clients</span>
+t=0.0s → deploy restarts server
+t=0.4s → <span style="color: #ff6b6b;">all 5,000 connections dropped</span>
+t=5.0s → p50 clients reconnected
+t=6.0s → p95 clients reconnected
+t=6.8s → 95% recovery (avalanche over)
+t=∞    → <span style="color: #ff6b6b;">189 clients (3.8%) never reconnect</span>
+
+<span style="color: #86efac; font-weight: 700;"># AnyCable deploy — any client count</span>
+t=0.0s → deploy restarts app
+t=0.0s → <span style="color: #86efac;">zero connections dropped</span>
+t=0.0s → users don't notice</pre>
+              </div>
+            </div>
+
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h3 class='about-slide__subtitle'>Benchmark: the reconnection avalanche at 5,000 clients</h3>
+                <p class='about-slide__text'>
+                  We deployed Socket.io to Railway, connected 5,000 clients, then triggered a real <code>railway restart</code> on the Socket.io service while measuring disconnect, reconnect, and tail behavior on the bench client.
+                </p>
+                <p class='about-slide__text'>
+                  Every Socket.io deploy is a thundering herd: thousands of clients reconnect simultaneously, competing for TLS handshakes and WebSocket upgrades through the same load balancer.
+                </p>
+                <p class='about-slide__text'>
+                  <strong>At 5,000 clients: 6.8 seconds of downtime per deploy.</strong> Half your users blind for 5 full seconds. 189 (3.8%) never reconnect.
+                </p>
+                <p class='about-slide__text'>
+                  At 1,000 clients: 2.7 seconds — shorter, still total. Every connection drops, every deploy.
+                </p>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">CSR with the in-memory adapter doesn't help here</h3>
+                <p class='about-slide__text'>
+                  CSR depends on server-side state. The default in-memory adapter loses it on restart — nothing to replay. With Redis Streams or MongoDB the state survives, but the connections are still severed. No protocol can paper over this; it's the cost of co-locating WebSocket server and application server.
+                </p>
+                <p class='about-slide__text'>
+                  <strong>AnyCable: 0 seconds. Every deploy.</strong> The WebSocket server doesn't restart when you ship code.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
+                <div class='slide-show__frame' style="padding: 0; overflow: hidden;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+                    <thead>
+                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                        <th style="padding: 14px 16px; text-align: left;"></th>
+                        <th style="padding: 14px 16px; text-align: right;">Socket.io 1K</th>
+                        <th style="padding: 14px 16px; text-align: right;">Socket.io 5K</th>
+                        <th style="padding: 14px 16px; text-align: right;">AnyCable</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 14px 16px;">Connections dropped</td>
+                        <td style="padding: 14px 16px; text-align: right;">1,000</td>
+                        <td style="padding: 14px 16px; text-align: right;">5,000</td>
+                        <td style="padding: 14px 16px; text-align: right;"><strong>0</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 14px 16px;">Recovery p50</td>
+                        <td style="padding: 14px 16px; text-align: right;">1,679 ms</td>
+                        <td style="padding: 14px 16px; text-align: right;">4,967 ms</td>
+                        <td style="padding: 14px 16px; text-align: right;"><strong>0 ms</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 14px 16px;">Recovery p95</td>
+                        <td style="padding: 14px 16px; text-align: right;">2,732 ms</td>
+                        <td style="padding: 14px 16px; text-align: right;">5,992 ms</td>
+                        <td style="padding: 14px 16px; text-align: right;"><strong>0 ms</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 14px 16px;">Never reconnected</td>
+                        <td style="padding: 14px 16px; text-align: right;">0</td>
+                        <td style="padding: 14px 16px; text-align: right; color: #F64343;">189 (3.8%)</td>
+                        <td style="padding: 14px 16px; text-align: right;"><strong>0</strong></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 14px 16px;"><strong>Total downtime</strong></td>
+                        <td style="padding: 14px 16px; text-align: right;"><strong>2.7 s</strong></td>
+                        <td style="padding: 14px 16px; text-align: right; color: #F64343;"><strong>6.8 s</strong></td>
+                        <td style="padding: 14px 16px; text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- Connection capacity --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h2 class='about-slide__title' id='capacity'>3. AnyCable holds 50,000 idle connections on under 2 GB and 0.3 vCPU<a class='heading-anchor' href='#capacity' aria-label='Permalink'>#</a></h2>
+                <p class='about-slide__text'>
+                  Same Railway box as the jitter benchmark — Pro tier, <strong>32 vCPU / 32 GB RAM</strong>. With nothing flowing, anycable-go held 50,000 idle WebSockets on under 2 GB and ~0.3 vCPU (1% of available compute). <strong>~40 KB per connection</strong> in steady state.
+                </p>
+                <p class='about-slide__text'>
+                  We hit a test-client ceiling at ~56K — the bench process couldn't open more outbound TCP connections. Anycable-go didn't break a sweat; server CPU stayed near zero throughout.
+                </p>
+                <p class='about-slide__text'>
+                  Go's goroutines scale this way: each connection is a few KB of stack and a small struct, multiplexed across OS threads. Socket.io is Node-only — a single event loop per process, fundamentally different concurrency. We didn't push its idle ceiling; the dynamic numbers in Pillar 1 already make the case.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
+                <div class='slide-show__frame' style="padding: 0; overflow: hidden;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                        <th style="padding: 12px 16px; text-align: left;">Idle connections</th>
+                        <th style="padding: 12px 16px; text-align: right;">AnyCable memory</th>
+                        <th style="padding: 12px 16px; text-align: right;">AnyCable CPU<br><span style="font-size: 11px; font-weight: normal; color: #888;">(of 32 vCPU)</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 10px 16px;">1,000</td><td style="padding: 10px 16px; text-align: right;">280 MB</td><td style="padding: 10px 16px; text-align: right;">0%</td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 10px 16px;">10,000</td><td style="padding: 10px 16px; text-align: right;">280 MB</td><td style="padding: 10px 16px; text-align: right;">0%</td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 10px 16px;">20,000</td><td style="padding: 10px 16px; text-align: right;">751 MB</td><td style="padding: 10px 16px; text-align: right;">1.08% (~0.3 vCPU)</td></tr>
+                      <tr style="background: #f0fdf4;"><td style="padding: 10px 16px;"><strong>50,000</strong></td><td style="padding: 10px 16px; text-align: right;"><strong>1.98 GB</strong></td><td style="padding: 10px 16px; text-align: right;"><strong>1.08% (~0.3 vCPU)</strong></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- Migration path for Node.js teams --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h2 class='about-slide__title' id='migration'>Migrating from Socket.io: replace the broadcast, keep the app<a class='heading-anchor' href='#migration' aria-label='Permalink'>#</a></h2>
+                <p class='about-slide__text'>
+                  Your Node.js app stays. Swap <code>io.to().emit()</code> for an HTTP POST to AnyCable's broadcast endpoint. Auth, validation, DB access — all unchanged.
+                </p>
+                <p class='about-slide__text'>
+                  On the client: <code>socket.io-client</code> → <code>@anycable/core</code>. The API is similar (connect, subscribe, receive).
+                </p>
+                <p class='about-slide__text'>
+                  <strong>Trade-off:</strong> one extra process to deploy (anycable-go, a single Go binary). In return, your Node.js app becomes stateless for WebSockets.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
+                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.7; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #888;">// Before: Socket.io (embedded in your app)</span>
+<span style="color: #86efac;">io</span>.to(<span style="color: #fcd34d;">'chat:42'</span>).emit(<span style="color: #fcd34d;">'message'</span>, payload);
+
+<span style="color: #888;">// After: broadcast to AnyCable via HTTP</span>
+<span style="color: #86efac;">await fetch</span>(<span style="color: #fcd34d;">'http://anycable:8080/_broadcast'</span>, {
+  method: <span style="color: #fcd34d;">'POST'</span>,
+  headers: { <span style="color: #fcd34d;">'Content-Type'</span>: <span style="color: #fcd34d;">'application/json'</span> },
+  body: <span style="color: #86efac;">JSON</span>.stringify({
+    stream: <span style="color: #fcd34d;">'chat:42'</span>,
+    data: <span style="color: #86efac;">JSON</span>.stringify(payload),
+  }),
+});</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- Feature comparison --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h2 class='about-slide__title'>What you don't have to build</h2>
+                <p class='about-slide__text'>
+                  Socket.io gives you WebSocket transport and rooms. Everything else — reliability, presence, auth, clustering, monitoring — is weeks of engineering plus months of production hardening.
+                </p>
+                <p class='about-slide__text'>
+                  AnyCable ships these as primitives, hardened in production since 2017.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
+                <div class='slide-show__frame' style="padding: 0; overflow: hidden;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead>
+                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                        <th style="padding: 10px 12px; text-align: left;">Feature</th>
+                        <th style="padding: 10px 12px; text-align: center;">Default Socket.io</th>
+                        <th style="padding: 10px 12px; text-align: center;">Socket.io + CSR</th>
+                        <th style="padding: 10px 12px; text-align: center;">AnyCable</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Reliable delivery</td><td style="padding: 9px 12px; text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank'>No</a></td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Yes (opt-in)</a></td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/durable_streams' target='_blank'>Yes (default)</a></td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Replay latency p99</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">lost</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">9.0 s</td><td style="padding: 9px 12px; text-align: center;">1.0 s</td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Survives server restart</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">No</td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://socket.io/docs/v4/redis-streams-adapter' target='_blank'>Redis Streams</a> / <a class='link' href='https://socket.io/docs/v4/mongo-adapter' target='_blank'>Mongo</a></td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>NATS / Redis</a></td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Multi-node setup</td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://socket.io/docs/v4/redis-adapter' target='_blank'>Redis pub/sub</a></td><td style="padding: 9px 12px; text-align: center; color: #F64343;">Redis pub/sub incompat.</td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>Any broker</a></td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Deploy resilience</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">All drop</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">All drop</td><td style="padding: 9px 12px; text-align: center;">Connections survive</td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Presence tracking</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">DIY</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">DIY</td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/presence' target='_blank'>Built-in</a></td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Authentication</td><td style="padding: 9px 12px; text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/middlewares/' target='_blank'>DIY</a></td><td style="padding: 9px 12px; text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/middlewares/' target='_blank'>DIY</a></td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/jwt_identification' target='_blank'>JWT</a>, <a class='link' href='https://docs.anycable.io/anycable-go/signed_streams' target='_blank'>signed streams</a></td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 9px 12px;">Backend language</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">Node.js only</td><td style="padding: 9px 12px; text-align: center; color: #F64343;">Node.js only</td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broadcasting' target='_blank'>Any (HTTP API)</a></td></tr>
+                      <tr><td style="padding: 9px 12px;">Monitoring</td><td style="padding: 9px 12px; text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/admin-ui/' target='_blank'>Admin UI</a></td><td style="padding: 9px 12px; text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/admin-ui/' target='_blank'>Admin UI</a></td><td style="padding: 9px 12px; text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/instrumentation' target='_blank'>Prometheus &amp; StatsD</a></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- When Socket.io is right / Proven at scale --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h2 class='about-slide__title'>When Socket.io is the right choice</h2>
+                <p class='about-slide__text'>
+                  Small Node.js app. Prototype. Custom protocol you control end-to-end. Socket.io is well-documented, widely used, and free.
+                </p>
+                <p class='about-slide__text'>
+                  If your users are on mobile or switching networks, you need delivery guarantees. If you deploy more than occasionally, you need connections to survive deploys. AnyCable provides both by default.
+                </p>
+              </div>
+              <div class='about-slide__media'>
+                <div class='slide-show__frame' style="padding: 48px 32px; background: #fafafa; flex-direction: column; align-items: stretch;">
+                  <div style="font-size: 14px; color: #888; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em;">Proven at scale</div>
+                  <div style="font-size: 16px; line-height: 1.9;">
+                    <div><strong>Doximity</strong> — telehealth (NYSE-listed)</div>
+                    <div><strong>CompanyCam</strong> — $2B valuation</div>
+                    <div><strong>Headway</strong> — $2.3B valuation</div>
+                    <div><strong>Jobber</strong> — $167M revenue</div>
+                    <div><strong>CoinGecko</strong> — crypto market data</div>
+                    <div><strong>ClickFunnels</strong> — ~$265M revenue</div>
+                  </div>
+                  <div style="margin-top: 24px; font-size: 13px; color: #888;">
+                    And 30+ more since 2017.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- FAQ — accordion. Native <details> so it works without JS;
+             closed-by-default keeps the page short for skimmers. --}}
+        <section class='slide about-slide' id='faq'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content about-slide__content-full faq-block'>
+                <h2 class='about-slide__title' id='faq-heading' style="text-align: center;">FAQ<a class='heading-anchor' href='#faq-heading' aria-label='Permalink'>#</a></h2>
+
+                <details class='faq-item'>
+                  <summary>Does AnyCable replace Socket.io, or work alongside it?</summary>
+                  <div class='faq-answer'>It replaces Socket.io. Your Node.js app broadcasts to AnyCable via HTTP instead of calling <code>io.emit()</code>. Clients connect to AnyCable over its protocol (<code>actioncable-v1-ext-json</code>, via <code>@anycable/core</code>) instead of <code>socket.io-client</code>.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>What's the operational cost of running AnyCable?</summary>
+                  <div class='faq-answer'>One extra process — a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>How does AnyCable compare on performance?</summary>
+                  <div class='faq-answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held <strong>50,000 idle connections</strong> on under 2 GB of memory and ~0.3 vCPU (1% of available compute). At <strong>10,000 dynamic clients</strong> with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. We hit a test-client ceiling before anycable-go's. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>What backends can use AnyCable?</summary>
+                  <div class='faq-answer'>Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>Is AnyCable open source?</summary>
+                  <div class='faq-answer'>Yes, MIT-licensed since 2017. <a class='link' href='https://github.com/anycable/anycable' target='_blank'>anycable/anycable</a> on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support — free for small deployments.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>Is there a managed (hosted) AnyCable?</summary>
+                  <div class='faq-answer'>Yes. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+</a> is the managed tier — zero ops, free up to 2,000 concurrent connections, paid plans above that. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>How do you handle authentication?</summary>
+                  <div class='faq-answer'>Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe — your app stays the source of truth for identity without being on the hot path.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>What happens if AnyCable itself restarts?</summary>
+                  <div class='faq-answer'>Clients reconnect and resume from the last offset they saw — missed messages are replayed (up to a configurable retention window). Restarting AnyCable is rare: you deploy your app, not the WebSocket layer, because they're decoupled.</div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- CTA --}}
+        <section class='slide plans-slide'>
+          <div style="padding: 80px 24px; text-align: center;">
+            <h2 style="font-size: 46px; font-weight: 700; margin-bottom: 16px; line-height: 1.2;">Try AnyCable with your Node.js app</h2>
+            <p style="font-size: 19px; color: #666; margin-bottom: 32px;">
+              Open source and free. Managed tier free up to 2,000 connections. Pro is $1,490/year for unlimited.
+            </p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+              <a href='https://docs.anycable.io/getting-started' target='_blank' class='button button_size_big' data-ph-capture-attribute-link-id='compare-cta-start'>Get started</a>
+              <a href='/#pricing' class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='compare-cta-pricing'>View pricing</a>
+            </div>
+            <p style="margin-top: 32px; font-size: 14px; color: #888;">
+              AnyCable is open source (MIT), built by <a class='link' href='https://evilmartians.com' target='_blank'>Evil Martians</a>, in production since 2017 at <a class='link' href='https://anycable.io/'>Doximity, CompanyCam, Headway, and 30+ others</a>.
+              Benchmark code: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.
+            </p>
+          </div>
+        </section>
+
+      </main>
+      {{> footer }}
+    </div>
+    <script type="module" src="/index.ts"></script>
+    <script>
+      // Highlight the floating-nav item for whichever section is in view.
+      (() => {
+        const nav = document.querySelector('.compare-nav');
+        if (!nav) return;
+        const links = Array.from(nav.querySelectorAll('a[data-section]'));
+        const sectionIds = links.map(a => a.dataset.section);
+        const targets = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+        if (!targets.length) return;
+
+        const setActive = (id) => {
+          links.forEach(a => a.classList.toggle('is-active', a.dataset.section === id));
+        };
+
+        const obs = new IntersectionObserver((entries) => {
+          // Pick the first heading whose top is above the viewport's upper third.
+          // Stable behavior: we keep track of the most recent intersection.
+          const visible = entries.filter(e => e.isIntersecting);
+          if (!visible.length) return;
+          const top = visible.reduce((a, b) => a.boundingClientRect.top < b.boundingClientRect.top ? a : b);
+          if (top.target.id) setActive(top.target.id);
+        }, { rootMargin: '-20% 0px -75% 0px', threshold: 0 });
+
+        targets.forEach(t => obs.observe(t));
+      })();
+    </script>
+  </body>
+</html>

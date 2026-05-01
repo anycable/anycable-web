@@ -1,0 +1,318 @@
+// =====================================================================
+// Styles for the AnyCable vs Socket.io comparison page (src/compare/socket-io).
+//
+// All rules are scoped under `.compare-page` (a class on the <main> element
+// of the compare page) so they don't leak into other pages that might use
+// `.about-slide`, `.slide-show__frame`, etc.
+// =====================================================================
+
+
+// ---------------------------------------------------------------------
+// FAQ accordion — narrow centered column with native <details> disclosures.
+// Closed-by-default; expanding turns the question red and flips +/-.
+// ---------------------------------------------------------------------
+.faq-block {
+  max-width: 720px;
+  margin: 0 auto;
+
+  .faq-item {
+    border-top: 1px solid #ececec;
+    padding: 18px 0;
+
+    &:last-of-type {
+      border-bottom: 1px solid #ececec;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.45;
+      padding-right: 32px;
+      position: relative;
+      transition: color 0.15s;
+
+      &::-webkit-details-marker { display: none; }
+
+      // Plus / minus indicator that flips when open.
+      &::after {
+        content: '+';
+        position: absolute;
+        right: 0;
+        top: -2px;
+        font-size: 22px;
+        font-weight: 400;
+        color: #888;
+        transition: transform 0.2s;
+      }
+
+      &:hover { color: #F64343; }
+    }
+
+    &[open] summary::after { content: '−'; color: #F64343; }
+  }
+
+  .faq-answer {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+    padding-top: 12px;
+    padding-right: 32px;
+  }
+}
+
+
+// ---------------------------------------------------------------------
+// Hover-revealed anchor link on H2/H3 headings (Stripe-style # icon).
+// Lets readers and agents copy deep links to specific sections.
+// ---------------------------------------------------------------------
+.about-slide__title,
+.about-slide__subtitle {
+  scroll-margin-top: 80px; // header offset for in-page nav
+
+  a.heading-anchor {
+    margin-left: 8px;
+    color: #ccc;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    font-weight: 400;
+  }
+
+  &:hover a.heading-anchor { opacity: 1; }
+  a.heading-anchor:hover { color: #F64343; }
+}
+
+
+// ---------------------------------------------------------------------
+// "About this comparison" callout — restrained methodology footnote.
+// ---------------------------------------------------------------------
+.compare-about {
+  max-width: 960px;
+  margin: 56px auto 0;
+  padding: 20px 24px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #555;
+
+  p { margin: 0; }
+  p + p { margin-top: 8px; }
+
+  strong { color: #222; }
+}
+
+
+// ---------------------------------------------------------------------
+// Floating in-page nav: built but disabled. The about-slide pillars are
+// full-width 50/50 columns with no gutter, so a fixed-right nav overlaps
+// table content. Anchor links above cover deep-linking; keep the markup
+// in case we revisit (e.g. as a sticky-top horizontal bar).
+// ---------------------------------------------------------------------
+.compare-nav {
+  display: none;
+}
+
+
+// ---------------------------------------------------------------------
+// Hero stat cards — three side-by-side comparison cards, each a small
+// table (label → 3 rows → footnote). One "worst" cell highlighted per
+// card so all three results can be scanned in one glance.
+// ---------------------------------------------------------------------
+.hero-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-card {
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  padding: 24px 24px 20px;
+  background: white;
+
+  &__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+
+  &__rows {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 9px 0;
+    border-top: 1px solid #f3f3f3;
+
+    &:first-child { border-top: none; }
+
+    dt {
+      font-size: 14px;
+      color: #555;
+      font-weight: 400;
+    }
+
+    dd {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+
+      &.is-worst { color: #F64343; }
+      &.is-na { color: #bbb; font-weight: 400; }
+    }
+  }
+
+  &__footnote {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #f3f3f3;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #888;
+  }
+}
+
+
+// ---------------------------------------------------------------------
+// Notebook-feel dotted background applied to the whole compare page so
+// the pattern is continuous across hero, pillars, FAQ, and CTA. Gray
+// panels inside about-slide keep their solid fill on top.
+// ---------------------------------------------------------------------
+.compare-page {
+  background-color: white;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.085) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+// Slide containers are transparent so the page-level dots show through.
+.compare-page .slide {
+  background: transparent !important;
+}
+
+
+// ---------------------------------------------------------------------
+// About-slide right column on the compare page: transparent (so page
+// dots show through) with rounded white cards around tables. Tables
+// read as discrete "notes" pinned to the dotted notebook surface.
+// ---------------------------------------------------------------------
+.compare-page .about-slide__media {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.compare-page .about-slide__media .slide-show__frame {
+  background-color: white;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  overflow: hidden;
+  display: block; // override the flex centering for tables
+  padding: 0;
+}
+
+// Code blocks (<pre>) — consistent 8px radius. Bg is dark for contrast.
+.compare-page .about-slide__media pre {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+}
+
+
+// ---------------------------------------------------------------------
+// Unified table system. One source of truth for every data table on
+// the comparison page (jitter, avalanche, capacity, feature comparison).
+// ---------------------------------------------------------------------
+.compare-page .slide-show__frame table {
+  width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: #1a1a1a;
+
+  // Header row — uppercase eyebrow style; small + light.
+  thead tr {
+    background: transparent !important;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  th {
+    padding: 14px 18px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #777;
+    text-align: right;
+    white-space: nowrap;
+
+    &:first-child { text-align: left; }
+  }
+
+  // Body rows — single dividing line, not a grid.
+  tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  td {
+    padding: 13px 18px;
+    text-align: right;
+    color: #333;
+    vertical-align: middle;
+
+    &:first-child {
+      text-align: left;
+      color: #555;
+      white-space: nowrap;
+    }
+  }
+
+  // Key rows: heavier weight, no background fill.
+  tr.is-key td,
+  tr.is-key td:first-child {
+    font-weight: 600;
+    color: #111;
+  }
+
+  // "Worst per metric" — single accent. Used sparingly.
+  td.is-worst,
+  td.is-worst strong {
+    color: #F64343;
+  }
+
+  // Dim "n/a" or non-applicable cells.
+  td.is-na,
+  td.is-na strong {
+    color: #bbb;
+    font-weight: 400;
+  }
+
+  // Links inside tables inherit cell color so red stays reserved for the
+  // "worst per metric" semantic; the citation affordance is an underline.
+  td a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #d0d0d0;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: #F64343;
+      text-decoration-color: currentColor;
+    }
+  }
+}
