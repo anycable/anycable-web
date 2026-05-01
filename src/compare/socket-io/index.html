@@ -437,6 +437,37 @@ t=0.0s → users don't notice</pre>
           </div>
         </section>
 
+        {{!-- Try-it-in-your-stack: low-friction links to runnable JS code --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content about-slide__content-full' style="text-align: center;">
+                <h2 class='about-slide__title' id='try-it' style="margin-bottom: 24px;">Try it in your stack<a class='heading-anchor' href='#try-it' aria-label='Permalink'>#</a></h2>
+                <p class='about-slide__text' style="max-width: 720px; margin-left: auto; margin-right: auto; margin-bottom: 48px;">
+                  Three places to start, depending on whether you want to read code, run a working demo, or wire it into a serverless setup.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; max-width: 1100px; margin: 0 auto;">
+                  <a href='https://github.com/anycable/anycable-client' target='_blank' style="display: block; text-decoration: none; color: inherit; border: 1px solid #ececec; border-radius: 8px; padding: 24px; background: white; text-align: left; transition: border-color 0.15s;">
+                    <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">JS client</div>
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">@anycable/core, @anycable/web</div>
+                    <div style="font-size: 14px; color: #666; line-height: 1.5;">The official client for Node.js, browsers, React Native. Connect, subscribe, presence, history — same surface in every JS environment.</div>
+                  </a>
+                  <a href='https://github.com/anycable/twilio-ai-js-demo' target='_blank' style="display: block; text-decoration: none; color: inherit; border: 1px solid #ececec; border-radius: 8px; padding: 24px; background: white; text-align: left;">
+                    <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Working demo</div>
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Next.js + AnyCable + voice AI</div>
+                    <div style="font-size: 14px; color: #666; line-height: 1.5;">A real Twilio + OpenAI streaming demo on Next.js. Clone, set keys, run. Uses AnyCable for the realtime transport.</div>
+                  </a>
+                  <a href='https://github.com/anycable/anycable-serverless-js' target='_blank' style="display: block; text-decoration: none; color: inherit; border: 1px solid #ececec; border-radius: 8px; padding: 24px; background: white; text-align: left;">
+                    <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Serverless</div>
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">@anycable/serverless-js</div>
+                    <div style="font-size: 14px; color: #666; line-height: 1.5;">Channels API for serverless deployments — Vercel, Cloudflare Workers, Lambda. Define channel logic in TS without standing up a long-lived process.</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {{!-- Feature comparison --}}
         <section class='slide about-slide'>
           <div class='about-slide__wrapper'>
@@ -567,13 +598,13 @@ t=0.0s → users don't notice</pre>
         {{!-- CTA --}}
         <section class='slide plans-slide'>
           <div style="padding: 80px 24px; text-align: center;">
-            <h2 style="font-size: 46px; font-weight: 700; margin-bottom: 16px; line-height: 1.2;">Try AnyCable with your Node.js app</h2>
-            <p style="font-size: 19px; color: #666; margin-bottom: 32px;">
-              Open source and free. Managed tier free up to 2,000 connections. Pro is $1,490/year for unlimited.
+            <h2 style="font-size: 46px; font-weight: 700; margin-bottom: 16px; line-height: 1.2;">Drop AnyCable into your Node.js app today</h2>
+            <p style="font-size: 19px; color: #666; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto;">
+              Managed AnyCable: zero ops, free up to 2,000 concurrent connections. Or self-host the open-source server — your choice, same protocol either way.
             </p>
             <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-              <a href='https://docs.anycable.io/getting-started' target='_blank' class='button button_size_big' data-ph-capture-attribute-link-id='compare-cta-start'>Get started</a>
-              <a href='/#pricing' class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='compare-cta-pricing'>View pricing</a>
+              <a href='https://plus.anycable.io/' target='_blank' class='button button_size_big' data-ph-capture-attribute-link-id='compare-cta-managed'>Try Managed — free up to 2K</a>
+              <a href='https://docs.anycable.io/getting_started' target='_blank' class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='compare-cta-self-host'>Self-host (open source)</a>
             </div>
             <p style="margin-top: 32px; font-size: 14px; color: #888;">
               AnyCable is open source (MIT), built by <a class='link' href='https://evilmartians.com' target='_blank'>Evil Martians</a>, in production since 2017 at <a class='link' href='https://anycable.io/#customers'>Doximity, CompanyCam, Headway, and 30+ others</a>.
