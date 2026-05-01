@@ -548,9 +548,9 @@ t=0.0s → users don't notice</pre>
         <section class='slide about-slide' id='faq'>
           <div class='about-slide__wrapper'>
             <div class='about-slide__section'>
-              <div class='about-slide__content about-slide__content-full faq-block'>
+              <div class='about-slide__content about-slide__content-full'>
                 <h2 class='about-slide__title' id='faq-heading' style="text-align: center;">FAQ<a class='heading-anchor' href='#faq-heading' aria-label='Permalink'>#</a></h2>
-
+                <div class='faq-block'>
                 <details class='faq-item'>
                   <summary>Does AnyCable replace Socket.io, or work alongside it?</summary>
                   <div class='faq-answer'>It replaces Socket.io. Your Node.js app broadcasts to AnyCable via HTTP instead of calling <code>io.emit()</code>. Clients connect to AnyCable over its protocol (<code>actioncable-v1-ext-json</code>, via <code>@anycable/core</code>) instead of <code>socket.io-client</code>.</div>
@@ -590,6 +590,7 @@ t=0.0s → users don't notice</pre>
                   <summary>What happens if AnyCable itself restarts?</summary>
                   <div class='faq-answer'>Clients reconnect and resume from the last offset they saw — missed messages are replayed (up to a configurable retention window). Restarting AnyCable is rare: you deploy your app, not the WebSocket layer, because they're decoupled.</div>
                 </details>
+                </div>
               </div>
             </div>
           </div>

@@ -199,6 +199,15 @@
   background: transparent !important;
 }
 
+// About-slide sections override the global .slide padding to 0; restore
+// vertical breathing room on the compare page so consecutive sections
+// don't butt against each other and right-column tables don't sit
+// flush against the section's top edge.
+.compare-page .slide.about-slide {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
 
 // ---------------------------------------------------------------------
 // About-slide right column on the compare page: transparent (so page
