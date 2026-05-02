@@ -25,35 +25,35 @@
             {{!-- Headline numbers — three cards. Each is a small comparison
                  table with a single highlighted "worst" cell so the analytical
                  reader can scan all three results in one glance. --}}
-            <div class='hero-cards'>
-              <div class='hero-card'>
-                <div class='hero-card__label'>Delivery rate at 10,000 clients</div>
-                <dl class='hero-card__rows'>
-                  <div class='hero-card__row'><dt>Default Socket.io</dt><dd class='is-worst'>87.4%</dd></div>
-                  <div class='hero-card__row'><dt>Socket.io + CSR</dt><dd>100%</dd></div>
-                  <div class='hero-card__row'><dt>AnyCable</dt><dd>100%</dd></div>
+            <div class='compare-hero-cards'>
+              <div class='compare-hero-card'>
+                <div class='compare-hero-card__label'>Delivery rate at 10,000 clients</div>
+                <dl class='compare-hero-card__rows'>
+                  <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd class='is-worst'>87.4%</dd></div>
+                  <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd>100%</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable</dt><dd>100%</dd></div>
                 </dl>
-                <div class='hero-card__footnote'>1.2M expected deliveries; default lost 150,642.</div>
+                <div class='compare-hero-card__footnote'>1.2M expected deliveries; default lost 150,642.</div>
               </div>
 
-              <div class='hero-card'>
-                <div class='hero-card__label'>Replay latency p99</div>
-                <dl class='hero-card__rows'>
-                  <div class='hero-card__row'><dt>Default Socket.io</dt><dd class='is-na'>n/a <span style="font-size: 12px; color: #aaa;">(lost)</span></dd></div>
-                  <div class='hero-card__row'><dt>Socket.io + CSR</dt><dd class='is-worst'>9.0 s</dd></div>
-                  <div class='hero-card__row'><dt>AnyCable</dt><dd>1.0 s</dd></div>
+              <div class='compare-hero-card'>
+                <div class='compare-hero-card__label'>Replay latency p99</div>
+                <dl class='compare-hero-card__rows'>
+                  <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd class='is-na'>n/a <span style="font-size: 12px; color: #aaa;">(lost)</span></dd></div>
+                  <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd class='is-worst'>9.0 s</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable</dt><dd>1.0 s</dd></div>
                 </dl>
-                <div class='hero-card__footnote'>Time for replayed messages to arrive on reconnect.</div>
+                <div class='compare-hero-card__footnote'>Time for replayed messages to arrive on reconnect.</div>
               </div>
 
-              <div class='hero-card'>
-                <div class='hero-card__label'>Idle connection capacity</div>
-                <dl class='hero-card__rows'>
-                  <div class='hero-card__row'><dt>AnyCable, single instance</dt><dd>50,000</dd></div>
-                  <div class='hero-card__row'><dt>Memory used</dt><dd>1.98 GB</dd></div>
-                  <div class='hero-card__row'><dt>CPU used (of 32 vCPU)</dt><dd>~0.3</dd></div>
+              <div class='compare-hero-card'>
+                <div class='compare-hero-card__label'>Idle connection capacity</div>
+                <dl class='compare-hero-card__rows'>
+                  <div class='compare-hero-card__row'><dt>AnyCable, single instance</dt><dd>50,000</dd></div>
+                  <div class='compare-hero-card__row'><dt>Memory used</dt><dd>1.98 GB</dd></div>
+                  <div class='compare-hero-card__row'><dt>CPU used (of 32 vCPU)</dt><dd>~0.3</dd></div>
                 </dl>
-                <div class='hero-card__footnote'>We hit a test-client ceiling at ~56K — not anycable-go's.</div>
+                <div class='compare-hero-card__footnote'>We hit a test-client ceiling at ~56K — not anycable-go's.</div>
               </div>
             </div>
 
@@ -573,60 +573,60 @@ t=0.0s → users don't notice</pre>
             <div class='about-slide__section'>
               <div class='about-slide__content about-slide__content-full'>
                 <h2 class='about-slide__title' id='faq-heading' style="text-align: center;">FAQ<a class='heading-anchor' href='#faq-heading' aria-label='Permalink'>#</a></h2>
-                <div class='faq-block'>
-                <details class='faq-item'>
+                <div class='compare-faq'>
+                <details class='compare-faq__item'>
                   <summary>Does AnyCable replace Socket.io, or work alongside it?</summary>
-                  <div class='faq-answer'>It replaces Socket.io. Your Node.js app broadcasts to AnyCable via HTTP instead of calling <code>io.emit()</code>. Clients connect to AnyCable over its protocol (<code>actioncable-v1-ext-json</code>, via <code>@anycable/core</code>) instead of <code>socket.io-client</code>.</div>
+                  <div class='compare-faq__answer'>It replaces Socket.io. Your Node.js app broadcasts to AnyCable via HTTP instead of calling <code>io.emit()</code>. Clients connect to AnyCable over its protocol (<code>actioncable-v1-ext-json</code>, via <code>@anycable/core</code>) instead of <code>socket.io-client</code>.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>What's the operational cost of running AnyCable?</summary>
-                  <div class='faq-answer'>One extra process — a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub.</div>
+                  <div class='compare-faq__answer'>One extra process — a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>How does AnyCable compare on performance?</summary>
-                  <div class='faq-answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held <strong>50,000 idle connections</strong> on under 2 GB of memory and ~0.3 vCPU (1% of available compute). At <strong>10,000 dynamic clients</strong> with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. We hit a test-client ceiling before anycable-go's. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
+                  <div class='compare-faq__answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held <strong>50,000 idle connections</strong> on under 2 GB of memory and ~0.3 vCPU (1% of available compute). At <strong>10,000 dynamic clients</strong> with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. We hit a test-client ceiling before anycable-go's. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>Can I use AnyCable for streaming LLM responses?</summary>
-                  <div class='faq-answer'>Yes — message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The <a class='link' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>Next.js + Twilio + OpenAI demo</a> linked above shows this end-to-end.</div>
+                  <div class='compare-faq__answer'>Yes — message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The <a class='link' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>Next.js + Twilio + OpenAI demo</a> linked above shows this end-to-end.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>What backends can use AnyCable?</summary>
-                  <div class='faq-answer'>Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement.</div>
+                  <div class='compare-faq__answer'>Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>Can I self-host AnyCable for HIPAA / SOC2 compliance?</summary>
-                  <div class='faq-answer'>Yes. anycable-go runs entirely on your infrastructure — no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network.</div>
+                  <div class='compare-faq__answer'>Yes. anycable-go runs entirely on your infrastructure — no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>Is AnyCable open source?</summary>
-                  <div class='faq-answer'>Yes, MIT-licensed since 2017. <a class='link' href='https://github.com/anycable/anycable' target='_blank'>anycable/anycable</a> on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support — free for small deployments.</div>
+                  <div class='compare-faq__answer'>Yes, MIT-licensed since 2017. <a class='link' href='https://github.com/anycable/anycable' target='_blank'>anycable/anycable</a> on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support — free for small deployments.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>Is there a managed (hosted) AnyCable?</summary>
-                  <div class='faq-answer'>Yes. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+</a> is the managed tier — zero ops, free up to 2,000 concurrent connections, paid plans above that. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.</div>
+                  <div class='compare-faq__answer'>Yes. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+</a> is the managed tier — zero ops, free up to 2,000 concurrent connections, paid plans above that. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>How does the cost compare to Pusher or Ably?</summary>
-                  <div class='faq-answer'>Pusher and Ably charge per concurrent connection — costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+ Managed</a> is free up to 2,000 concurrent connections and priced predictably above that. At 10,000+ connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.</div>
+                  <div class='compare-faq__answer'>Pusher and Ably charge per concurrent connection — costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+ Managed</a> is free up to 2,000 concurrent connections and priced predictably above that. At 10,000+ connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>How do you handle authentication?</summary>
-                  <div class='faq-answer'>Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe — your app stays the source of truth for identity without being on the hot path.</div>
+                  <div class='compare-faq__answer'>Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe — your app stays the source of truth for identity without being on the hot path.</div>
                 </details>
 
-                <details class='faq-item'>
+                <details class='compare-faq__item'>
                   <summary>What happens if AnyCable itself restarts?</summary>
-                  <div class='faq-answer'>Clients reconnect and resume from the last offset they saw — missed messages are replayed (up to a configurable retention window). Restarting AnyCable is rare: you deploy your app, not the WebSocket layer, because they're decoupled.</div>
+                  <div class='compare-faq__answer'>Clients reconnect and resume from the last offset they saw — missed messages are replayed (up to a configurable retention window). Restarting AnyCable is rare: you deploy your app, not the WebSocket layer, because they're decoupled.</div>
                 </details>
                 </div>
               </div>
