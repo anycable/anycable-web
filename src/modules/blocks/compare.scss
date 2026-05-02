@@ -285,12 +285,31 @@
   background: transparent !important;
 }
 
-// Note: we intentionally do NOT add top/bottom padding to .compare-page
-// .slide.about-slide here. Doing so would interrupt the gray left-column
-// background between adjacent about-slides with strips of dotted page bg.
-// Internal breathing inside each section is handled by the H2's natural
-// margin-top and by per-component insets (slide-show__frame padding,
-// faq-block max-width). Hero/CTA keep their own .slide paddings.
+// =====================================================================
+// Section rhythm — one rule, applied to columns, not to the slide.
+//
+// The `.about-slide` slide element stays unpadded so the gray left-
+// column background flows continuously between adjacent sections.
+// Vertical breathing lives INSIDE each column (`__content`, `__media`)
+// — that way every gray panel has top + bottom breathing room without
+// any break in the bg between sections.
+//
+// We zero out `__title` margin-top because the column padding above
+// already handles its top spacing; the global 120px margin would
+// double the gap.
+// =====================================================================
+.compare-page {
+  .about-slide__content,
+  .about-slide__content-full,
+  .about-slide__media {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .about-slide__title {
+    margin-top: 0;
+  }
+}
 
 
 // ---------------------------------------------------------------------
@@ -303,13 +322,34 @@
   background-image: none !important;
 }
 
+// Default card around tables / code blocks in the right column.
+// Cells own their horizontal padding (14/18 px) — the frame only adds
+// vertical inset so the first/last row don't sit flush against the
+// card border. Use the `compare-quote-card` modifier for non-table
+// content (e.g. customer quotes) that needs more inset and a tinted bg.
 .compare-page .about-slide__media .slide-show__frame {
   background-color: white;
   border: 1px solid #ececec;
   border-radius: 8px;
   overflow: hidden;
-  display: block; // override the flex centering for tables
-  padding: 16px 8px; // inset table so header row and last row don't sit flush against the card edge
+  display: block; // override the global flex centering
+  padding: 12px 0;
+
+  &.compare-quote-card {
+    padding: 40px 32px;
+    background-color: #fafafa;
+  }
+}
+
+// Try-it cards grid — three runnable JS starting points. Bottom margin
+// is handled by the column's padding-bottom; this just owns the grid
+// shape and breakpoint behavior.
+.compare-page .compare-try-it-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 // Code blocks (<pre>) — consistent 8px radius. Bg is dark for contrast.
