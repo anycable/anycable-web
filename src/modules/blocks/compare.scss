@@ -203,16 +203,12 @@
   background: transparent !important;
 }
 
-// Uniform vertical rhythm for all middle sections on the compare page.
-// Both about-slide and cases-slide get the same top/bottom padding so
-// adjacent sections share one consistent gap (~112px) and content inside
-// each section never sits flush against its top or bottom edge.
-// Hero (.slide) and CTA (.plans-slide) keep their own paddings.
-.compare-page .slide.about-slide,
-.compare-page .slide.cases-slide {
-  padding-top: 56px;
-  padding-bottom: 56px;
-}
+// Note: we intentionally do NOT add top/bottom padding to .compare-page
+// .slide.about-slide here. Doing so would interrupt the gray left-column
+// background between adjacent about-slides with strips of dotted page bg.
+// Internal breathing inside each section is handled by the H2's natural
+// margin-top and by per-component insets (slide-show__frame padding,
+// faq-block max-width). Hero/CTA keep their own .slide paddings.
 
 
 // ---------------------------------------------------------------------
@@ -232,13 +228,6 @@
   overflow: hidden;
   display: block; // override the flex centering for tables
   padding: 16px 8px; // inset table so header row and last row don't sit flush against the card edge
-}
-
-// Push right-column cards down from the gray section top so they don't read
-// as flush. Combined with the section's 56px padding-top this gives ~88px
-// from gray bg edge to card top — close to the H2's natural offset.
-.compare-page .about-slide__media-align-top {
-  margin-top: 32px;
 }
 
 // Code blocks (<pre>) — consistent 8px radius. Bg is dark for contrast.
