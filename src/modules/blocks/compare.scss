@@ -255,26 +255,6 @@ $compare-header-offset:  80px; // header height + a touch of breathing
 
 
   // -------------------------------------------------------------------
-  // Methodology footnote callout — restrained, sits under the TL;DR.
-  // -------------------------------------------------------------------
-  .compare-about {
-    max-width: 960px;
-    margin: 56px auto 0;
-    padding: 20px 24px;
-    background: $compare-bg-soft;
-    border: 1px solid $compare-border;
-    border-radius: $compare-radius;
-    font-size: 14px;
-    line-height: 1.65;
-    color: $compare-text-meta;
-
-    p          { margin: 0; }
-    p + p      { margin-top: 8px; }
-    strong     { color: #222; }
-  }
-
-
-  // -------------------------------------------------------------------
   // Right-column card (slide-show__frame override + variants).
   // Default: bare rounded card around tables / pre blocks. Cells own
   // their horizontal padding (14/18px) — the frame only adds vertical
@@ -395,6 +375,51 @@ $compare-header-offset:  80px; // header height + a touch of breathing
         color: $accentPrimaryColor;
         text-decoration-color: currentColor;
       }
+    }
+  }
+
+
+  // -------------------------------------------------------------------
+  // Closing CTA — leads with self-hosted Pro (monetized), free Managed
+  // is the secondary low-friction path, open source gets a single line
+  // in the footnote. Sits on the dotted page bg directly (no panel).
+  // -------------------------------------------------------------------
+  .compare-cta {
+    &__inner {
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    &__title {
+      margin: 0 0 16px;
+      font-size: 46px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    &__subhead {
+      max-width: 680px;
+      margin: 0 auto 32px;
+      font-size: 19px;
+      line-height: 1.5;
+      color: #666;
+
+      strong { color: #111; }
+    }
+
+    &__actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    &__footnote {
+      max-width: 760px;
+      margin: 32px auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: $compare-text-mute;
     }
   }
 

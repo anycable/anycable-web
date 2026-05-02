@@ -78,12 +78,6 @@
                 <a href='#faq'>FAQ</a>
               </nav>
             </div>
-
-            {{!-- About this comparison: methodology + authorship + reproducibility --}}
-            <div class='compare-about'>
-              <p><strong>About this comparison.</strong> This is the AnyCable team's own scrutiny — where AnyCable wins on measurable terms, and where Socket.io is enough. All three setups run on identical Railway infrastructure (Pro tier, 32 vCPU / 32 GB); every parameter, script, and raw result is reproducible from the <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>open-source bench repo</a>.</p>
-              <p>AnyCable has been in production since 2017 at <a class='link' href='https://anycable.io/#customers' target='_blank'>Doximity, CompanyCam, Headway, Jobber, CoinGecko, ClickFunnels, and 30+ other companies</a>.</p>
-            </div>
           </div>
         </section>
 
@@ -634,20 +628,22 @@ t=0.0s → users don't notice</pre>
           </div>
         </section>
 
-        {{!-- CTA --}}
-        <section class='slide plans-slide'>
-          <div style="padding: 80px 24px; text-align: center;">
-            <h2 style="font-size: 46px; font-weight: 700; margin-bottom: 16px; line-height: 1.2;">Drop AnyCable into your Node.js app today</h2>
-            <p style="font-size: 19px; color: #666; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto;">
-              Managed AnyCable: zero ops, free up to 2,000 concurrent connections. Or self-host the open-source server — your choice, same protocol either way.
+        {{!-- CTA — leads with self-hosted Pro (the monetized product),
+             with free Managed as the lower-friction secondary path.
+             Open source / GitHub get a single trailing line — already
+             covered in the FAQ above. --}}
+        <section class='slide plans-slide compare-cta'>
+          <div class='compare-cta__inner'>
+            <h2 class='compare-cta__title'>Drop AnyCable into your Node.js app today</h2>
+            <p class='compare-cta__subhead'>
+              <strong>AnyCable Pro</strong> runs on your infrastructure: unlimited connections and instances, flat $1,490/year, with a 2-month free trial. Or skip the deploy and start with free Managed AnyCable.
             </p>
-            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-              <a href='https://plus.anycable.io/' target='_blank' class='button button_size_big' data-ph-capture-attribute-link-id='compare-cta-managed'>Try Managed — free up to 2K</a>
-              <a href='https://docs.anycable.io/getting_started' target='_blank' class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='compare-cta-self-host'>Self-host (open source)</a>
+            <div class='compare-cta__actions'>
+              <a href='https://plus.anycable.io/pro' target='_blank' class='button button_size_big' data-ph-capture-attribute-link-id='compare-cta-pro'>Start Pro — 2 months free</a>
+              <a href='https://plus.anycable.io/' target='_blank' class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='compare-cta-managed'>Try free Managed</a>
             </div>
-            <p style="margin-top: 32px; font-size: 14px; color: #888;">
-              AnyCable is open source (MIT), built by <a class='link' href='https://evilmartians.com' target='_blank'>Evil Martians</a>, in production since 2017 at <a class='link' href='https://anycable.io/#customers'>Doximity, CompanyCam, Headway, and 30+ others</a>.
-              Benchmark code: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.
+            <p class='compare-cta__footnote'>
+              Open source under MIT — <a class='link' href='https://github.com/anycable/anycable' target='_blank'>anycable/anycable</a>. Built by <a class='link' href='https://evilmartians.com' target='_blank'>Evil Martians</a>, in production since 2017 at <a class='link' href='https://anycable.io/#customers'>Doximity, CompanyCam, Headway, and 30+ others</a>. Benchmark code: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.
             </p>
           </div>
         </section>
