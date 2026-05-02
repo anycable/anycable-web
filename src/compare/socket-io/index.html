@@ -298,7 +298,7 @@ t=0.0s → users don't notice</pre>
                   We deployed Socket.io to Railway, connected 5,000 clients, then triggered a real <code>railway restart</code> on the Socket.io service while measuring disconnect, reconnect, and tail behavior on the bench client.
                 </p>
                 <p class='about-slide__text'>
-                  Every Socket.io deploy is a thundering herd: thousands of clients reconnect simultaneously, competing for TLS handshakes and WebSocket upgrades through the same load balancer.
+                  Every Socket.io deploy is a <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering herd</a>: thousands of clients reconnect simultaneously, competing for TLS handshakes and WebSocket upgrades through the same load balancer.
                 </p>
                 <p class='about-slide__text'>
                   <strong>At 5,000 clients: 6.8 seconds of downtime per deploy.</strong> Half your users blind for 5 full seconds. 189 (3.8%) never reconnect.

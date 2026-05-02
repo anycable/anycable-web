@@ -199,13 +199,15 @@
   background: transparent !important;
 }
 
-// About-slide sections override the global .slide padding to 0; restore
-// vertical breathing room on the compare page so consecutive sections
-// don't butt against each other and right-column tables don't sit
-// flush against the section's top edge.
-.compare-page .slide.about-slide {
-  padding-top: 64px;
-  padding-bottom: 64px;
+// Uniform vertical rhythm for all middle sections on the compare page.
+// Both about-slide and cases-slide get the same top/bottom padding so
+// adjacent sections share one consistent gap (~112px) and content inside
+// each section never sits flush against its top or bottom edge.
+// Hero (.slide) and CTA (.plans-slide) keep their own paddings.
+.compare-page .slide.about-slide,
+.compare-page .slide.cases-slide {
+  padding-top: 56px;
+  padding-bottom: 56px;
 }
 
 
