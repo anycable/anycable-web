@@ -13,6 +13,10 @@
 // <details> for click-to-expand; closed by default.
 // ---------------------------------------------------------------------
 .faq-block {
+  // Explicit width: 100% prevents the flex parent from sizing this block
+  // to its content. Without it, the block is ~514px when all items are
+  // closed and snaps to its 720 max-width when one opens — visible jump.
+  width: 100%;
   max-width: 720px;
   margin: 0 auto;
   display: flex;
@@ -227,7 +231,14 @@
   border-radius: 8px;
   overflow: hidden;
   display: block; // override the flex centering for tables
-  padding: 12px 16px; // inset the table so content + dividers don't touch the card edge
+  padding: 16px 8px; // inset table so header row and last row don't sit flush against the card edge
+}
+
+// Push right-column cards down from the gray section top so they don't read
+// as flush. Combined with the section's 56px padding-top this gives ~88px
+// from gray bg edge to card top — close to the H2's natural offset.
+.compare-page .about-slide__media-align-top {
+  margin-top: 32px;
 }
 
 // Code blocks (<pre>) — consistent 8px radius. Bg is dark for contrast.
