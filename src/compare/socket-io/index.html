@@ -57,6 +57,28 @@
               </div>
             </div>
 
+            {{!-- TL;DR — analytical 3-point summary that doubles as on-page nav.
+                 LLMs and search engines extract this kind of structured summary
+                 directly. The findings list mirrors the three pillars below. --}}
+            <div class='compare-tldr'>
+              <h2 class='compare-tldr__title' id='tldr'>TL;DR<a class='heading-anchor' href='#tldr' aria-label='Permalink'>#</a></h2>
+              <ol class='compare-tldr__points'>
+                <li><strong>Delivery.</strong> Default Socket.io loses ~13% of messages under jitter at 10,000 clients. Connection State Recovery fixes delivery but takes ~9 s to replay. AnyCable: 100% delivery, ~1 s replay.</li>
+                <li><strong>Deploys.</strong> Every Socket.io process restart severs every WebSocket connection. AnyCable runs as a separate Go binary — your app deploys, the WebSocket layer stays up.</li>
+                <li><strong>Capacity.</strong> A single anycable-go instance held 50,000 idle connections on under 2 GB of memory and 0.3 vCPU.</li>
+              </ol>
+              <p class='compare-tldr__note'>Same JS client patterns on the frontend (<code>@anycable/core</code>). On the backend, broadcasts go over plain HTTP — Node, FastAPI, Laravel, Go, or anything that can issue an HTTP POST can drive it.</p>
+              <nav class='compare-tldr__nav' aria-label='Sections on this page'>
+                <span class='compare-tldr__nav-label'>On this page</span>
+                <a href='#delivery'>Delivery</a>
+                <a href='#deploys'>Deploys</a>
+                <a href='#capacity'>Capacity</a>
+                <a href='#migration'>Migration</a>
+                <a href='#try-it'>Demos</a>
+                <a href='#faq'>FAQ</a>
+              </nav>
+            </div>
+
             {{!-- About this comparison: methodology + authorship + reproducibility --}}
             <div class='compare-about'>
               <p><strong>About this comparison.</strong> This is the AnyCable team's own scrutiny — where AnyCable wins on measurable terms, and where Socket.io is enough. All three setups run on identical Railway infrastructure (Pro tier, 32 vCPU / 32 GB); every parameter, script, and raw result is reproducible from the <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>open-source bench repo</a>.</p>
@@ -524,18 +546,19 @@ t=0.0s → users don't notice</pre>
                 </p>
               </div>
               <div class='about-slide__media'>
-                <div class='slide-show__frame' style="padding: 48px 32px; background: #fafafa; flex-direction: column; align-items: stretch;">
-                  <div style="font-size: 14px; color: #888; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em;">Proven at scale</div>
-                  <div style="font-size: 16px; line-height: 1.9;">
-                    <div><strong>Doximity</strong> — telehealth (NYSE-listed)</div>
-                    <div><strong>CompanyCam</strong> — $2B valuation</div>
-                    <div><strong>Headway</strong> — $2.3B valuation</div>
-                    <div><strong>Jobber</strong> — $167M revenue</div>
-                    <div><strong>CoinGecko</strong> — crypto market data</div>
-                    <div><strong>ClickFunnels</strong> — ~$265M revenue</div>
+                <div class='slide-show__frame' style="padding: 40px 32px; background: #fafafa; flex-direction: column; align-items: stretch;">
+                  <div style="font-size: 12px; color: #888; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;">Proven at scale</div>
+                  {{!-- Doximity quote — public; from On Rails Podcast.
+                       Trimmed to focus on the deploy-resilience point. --}}
+                  <blockquote style="font-size: 17px; line-height: 1.6; color: #1a1a1a; margin: 0 0 20px; padding: 0; font-style: normal; quotes: none;">
+                    "We use AnyCable for our dialer products, which is where real-time is critical — it's our video and voice platform. Anytime you restart your application, which happens when you deploy, you're gonna get connection severances. AnyCable allows them to keep that connection open. That Go service stays up, and you can continue shipping your application as normal."
+                  </blockquote>
+                  <div style="font-size: 14px; line-height: 1.5; color: #555; margin-bottom: 24px;">
+                    <strong style="color: #1a1a1a;">Ryan Stawarz &amp; Austin Story</strong><br/>
+                    Engineering at <a class='link' href='https://www.doximity.com' target='_blank'>Doximity</a> &middot; <a class='link' href='https://podcast.rubyonrails.org/2462975/episodes/17653501' target='_blank'>podcast interview</a>
                   </div>
-                  <div style="margin-top: 24px; font-size: 13px; color: #888;">
-                    And 30+ more since 2017.
+                  <div style="padding-top: 20px; border-top: 1px solid #ececec; font-size: 13px; color: #777; line-height: 1.65;">
+                    Also in production at <strong>CompanyCam</strong>, <strong>Headway</strong>, <strong>Jobber</strong>, <strong>CoinGecko</strong>, <strong>ClickFunnels</strong>, and <a class='link' href='https://anycable.io/#customers' target='_blank'>30+ other companies since 2017</a>.
                   </div>
                 </div>
               </div>
@@ -567,8 +590,18 @@ t=0.0s → users don't notice</pre>
                 </details>
 
                 <details class='faq-item'>
+                  <summary>Can I use AnyCable for streaming LLM responses?</summary>
+                  <div class='faq-answer'>Yes — message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The <a class='link' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>Next.js + Twilio + OpenAI demo</a> linked above shows this end-to-end.</div>
+                </details>
+
+                <details class='faq-item'>
                   <summary>What backends can use AnyCable?</summary>
                   <div class='faq-answer'>Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>Can I self-host AnyCable for HIPAA / SOC2 compliance?</summary>
+                  <div class='faq-answer'>Yes. anycable-go runs entirely on your infrastructure — no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network.</div>
                 </details>
 
                 <details class='faq-item'>
@@ -579,6 +612,11 @@ t=0.0s → users don't notice</pre>
                 <details class='faq-item'>
                   <summary>Is there a managed (hosted) AnyCable?</summary>
                   <div class='faq-answer'>Yes. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+</a> is the managed tier — zero ops, free up to 2,000 concurrent connections, paid plans above that. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.</div>
+                </details>
+
+                <details class='faq-item'>
+                  <summary>How does the cost compare to Pusher or Ably?</summary>
+                  <div class='faq-answer'>Pusher and Ably charge per concurrent connection — costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+ Managed</a> is free up to 2,000 concurrent connections and priced predictably above that. At 10,000+ connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.</div>
                 </details>
 
                 <details class='faq-item'>
@@ -651,10 +689,26 @@ t=0.0s → users don't notice</pre>
           },
           {
             "@type": "Question",
+            "name": "Can I use AnyCable for streaming LLM responses?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes — message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The Next.js + Twilio + OpenAI demo at github.com/anycable/twilio-ai-js-demo shows this end-to-end."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "What backends can use AnyCable?",
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I self-host AnyCable for HIPAA / SOC2 compliance?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. anycable-go runs entirely on your infrastructure — no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network."
             }
           },
           {
@@ -671,6 +725,14 @@ t=0.0s → users don't notice</pre>
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "Yes. AnyCable+ is the managed tier — zero ops, free up to 2,000 concurrent connections, paid plans above that. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the cost compare to Pusher or Ably?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Pusher and Ably charge per concurrent connection — costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license. AnyCable+ Managed is free up to 2,000 concurrent connections and priced predictably above that. At 10,000+ connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing."
             }
           },
           {
@@ -692,6 +754,41 @@ t=0.0s → users don't notice</pre>
         ]
       }
     </script>
+    {{!-- TechArticle structured data — gives the page itself an
+         author/publisher/date signal so Gemini's engineering-blog
+         retrieval path has something to attach to. --}}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "AnyCable vs Socket.io: Delivery Guarantees, Replay Latency, Deploy Resilience",
+        "description": "Default Socket.io loses 13% of messages under jitter at 10,000 clients. Connection State Recovery catches up — but with a 9-second p99 replay tail. AnyCable: 100% delivery, sub-second replay, deploy-resilient.",
+        "url": "https://anycable.io/compare/socket-io",
+        "mainEntityOfPage": "https://anycable.io/compare/socket-io",
+        "datePublished": "2026-04-30",
+        "dateModified": "2026-05-01",
+        "author": {
+          "@type": "Organization",
+          "name": "AnyCable team",
+          "url": "https://anycable.io/"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Evil Martians",
+          "url": "https://evilmartians.com/"
+        },
+        "about": [
+          "WebSocket server",
+          "Socket.io alternative",
+          "Real-time messaging",
+          "Node.js WebSocket server",
+          "WebSocket scaling",
+          "Connection State Recovery",
+          "WebSocket delivery guarantees"
+        ]
+      }
+    </script>
+
     <script type="module" src="/index.ts"></script>
   </body>
 </html>

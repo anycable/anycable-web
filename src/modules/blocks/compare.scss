@@ -96,6 +96,88 @@
 
 
 // ---------------------------------------------------------------------
+// TL;DR / "Three findings" block — analytical summary right under the
+// hero stat cards. Doubles as on-page anchor nav. Designed to be
+// extractable: numbered findings + plain-text note + section links.
+// ---------------------------------------------------------------------
+.compare-tldr {
+  max-width: 960px;
+  margin: 32px auto 0;
+  padding: 28px 32px;
+  background: white;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin: 0 0 16px;
+  }
+
+  &__points {
+    margin: 0 0 16px;
+    padding-left: 24px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+
+    li { margin-bottom: 8px; }
+    li:last-child { margin-bottom: 0; }
+    strong { color: #111; }
+  }
+
+  &__note {
+    margin: 16px 0 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #555;
+
+    code {
+      font-size: 0.9em;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+  }
+
+  &__nav {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 18px;
+    font-size: 14px;
+
+    a {
+      color: #555;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+
+      &:hover {
+        color: #F64343;
+        border-bottom-color: currentColor;
+      }
+    }
+  }
+
+  &__nav-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    margin-right: 4px;
+  }
+}
+
+
+// ---------------------------------------------------------------------
 // "About this comparison" callout — restrained methodology footnote.
 // ---------------------------------------------------------------------
 .compare-about {
