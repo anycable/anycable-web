@@ -34,3 +34,20 @@ dist-ssr
 
 # Benchmarks live in their own repo: irinanazarova/anycable-socketio-benchmarks
 benchmark/
+
+# Tooling / Claude Code session artifacts
+.claude/
+.playwright-mcp/
+
+# Scratch / audit notes that aren't part of the site
+TODO-*.md
+llm-*.md
+*-audit.md
+
+# Test screenshots / page captures at repo root (real images live under src/)
+/*.png
+/*.jpeg
+/*.jpg
+
+# package-lock.json is generated locally; project bundles via Vite
+package-lock.json

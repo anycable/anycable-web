@@ -47,13 +47,13 @@
               </div>
 
               <div class='compare-hero-card'>
-                <div class='compare-hero-card__label'>Idle connection capacity</div>
+                <div class='compare-hero-card__label'>Idle connections, single instance</div>
                 <dl class='compare-hero-card__rows'>
-                  <div class='compare-hero-card__row'><dt>AnyCable, single instance</dt><dd>200,000</dd></div>
-                  <div class='compare-hero-card__row'><dt>Memory used</dt><dd>8.3 GB</dd></div>
-                  <div class='compare-hero-card__row'><dt>CPU used (of 32 vCPU)</dt><dd>~0.8</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable (open source)</dt><dd>200,000</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd>1,000,000</dd></div>
+                  <div class='compare-hero-card__row'><dt>Pro memory / CPU used</dt><dd>19 GB / ~3 vCPU</dd></div>
                 </dl>
-                <div class='compare-hero-card__footnote'>Sharded across 4 Railway test clients to bypass per-IP port limits; anycable-go had memory and CPU headroom to spare.</div>
+                <div class='compare-hero-card__footnote'>Same Railway box, single anycable-go process, no Redis or NATS backplane. ~40 KB/conn OSS, ~17.8 KB/conn Pro.</div>
               </div>
             </div>
 
