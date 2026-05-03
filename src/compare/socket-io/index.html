@@ -385,9 +385,9 @@ t=0.0s → users don't notice</pre>
           <div class='about-slide__wrapper'>
             <div class='about-slide__section'>
               <div class='about-slide__content'>
-                <h2 class='about-slide__title' id='capacity'>3. AnyCable holds 200,000 idle connections on ~8 GB and ~0.8 vCPU<a class='heading-anchor' href='#capacity' aria-label='Permalink'>#</a></h2>
+                <h2 class='about-slide__title' id='capacity'>3. One AnyCable node holds 200,000 idle connections on ~8 GB and ~0.8 vCPU<a class='heading-anchor' href='#capacity' aria-label='Permalink'>#</a></h2>
                 <p class='about-slide__text'>
-                  Same Railway box as the jitter benchmark — Pro tier, <strong>32 vCPU / 32 GB RAM</strong>. With nothing flowing, anycable-go held 200,000 idle WebSockets on 8.3 GB and ~0.8 vCPU (~3% of available compute). Memory grew linearly at <strong>~40 KB per connection</strong> in steady state.
+                  Same Railway box as the jitter benchmark — Pro tier, <strong>32 vCPU / 32 GB RAM</strong>, <strong>single anycable-go instance</strong>. With nothing flowing, it held 200,000 idle WebSockets on 8.3 GB and ~0.8 vCPU (~3% of available compute). Memory grew linearly at <strong>~40 KB per connection</strong> in steady state.
                 </p>
                 <p class='about-slide__text'>
                   Each Linux container has an outbound-port pool of ~64K; to bypass that, the load was sharded across <strong>4 separate test-client containers in parallel</strong>, each with its own source IP and ephemeral port range. anycable-go itself had memory and CPU headroom remaining — we stopped pushing because the headline was already strong.
