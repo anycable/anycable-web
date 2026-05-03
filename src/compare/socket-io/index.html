@@ -49,11 +49,11 @@
               <div class='compare-hero-card'>
                 <div class='compare-hero-card__label'>Idle connections, single instance</div>
                 <dl class='compare-hero-card__rows'>
+                  <div class='compare-hero-card__row'><dt>Socket.io</dt><dd class='is-worst'>119,826</dd></div>
                   <div class='compare-hero-card__row'><dt>AnyCable (open source)</dt><dd>200,000</dd></div>
                   <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd>1,000,000</dd></div>
-                  <div class='compare-hero-card__row'><dt>Pro memory / CPU used</dt><dd>19 GB / ~3 vCPU</dd></div>
                 </dl>
-                <div class='compare-hero-card__footnote'>Same Railway box, single anycable-go process, no Redis or NATS backplane. ~40 KB/conn OSS, ~17.8 KB/conn Pro.</div>
+                <div class='compare-hero-card__footnote'>Same Railway box (32 vCPU / 32 GB), 25 test-client shards × 40K each, 1M attempted. Socket.io's single Node event loop saturated; ~880K attempts rejected during ramp.</div>
               </div>
             </div>
 
@@ -396,7 +396,10 @@ t=0.0s → users don't notice</pre>
                   <strong>AnyCable Pro held the same 200,000 connections on 3.5 GB</strong> (~17.8 KB / connection) — about <strong>2.4× more memory-efficient</strong> than the open-source build. Same protocol, same broker, same hardware; just the more memory-tight Pro binary.
                 </p>
                 <p class='about-slide__text'>
-                  Pushed all the way, Pro held <strong>999,954 of 1,000,000 idle connections</strong> on the same 32 GB Pro tier — peak memory 19.3 GB, CPU 9.4% of 32 vCPU. Single process, no Redis or NATS backplane. (Not the headline of this page; the headline is delivery and deploy resilience above. But the connection ceiling, when you do go look for it, is comfortably past a million.)
+                  Pushed all the way, Pro held <strong>999,954 of 1,000,000 idle connections</strong> on the same 32 GB Pro tier — peak memory 19.3 GB, CPU 9.4% of 32 vCPU. Single process, no Redis or NATS backplane.
+                </p>
+                <p class='about-slide__text'>
+                  We ran the same test against Socket.io. Same hardware, same 1,000,000 target across 25 test-client shards. Socket.io accepted <strong>119,826 connections</strong> and rejected <strong>880,174</strong> during ramp — the single Node event loop processes WebSocket handshakes serially and couldn't keep up with 5,000 attempts/sec across the shards. Memory used: 6.3 GB. The bottleneck was throughput, not RAM. anycable-go's Go runtime multiplexes that work across 32 OS threads natively; Socket.io would need a Redis-backed cluster of Node processes to match.
                 </p>
                 <p class='about-slide__text'>
                   Go's goroutines scale this way: each connection is a few KB of stack and a small struct, multiplexed across OS threads. Socket.io is Node-only — a single event loop per process, fundamentally different concurrency. We didn't push its idle ceiling; the dynamic numbers in Pillar 1 already make the case.
@@ -421,6 +424,7 @@ t=0.0s → users don't notice</pre>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style=""><strong>200,000</strong> <span style="font-size: 11px; color: #888;">OSS</span></td><td style=" text-align: right;"><strong>8.35 GB</strong></td><td style=" text-align: right;"><strong>2.63% (~0.8 vCPU)</strong></td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">200,000 <span style="font-size: 11px; color: #F64343;">Pro</span></td><td style=" text-align: right;">3.56 GB</td><td style=" text-align: right;">1.94% (~0.6 vCPU)</td></tr>
                       <tr style="background: #f0fdf4;"><td style=""><strong>1,000,000</strong> <span style="font-size: 11px; color: #F64343;">Pro</span></td><td style=" text-align: right;"><strong>19.34 GB</strong></td><td style=" text-align: right;"><strong>9.37% (~3.0 vCPU)</strong></td></tr>
+                      <tr style="background: #fef2f2;"><td style="color: #555;">Socket.io ceiling <span style="font-size: 11px; color: #888;">(1M attempted)</span></td><td style=" text-align: right; color: #F64343;">119,826 conns</td><td style=" text-align: right; color: #888;">single core saturated</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -590,7 +594,7 @@ t=0.0s → users don't notice</pre>
 
                 <details class='compare-faq__item'>
                   <summary>How does AnyCable compare on performance?</summary>
-                  <div class='compare-faq__answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single open-source anycable-go instance held <strong>200,000 idle connections</strong> on 8.3 GB of memory and ~0.8 vCPU (~3% of available compute), sharded across 4 test-client containers to bypass per-IP outbound-port limits. The <strong>AnyCable Pro binary held the same 200K on 3.5 GB</strong> — about 2.4× more memory-efficient — and pushed up to <strong>999,954 of 1,000,000 idle connections</strong> on the same hardware (peak 19.3 GB, ~9% CPU), single process. At <strong>10,000 dynamic clients</strong> with simulated jitter, the open-source build delivered all 1.2M messages with a 1-second p99 replay latency. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
+                  <div class='compare-faq__answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single open-source anycable-go instance held <strong>200,000 idle connections</strong> on 8.3 GB of memory and ~0.8 vCPU (~3% of available compute), sharded across 4 test-client containers to bypass per-IP outbound-port limits. The <strong>AnyCable Pro binary held the same 200K on 3.5 GB</strong> — about 2.4× more memory-efficient — and pushed up to <strong>999,954 of 1,000,000 idle connections</strong> on the same hardware (peak 19.3 GB, ~9% CPU), single process. Socket.io on the same hardware and the same 1M-connection test accepted <strong>119,826 connections</strong> and rejected ~880K during ramp — its single Node event loop saturated long before memory ran out. At <strong>10,000 dynamic clients</strong> with simulated jitter, the open-source AnyCable build delivered all 1.2M messages with a 1-second p99 replay latency. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -690,7 +694,7 @@ t=0.0s → users don't notice</pre>
             "name": "How does AnyCable compare on performance?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single open-source anycable-go instance held 200,000 idle connections on 8.3 GB of memory and ~0.8 vCPU (~3% of available compute), sharded across 4 test-client containers to bypass per-IP outbound-port limits. The AnyCable Pro binary held the same 200K on 3.5 GB — about 2.4× more memory-efficient — and pushed up to 999,954 of 1,000,000 idle connections on the same hardware (peak 19.3 GB, ~9% CPU), single process. At 10,000 dynamic clients with simulated jitter, the open-source build delivered all 1.2M messages with a 1-second p99 replay latency. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
+              "text": "In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single open-source anycable-go instance held 200,000 idle connections on 8.3 GB of memory and ~0.8 vCPU (~3% of available compute), sharded across 4 test-client containers to bypass per-IP outbound-port limits. The AnyCable Pro binary held the same 200K on 3.5 GB — about 2.4× more memory-efficient — and pushed up to 999,954 of 1,000,000 idle connections on the same hardware (peak 19.3 GB, ~9% CPU), single process. Socket.io on the same hardware and the same 1M-connection test accepted 119,826 connections and rejected ~880K during ramp — its single Node event loop saturated long before memory ran out. At 10,000 dynamic clients with simulated jitter, the open-source AnyCable build delivered all 1.2M messages with a 1-second p99 replay latency. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
             }
           },
           {
