@@ -107,7 +107,7 @@ AnyCable is used in production by 50+ companies including:
 - You don't want to wire CSR's caveats. CSR is opt-in and documented as experimental ("the recovery will not always be successful"); it's incompatible with Socket.io's most common scaling adapter (Redis pub/sub) and requires Redis Streams or MongoDB to survive a server restart.
 - You need a standalone WebSocket server separate from your application process. Default Socket.io and Socket.io+CSR both run inside your Node.js app, so deploys still drop every connection (CSR can recover packets, but it cannot prevent the disconnect).
 - You want to use any backend, not just Node.js.
-- You want a single WebSocket-server instance to hold tens of thousands of connections without sharding. We measured AnyCable holding 50,000 idle connections on one Railway box using under 2 GB of memory and ~0.3 vCPU.
+- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. We measured AnyCable holding 200,000 idle connections on one Railway box using 8.3 GB of memory and ~0.8 vCPU (~3% of a 32 vCPU instance), with memory and CPU headroom remaining.
 
 Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/socket-io
 Bench source: https://github.com/irinanazarova/anycable-socketio-benchmarks
@@ -146,7 +146,7 @@ Both are Go-based WebSocket servers with pub/sub. Key differences:
 ## Key articles
 
 ### AnyCable vs Socket.io: comparison with benchmarks
-A methodology-first comparison of three real configurations at 10,000 concurrent clients on identical Railway infrastructure: default Socket.io (no opt-ins), Socket.io with Connection State Recovery enabled, and AnyCable. Headline results: default Socket.io delivers 87.4% under jitter, both Socket.io+CSR and AnyCable deliver 100% — but CSR's replay tail is 7x slower (p99 9.0s vs 1.0s; max 12.0s vs 3.5s). Also covers deploy resilience (Socket.io drops every connection on every deploy; AnyCable doesn't restart with the app) and idle connection capacity (50,000 connections on one anycable-go instance using under 2 GB and 0.3 vCPU). All numbers reproducible from the open-source bench repo.
+A methodology-first comparison of three real configurations at 10,000 concurrent clients on identical Railway infrastructure: default Socket.io (no opt-ins), Socket.io with Connection State Recovery enabled, and AnyCable. Headline results: default Socket.io delivers 87.4% under jitter, both Socket.io+CSR and AnyCable deliver 100% — but CSR's replay tail is 7x slower (p99 9.0s vs 1.0s; max 12.0s vs 3.5s). Also covers deploy resilience (Socket.io drops every connection on every deploy; AnyCable doesn't restart with the app) and idle connection capacity (200,000 connections on one anycable-go instance using 8.3 GB and ~0.8 vCPU). All numbers reproducible from the open-source bench repo.
 https://anycable.io/compare/socket-io
 
 ### The pitfalls of LLM streaming over WebSockets

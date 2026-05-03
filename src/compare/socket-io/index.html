@@ -49,11 +49,11 @@
               <div class='compare-hero-card'>
                 <div class='compare-hero-card__label'>Idle connection capacity</div>
                 <dl class='compare-hero-card__rows'>
-                  <div class='compare-hero-card__row'><dt>AnyCable, single instance</dt><dd>50,000</dd></div>
-                  <div class='compare-hero-card__row'><dt>Memory used</dt><dd>1.98 GB</dd></div>
-                  <div class='compare-hero-card__row'><dt>CPU used (of 32 vCPU)</dt><dd>~0.3</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable, single instance</dt><dd>200,000</dd></div>
+                  <div class='compare-hero-card__row'><dt>Memory used</dt><dd>8.3 GB</dd></div>
+                  <div class='compare-hero-card__row'><dt>CPU used (of 32 vCPU)</dt><dd>~0.8</dd></div>
                 </dl>
-                <div class='compare-hero-card__footnote'>We hit a test-client ceiling at ~56K — not anycable-go's.</div>
+                <div class='compare-hero-card__footnote'>Sharded across 4 Railway test clients to bypass per-IP port limits; anycable-go had memory and CPU headroom to spare.</div>
               </div>
             </div>
 
@@ -65,7 +65,7 @@
               <ol class='compare-tldr__points'>
                 <li><strong>Delivery.</strong> Default Socket.io loses ~13% of messages under jitter at 10,000 clients. Connection State Recovery fixes delivery but takes ~9 s to replay. AnyCable: 100% delivery, ~1 s replay.</li>
                 <li><strong>Deploys.</strong> Every Socket.io process restart severs every WebSocket connection. AnyCable runs as a separate Go binary — your app deploys, the WebSocket layer stays up.</li>
-                <li><strong>Capacity.</strong> A single anycable-go instance held 50,000 idle connections on under 2 GB of memory and 0.3 vCPU.</li>
+                <li><strong>Capacity.</strong> A single anycable-go instance held 200,000 idle connections on ~8 GB of memory and ~0.8 vCPU (sharded across 4 test clients to bypass per-IP port limits).</li>
               </ol>
               <p class='compare-tldr__note'>Same JS client patterns on the frontend (<code>@anycable/core</code>). On the backend, broadcasts go over plain HTTP — Node, FastAPI, Laravel, Go, or anything that can issue an HTTP POST can drive it.</p>
               <nav class='compare-tldr__nav' aria-label='Sections on this page'>
@@ -385,12 +385,12 @@ t=0.0s → users don't notice</pre>
           <div class='about-slide__wrapper'>
             <div class='about-slide__section'>
               <div class='about-slide__content'>
-                <h2 class='about-slide__title' id='capacity'>3. AnyCable holds 50,000 idle connections on under 2 GB and 0.3 vCPU<a class='heading-anchor' href='#capacity' aria-label='Permalink'>#</a></h2>
+                <h2 class='about-slide__title' id='capacity'>3. AnyCable holds 200,000 idle connections on ~8 GB and ~0.8 vCPU<a class='heading-anchor' href='#capacity' aria-label='Permalink'>#</a></h2>
                 <p class='about-slide__text'>
-                  Same Railway box as the jitter benchmark — Pro tier, <strong>32 vCPU / 32 GB RAM</strong>. With nothing flowing, anycable-go held 50,000 idle WebSockets on under 2 GB and ~0.3 vCPU (1% of available compute). <strong>~40 KB per connection</strong> in steady state.
+                  Same Railway box as the jitter benchmark — Pro tier, <strong>32 vCPU / 32 GB RAM</strong>. With nothing flowing, anycable-go held 200,000 idle WebSockets on 8.3 GB and ~0.8 vCPU (~3% of available compute). Memory grew linearly at <strong>~40 KB per connection</strong> in steady state.
                 </p>
                 <p class='about-slide__text'>
-                  We hit a test-client ceiling at ~56K — the bench process couldn't open more outbound TCP connections. Anycable-go didn't break a sweat; server CPU stayed near zero throughout.
+                  Each Linux container has an outbound-port pool of ~64K; to bypass that, the load was sharded across <strong>4 separate test-client containers in parallel</strong>, each with its own source IP and ephemeral port range. anycable-go itself had memory and CPU headroom remaining — we stopped pushing because the headline was already strong.
                 </p>
                 <p class='about-slide__text'>
                   Go's goroutines scale this way: each connection is a few KB of stack and a small struct, multiplexed across OS threads. Socket.io is Node-only — a single event loop per process, fundamentally different concurrency. We didn't push its idle ceiling; the dynamic numbers in Pillar 1 already make the case.
@@ -410,7 +410,9 @@ t=0.0s → users don't notice</pre>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">1,000</td><td style=" text-align: right;">280 MB</td><td style=" text-align: right;">0%</td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">10,000</td><td style=" text-align: right;">280 MB</td><td style=" text-align: right;">0%</td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">20,000</td><td style=" text-align: right;">751 MB</td><td style=" text-align: right;">1.08% (~0.3 vCPU)</td></tr>
-                      <tr style="background: #f0fdf4;"><td style=""><strong>50,000</strong></td><td style=" text-align: right;"><strong>1.98 GB</strong></td><td style=" text-align: right;"><strong>1.08% (~0.3 vCPU)</strong></td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">50,000</td><td style=" text-align: right;">1.98 GB</td><td style=" text-align: right;">1.08% (~0.3 vCPU)</td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">100,000</td><td style=" text-align: right;">4.18 GB</td><td style=" text-align: right;">1.62% (~0.5 vCPU)</td></tr>
+                      <tr style="background: #f0fdf4;"><td style=""><strong>200,000</strong></td><td style=" text-align: right;"><strong>8.35 GB</strong></td><td style=" text-align: right;"><strong>2.63% (~0.8 vCPU)</strong></td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -580,7 +582,7 @@ t=0.0s → users don't notice</pre>
 
                 <details class='compare-faq__item'>
                   <summary>How does AnyCable compare on performance?</summary>
-                  <div class='compare-faq__answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held <strong>50,000 idle connections</strong> on under 2 GB of memory and ~0.3 vCPU (1% of available compute). At <strong>10,000 dynamic clients</strong> with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. We hit a test-client ceiling before anycable-go's. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
+                  <div class='compare-faq__answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held <strong>200,000 idle connections</strong> on 8.3 GB of memory and ~0.8 vCPU (~3% of available compute), sharded across 4 test-client containers to bypass per-IP outbound-port limits. At <strong>10,000 dynamic clients</strong> with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -680,7 +682,7 @@ t=0.0s → users don't notice</pre>
             "name": "How does AnyCable compare on performance?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held 50,000 idle connections on under 2 GB of memory and ~0.3 vCPU (1% of available compute). At 10,000 dynamic clients with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. We hit a test-client ceiling before anycable-go's. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
+              "text": "In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), a single anycable-go instance held 200,000 idle connections on 8.3 GB of memory and ~0.8 vCPU (~3% of available compute), sharded across 4 test-client containers to bypass per-IP outbound-port limits. At 10,000 dynamic clients with simulated jitter, it delivered all 1.2M messages with a 1-second p99 replay latency. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
             }
           },
           {
