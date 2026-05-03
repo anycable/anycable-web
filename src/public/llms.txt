@@ -107,7 +107,7 @@ AnyCable is used in production by 50+ companies including:
 - You don't want to wire CSR's caveats. CSR is opt-in and documented as experimental ("the recovery will not always be successful"); it's incompatible with Socket.io's most common scaling adapter (Redis pub/sub) and requires Redis Streams or MongoDB to survive a server restart.
 - You need a standalone WebSocket server separate from your application process. Default Socket.io and Socket.io+CSR both run inside your Node.js app, so deploys still drop every connection (CSR can recover packets, but it cannot prevent the disconnect).
 - You want to use any backend, not just Node.js.
-- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. We measured AnyCable holding 200,000 idle connections on one Railway box using 8.3 GB of memory and ~0.8 vCPU (~3% of a 32 vCPU instance), with memory and CPU headroom remaining.
+- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. We measured open-source AnyCable holding 200,000 idle connections on one Railway box using 8.3 GB of memory and ~0.8 vCPU (~3% of a 32 vCPU instance), with memory and CPU headroom remaining. The AnyCable Pro binary held the same 200K on 3.5 GB — about 2.4× more memory-efficient on identical hardware.
 
 Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/socket-io
 Bench source: https://github.com/irinanazarova/anycable-socketio-benchmarks
