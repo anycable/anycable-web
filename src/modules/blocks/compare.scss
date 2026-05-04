@@ -282,6 +282,51 @@ $compare-header-offset:  80px; // header height + a touch of breathing
 
 
   // -------------------------------------------------------------------
+  // Architecture diagram (Pillar 2) — inline SVG showing Socket.io's
+  // co-located process vs AnyCable's separated app | anycable-go.
+  // -------------------------------------------------------------------
+  .compare-arch-diagram {
+    margin: 24px 0 32px;
+
+    svg {
+      display: block;
+    }
+  }
+
+
+  // -------------------------------------------------------------------
+  // Inline benchmark chart (ASCII art from the bench-runner) — embedded
+  // in Pillar 3 to show memory + CPU shape during the 1M run. Lives in
+  // a captioned <figure>; the <pre> just preserves the alignment.
+  // -------------------------------------------------------------------
+  .compare-bench-chart {
+    margin: 16px 0 0;
+
+    figcaption {
+      font-size: 12px;
+      color: $compare-text-mute;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    &__pre {
+      margin: 0;
+      padding: 16px 20px;
+      background: $compare-bg-code;
+      color: #cce6ff;
+      border-radius: $compare-radius;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      white-space: pre;
+      overflow-x: auto;
+    }
+  }
+
+
+  // -------------------------------------------------------------------
   // Try-it cards grid — three runnable JS starting points.
   // -------------------------------------------------------------------
   .compare-try-it-grid {

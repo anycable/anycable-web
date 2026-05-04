@@ -282,6 +282,59 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 0.7s)</pr
             <div class='about-slide__section'>
               <div class='about-slide__content'>
                 <h2 class='about-slide__title' id='deploys'>2. Every Socket.io deploy severs every connection. This is architectural.<a class='heading-anchor' href='#deploys' aria-label='Permalink'>#</a></h2>
+
+                {{!-- Architecture diagram — Socket.io's app+WS in one process
+                     vs AnyCable's app | anycable-go separated. The visual
+                     carries the structural argument; the H3s + paragraphs
+                     below reinforce it in text. --}}
+                <figure class='compare-arch-diagram' aria-label='Socket.io and AnyCable process architecture, side by side'>
+                  <svg viewBox="0 0 720 380" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" role='img' aria-labelledby='arch-title'>
+                    <title id='arch-title'>Socket.io vs AnyCable process architecture</title>
+
+                    <!-- Socket.io row -->
+                    <text x="0" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#1a1a1a" letter-spacing="0.02em">Socket.io — WebSocket layer co-located with the app</text>
+
+                    <!-- Outer process box -->
+                    <rect x="0" y="36" width="720" height="120" rx="8" fill="#fff5f5" stroke="#F64343" stroke-width="1.5"/>
+                    <text x="16" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#F64343" font-weight="600">Node.js process</text>
+
+                    <!-- Inner: app + WS hub -->
+                    <rect x="32" y="78" width="296" height="64" rx="6" fill="#fff" stroke="#ececec" stroke-width="1"/>
+                    <text x="48" y="103" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#1a1a1a" font-weight="600">Your app (HTTP, business logic)</text>
+                    <text x="48" y="124" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#777">routes, auth, DB calls — single event loop</text>
+
+                    <rect x="392" y="78" width="296" height="64" rx="6" fill="#fff" stroke="#ececec" stroke-width="1"/>
+                    <text x="408" y="103" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#1a1a1a" font-weight="600">Socket.io WebSocket hub</text>
+                    <text x="408" y="124" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#777">tens of thousands of open connections</text>
+
+                    <!-- Annotation under Socket.io -->
+                    <text x="360" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#F64343">deploy → restart Node process → <tspan font-weight="700">every WebSocket drops</tspan></text>
+
+                    <!-- AnyCable row -->
+                    <text x="0" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#1a1a1a" letter-spacing="0.02em">AnyCable — WebSocket layer is a separate process</text>
+
+                    <!-- App box -->
+                    <rect x="0" y="236" width="296" height="80" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+                    <text x="16" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#1a1a1a" font-weight="600">Your app</text>
+                    <text x="16" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#555">Node.js, Python, Laravel, Go,</text>
+                    <text x="16" y="296" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#555">anything that speaks HTTP</text>
+
+                    <!-- Arrow + label -->
+                    <line x1="296" y1="276" x2="392" y2="276" stroke="#777" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <polygon points="386,272 394,276 386,280" fill="#777"/>
+                    <text x="344" y="268" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#777" font-weight="600">HTTP /_broadcast</text>
+
+                    <!-- anycable-go box -->
+                    <rect x="392" y="236" width="296" height="80" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+                    <text x="408" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#1a1a1a" font-weight="600">anycable-go</text>
+                    <text x="408" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#555">single Go binary, holds all WebSocket</text>
+                    <text x="408" y="296" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#555">connections (1M idle on one node)</text>
+
+                    <!-- Annotation under AnyCable -->
+                    <text x="360" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#1a1a1a">deploy app → <tspan font-weight="700">anycable-go untouched, WebSockets survive</tspan></text>
+                  </svg>
+                </figure>
+
                 <h3 class='about-slide__subtitle'>Socket.io's WebSocket server is your application server</h3>
                 <p class='about-slide__text'>
                   One Node.js process handles HTTP, business logic, and WebSocket connections — competing for the same event loop. HTTP requests come and go; WebSockets stay open for hours. Restart the process to deploy and every WebSocket terminates with it.
@@ -416,6 +469,40 @@ t=0.0s → users don't notice</pre>
                     </tbody>
                   </table>
                 </div>
+
+                {{!-- Memory + CPU during the 1M Pro run, captured live
+                     from Railway's GraphQL metrics during the test
+                     window. Reproduced from bench/idle-multi.ts output. --}}
+                <figure class='compare-bench-chart' aria-label='AnyCable Pro memory and CPU during the 1M idle test'>
+                  <figcaption>anycable-go-pro during the 1M idle run (Railway metrics, 30s sampling)</figcaption>
+                  <pre class='compare-bench-chart__pre'>Memory
+  19339 MB │                                               •●•••●•••●•••●
+           │                                   •●•••●•••●••
+           │                               •●••
+           │                             ●•
+           │                           ••
+           │                        •●•
+           │                •●•••●••
+           │             ●••
+           │           ••
+           │ ●•••●•••●•
+           │
+   0.00 MB │
+           └────────────────────────────────────────────────────────────
+             -30s                                                    420s
+
+CPU (% of 1 vCPU)
+  9.37 % │                               •●•          ●•••●•••●
+         │                            •●•   ••●                •
+         │                         ●••               •
+         │                       ••            •                •
+         │                    •●•               •   •            •
+         │                •●••                     •              ●•••●
+         │            •●••                       •
+  0.00 % │ ●•••●•••●••                            ●
+         └────────────────────────────────────────────────────────────
+           -30s                                                    420s</pre>
+                </figure>
               </div>
             </div>
           </div>
