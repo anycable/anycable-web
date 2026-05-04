@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead pageTitle="AnyCable vs Socket.io | Delivery Guarantees, Replay Latency, Deploy Resilience" pageDescription="Default Socket.io loses 13% of messages under jitter at 10,000 clients. Connection State Recovery catches up — but with a 9-second p99 replay tail. AnyCable: 100% delivery, sub-second replay. Benchmarked on identical Railway infrastructure." pageUrl="https://anycable.io/compare/socket-io"}}
+  {{> dochead pageTitle="AnyCable vs Socket.io | 100% delivery, deploy-resilient WebSockets, 1M connections per node" pageDescription="Same Railway box, same 1M-connection test: Socket.io accepts 119,826 (single Node event loop saturates), open-source AnyCable holds 994K (32 GB RAM ceiling), AnyCable Pro holds 1M on 19 GB. Plus: AnyCable delivers 100% under jitter (vs Socket.io's 87.4%) and connections survive deploys. All numbers reproducible." pageUrl="https://anycable.io/compare/socket-io"}}
   <body>
     <div class="page">
       {{> header}}
@@ -387,19 +387,13 @@ t=0.0s → users don't notice</pre>
               <div class='about-slide__content'>
                 <h2 class='about-slide__title' id='capacity'>3. One AnyCable node holds 1,000,000 idle connections — Pro on 19 GB, OSS on 32 GB<a class='heading-anchor' href='#capacity' aria-label='Permalink'>#</a></h2>
                 <p class='about-slide__text'>
-                  Same Railway box as the jitter benchmark — Pro tier, <strong>32 vCPU / 32 GB RAM</strong> — <strong>single instance, no Redis or NATS backplane</strong>. We ran the same idle-connection test against three setups: Socket.io 4.x, open-source AnyCable, and AnyCable Pro. 25 test-client shards × 40,000 each = 1,000,000 target. The numbers below are what each held at peak.
+                  Same Railway box as the jitter benchmark — <strong>Pro tier, 32 vCPU / 32 GB, single instance, no Redis or NATS backplane.</strong> We aimed all three runtimes at a 1,000,000-connection idle target across 25 sharded test clients (each container has its own ~64K outbound-port pool). The numbers in the table at right are what each held at peak.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>Socket.io accepted 119,826</strong> connections and rejected ~880,000 during ramp. Memory used was only 6.3 GB; the bottleneck was the single Node event loop processing WebSocket handshakes serially. Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter — its wall is the architecture, not the hardware.
+                  Each runtime hits a different wall. <strong>Socket.io accepted 119,826</strong> and rejected ~880K during ramp — the single Node event loop saturates processing handshakes serially, regardless of how much memory is on the box. <strong>Open-source AnyCable held 993,994</strong>, capping at the physical 32 GB RAM ceiling at ~33 KB / connection. More connections from there means a bigger box.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>Open-source AnyCable held 993,994</strong> connections — basically the full 1M, hitting the box's <strong>32 GB RAM ceiling</strong> on the way up. Each connection cost ~33 KB at this scale. Different wall, but a wall: more connections than this would need a bigger box.
-                </p>
-                <p class='about-slide__text'>
-                  <strong>AnyCable Pro held 999,954</strong> connections on the same hardware — peak memory <strong>19 GB</strong>, CPU 9.4% of 32 vCPU. About <strong>1.7× more memory-efficient than OSS at 1M</strong> (~19 KB vs ~33 KB / connection). 13 GB of memory headroom remained. The same gap shows up at smaller scales: at 200K, Pro uses 3.5 GB vs OSS's 8.3 GB (~2.4× tighter).
-                </p>
-                <p class='about-slide__text'>
-                  Each test-client container has an outbound-port pool of ~64K, so the load was sharded across separate containers in parallel — each with its own source IP and ephemeral port range. None of these is the headline of this page; the headline is delivery and deploy resilience above. But the connection ceiling, when you do go look for it, looks different in each runtime: Socket.io hits its event loop, OSS hits the box's RAM, Pro still has room.
+                  <strong>AnyCable Pro held 999,954 on 19 GB</strong> with 13 GB headroom remaining — about <strong>1.7× more memory-efficient than OSS at 1M</strong> (~19 KB vs ~33 KB / connection). The same gap shows up at smaller scale: at 200K, Pro uses 3.5 GB vs OSS's 8.3 GB. None of this is the headline of the page; the page's headline is delivery and deploy resilience above. But the connection ceiling — when you do go looking — is comfortably past a million on a single instance.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
@@ -413,11 +407,7 @@ t=0.0s → users don't notice</pre>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">1,000</td><td style=" text-align: right;">280 MB</td><td style=" text-align: right;">0%</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">10,000</td><td style=" text-align: right;">280 MB</td><td style=" text-align: right;">0%</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">20,000</td><td style=" text-align: right;">751 MB</td><td style=" text-align: right;">1.08% (~0.3 vCPU)</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">50,000</td><td style=" text-align: right;">1.98 GB</td><td style=" text-align: right;">1.08% (~0.3 vCPU)</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">100,000</td><td style=" text-align: right;">4.18 GB</td><td style=" text-align: right;">1.62% (~0.5 vCPU)</td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">10,000 <span style="font-size: 11px; color: #888;">OSS</span></td><td style=" text-align: right;">280 MB</td><td style=" text-align: right;">0%</td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">200,000 <span style="font-size: 11px; color: #888;">OSS</span></td><td style=" text-align: right;">8.35 GB</td><td style=" text-align: right;">2.63% (~0.8 vCPU)</td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">200,000 <span style="font-size: 11px; color: #F64343;">Pro</span></td><td style=" text-align: right;">3.56 GB</td><td style=" text-align: right;">1.94% (~0.6 vCPU)</td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style=""><strong>993,994</strong> <span style="font-size: 11px; color: #888;">OSS, RAM-bound</span></td><td style=" text-align: right; color: #F64343;"><strong>32.00 GB</strong> (ceiling)</td><td style=" text-align: right;"><strong>12.22% (~3.9 vCPU)</strong></td></tr>
@@ -446,6 +436,13 @@ t=0.0s → users don't notice</pre>
                 <p class='about-slide__text'>
                   <strong>Trade-off:</strong> one extra process to deploy (anycable-go, a single Go binary). In return, your Node.js app becomes stateless for WebSockets.
                 </p>
+                <p class='about-slide__text'><strong>Migration checklist — what changes in your code:</strong></p>
+                <ol class='about-slide__text' style="padding-left: 24px; margin-top: -8px;">
+                  <li>Replace <code>io.to(room).emit(event, payload)</code> with an HTTP <code>POST</code> to anycable-go's <code>/_broadcast</code>.</li>
+                  <li>Swap <code>socket.io-client</code> for <code>@anycable/core</code> on the frontend (or <code>@anycable/web</code> for browser-only). Same connect / subscribe / receive shape.</li>
+                  <li>Drop the <code>socket.io</code> server dependency. Your app no longer holds WebSocket connections — anycable-go does.</li>
+                  <li>Run anycable-go alongside your app (one Go binary, Docker image, or our Managed tier — same protocol either way).</li>
+                </ol>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
                 <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.7; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #888;">// Before: Socket.io (embedded in your app)</span>
@@ -769,12 +766,12 @@ t=0.0s → users don't notice</pre>
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "AnyCable vs Socket.io: Delivery Guarantees, Replay Latency, Deploy Resilience",
-        "description": "Default Socket.io loses 13% of messages under jitter at 10,000 clients. Connection State Recovery catches up — but with a 9-second p99 replay tail. AnyCable: 100% delivery, sub-second replay, deploy-resilient.",
+        "headline": "AnyCable vs Socket.io: 100% delivery, deploy-resilient WebSockets, 1M idle connections per node",
+        "description": "Same Railway box, same 1,000,000-connection idle test: Socket.io accepted 119,826 (single Node event loop saturated), open-source AnyCable held 993,994 (32 GB RAM ceiling), AnyCable Pro held 999,954 on 19 GB. Plus AnyCable delivers 100% under jitter (vs Socket.io's 87.4%) with a ~1 s p99 replay tail and connections survive deploys. All numbers reproducible from the open-source bench repo.",
         "url": "https://anycable.io/compare/socket-io",
         "mainEntityOfPage": "https://anycable.io/compare/socket-io",
         "datePublished": "2026-04-30",
-        "dateModified": "2026-05-01",
+        "dateModified": "2026-05-03",
         "author": {
           "@type": "Organization",
           "name": "AnyCable team",
@@ -791,8 +788,13 @@ t=0.0s → users don't notice</pre>
           "Real-time messaging",
           "Node.js WebSocket server",
           "WebSocket scaling",
+          "Node.js WebSocket scaling bottleneck",
+          "1,000,000 WebSocket connections single instance",
+          "AnyCable Pro vs open source",
+          "AnyCable Pro memory efficiency",
           "Connection State Recovery",
-          "WebSocket delivery guarantees"
+          "WebSocket delivery guarantees",
+          "WebSocket deploy resilience"
         ]
       }
     </script>
