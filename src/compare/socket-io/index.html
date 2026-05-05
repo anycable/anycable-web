@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead pageTitle="AnyCable vs Socket.io | 100% delivery, deploy-resilient WebSockets, 1M connections per node" pageDescription="Same Railway box, same 1M-connection test: Socket.io accepts 119,826 (single Node event loop saturates), open-source AnyCable holds 994K (32 GB RAM ceiling), AnyCable Pro holds 1M on 19 GB. Plus: AnyCable delivers 100% under jitter (vs Socket.io's 87.4%) and connections survive deploys. All numbers reproducible." pageUrl="https://anycable.io/compare/socket-io"}}
+  {{> dochead pageTitle="AnyCable vs Socket.io | 100% delivery, deploy-resilient WebSockets, 1M connections per node" pageDescription="Same Railway box, same 1M-connection test: Socket.io accepts 119,826 (single Node event loop saturates), open-source AnyCable holds 994K (32 GB RAM ceiling), AnyCable Pro holds 1M on 19 GB. Plus: AnyCable delivers 100% under jitter (vs Socket.io's 87%), AnyCable Pro holds 10K reconnecting clients on ~2.3× less server memory than Socket.io+CSR, and connections survive deploys. All numbers reproducible." pageUrl="https://anycable.io/compare/socket-io"}}
   <body>
     <div class="page">
       {{> header}}
@@ -15,7 +15,7 @@
                 AnyCable <span style="color: #aaa; font-weight: 400;">vs</span> Socket.io
               </h1>
               <p style="font-size: 22px; line-height: 1.5; color: #555; max-width: 760px; margin: 0 auto;">
-                10,000 clients on Railway, including Socket.io's Connection State Recovery. CSR and AnyCable both hit 100% delivery. Replay latency tells the story.
+                10,000 clients on Railway, including Socket.io's Connection State Recovery. CSR and AnyCable both deliver 100%; AnyCable Pro does it on less than half the server memory.
               </p>
               <p style="font-size: 14px; color: #888; margin-top: 16px;">
                 <a href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank' style="color: #888; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #ccc;">Open source — run it yourself</a>
@@ -29,21 +29,21 @@
               <div class='compare-hero-card'>
                 <div class='compare-hero-card__label'>Delivery rate at 10,000 clients</div>
                 <dl class='compare-hero-card__rows'>
-                  <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd class='is-worst'>87.4%</dd></div>
+                  <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd class='is-worst'>87%</dd></div>
                   <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd>100%</dd></div>
                   <div class='compare-hero-card__row'><dt>AnyCable</dt><dd>100%</dd></div>
                 </dl>
-                <div class='compare-hero-card__footnote'>1.2M expected deliveries; default lost 150,642.</div>
+                <div class='compare-hero-card__footnote'>1.2M expected deliveries; default lost 156,856.</div>
               </div>
 
               <div class='compare-hero-card'>
-                <div class='compare-hero-card__label'>Replay latency p99</div>
+                <div class='compare-hero-card__label'>Server memory at 10,000 clients</div>
                 <dl class='compare-hero-card__rows'>
-                  <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd class='is-na'>n/a <span style="font-size: 12px; color: #aaa;">(lost)</span></dd></div>
-                  <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd class='is-worst'>9.0 s</dd></div>
-                  <div class='compare-hero-card__row'><dt>AnyCable</dt><dd>1.0 s</dd></div>
+                  <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd>675 MB</dd></div>
+                  <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd>627 MB</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd>271 MB</dd></div>
                 </dl>
-                <div class='compare-hero-card__footnote'>Time for replayed messages to arrive on reconnect.</div>
+                <div class='compare-hero-card__footnote'>Peak RSS during the jitter run. AnyCable Pro: ~2.3&times; less than CSR. (Open-source AnyCable: 760 MB.)</div>
               </div>
 
               <div class='compare-hero-card'>
@@ -63,7 +63,7 @@
             <div class='compare-tldr'>
               <h2 class='compare-tldr__title' id='tldr'>TL;DR<a class='heading-anchor' href='#tldr' aria-label='Permalink'>#</a></h2>
               <ol class='compare-tldr__points'>
-                <li><strong>Delivery.</strong> Default Socket.io loses ~13% of messages under jitter at 10,000 clients. Connection State Recovery fixes delivery but takes ~9 s to replay. AnyCable: 100% delivery, ~1 s replay.</li>
+                <li><strong>Delivery.</strong> Default Socket.io loses ~13% of messages under jitter at 10,000 clients. Connection State Recovery fixes delivery; the replay tail sits at ~8 s on p99. AnyCable matches CSR on delivery and runs ~22% faster on the tail (~6 s p99) — and AnyCable Pro does it on ~2.3&times; less server memory.</li>
                 <li><strong>Deploys.</strong> Every Socket.io process restart severs every WebSocket connection. AnyCable runs as a separate Go binary — your app deploys, the WebSocket layer stays up.</li>
                 <li><strong>Capacity.</strong> Same hardware, same 1,000,000-connection test. Socket.io topped out at <strong>119,826</strong> (single Node event loop). Open-source AnyCable held <strong>993,994</strong>, hitting the box's 32 GB RAM ceiling. <strong>AnyCable Pro held 999,954 on 19 GB</strong> — ~1.7× more memory-efficient, with headroom remaining.</li>
               </ol>
@@ -86,9 +86,9 @@
           <div class='about-slide__wrapper'>
             <div class='about-slide__section'>
               <div class='about-slide__content'>
-                <h2 class='about-slide__title' id='delivery'>1. Only AnyCable delivers every message on time<a class='heading-anchor' href='#delivery' aria-label='Permalink'>#</a></h2>
+                <h2 class='about-slide__title' id='delivery'>1. AnyCable delivers every message — with the lowest server cost<a class='heading-anchor' href='#delivery' aria-label='Permalink'>#</a></h2>
                 <p class='about-slide__text'>
-                  Two questions matter on the open internet: <strong>does every message arrive</strong>, and <strong>does it arrive when the user expects it</strong>? Under simulated mobile-network jitter — 1-second TCP drops every ~15 seconds, the pattern WiFi handoffs and cellular blips produce — default Socket.io fails the first: ~13% of messages never arrive. CSR fixes delivery, but replay takes up to 12 seconds. AnyCable: 100% delivery, 1-second p99 replay tail.
+                  Two questions matter on the open internet: <strong>does every message arrive</strong>, and <strong>what does it cost the server to make that promise</strong>? Under simulated mobile-network jitter — 1-second TCP drops every ~15 seconds, the pattern WiFi handoffs and cellular blips produce — default Socket.io drops ~13% of messages outright. CSR fixes delivery; its replay tail tops out near 11 seconds on max, ~8 s on p99. AnyCable matches CSR on delivery and clears the tail ~1.7 s sooner — and AnyCable Pro holds 10K reconnecting clients on less than half the memory CSR needs.
                 </p>
                 <h3 class='about-slide__subtitle'>Default Socket.io: messages sent during a disconnect aren't recoverable</h3>
                 <p class='about-slide__text'>
@@ -122,17 +122,17 @@ Client 1: missing <span style="color: #ff6b6b;">3, 4, 38, 39, 69, 70, 108, 109</
 Client 2: missing <span style="color: #ff6b6b;">4, 5, 41, 42, 76, 77, 111-113</span>
 
 <span style="color: #888;"># Each cluster = one jitter event. ~15 lost per client.</span>
-<span style="color: #888;"># Total: 150,642 of 1,200,000 expected. 87.4% delivery.</span>
+<span style="color: #888;"># Total: 156,856 of 1,200,000 expected. ~87% delivery.</span>
 
 <span style="color: #888;"># Socket.io + CSR — same workload</span>
-Client 0: <span style="color: #fcd34d;">all 120 received</span>  (replay tail: max 12.0s)
-Client 1: <span style="color: #fcd34d;">all 120 received</span>  (p99: 9.0s)
-Client 2: <span style="color: #fcd34d;">all 120 received</span>  (p95: 4.9s)
+Client 0: <span style="color: #fcd34d;">all 120 received</span>  (replay tail: max 10.8s)
+Client 1: <span style="color: #fcd34d;">all 120 received</span>  (p99: 7.9s)
+Client 2: <span style="color: #fcd34d;">all 120 received</span>  (p95: 4.0s)
 
 <span style="color: #888;"># AnyCable — same workload</span>
-Client 0: <span style="color: #86efac;">all 120 received</span>  (replay tail: max 3.5s)
-Client 1: <span style="color: #86efac;">all 120 received</span>  (p99: 1.0s)
-Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 0.7s)</pre>
+Client 0: <span style="color: #86efac;">all 120 received</span>  (replay tail: max 9.3s)
+Client 1: <span style="color: #86efac;">all 120 received</span>  (p99: 6.2s)
+Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pre>
               </div>
             </div>
 
@@ -141,24 +141,24 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 0.7s)</pr
               <div class='about-slide__content'>
                 <h3 class='about-slide__subtitle'>Benchmark: 10,000 clients under simulated jitter</h3>
                 <p class='about-slide__text'>
-                  10,000 clients on Railway. Publisher broadcasts 120 numbered messages at 2/sec — <strong>1.2M expected deliveries</strong>. Each client force-closes its TCP socket for <strong>1 second every ~15 seconds</strong> (no clean close — like a WiFi drop). Over the publishing window: ~10 jitter events per client, ~13% blind time.
+                  10,000 clients on Railway. Publisher broadcasts 120 numbered messages at 2/sec — <strong>1.2M expected deliveries</strong>. Each client force-closes its TCP socket for <strong>1 second every ~15 seconds</strong> (no clean close — like a WiFi drop). Over the test run: ~8 jitter events per client.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>Default Socket.io: 87.41% delivery.</strong> 150,642 messages lost. The loss pattern matches the blind window — nothing arrives during the outage, nothing comes back after.
+                  <strong>Default Socket.io: ~87% delivery.</strong> 156,856 messages lost out of 1.2M. The loss pattern matches the blind window — nothing arrives during the outage, nothing comes back after.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>Socket.io + CSR: 100% delivery, 9-second p99 latency.</strong> 99.5% of jitter events successfully resume the session; replayed messages arrive in seconds, worst case 12.
+                  <strong>Socket.io + CSR: 100% delivery, ~8-second p99 replay tail.</strong> 99.5% of jitter events successfully resume the session; replayed messages arrive in seconds, worst case ~11. Server peak memory: 627 MB.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>AnyCable: 100% delivery, 1-second p99 latency.</strong> 7&times; faster than CSR. The history replay is per-stream — clients receive the missed range as a batch.
+                  <strong>AnyCable: 100% delivery, ~6-second p99 replay tail.</strong> About 1.7 s ahead of CSR on the tail. Server peak memory: 760 MB on the open-source build, <strong>271 MB on AnyCable Pro</strong> — ~2.3&times; less than CSR holding the same 10K reconnecting fleet.
                 </p>
                 <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why default Socket.io's 13% loss is structural</h3>
                 <p class='about-slide__text'>
-                  Each jitter event creates <em>d</em> seconds of blind window. Clients see <em>N</em> events over publishing window <em>T</em>. Expected loss = (<em>d</em> &times; <em>N</em>) / <em>T</em>. For our run: 1.3 s &times; 10 / 60 ≈ 22% upper bound. We measured 13% — lower because not every event fully overlaps publishing. This isn't a configuration bug; default Socket.io loses messages in proportion to frequency &times; disruption duration.
+                  Each jitter event creates <em>d</em> seconds of blind window. Clients see <em>N</em> events over publishing window <em>T</em>. Expected loss ≈ (<em>d</em> &times; <em>N</em>) / <em>T</em>. For our run: 1.3 s &times; ~8 / 60 ≈ 17% upper bound. We measured 13.1% — lower because not every event fully overlaps publishing. This isn't a configuration bug; default Socket.io loses messages in proportion to frequency &times; disruption duration.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why CSR's replay tail is multi-second at 10K</h3>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Where the replay tail comes from at 10K</h3>
                 <p class='about-slide__text'>
-                  CSR replays per-socket: the server drains a buffered packet list over each re-established WebSocket, one socket at a time. At 10,000 reconnecting clients, replays serialize. AnyCable's history replay is per-stream and parallel — clients request missed ranges and receive them as batches. That's the 7&times; gap.
+                  Both clients use a similar reconnect-with-backoff loop (~0.5–5 s with jitter) to avoid stampeding the server, and most of the tail comes from that wait. The remaining gap is the replay protocol itself: CSR drains a buffered packet list per socket — at 10,000 reconnecting clients those drains serialize through one event loop. AnyCable's history replay is per-stream, returns the missed range as a batch, and runs in parallel across streams. That's the ~1.7 s AnyCable saves on the p99.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
@@ -187,9 +187,9 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 0.7s)</pr
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style="">Jitter events</td>
-                        <td style=" text-align: right;">98,889</td>
-                        <td style=" text-align: right;">103,430</td>
-                        <td style=" text-align: right;">83,862</td>
+                        <td style=" text-align: right;">78,748</td>
+                        <td style=" text-align: right;">82,068</td>
+                        <td style=" text-align: right;">83,328</td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style="">CSR resume rate</td>
@@ -199,42 +199,49 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 0.7s)</pr
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style=""><strong>Deliveries lost</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>150,642</strong></td>
+                        <td style=" text-align: right; color: #F64343;"><strong>156,856</strong></td>
                         <td style=" text-align: right;"><strong>0</strong></td>
                         <td style=" text-align: right;"><strong>0</strong></td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style=""><strong>Delivery rate</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>87.41%</strong></td>
+                        <td style=" text-align: right; color: #F64343;"><strong>~87%</strong></td>
                         <td style=" text-align: right;"><strong>100%</strong></td>
                         <td style=" text-align: right;"><strong>100%</strong></td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style="">Latency p50</td>
-                        <td style=" text-align: right;">167 ms</td>
-                        <td style=" text-align: right;">279 ms</td>
-                        <td style=" text-align: right;">246 ms</td>
+                        <td style=" text-align: right;">140 ms</td>
+                        <td style=" text-align: right;">230 ms</td>
+                        <td style=" text-align: right;">260 ms</td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style="">Latency p95</td>
-                        <td style=" text-align: right;">1.19 s</td>
-                        <td style=" text-align: right;">4.92 s</td>
-                        <td style=" text-align: right;">0.68 s</td>
+                        <td style=" text-align: right;">1.1 s</td>
+                        <td style=" text-align: right;">4.0 s</td>
+                        <td style=" text-align: right;">4.1 s</td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style=""><strong>Latency p99</strong></td>
-                        <td style=" text-align: right;">1.66 s</td>
-                        <td style=" text-align: right; color: #F64343;"><strong>8.99 s</strong></td>
-                        <td style=" text-align: right;"><strong>1.04 s</strong></td>
+                        <td style=" text-align: right;">1.6 s</td>
+                        <td style=" text-align: right; color: #F64343;"><strong>7.9 s</strong></td>
+                        <td style=" text-align: right;"><strong>6.2 s</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="">Latency max</td>
+                        <td style=" text-align: right;">2.1 s</td>
+                        <td style=" text-align: right; color: #F64343;">10.8 s</td>
+                        <td style=" text-align: right;">9.3 s</td>
                       </tr>
                       <tr>
-                        <td style=""><strong>Latency max</strong></td>
-                        <td style=" text-align: right;">2.29 s</td>
-                        <td style=" text-align: right; color: #F64343;"><strong>12.03 s</strong></td>
-                        <td style=" text-align: right;">3.53 s</td>
+                        <td style=""><strong>Server memory peak</strong></td>
+                        <td style=" text-align: right;">675 MB</td>
+                        <td style=" text-align: right;">627 MB</td>
+                        <td style=" text-align: right;">760 / <strong>271</strong> MB</td>
                       </tr>
                     </tbody>
                   </table>
+                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0; line-height: 1.5;">AnyCable cell shows open-source / AnyCable Pro. Same Railway box (32 vCPU / 32 GB) for all four runs. Server memory pulled from Railway's metrics API for the test window. CPU was negligible across all setups (under 1.1% of the 32 vCPU box).</p>
                 </div>
               </div>
             </div>
@@ -249,7 +256,7 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 0.7s)</pr
                 <h3 class='cases-slide__pretitle'>Impact</h3>
                 <h2 class='cases-slide__title'>Loss and slow replay break workflows where the next message depends on the previous one</h2>
                 <div class='cases-slide__text'>
-                  <p>Lost messages cluster around network events — exactly when the user is watching. CSR recovers them, but 9 seconds late reads as "the app froze." For sequential workloads, both loss and delay break the experience.</p>
+                  <p>Lost messages cluster around network events — exactly when the user is watching. CSR recovers them, but 8 seconds late still reads as "the app froze"; AnyCable lands them around 6. For sequential workloads, both loss and delay break the experience.</p>
                 </div>
               </div>
               <div class='cases-slide__media'>
@@ -606,7 +613,7 @@ CPU (% of 1 vCPU)
                     </thead>
                     <tbody>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Reliable delivery</td><td style=" text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank'>No</a></td><td style=" text-align: center;"><a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Yes (opt-in)</a></td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/durable_streams' target='_blank'>Yes (default)</a></td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Replay latency p99</td><td style=" text-align: center; color: #F64343;">lost</td><td style=" text-align: center; color: #F64343;">9.0 s</td><td style=" text-align: center;">1.0 s</td></tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Replay latency p99</td><td style=" text-align: center; color: #F64343;">lost</td><td style=" text-align: center; color: #F64343;">~8 s</td><td style=" text-align: center;">~6 s</td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Survives server restart</td><td style=" text-align: center; color: #F64343;">No</td><td style=" text-align: center;"><a class='link' href='https://socket.io/docs/v4/redis-streams-adapter' target='_blank'>Redis Streams</a> / <a class='link' href='https://socket.io/docs/v4/mongo-adapter' target='_blank'>Mongo</a></td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>NATS / Redis</a></td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Multi-node setup</td><td style=" text-align: center;"><a class='link' href='https://socket.io/docs/v4/redis-adapter' target='_blank'>Redis pub/sub</a></td><td style=" text-align: center; color: #F64343;">Redis pub/sub incompat.</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>Any broker</a></td></tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Deploy resilience</td><td style=" text-align: center; color: #F64343;">All drop</td><td style=" text-align: center; color: #F64343;">All drop</td><td style=" text-align: center;">Connections survive</td></tr>
@@ -676,7 +683,7 @@ CPU (% of 1 vCPU)
 
                 <details class='compare-faq__item'>
                   <summary>How does AnyCable compare on performance?</summary>
-                  <div class='compare-faq__answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), we pushed three setups to a 1,000,000-connection idle target on a single instance. <strong>Socket.io accepted 119,826</strong> and rejected ~880K — its single Node event loop saturated under handshake load. <strong>Open-source AnyCable held 993,994</strong>, peaking at the box's 32 GB RAM ceiling (~33 KB / connection). <strong>AnyCable Pro held 999,954</strong> on only 19 GB — ~1.7× more memory-efficient than OSS at the same load, with 13 GB headroom remaining. At <strong>10,000 dynamic clients</strong> with simulated jitter, the open-source AnyCable build delivered all 1.2M messages with a 1-second p99 replay latency. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
+                  <div class='compare-faq__answer'>In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), we pushed three setups to a 1,000,000-connection idle target on a single instance. <strong>Socket.io accepted 119,826</strong> and rejected ~880K — its single Node event loop saturated under handshake load. <strong>Open-source AnyCable held 993,994</strong>, peaking at the box's 32 GB RAM ceiling (~33 KB / connection). <strong>AnyCable Pro held 999,954</strong> on only 19 GB — ~1.7× more memory-efficient than OSS at the same load, with 13 GB headroom remaining. At <strong>10,000 dynamic clients</strong> with simulated jitter (1-second TCP drops every ~15 s), AnyCable delivered all 1.2M messages with a ~6 s p99 replay tail (vs ~8 s for Socket.io+CSR), and AnyCable Pro held the same fleet on 271 MB peak memory — ~2.3× less than CSR. Run the numbers yourself: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -776,7 +783,7 @@ CPU (% of 1 vCPU)
             "name": "How does AnyCable compare on performance?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), we pushed three setups to a 1,000,000-connection idle target on a single instance. Socket.io accepted 119,826 and rejected ~880K — its single Node event loop saturated under handshake load. Open-source AnyCable held 993,994, peaking at the box's 32 GB RAM ceiling (~33 KB / connection). AnyCable Pro held 999,954 on only 19 GB — about 1.7× more memory-efficient than OSS at the same load, with 13 GB headroom remaining. At 10,000 dynamic clients with simulated jitter, the open-source AnyCable build delivered all 1.2M messages with a 1-second p99 replay latency. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
+              "text": "In our Railway benchmark (Pro tier, 32 vCPU / 32 GB RAM allocated), we pushed three setups to a 1,000,000-connection idle target on a single instance. Socket.io accepted 119,826 and rejected ~880K — its single Node event loop saturated under handshake load. Open-source AnyCable held 993,994, peaking at the box's 32 GB RAM ceiling (~33 KB / connection). AnyCable Pro held 999,954 on only 19 GB — about 1.7× more memory-efficient than OSS at the same load, with 13 GB headroom remaining. At 10,000 dynamic clients with simulated jitter, AnyCable delivered all 1.2M messages with a ~6 s p99 replay tail (vs ~8 s for Socket.io+CSR), and AnyCable Pro held the same fleet on 271 MB peak memory — about 2.3× less than CSR. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
             }
           },
           {
@@ -854,7 +861,7 @@ CPU (% of 1 vCPU)
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "AnyCable vs Socket.io: 100% delivery, deploy-resilient WebSockets, 1M idle connections per node",
-        "description": "Same Railway box, same 1,000,000-connection idle test: Socket.io accepted 119,826 (single Node event loop saturated), open-source AnyCable held 993,994 (32 GB RAM ceiling), AnyCable Pro held 999,954 on 19 GB. Plus AnyCable delivers 100% under jitter (vs Socket.io's 87.4%) with a ~1 s p99 replay tail and connections survive deploys. All numbers reproducible from the open-source bench repo.",
+        "description": "Same Railway box, same 1,000,000-connection idle test: Socket.io accepted 119,826 (single Node event loop saturated), open-source AnyCable held 993,994 (32 GB RAM ceiling), AnyCable Pro held 999,954 on 19 GB. Plus AnyCable delivers 100% under jitter (vs Socket.io's 87%) with a ~6 s p99 replay tail (vs ~8 s for CSR), AnyCable Pro holds the same 10K reconnecting fleet on 271 MB (~2.3× less than CSR), and connections survive deploys. All numbers reproducible from the open-source bench repo.",
         "url": "https://anycable.io/compare/socket-io",
         "mainEntityOfPage": "https://anycable.io/compare/socket-io",
         "datePublished": "2026-04-30",
