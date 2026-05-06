@@ -53,7 +53,7 @@
                   <div class='compare-hero-card__row'><dt>AnyCable (open source)</dt><dd>993,994</dd></div>
                   <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd>999,954</dd></div>
                 </dl>
-                <div class='compare-hero-card__footnote'>Same Railway box (32 vCPU / 32 GB), 25 test-client shards × 40K each, 1M attempted. OSS hit the 32 GB box ceiling. Pro held 1M on 19 GB — ~1.7× more memory-efficient, 13 GB headroom remaining. Socket.io's single Node event loop saturated at ~120K.</div>
+                <div class='compare-hero-card__footnote'>Same Railway box (32 vCPU / 32 GB), 25 test-client shards × 40K each, 1M attempted. OSS hit the 32 GB ceiling. Pro held 1M on 19 GB — ~1.7× more memory-efficient, 13 GB headroom. Socket.io's single Node event loop saturated at ~120K.</div>
               </div>
             </div>
 
@@ -259,14 +259,14 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
                 <h3 class='cases-slide__pretitle'>Impact</h3>
                 <h2 class='cases-slide__title'>Loss and slow replay break workflows where the next message depends on the previous one</h2>
                 <div class='cases-slide__text'>
-                  <p>Lost messages cluster around network events — exactly when the user is watching. CSR recovers them, but 8 seconds late still reads as "the app froze"; AnyCable lands them around 6. For sequential workloads, both loss and delay break the experience.</p>
+                  <p>Lost messages cluster around network events — exactly when the user is watching. CSR recovers them, but 8 seconds late reads as "the app froze"; AnyCable lands them around 6. For sequential workloads, loss and delay both break the flow.</p>
                 </div>
               </div>
               <div class='cases-slide__media'>
                 <div class='cases-slide__companies'>
                   <div class='cases-slide__company-card'>
                     <span class='cases-slide__company-name'>Live chat & notifications</span>
-                    <span class='cases-slide__company-desc'>Messages disappear during network blips. Users see incomplete conversations with no indication anything is missing.</span>
+                    <span class='cases-slide__company-desc'>Messages disappear during network blips. Users see incomplete conversations, no indication anything is missing.</span>
                   </div>
                   <div class='cases-slide__company-card'>
                     <span class='cases-slide__company-name'>LLM / AI streaming</span>
@@ -532,7 +532,7 @@ CPU (% of 1 vCPU)
                   On the client: <code>socket.io-client</code> → <code>@anycable/core</code>. The API is similar (connect, subscribe, receive).
                 </p>
                 <p class='about-slide__text'>
-                  <strong>Trade-off:</strong> one extra process to deploy (anycable-go, a single Go binary). In return, your Node.js app becomes stateless for WebSockets.
+                  <strong>Trade-off:</strong> one extra process (anycable-go, a Go binary). Your Node.js app becomes stateless for WebSockets.
                 </p>
                 <p class='about-slide__text'><strong>Migration checklist — what changes in your code:</strong></p>
                 <ol class='about-slide__text' style="padding-left: 24px; margin-top: -8px;">
@@ -567,7 +567,7 @@ CPU (% of 1 vCPU)
               <div class='about-slide__content about-slide__content-full' style="text-align: center;">
                 <h2 class='about-slide__title' id='try-it' style="margin-bottom: 24px;">Try it in your stack<a class='heading-anchor' href='#try-it' aria-label='Permalink'>#</a></h2>
                 <p class='about-slide__text' style="max-width: 720px; margin-left: auto; margin-right: auto; margin-bottom: 48px;">
-                  Three places to start, depending on whether you want to read code, run a working demo, or wire it into a serverless setup.
+                  Three places to start: read the code, run a working demo, or wire it into a serverless setup.
                 </p>
                 <div class='compare-try-it-grid'>
                   <a href='https://github.com/anycable/anycable-client' target='_blank' style="display: block; text-decoration: none; color: inherit; border: 1px solid #ececec; border-radius: 8px; padding: 24px; background: white; text-align: left; transition: border-color 0.15s;">
@@ -598,7 +598,7 @@ CPU (% of 1 vCPU)
               <div class='about-slide__content'>
                 <h2 class='about-slide__title'>What you don't have to build</h2>
                 <p class='about-slide__text'>
-                  Socket.io gives you WebSocket transport and rooms. Everything else — reliability, presence, auth, clustering, monitoring — is weeks of engineering plus months of production hardening.
+                  Socket.io gives you WebSocket transport and rooms. Everything else — reliability, presence, auth, clustering, monitoring — is weeks of engineering plus months of hardening.
                 </p>
                 <p class='about-slide__text'>
                   AnyCable ships these as primitives, hardened in production since 2017.
@@ -643,7 +643,7 @@ CPU (% of 1 vCPU)
                   Small Node.js app. Prototype. Custom protocol you control end-to-end. Socket.io is well-documented, widely used, and free.
                 </p>
                 <p class='about-slide__text'>
-                  If your users are on mobile or switching networks, you need delivery guarantees. If you deploy more than occasionally, you need connections to survive deploys. AnyCable provides both by default.
+                  If your users are on mobile or switching networks, you need delivery guarantees. If you deploy more than occasionally, you need connections to survive deploys. AnyCable: both by default.
                 </p>
               </div>
               <div class='about-slide__media'>
