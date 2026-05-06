@@ -63,11 +63,11 @@
             <div class='compare-tldr'>
               <h2 class='compare-tldr__title' id='tldr'>TL;DR<a class='heading-anchor' href='#tldr' aria-label='Permalink'>#</a></h2>
               <ol class='compare-tldr__points'>
-                <li><strong>Delivery.</strong> Default Socket.io loses ~13% of messages under jitter at 10,000 clients. Connection State Recovery fixes delivery; the replay tail sits at ~8 s on p99. AnyCable matches CSR on delivery and runs ~22% faster on the tail (~6 s p99) — and AnyCable Pro does it on ~2.3&times; less server memory.</li>
-                <li><strong>Deploys.</strong> Every Socket.io process restart severs every WebSocket connection. AnyCable runs as a separate Go binary — your app deploys, the WebSocket layer stays up.</li>
-                <li><strong>Capacity.</strong> Same hardware, same 1,000,000-connection test. Socket.io topped out at <strong>119,826</strong> (single Node event loop). Open-source AnyCable held <strong>993,994</strong>, hitting the box's 32 GB RAM ceiling. <strong>AnyCable Pro held 999,954 on 19 GB</strong> — ~1.7× more memory-efficient, with headroom remaining.</li>
+                <li><strong>Delivery.</strong> Default Socket.io loses ~13% of messages under jitter at 10K clients. CSR fixes delivery; replay tail ~8 s p99. AnyCable matches delivery, clears the tail ~22% faster (~6 s p99), and Pro does it on ~2.3&times; less server memory.</li>
+                <li><strong>Deploys.</strong> Every Socket.io process restart severs every WebSocket. AnyCable runs as a separate Go binary — your app deploys, the WebSocket layer stays up.</li>
+                <li><strong>Capacity.</strong> Same hardware, same 1M-connection test. Socket.io topped out at <strong>119,826</strong> (single Node event loop). Open-source AnyCable held <strong>993,994</strong> at the box's 32 GB ceiling. <strong>AnyCable Pro held 999,954 on 19 GB</strong> — ~1.7× more memory-efficient, with headroom remaining.</li>
               </ol>
-              <p class='compare-tldr__note'>Same JS client patterns on the frontend (<code>@anycable/core</code>). On the backend, broadcasts go over plain HTTP — Node, FastAPI, Laravel, Go, or anything that can issue an HTTP POST can drive it.</p>
+              <p class='compare-tldr__note'>Same JS client patterns on the frontend (<code>@anycable/core</code>). On the backend, broadcasts go over plain HTTP — Node, FastAPI, Laravel, Go, anything that can issue an HTTP POST.</p>
               <nav class='compare-tldr__nav' aria-label='Sections on this page'>
                 <span class='compare-tldr__nav-label'>On this page</span>
                 <a href='#delivery'>Delivery</a>
@@ -88,15 +88,15 @@
               <div class='about-slide__content'>
                 <h2 class='about-slide__title' id='delivery'>1. AnyCable delivers every message — with the lowest server cost<a class='heading-anchor' href='#delivery' aria-label='Permalink'>#</a></h2>
                 <p class='about-slide__text'>
-                  Two questions matter on the open internet: <strong>does every message arrive</strong>, and <strong>what does it cost the server to make that promise</strong>? Under simulated mobile-network jitter — 1-second TCP drops every ~15 seconds, the pattern WiFi handoffs and cellular blips produce — default Socket.io drops ~13% of messages outright. CSR fixes delivery; its replay tail tops out near 11 seconds on max, ~8 s on p99. AnyCable matches CSR on delivery and clears the tail ~1.7 s sooner — and AnyCable Pro holds 10K reconnecting clients on less than half the memory CSR needs.
+                  Two questions matter on the open internet: <strong>does every message arrive</strong>, and <strong>at what server cost</strong>? Under simulated jitter — 1-second TCP drops every ~15 s, the pattern WiFi handoffs produce — default Socket.io drops ~13% of messages. CSR fixes delivery; its replay tail tops out near 11 s, p99 ~8 s. AnyCable matches CSR on delivery, clears the tail ~1.7 s sooner, and Pro holds 10K reconnecting clients on less than half CSR's memory.
                 </p>
                 <h3 class='about-slide__subtitle'>Default Socket.io: messages sent during a disconnect aren't recoverable</h3>
                 <p class='about-slide__text'>
-                  From the Socket.io <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank'>delivery-guarantees doc</a>: "if the connection is broken while an event is being sent, then there is no guarantee that the other side has received it." No buffering, no catch-up protocol. This is the default — and what most production Socket.io apps ship.
+                  From the Socket.io <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank'>delivery-guarantees doc</a>: "if the connection is broken while an event is being sent, then there is no guarantee that the other side has received it." No buffering, no catch-up protocol. The default — and what most production Socket.io apps ship.
                 </p>
                 <h3 class='about-slide__subtitle'>Socket.io + CSR: opt-in catch-up with adapter and replay constraints</h3>
                 <p class='about-slide__text'>
-                  <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Connection State Recovery</a> (Socket.io 4.6+) buffers per-socket state — id, rooms, <code>socket.data</code> — for up to <code>maxDisconnectionDuration</code> (default 2 min). The server appends an opaque per-packet offset; on reconnect the client passes pid + last-seen offset, and the server replays missed packets.
+                  <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Connection State Recovery</a> (Socket.io 4.6+) buffers per-socket state — id, rooms, <code>socket.data</code> — for up to <code>maxDisconnectionDuration</code> (default 2 min). On reconnect, the client passes its pid + last-seen offset; the server replays the missed packets.
                 </p>
                 <p class='about-slide__text' style="margin-bottom: 20px;">
                   Four caveats from the Socket.io docs:
@@ -109,10 +109,10 @@
                 </ul>
                 <h3 class='about-slide__subtitle'>AnyCable: at-least-once by default, replay is per-stream</h3>
                 <p class='about-slide__text'>
-                  AnyCable's protocol (<code>actioncable-v1-ext-json</code>) tracks each stream by <strong>epoch</strong> (broker state identifier) and <strong>offset</strong> (message position). The client stores <code>(stream, epoch, offset)</code>. On reconnect it sends a <code>history</code> command; the server replays the missed range as a batch and acks with <code>confirm_history</code> (or <code>reject_history</code> if evicted).
+                  AnyCable's protocol (<code>actioncable-v1-ext-json</code>) tracks each stream by <strong>epoch</strong> + <strong>offset</strong>. On reconnect the client sends a <code>history</code> command; the server replays the missed range as a batch and acks with <code>confirm_history</code> (or <code>reject_history</code> if evicted).
                 </p>
                 <p class='about-slide__text'>
-                  Retention is per stream: <code>history_limit</code> (default 100), <code>history_ttl</code> (default 300 s), <code>sessions_ttl</code> (separate). With NATS JetStream or Redis brokers, history survives restart and works across nodes. None of this is opt-in or experimental.
+                  Retention is per stream: <code>history_limit</code> (default 100), <code>history_ttl</code> (default 300 s). With NATS JetStream or Redis brokers, history survives restart and works across nodes. Default — not opt-in, not experimental.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
@@ -141,24 +141,27 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
               <div class='about-slide__content'>
                 <h3 class='about-slide__subtitle'>Benchmark: 10,000 clients under simulated jitter</h3>
                 <p class='about-slide__text'>
-                  10,000 clients on Railway. Publisher broadcasts 120 numbered messages at 2/sec — <strong>1.2M expected deliveries</strong>. Each client force-closes its TCP socket for <strong>1 second every ~15 seconds</strong> (no clean close — like a WiFi drop). Over the test run: ~8 jitter events per client.
+                  10,000 clients on Railway. Publisher sends 120 numbered messages at 2/sec — <strong>1.2M expected deliveries</strong>. Each client force-closes its TCP socket for <strong>1 s every ~15 s</strong> (no clean close — like a WiFi drop). ~8 jitter events per client.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>Default Socket.io: ~87% delivery.</strong> 156,856 messages lost out of 1.2M. The loss pattern matches the blind window — nothing arrives during the outage, nothing comes back after.
+                  <strong>Default Socket.io: ~87% delivery.</strong> 156,856 messages lost. Loss matches the blind window — nothing arrives during the outage, nothing comes back.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>Socket.io + CSR: 100% delivery, ~8-second p99 replay tail.</strong> 99.5% of jitter events successfully resume the session; replayed messages arrive in seconds, worst case ~11. Server peak memory: 627 MB.
+                  <strong>Socket.io + CSR: 100% delivery, ~8-second p99 replay tail.</strong> 99.5% of events resume the session; worst case ~11 s. Server peak: 627 MB.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>AnyCable: 100% delivery, ~6-second p99 replay tail.</strong> About 1.7 s ahead of CSR on the tail. Server peak memory: 760 MB on the open-source build, <strong>271 MB on AnyCable Pro</strong> — ~2.3&times; less than CSR holding the same 10K reconnecting fleet.
+                  <strong>AnyCable: 100% delivery, ~6-second p99 replay tail.</strong> ~1.7 s ahead of CSR. Server peak: 760 MB OSS, <strong>271 MB Pro</strong> — ~2.3&times; less than CSR for the same 10K fleet.
                 </p>
                 <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why default Socket.io's 13% loss is structural</h3>
                 <p class='about-slide__text'>
-                  Each jitter event creates <em>d</em> seconds of blind window. Clients see <em>N</em> events over publishing window <em>T</em>. Expected loss ≈ (<em>d</em> &times; <em>N</em>) / <em>T</em>. For our run: 1.3 s &times; ~8 / 60 ≈ 17% upper bound. We measured 13.1% — lower because not every event fully overlaps publishing. This isn't a configuration bug; default Socket.io loses messages in proportion to frequency &times; disruption duration.
+                  Each jitter event creates <em>d</em> seconds of blind window. Over publishing window <em>T</em> with <em>N</em> events, expected loss ≈ (<em>d</em> &times; <em>N</em>) / <em>T</em>. For our run: 1.3 s &times; ~8 / 60 ≈ 17% upper bound. We measured 13.1% — lower because not every event fully overlaps publishing. Not a configuration bug; default Socket.io loses messages in proportion to frequency &times; disruption.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Where the replay tail comes from at 10K</h3>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why a 1-second blip becomes a multi-second tail</h3>
                 <p class='about-slide__text'>
-                  Both clients use a similar reconnect-with-backoff loop (~0.5–5 s with jitter) to avoid stampeding the server, and most of the tail comes from that wait. The remaining gap is the replay protocol itself: CSR drains a buffered packet list per socket — at 10,000 reconnecting clients those drains serialize through one event loop. AnyCable's history replay is per-stream, returns the missed range as a batch, and runs in parallel across streams. That's the ~1.7 s AnyCable saves on the p99.
+                  Every realtime client — socket.io-client, <code>@anycable/core</code>, anything that wants to stay up under load — reconnects with a 0.5–5 s backoff window to avoid stampeding the server after a disruption. <strong>The implication: any TCP-level blip becomes multiple seconds of offline window, by design.</strong> Without delivery guarantees, those seconds are lost messages. With replay, they're delayed messages — same backoff cost, completely different user experience.
+                </p>
+                <p class='about-slide__text'>
+                  The remaining gap (CSR ~8 s, AnyCable ~6 s) is the replay protocol itself: CSR drains a buffered packet list per socket — at 10K reconnecting clients those drains serialize through one event loop. AnyCable's history replay is per-stream, returns the missed range as a batch, parallel across streams. That's the ~1.7 s on the p99.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
@@ -344,11 +347,11 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
 
                 <h3 class='about-slide__subtitle'>Socket.io's WebSocket server is your application server</h3>
                 <p class='about-slide__text'>
-                  One Node.js process handles HTTP, business logic, and WebSocket connections — competing for the same event loop. HTTP requests come and go; WebSockets stay open for hours. Restart the process to deploy and every WebSocket terminates with it.
+                  One Node.js process handles HTTP, business logic, and WebSockets — sharing one event loop. HTTP requests come and go; WebSockets stay open for hours. Restart the process to deploy and every WebSocket dies with it.
                 </p>
                 <h3 class='about-slide__subtitle'>AnyCable's WebSocket server is a separate process</h3>
                 <p class='about-slide__text'>
-                  Anycable-go is a separate Go binary. Your app — Node.js, Laravel, FastAPI, Django, anything that speaks HTTP — broadcasts to it. Deploy your app: the WebSocket layer doesn't restart, the connections don't drop.
+                  Anycable-go is a separate Go binary. Your app — Node.js, Laravel, FastAPI, Django, anything that speaks HTTP — broadcasts to it. Deploy your app; the WebSocket layer stays up.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-top'>
@@ -374,20 +377,20 @@ t=0.0s → users don't notice</pre>
               <div class='about-slide__content'>
                 <h3 class='about-slide__subtitle'>Benchmark: the avalanche scales — until it doesn't</h3>
                 <p class='about-slide__text'>
-                  We deployed Socket.io to a 1 vCPU / 0.5 GB Railway box (typical small/starter tier), connected N clients, then triggered a real <code>railway redeploy</code>. Every Socket.io deploy is a <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering herd</a>: every connection drops, every client races back through the same load balancer.
+                  We deployed Socket.io to a 1 vCPU / 0.5 GB Railway box (typical starter tier), connected N clients, then triggered a real <code>railway redeploy</code>. Every Socket.io deploy is a <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering herd</a>: every connection drops, every client races back through the same load balancer.
                 </p>
                 <p class='about-slide__text'>
-                  Through 20,000 clients, the box absorbs the storm with degrading-but-graceful recovery. <strong>At 25,000 clients, recovery never completes.</strong> Memory hits 95% of the cap (~489 MB on a 512 MB box) just before the redeploy, and the post-redeploy reconnect storm OOMs the new container before any clients establish session. <strong>0% reconnect rate — every connection is permanently lost.</strong>
+                  Through 20K clients, the box absorbs the storm with degrading-but-graceful recovery. <strong>At 25K, recovery never completes.</strong> Memory hits 95% of the cap (~489 MB on a 512 MB box) just before redeploy; the post-redeploy reconnect storm OOMs the new container before any client establishes a session. <strong>0% reconnect rate — every connection permanently lost.</strong>
                 </p>
                 <p class='about-slide__text'>
-                  This is the architectural cost of co-locating the WebSocket layer with your app server: deploy resilience is bounded by what your application box can absorb during its weakest moment — the cold start.
+                  The architectural cost of co-locating WebSocket and app: deploy resilience is bounded by what the box absorbs during its weakest moment — cold start.
                 </p>
                 <h3 class='about-slide__subtitle' style="margin-top: 32px;">CSR with the in-memory adapter doesn't help here</h3>
                 <p class='about-slide__text'>
-                  CSR depends on server-side state. The default in-memory adapter loses it on restart — nothing to replay. With Redis Streams or MongoDB the state survives, but the connections are still severed. No protocol can paper over this; it's the cost of co-locating WebSocket server and application server.
+                  CSR depends on server-side state. The in-memory adapter loses it on restart — nothing to replay. Redis Streams or MongoDB persist the state, but the connections still drop. No protocol papers over architecture.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>AnyCable: 0 seconds, every deploy, every scale.</strong> The WebSocket server is a separate Go binary; deploying your app doesn't touch it, so there's no avalanche to absorb.
+                  <strong>AnyCable: 0 seconds, every deploy, every scale.</strong> The WebSocket server is a separate Go binary — deploying your app doesn't touch it. No avalanche to absorb.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
@@ -448,13 +451,13 @@ t=0.0s → users don't notice</pre>
               <div class='about-slide__content'>
                 <h2 class='about-slide__title' id='capacity'>3. One AnyCable node holds 1,000,000 idle connections — Pro on 19 GB, OSS on 32 GB<a class='heading-anchor' href='#capacity' aria-label='Permalink'>#</a></h2>
                 <p class='about-slide__text'>
-                  Same Railway box as the jitter benchmark — <strong>Pro tier, 32 vCPU / 32 GB, single instance, no Redis or NATS backplane.</strong> We aimed all three runtimes at a 1,000,000-connection idle target across 25 sharded test clients (each container has its own ~64K outbound-port pool). The numbers in the table at right are what each held at peak.
+                  Same Railway box as the jitter benchmark — <strong>Pro tier, 32 vCPU / 32 GB, single instance, no Redis or NATS backplane.</strong> All three runtimes targeted 1,000,000 idle connections across 25 sharded test clients (each container has its own ~64K outbound-port pool). The table shows what each held at peak.
                 </p>
                 <p class='about-slide__text'>
-                  Each runtime hits a different wall. <strong>Socket.io accepted 119,826</strong> and rejected ~880K during ramp — the single Node event loop saturates processing handshakes serially, regardless of how much memory is on the box. <strong>Open-source AnyCable held 993,994</strong>, capping at the physical 32 GB RAM ceiling at ~33 KB / connection. More connections from there means a bigger box.
+                  Each runtime hits a different wall. <strong>Socket.io accepted 119,826</strong> and rejected ~880K during ramp — the single Node event loop saturates handshakes serially, regardless of memory. <strong>Open-source AnyCable held 993,994</strong>, capping at the box's 32 GB ceiling (~33 KB / connection). More connections from there means a bigger box.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>AnyCable Pro held 999,954 on 19 GB</strong> with 13 GB headroom remaining — about <strong>1.7× more memory-efficient than OSS at 1M</strong> (~19 KB vs ~33 KB / connection). The same gap shows up at smaller scale: at 200K, Pro uses 3.5 GB vs OSS's 8.3 GB. None of this is the headline of the page; the page's headline is delivery and deploy resilience above. But the connection ceiling — when you do go looking — is comfortably past a million on a single instance.
+                  <strong>AnyCable Pro held 999,954 on 19 GB</strong> with 13 GB headroom — about <strong>1.7× more memory-efficient than OSS at 1M</strong> (~19 vs ~33 KB / connection). Same gap at smaller scale: 200K is 3.5 GB vs OSS's 8.3 GB. The headline of this page is delivery and deploy resilience above; the connection ceiling — when you go looking — is comfortably past a million on a single node.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
