@@ -352,15 +352,18 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-top'>
-                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.8; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #ff6b6b; font-weight: 700;"># Socket.io deploy — 5,000 clients</span>
+                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.7; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #ff6b6b; font-weight: 700;"># Socket.io deploy — 5,000 clients</span><span style="color: #888;"> (1 vCPU / 0.5 GB box)</span>
 t=0.0s → deploy restarts server
-t=0.4s → <span style="color: #ff6b6b;">all 5,000 connections dropped</span>
-t=5.0s → p50 clients reconnected
-t=6.0s → p95 clients reconnected
-t=6.8s → 95% recovery (avalanche over)
-t=∞    → <span style="color: #ff6b6b;">189 clients (3.8%) never reconnect</span>
+t=0.5s → <span style="color: #ff6b6b;">all 5,000 connections dropped</span>
+t=2.6s → p50 reconnected
+t=4.5s → 95% recovery (avalanche over)
 
-<span style="color: #86efac; font-weight: 700;"># AnyCable deploy — any client count</span>
+<span style="color: #ff6b6b; font-weight: 700;"># Socket.io deploy — 25,000 clients</span><span style="color: #888;"> (same box) — the cliff</span>
+t=0.0s   → deploy restarts server
+t=0.5s   → <span style="color: #ff6b6b;">all 25,000 connections dropped</span>
+t=300s+  → <span style="color: #ff6b6b;">0 reconnected — box can't absorb the storm</span>
+
+<span style="color: #86efac; font-weight: 700;"># AnyCable deploy — any client count, any box</span>
 t=0.0s → deploy restarts app
 t=0.0s → <span style="color: #86efac;">zero connections dropped</span>
 t=0.0s → users don't notice</pre>
@@ -369,71 +372,69 @@ t=0.0s → users don't notice</pre>
 
             <div class='about-slide__section'>
               <div class='about-slide__content'>
-                <h3 class='about-slide__subtitle'>Benchmark: the reconnection avalanche at 5,000 clients</h3>
+                <h3 class='about-slide__subtitle'>Benchmark: the avalanche scales — until it doesn't</h3>
                 <p class='about-slide__text'>
-                  We deployed Socket.io to Railway, connected 5,000 clients, then triggered a real <code>railway restart</code> on the Socket.io service while measuring disconnect, reconnect, and tail behavior on the bench client.
+                  We deployed Socket.io to a 1 vCPU / 0.5 GB Railway box (typical small/starter tier), connected N clients, then triggered a real <code>railway redeploy</code>. Every Socket.io deploy is a <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering herd</a>: every connection drops, every client races back through the same load balancer.
                 </p>
                 <p class='about-slide__text'>
-                  Every Socket.io deploy is a <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering herd</a>: thousands of clients reconnect simultaneously, competing for TLS handshakes and WebSocket upgrades through the same load balancer.
+                  Through 20,000 clients, the box absorbs the storm with degrading-but-graceful recovery. <strong>At 25,000 clients, recovery never completes.</strong> Memory hits 95% of the cap (~489 MB on a 512 MB box) just before the redeploy, and the post-redeploy reconnect storm OOMs the new container before any clients establish session. <strong>0% reconnect rate — every connection is permanently lost.</strong>
                 </p>
                 <p class='about-slide__text'>
-                  <strong>At 5,000 clients: 6.8 seconds of downtime per deploy.</strong> Half your users blind for 5 full seconds. 189 (3.8%) never reconnect.
-                </p>
-                <p class='about-slide__text'>
-                  At 1,000 clients: 2.7 seconds — shorter, still total. Every connection drops, every deploy.
+                  This is the architectural cost of co-locating the WebSocket layer with your app server: deploy resilience is bounded by what your application box can absorb during its weakest moment — the cold start.
                 </p>
                 <h3 class='about-slide__subtitle' style="margin-top: 32px;">CSR with the in-memory adapter doesn't help here</h3>
                 <p class='about-slide__text'>
                   CSR depends on server-side state. The default in-memory adapter loses it on restart — nothing to replay. With Redis Streams or MongoDB the state survives, but the connections are still severed. No protocol can paper over this; it's the cost of co-locating WebSocket server and application server.
                 </p>
                 <p class='about-slide__text'>
-                  <strong>AnyCable: 0 seconds. Every deploy.</strong> The WebSocket server doesn't restart when you ship code.
+                  <strong>AnyCable: 0 seconds, every deploy, every scale.</strong> The WebSocket server is a separate Go binary; deploying your app doesn't touch it, so there's no avalanche to absorb.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
                 <div class='slide-show__frame'>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                     <thead>
                       <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
-                        <th style=" text-align: left;"></th>
-                        <th style=" text-align: right;">Socket.io 1K</th>
-                        <th style=" text-align: right;">Socket.io 5K</th>
+                        <th style=" text-align: left;">Clients</th>
+                        <th style=" text-align: right;">Socket.io recovery</th>
+                        <th style=" text-align: right;">Reconnected</th>
                         <th style=" text-align: right;">AnyCable</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Connections dropped</td>
-                        <td style=" text-align: right;">1,000</td>
-                        <td style=" text-align: right;">5,000</td>
-                        <td style=" text-align: right;"><strong>0</strong></td>
+                        <td style="">5,000</td>
+                        <td style=" text-align: right;">4.5 s</td>
+                        <td style=" text-align: right;">100%</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Recovery p50</td>
-                        <td style=" text-align: right;">1,679 ms</td>
-                        <td style=" text-align: right;">4,967 ms</td>
-                        <td style=" text-align: right;"><strong>0 ms</strong></td>
+                        <td style="">10,000</td>
+                        <td style=" text-align: right;">3.9 s</td>
+                        <td style=" text-align: right;">100%</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Recovery p95</td>
-                        <td style=" text-align: right;">2,732 ms</td>
-                        <td style=" text-align: right;">5,992 ms</td>
-                        <td style=" text-align: right;"><strong>0 ms</strong></td>
+                        <td style="">15,000</td>
+                        <td style=" text-align: right;">5.8 s</td>
+                        <td style=" text-align: right;">98.5% <span style="color: #888;">(224 lost)</span></td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
                       </tr>
                       <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Never reconnected</td>
-                        <td style=" text-align: right;">0</td>
-                        <td style=" text-align: right; color: #F64343;">189 (3.8%)</td>
-                        <td style=" text-align: right;"><strong>0</strong></td>
+                        <td style="">20,000</td>
+                        <td style=" text-align: right;">8.0 s</td>
+                        <td style=" text-align: right; color: #F64343;">96.2% <span style="color: #888;">(753 lost)</span></td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
                       </tr>
-                      <tr>
-                        <td style=""><strong>Total downtime</strong></td>
-                        <td style=" text-align: right;"><strong>2.7 s</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>6.8 s</strong></td>
+                      <tr style="background: #fff5f5;">
+                        <td style=""><strong>25,000</strong></td>
+                        <td style=" text-align: right; color: #F64343;"><strong>never</strong></td>
+                        <td style=" text-align: right; color: #F64343;"><strong>0% (all 25K lost)</strong></td>
                         <td style=" text-align: right;"><strong>0 s</strong></td>
                       </tr>
                     </tbody>
                   </table>
+                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0; line-height: 1.5;">1 vCPU / 0.5 GB Railway box. "Recovery" = wall-clock time until 95% of clients reconnect. AnyCable's WebSocket layer is a separate Go binary, so app deploys don't restart it — no avalanche to recover from at any scale.</p>
                 </div>
               </div>
             </div>
