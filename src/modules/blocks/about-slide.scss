@@ -160,6 +160,14 @@ $className: 'about-slide';
     border-radius: 4px;
     vertical-align: 1px;
     white-space: nowrap;
+
+    // On narrow viewports, a long `io.to(room).emit(event, payload)`
+    // chunk overflows the line. Allow breaking inside the code token
+    // rather than letting it push past the viewport edge.
+    @include mediaMax($mobile) {
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
   }
 
   &__tabs {

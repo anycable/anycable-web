@@ -82,6 +82,57 @@ $compare-header-offset:  80px; // header height + a touch of breathing
 
 
   // -------------------------------------------------------------------
+  // Mobile + tablet: bring the right column (data, tables, code, charts)
+  // back into view. The global about-slide hides .about-slide__media on
+  // any screen ≤1023px; that's intentional for marketing pages where the
+  // media is decorative, but on this comparison page the media IS the
+  // argument — the benchmark tables, scaling tables, code samples, and
+  // feature matrix all live there. Without this override, mobile and
+  // tablet users see only the prose, which is roughly half the page.
+  //
+  // Two coordinated changes:
+  //   1. Section flips to flex-direction: column so the media stacks
+  //      below the content instead of trying to share a row.
+  //   2. Media gets display:flex back, full width, and its own bottom
+  //      padding (the column-stack gap is provided by content's bottom
+  //      padding + media's lack of top padding so they read as one
+  //      visual unit).
+  //
+  // Inside the media, tables and <pre> blocks may be wider than the
+  // narrow viewport; we switch the rounded-frame's overflow from hidden
+  // to auto so the data scrolls horizontally rather than getting cropped.
+  @include mediaMax($tablet) {
+    .about-slide__section {
+      flex-direction: column;
+    }
+
+    .about-slide__media {
+      display: flex;
+      width: 100%;
+      padding: 0 0 48px;
+    }
+
+    // overflow-x:auto for the frame and pre blocks lives in their own
+    // rules below — placing it here would source-order-lose to the
+    // later `overflow: hidden` shorthand on .slide-show__frame.
+  }
+
+
+  // -------------------------------------------------------------------
+  // Mobile: collapse multi-column grids to a single column. The
+  // try-it-grid uses auto-fit at 280px minmax which technically already
+  // reflows to one column on narrow widths, but its internal cards
+  // contain pre-formatted content that nudges them past 280px; force
+  // a single column under $mobile so we don't overflow.
+  // -------------------------------------------------------------------
+  @include mediaMax($mobile) {
+    .compare-try-it-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+  // -------------------------------------------------------------------
   // Heading anchor (Stripe-style hover-revealed # icon)
   // -------------------------------------------------------------------
   .about-slide__title,
@@ -273,11 +324,29 @@ $compare-header-offset:  80px; // header height + a touch of breathing
       padding: 40px 32px;
       background-color: $compare-bg-soft;
     }
+
+    // On mobile, tables inside this card can exceed the viewport width.
+    // Switch from clip-and-crop to horizontal scroll so the data stays
+    // readable. The rounded card still visually contains the data — the
+    // scroll happens inside the border, not under the rest of the page.
+    @include mediaMax($tablet) {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 
   .about-slide__media pre {
     background-color: $compare-bg-code;
     border-radius: $compare-radius;
+
+    // <pre> defaults to white-space: pre, which keeps lines from
+    // wrapping. On mobile that means long lines push past the viewport.
+    // overflow-x: auto lets the user scroll the code block instead.
+    @include mediaMax($tablet) {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 
 
@@ -301,6 +370,12 @@ $compare-header-offset:  80px; // header height + a touch of breathing
   // -------------------------------------------------------------------
   .compare-bench-chart {
     margin: 16px 0 0;
+    // Same flex-column-min-content trap as the try-it grid: the inner
+    // <pre> has white-space: pre and long lines, giving the figure a
+    // very wide min-content. Without these, the figure pushes its flex
+    // parent past the viewport width on mobile.
+    min-width: 0;
+    max-width: 100%;
 
     figcaption {
       font-size: 12px;
@@ -335,6 +410,13 @@ $compare-header-offset:  80px; // header height + a touch of breathing
     gap: 16px;
     max-width: 1100px;
     margin: 0 auto;
+    // The grid lives inside a flex column (about-slide__content-full).
+    // Flex items default to min-width: auto = min-content, so grid items
+    // with long unbreakable tokens can push the grid past its parent's
+    // width. min-width: 0 lets the grid shrink, and width: 100% pins it
+    // to the parent's content box.
+    min-width: 0;
+    width: 100%;
   }
 
 
