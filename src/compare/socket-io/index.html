@@ -71,6 +71,7 @@
               <nav class='compare-tldr__nav' aria-label='Sections on this page'>
                 <span class='compare-tldr__nav-label'>On this page</span>
                 <a href='#delivery'>Delivery</a>
+                <a href='#uws'>uWebSockets?</a>
                 <a href='#deploys'>Deploys</a>
                 <a href='#capacity'>Capacity</a>
                 <a href='#migration'>Migration</a>
@@ -245,6 +246,185 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
                     </tbody>
                   </table>
                   <p style="font-size: 12px; color: #888; margin: 12px 4px 0; line-height: 1.5;">AnyCable cell shows open-source / AnyCable Pro. Same Railway box (32 vCPU / 32 GB) for all four runs. Server memory pulled from Railway's metrics API for the test window. CPU was negligible across all setups (under 1.1% of the 32 vCPU box).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- What about uWebSockets.js? — addresses the "Socket.io is old, just use uWS"
+             pushback we hear from founders comparing AnyCable to Socket.io. The
+             "10× faster" claim is genuinely true on the wire (memory + latency +
+             idle capacity), so we acknowledge that head-on with measured numbers,
+             then show where the wire isn't the bottleneck (replay-less = lossy on
+             jitter, single-process = same deploy problem). --}}
+        <section class='slide about-slide'>
+          <div class='about-slide__wrapper'>
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h2 class='about-slide__title' id='uws'>What about uWebSockets.js?<a class='heading-anchor' href='#uws' aria-label='Permalink'>#</a></h2>
+                <p class='about-slide__text'>
+                  A common pushback from founders evaluating AnyCable: <em>"Socket.io is old — <a class='link' href='https://github.com/uNetworking/uWebSockets.js' target='_blank' rel='noopener'>uWebSockets.js</a> is 10&times; faster, just use that."</em> The wire-speed claim is genuinely true. We measured it on the same Railway hardware as everything else on this page.
+                </p>
+                <h3 class='about-slide__subtitle'>On the wire, uWS wins decisively</h3>
+                <p class='about-slide__text'>
+                  At 10K reconnecting clients, uWS uses <strong>72 MB</strong> of server memory — about 4&times; less than AnyCable Pro and 9&times; less than Socket.io+CSR. Replay latency p99 is <strong>993 ms</strong>, the lowest of any setup we tested. And on a 32&nbsp;vCPU&nbsp;/&nbsp;32&nbsp;GB box held idle to 1,018,366 connections on just <strong>5.45&nbsp;GB</strong> — a 5.35 KB-per-connection footprint that beats AnyCable Pro's already-impressive 19 KB at the same scale.
+                </p>
+                <p class='about-slide__text'>
+                  uWS is the most efficient WebSocket library you can run inside a Node.js app. The "10&times; faster than Socket.io" headline isn't marketing — it's reproducible.
+                </p>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">But the wire is rarely the bottleneck</h3>
+                <p class='about-slide__text'>
+                  Under jitter, uWS loses <strong>~14% of messages</strong> — almost identical to Socket.io's ~13% loss without CSR. The faster wire doesn't change the math: 1-second blip &times; ~8 events / 60 s of publishing ≈ 13% blind window. Wire speed determines how fast the messages that <em>do</em> arrive land. The ones missed during the offline window are still gone.
+                </p>
+                <p class='about-slide__text'>
+                  To deliver every message on uWS, you'd buffer broadcasts per stream, track per-client offsets, replay on reconnect, and absorb reconnect storms — basically reimplement AnyCable's broker by hand. uWS is a WebSocket library; AnyCable is a delivery framework. Different layer of the stack.
+                </p>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Reconnect storms scale with N — regardless of library</h3>
+                <p class='about-slide__text'>
+                  uWS pushes the avalanche cliff far past Socket.io's, but the user-facing recovery time grows non-linearly. Both libraries hit a "real avalanche" point where every broadcast is lost for minutes — uWS just at a higher N.
+                </p>
+                <p class='about-slide__text'>
+                  Two thresholds emerge from the data. <strong>Clean-recovery</strong> (avalanche resolves in seconds — your operational headroom): Socket.io ~10K, uWS ~20K. <strong>Survivable cliff</strong> (server doesn't OOM): Socket.io 25K, uWS ~90K. uWS doubles your operating headroom, roughly quadruples your catastrophic-failure ceiling. Beyond clean-recovery, the storm becomes the user experience: at 50K on uWS, half the fleet waits 2.5 minutes before reconnecting, every broadcast during that window lost.
+                </p>
+                <p class='about-slide__text' style="margin-top: 32px;">
+                  And the deploy problem stays the same. Whether the embedded library is Socket.io or uWS, <strong>your app and your WebSocket layer are the same Node process</strong> — every deploy still kills every connection, and the new container has to absorb a reconnect storm during cold-start. AnyCable's separate-process architecture skips the avalanche entirely: anycable-go doesn't restart on app deploys, connections persist, replay resumes whatever was missed.
+                </p>
+                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Different problems, different solutions</h3>
+                <p class='about-slide__text'>
+                  uWS is the right answer to <em>"Socket.io's wire is too heavy."</em> AnyCable is the right answer to <em>"we lose messages during network blips"</em> or <em>"every deploy hits our users."</em> Both are honest improvements over default Socket.io — they just sit at different layers of the stack.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
+                <div class='slide-show__frame'>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                        <th style=" text-align: left;">10,000 clients under jitter</th>
+                        <th style=" text-align: right;">uWS</th>
+                        <th style=" text-align: right;">Socket.io</th>
+                        <th style=" text-align: right;">AnyCable OSS</th>
+                        <th style=" text-align: right;">AnyCable Pro</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style=""><strong>Server memory peak</strong></td>
+                        <td style=" text-align: right;"><strong>72 MB</strong></td>
+                        <td style=" text-align: right;">675 MB</td>
+                        <td style=" text-align: right;">760 MB</td>
+                        <td style=" text-align: right;">271 MB</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="">Replay latency p99</td>
+                        <td style=" text-align: right;"><strong>993 ms</strong></td>
+                        <td style=" text-align: right; color: #888;">no replay</td>
+                        <td style=" text-align: right;">6.2 s</td>
+                        <td style=" text-align: right;">6.2 s</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style=""><strong>Delivery rate</strong></td>
+                        <td style=" text-align: right; color: #F64343;"><strong>86.4%</strong></td>
+                        <td style=" text-align: right; color: #F64343;">~87%</td>
+                        <td style=" text-align: right;"><strong>100%</strong></td>
+                        <td style=" text-align: right;"><strong>100%</strong></td>
+                      </tr>
+                      <tr>
+                        <td style="">Messages lost</td>
+                        <td style=" text-align: right; color: #F64343;">163,371</td>
+                        <td style=" text-align: right; color: #F64343;">156,856</td>
+                        <td style=" text-align: right;">0</td>
+                        <td style=" text-align: right;">0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0 4px; line-height: 1.5;">Same 32 vCPU / 32 GB Railway box. uWS reconnect uses 2&ndash;5 s exponential backoff matched to socket.io-client's defaults. Comparing uWS vs default Socket.io on delivery: nearly identical &mdash; both at-most-once, no replay, lose during the same blind windows. Latency is identical between AnyCable OSS and Pro (same protocol, same broker); memory differs because Pro's broker is more compact.</p>
+                </div>
+              </div>
+            </div>
+
+            {{!-- Avalanche scaling: uWS vs Socket.io on the same 0.5 GB / 1 vCPU
+                 small box used for the Pillar 2 cliff test. Two thresholds:
+                 clean-recovery (operational headroom) and survivable cliff
+                 (catastrophic-failure ceiling). --}}
+            <div class='about-slide__section'>
+              <div class='about-slide__content'>
+                <h3 class='about-slide__subtitle'>Avalanche scaling: uWS vs Socket.io on the same 0.5 GB box</h3>
+                <p class='about-slide__text'>
+                  We re-ran the deploy-avalanche test from Pillar 2 against uWS on the same 1&nbsp;vCPU&nbsp;/&nbsp;0.5&nbsp;GB Railway box that exposed Socket.io's 25K cliff. p50 = the typical user's blackout window (Connecting&hellip; with broadcasts disappearing); recovery = the time until 95% of the fleet is back.
+                </p>
+                <p class='about-slide__text'>
+                  At 20K, uWS handles the storm cleanly &mdash; full recovery in 4.6 s, typical user back in 3 s. <strong>At 25K, the same N where Socket.io OOMs, uWS recovers 100%</strong> &mdash; but a 25% increase from 20K to 25K already pushes recovery from 4.6 s to 57 s (12&times;). At 50K, half the fleet waits 2.5 minutes. By 100K, the box can't even ramp the full target.
+                </p>
+                <p class='about-slide__text'>
+                  The diagnostic point: even uWS's wire advantage doesn't make reconnect storms scale linearly. The handshake serialization, kernel rate limiting, and TCP backpressure are server-resource problems, not library-overhead problems. AnyCable doesn't have an avalanche to recover from at any of these scales because the WebSocket layer doesn't restart.
+                </p>
+              </div>
+              <div class='about-slide__media about-slide__media-align-top'>
+                <div class='slide-show__frame'>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                        <th style=" text-align: left;">Clients</th>
+                        <th style=" text-align: right;">Socket.io recovery</th>
+                        <th style=" text-align: right;">uWS recovery</th>
+                        <th style=" text-align: right;">uWS p50</th>
+                        <th style=" text-align: right;">AnyCable</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="">5,000</td>
+                        <td style=" text-align: right;">4.5 s, 100%</td>
+                        <td style=" text-align: right; color: #888;">&mdash;</td>
+                        <td style=" text-align: right; color: #888;">&mdash;</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="">10,000</td>
+                        <td style=" text-align: right;">3.9 s, 100%</td>
+                        <td style=" text-align: right; color: #888;">&mdash;</td>
+                        <td style=" text-align: right; color: #888;">&mdash;</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="">15,000</td>
+                        <td style=" text-align: right;">5.8 s, 98.5%</td>
+                        <td style=" text-align: right; color: #888;">&mdash;</td>
+                        <td style=" text-align: right; color: #888;">&mdash;</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style=""><strong>20,000</strong></td>
+                        <td style=" text-align: right;">8.0 s, 96.2%</td>
+                        <td style=" text-align: right;"><strong>4.6 s, 100%</strong></td>
+                        <td style=" text-align: right;"><strong>3.1 s</strong></td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                      <tr style="background: #fff5f5; border-bottom: 1px solid #f0f0f0;">
+                        <td style=""><strong>25,000</strong></td>
+                        <td style=" text-align: right; color: #F64343;"><strong>never (cliff)</strong></td>
+                        <td style=" text-align: right;">57 s, 100%</td>
+                        <td style=" text-align: right;">6.6 s</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="">50,000</td>
+                        <td style=" text-align: right; color: #888;">cliff</td>
+                        <td style=" text-align: right; color: #F64343;">223 s, 98.6%</td>
+                        <td style=" text-align: right; color: #F64343;">151 s</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                      <tr>
+                        <td style="">~90&ndash;100K</td>
+                        <td style=" text-align: right; color: #888;">cliff</td>
+                        <td style=" text-align: right; color: #F64343;"><strong>ramp cliff</strong></td>
+                        <td style=" text-align: right; color: #888;">&mdash;</td>
+                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0 4px; line-height: 1.5;">Same 1 vCPU / 0.5 GB Railway box used for Socket.io's 25K cliff. uWS recovery = wall-clock time to 95% reconnected; p50 = median per-client blackout (typical user "Connecting&hellip;" window). At ~90&ndash;100K, uws-server-small can't even ramp the full target &mdash; it's the server-side cliff. AnyCable's WebSocket layer is a separate Go binary, so app deploys never restart it &mdash; no avalanche at any scale.</p>
                 </div>
               </div>
             </div>
