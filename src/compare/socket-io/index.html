@@ -7,18 +7,18 @@
       <main class="content compare-page">
 
         {{!-- Comparison hero — focused on the comparison, not branding --}}
-        <section class='slide' style="padding: 80px 24px 60px;">
-          <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 48px;">
-              <p style="color: #F64343; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px;">Comparison</p>
-              <h1 style="font-size: clamp(28px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.02em;">
-                AnyCable <span style="color: #aaa; font-weight: 400;">vs</span> Socket.io
+        <section class='slide compare-hero'>
+          <div class='compare-hero__inner'>
+            <div class='compare-hero__intro'>
+              <p class='compare-hero__eyebrow'>Comparison</p>
+              <h1 class='compare-hero__title'>
+                AnyCable <span class='is-mute'>vs</span> Socket.io <span class='is-mute'>&amp;</span> uWebSockets.js
               </h1>
-              <p style="font-size: 22px; line-height: 1.5; color: #555; max-width: 760px; margin: 0 auto;">
-                10,000 clients on Railway across four setups — Socket.io, Socket.io + CSR, uWebSockets.js, and AnyCable. Only AnyCable delivers every message under jitter and survives deploys without dropping a single connection.
+              <p class='compare-hero__subtitle'>
+                Three findings from the same Railway box. <strong>AnyCable guarantees every message arrives</strong> &mdash; Socket.io and uWebSockets.js both lose ~14% under jitter. <strong>uWS and AnyCable both reach 1M idle connections</strong>; Socket.io caps at ~120K. <strong>Only AnyCable survives every deploy</strong> &mdash; every Node-embedded WebSocket layer (Socket.io, CSR, uWS) dies with its app process.
               </p>
-              <p style="font-size: 14px; color: #888; margin-top: 16px;">
-                <a href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank' style="color: #888; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #ccc;">Open source — run it yourself</a>
+              <p class='compare-hero__source'>
+                <a href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>Open source — run it yourself</a>
               </p>
             </div>
 
@@ -31,10 +31,11 @@
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd class='is-worst'>87%</dd></div>
                   <div class='compare-hero-card__row'><dt>uWebSockets.js</dt><dd class='is-worst'>86%</dd></div>
-                  <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd>100%</dd></div>
-                  <div class='compare-hero-card__row'><dt>AnyCable</dt><dd>100%</dd></div>
+                  <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd class='is-best'>100%</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable</dt><dd class='is-best'>100%</dd></div>
                 </dl>
-                <div class='compare-hero-card__footnote'>1.2M expected deliveries; replay-less setups lose ~13&ndash;14% during 1-second jitter blips.</div>
+                <div class='compare-hero-card__footnote'>1.2M expected deliveries; replay-less setups lose ~13&ndash;14% during 1-second jitter blips. CSR + AnyCable both deliver 100%; AnyCable's replay tail is ~22% faster.</div>
+                <a class='compare-hero-card__deeplink' href='#delivery'>See the jitter benchmark</a>
               </div>
 
               <div class='compare-hero-card'>
@@ -42,10 +43,11 @@
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'><dt>Default Socket.io</dt><dd>675 MB</dd></div>
                   <div class='compare-hero-card__row'><dt>Socket.io + CSR</dt><dd>627 MB</dd></div>
-                  <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd>271 MB</dd></div>
-                  <div class='compare-hero-card__row'><dt>uWebSockets.js</dt><dd>72 MB&dagger;</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd class='is-best'>271 MB</dd></div>
+                  <div class='compare-hero-card__row'><dt>uWebSockets.js</dt><dd class='is-best'>72 MB&dagger;</dd></div>
                 </dl>
                 <div class='compare-hero-card__footnote'>Peak RSS during the jitter run. &dagger;uWS uses the least memory but loses 14% of messages &mdash; that footprint doesn't include a replay buffer. AnyCable Pro is the lightest setup that delivers 100%. (OSS: 760 MB.)</div>
+                <a class='compare-hero-card__deeplink' href='#delivery'>See the jitter benchmark</a>
               </div>
 
               <div class='compare-hero-card'>
@@ -53,10 +55,11 @@
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'><dt>Socket.io</dt><dd class='is-worst'>119,826</dd></div>
                   <div class='compare-hero-card__row'><dt>AnyCable (open source)</dt><dd>993,994</dd></div>
-                  <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd>999,954</dd></div>
-                  <div class='compare-hero-card__row'><dt>uWebSockets.js</dt><dd>1,018,366</dd></div>
+                  <div class='compare-hero-card__row'><dt>AnyCable Pro</dt><dd class='is-best'>999,954</dd></div>
+                  <div class='compare-hero-card__row'><dt>uWebSockets.js</dt><dd class='is-best'>1,018,366</dd></div>
                 </dl>
                 <div class='compare-hero-card__footnote'>Same Railway box (32 vCPU / 32 GB), 1M attempted. Per-connection memory: uWS 5.4 KB, AnyCable Pro 19 KB, OSS 33 KB, Socket.io ~52 KB. uWS and AnyCable both reach 1M; Socket.io's single Node event loop saturates at ~120K. (uWS doesn't include a replay broker &mdash; the lighter footprint reflects that.)</div>
+                <a class='compare-hero-card__deeplink' href='#capacity'>See the 1M idle test</a>
               </div>
             </div>
 
@@ -66,9 +69,9 @@
             <div class='compare-tldr'>
               <h2 class='compare-tldr__title' id='tldr'>TL;DR<a class='heading-anchor' href='#tldr' aria-label='Permalink'>#</a></h2>
               <ol class='compare-tldr__points'>
-                <li><strong>Delivery.</strong> Default Socket.io loses ~13% of messages under jitter at 10K clients; uWebSockets.js loses ~14% (no replay layer either, despite being lighter on the wire). CSR fixes delivery with an ~8 s p99 replay tail. <strong>AnyCable matches delivery and clears the tail ~22% faster</strong> (~6 s p99).</li>
-                <li><strong>Deploys.</strong> Every Node-embedded WebSocket layer dies with the app process &mdash; Socket.io, CSR, uWS, all the same. AnyCable runs as a separate Go binary; your app deploys, the WebSocket layer stays up, no avalanche to recover from.</li>
-                <li><strong>Capacity.</strong> Same hardware, same 1M-connection test. Socket.io topped out at <strong>119,826</strong> (single Node event loop). uWebSockets.js held <strong>1,018,366</strong> on 5.45 GB. AnyCable OSS held 993,994 (32 GB ceiling); <strong>AnyCable Pro held 999,954 on 19 GB</strong>. uWS wins on bare-wire density; AnyCable's heavier per-connection footprint <em>is</em> the broker (replay, history, restart-survivable).</li>
+                <li><strong><a href='#delivery'>Delivery.</a></strong> Default Socket.io loses ~13% of messages under jitter at 10K clients; uWebSockets.js loses ~14% (no replay layer either, despite being lighter on the wire). CSR fixes delivery with an ~8 s p99 replay tail. <strong>AnyCable matches delivery and clears the tail ~22% faster</strong> (~6 s p99). <a class='link compare-tldr__more' href='#delivery'>Full benchmark &rarr;</a></li>
+                <li><strong><a href='#deploys'>Deploys.</a></strong> Every Node-embedded WebSocket layer dies with the app process &mdash; Socket.io, CSR, uWS, all the same. AnyCable runs as a separate Go binary; your app deploys, the WebSocket layer stays up, no avalanche to recover from. <a class='link compare-tldr__more' href='#deploys'>Avalanche test &rarr;</a></li>
+                <li><strong><a href='#capacity'>Capacity.</a></strong> Same hardware, same 1M-connection test. Socket.io topped out at <strong>119,826</strong> (single Node event loop). uWebSockets.js held <strong>1,018,366</strong> on 5.45 GB. AnyCable OSS held 993,994 (32 GB ceiling); <strong>AnyCable Pro held 999,954 on 19 GB</strong>. uWS wins on bare-wire density; AnyCable's heavier per-connection footprint <em>is</em> the broker (replay, history, restart-survivable). <a class='link compare-tldr__more' href='#capacity'>1M idle test &rarr;</a></li>
               </ol>
               <p class='compare-tldr__note'>Same JS client patterns on the frontend (<code>@anycable/core</code>). On the backend, broadcasts go over plain HTTP — Node, FastAPI, Laravel, Go, anything that can issue an HTTP POST.</p>
               <nav class='compare-tldr__nav' aria-label='Sections on this page'>
@@ -103,19 +106,19 @@
                 <p class='about-slide__text'>
                   The <a class='link' href='https://socket.io/' target='_blank' rel='noopener'>Socket.io</a> library runs inside the same Node.js process as your app routes, DB calls, and business logic. One event loop handles all of it. No replay buffer. Per-connection memory is heavy because Engine.IO + the Socket.io protocol add framing, room state, and event metadata on top of the raw WS &mdash; ~50 KB per connection at scale. At ~120K connections the event loop saturates handshakes; every deploy kicks every client because the WS layer dies with your Node process.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Socket.io + CSR &mdash; same process, with a per-socket recovery buffer</h3>
+                <h3 class='about-slide__subtitle'>Socket.io + CSR &mdash; same process, with a per-socket recovery buffer</h3>
                 <p class='about-slide__text'>
                   Same architecture as Socket.io, with <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>Connection State Recovery</a> bolted on: the server stashes per-socket state (id, rooms, <code>socket.data</code>) and buffers packets for <code>maxDisconnectionDuration</code>. On reconnect, the client passes <code>pid + last-offset</code> and the server replays. Delivery: solved (100%). The latency cost is that the buffer drain is <em>per socket</em> and serializes through the same single event loop &mdash; at 10K reconnecting clients those drains queue up, hence the ~8 s p99 replay tail. Default in-memory adapter loses state on restart; multi-node needs Redis Streams or MongoDB.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">uWebSockets.js &mdash; native C++ WebSocket library, still in your Node process</h3>
+                <h3 class='about-slide__subtitle'>uWebSockets.js &mdash; native C++ WebSocket library, still in your Node process</h3>
                 <p class='about-slide__text'>
                   <a class='link' href='https://github.com/uNetworking/uWebSockets.js' target='_blank' rel='noopener'>uWebSockets.js</a> is a C++ WebSocket implementation with Node bindings. Same Node event-loop model, embedded the same way as Socket.io, but the C++ wire layer is dramatically lighter &mdash; ~5 KB per connection. That gap is real, and it's where the "10&times; faster than Socket.io" claim comes from. What it doesn't give you: replay (you'd build it yourself, including the broker, history per stream, reconnect storm handling). Architecturally the rest is identical to Socket.io: one Node process for app + WS, one event loop, every deploy still kicks every connection, no built-in delivery guarantees.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">AnyCable &mdash; separate Go process, broker built in</h3>
+                <h3 class='about-slide__subtitle'>AnyCable &mdash; separate Go process, broker built in</h3>
                 <p class='about-slide__text'>
                   The WebSocket layer is <code>anycable-go</code>, a separate Go binary running alongside your app. Your app broadcasts to it over plain HTTP. Two consequences: (a) goroutines parallelize handshakes across all available CPU cores instead of serializing through one event loop, and (b) app deploys don't touch the WebSocket process &mdash; connections persist. The protocol carries <code>(stream, epoch, offset)</code> on every broadcast; the broker keeps per-stream history (replay) by default. Per-connection memory is heavier than uWS's bare wire footprint (~19 KB Pro, ~33 KB OSS at 1M), but that overhead <em>is</em> the broker &mdash; replay buffers, stream history, broadcaster framing.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">The pattern</h3>
+                <h3 class='about-slide__subtitle'>The pattern</h3>
                 <p class='about-slide__text'>
                   Anything Node-embedded &mdash; Socket.io, Socket.io+CSR, uWS &mdash; shares the same deploy-avalanche and the same single-event-loop ceiling, just at different N. Replay is a feature you either get from a framework or build yourself; only Socket.io+CSR (opt-in, lossy on restart) and AnyCable (default, restart-survivable with NATS or Redis brokers) provide it. AnyCable's advantages on delivery and deploy resilience aren't a tuning win &mdash; they're architectural.
                 </p>
@@ -141,14 +144,14 @@
                 <p class='about-slide__text'>
                   <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Connection State Recovery</a> (Socket.io 4.6+) buffers per-socket state — id, rooms, <code>socket.data</code> — for up to <code>maxDisconnectionDuration</code> (default 2 min). On reconnect, the client passes its pid + last-seen offset; the server replays the missed packets.
                 </p>
-                <p class='about-slide__text' style="margin-bottom: 20px;">
+                <p class='about-slide__text'>
                   Four caveats from the Socket.io docs:
                 </p>
-                <ul style="margin: 0 0 84px; padding: 0; list-style: none; line-height: 1.6;">
-                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>Opt-in.</strong> Most apps don't enable it.</li>
-                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>Adapter constraints.</strong> Doesn't work with Socket.io's most common scaling adapter (Redis pub/sub). Multi-node needs Redis Streams or MongoDB.</li>
-                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>Restart-fragile.</strong> The default in-memory adapter wipes all state on every server restart.</li>
-                  <li style="position: relative; padding-left: 18px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 0; color: #F64343; font-weight: 700;">·</span><strong>"The recovery will not always be successful"</strong> — their words. Application-level reconciliation is still required.</li>
+                <ul class='compare-bullet-list'>
+                  <li><strong>Opt-in.</strong> Most apps don't enable it.</li>
+                  <li><strong>Adapter constraints.</strong> Doesn't work with Socket.io's most common scaling adapter (Redis pub/sub). Multi-node needs Redis Streams or MongoDB.</li>
+                  <li><strong>Restart-fragile.</strong> The default in-memory adapter wipes all state on every server restart.</li>
+                  <li><strong>"The recovery will not always be successful"</strong> — their words. Application-level reconciliation is still required.</li>
                 </ul>
                 <h3 class='about-slide__subtitle'>AnyCable: at-least-once by default, replay is per-stream</h3>
                 <p class='about-slide__text'>
@@ -159,23 +162,23 @@
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
-                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.7; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #888;"># Default Socket.io — 10K clients, 120 msgs each</span>
-Client 0: missing <span style="color: #ff6b6b;">6, 7, 36, 37, 73, 74, 104, 105</span>
-Client 1: missing <span style="color: #ff6b6b;">3, 4, 38, 39, 69, 70, 108, 109</span>
-Client 2: missing <span style="color: #ff6b6b;">4, 5, 41, 42, 76, 77, 111-113</span>
+                <pre class='compare-code-block'><span class='t-mute'># Default Socket.io — 10K clients, 120 msgs each</span>
+Client 0: missing <span class='c-err'>6, 7, 36, 37, 73, 74, 104, 105</span>
+Client 1: missing <span class='c-err'>3, 4, 38, 39, 69, 70, 108, 109</span>
+Client 2: missing <span class='c-err'>4, 5, 41, 42, 76, 77, 111-113</span>
 
-<span style="color: #888;"># Each cluster = one jitter event. ~15 lost per client.</span>
-<span style="color: #888;"># Total: 156,856 of 1,200,000 expected. ~87% delivery.</span>
+<span class='t-mute'># Each cluster = one jitter event. ~15 lost per client.</span>
+<span class='t-mute'># Total: 156,856 of 1,200,000 expected. ~87% delivery.</span>
 
-<span style="color: #888;"># Socket.io + CSR — same workload</span>
-Client 0: <span style="color: #fcd34d;">all 120 received</span>  (replay tail: max 10.8s)
-Client 1: <span style="color: #fcd34d;">all 120 received</span>  (p99: 7.9s)
-Client 2: <span style="color: #fcd34d;">all 120 received</span>  (p95: 4.0s)
+<span class='t-mute'># Socket.io + CSR — same workload</span>
+Client 0: <span class='c-key'>all 120 received</span>  (replay tail: max 10.8s)
+Client 1: <span class='c-key'>all 120 received</span>  (p99: 7.9s)
+Client 2: <span class='c-key'>all 120 received</span>  (p95: 4.0s)
 
-<span style="color: #888;"># AnyCable — same workload</span>
-Client 0: <span style="color: #86efac;">all 120 received</span>  (replay tail: max 9.3s)
-Client 1: <span style="color: #86efac;">all 120 received</span>  (p99: 6.2s)
-Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pre>
+<span class='t-mute'># AnyCable — same workload</span>
+Client 0: <span class='c-str'>all 120 received</span>  (replay tail: max 9.3s)
+Client 1: <span class='c-str'>all 120 received</span>  (p99: 6.2s)
+Client 2: <span class='c-str'>all 120 received</span>  (p95: 4.1s)</pre>
               </div>
             </div>
 
@@ -195,11 +198,11 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
                 <p class='about-slide__text'>
                   <strong>AnyCable: 100% delivery, ~6-second p99 replay tail.</strong> ~1.7 s ahead of CSR. Server peak: 760 MB OSS, <strong>271 MB Pro</strong> — ~2.3&times; less than CSR for the same 10K fleet.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why default Socket.io's 13% loss is structural</h3>
+                <h3 class='about-slide__subtitle'>Why default Socket.io's 13% loss is structural</h3>
                 <p class='about-slide__text'>
                   Each jitter event creates <em>d</em> seconds of blind window. Over publishing window <em>T</em> with <em>N</em> events, expected loss ≈ (<em>d</em> &times; <em>N</em>) / <em>T</em>. For our run: 1.3 s &times; ~8 / 60 ≈ 17% upper bound. We measured 13.1% — lower because not every event fully overlaps publishing. Not a configuration bug; default Socket.io loses messages in proportion to frequency &times; disruption.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Why a 1-second blip becomes a multi-second tail</h3>
+                <h3 class='about-slide__subtitle'>Why a 1-second blip becomes a multi-second tail</h3>
                 <p class='about-slide__text'>
                   Every realtime client — socket.io-client, <code>@anycable/core</code>, anything that wants to stay up under load — reconnects with a 0.5–5 s backoff window to avoid stampeding the server after a disruption. <strong>The implication: any TCP-level blip becomes multiple seconds of offline window, by design.</strong> Without delivery guarantees, those seconds are lost messages. With replay, they're delayed messages — same backoff cost, completely different user experience.
                 </p>
@@ -209,85 +212,85 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
                 <div class='slide-show__frame'>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                  <table class='compare-data-table'>
                     <thead>
-                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
-                        <th style=" text-align: left;"></th>
-                        <th style=" text-align: right;">Default Socket.io</th>
-                        <th style=" text-align: right;">Socket.io + CSR</th>
-                        <th style=" text-align: right;">AnyCable</th>
+                      <tr>
+                        <th></th>
+                        <th>Default Socket.io</th>
+                        <th>Socket.io + CSR</th>
+                        <th>AnyCable</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Clients</td>
-                        <td style=" text-align: right;">10,000</td>
-                        <td style=" text-align: right;">10,000</td>
-                        <td style=" text-align: right;">10,000</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Expected deliveries</td>
-                        <td style=" text-align: right;">1,200,000</td>
-                        <td style=" text-align: right;">1,200,000</td>
-                        <td style=" text-align: right;">1,200,000</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Jitter events</td>
-                        <td style=" text-align: right;">78,748</td>
-                        <td style=" text-align: right;">82,068</td>
-                        <td style=" text-align: right;">83,328</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">CSR resume rate</td>
-                        <td style=" text-align: right; color: #888;">n/a</td>
-                        <td style=" text-align: right;">99.5%</td>
-                        <td style=" text-align: right; color: #888;">n/a</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style=""><strong>Deliveries lost</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>156,856</strong></td>
-                        <td style=" text-align: right;"><strong>0</strong></td>
-                        <td style=" text-align: right;"><strong>0</strong></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style=""><strong>Delivery rate</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>~87%</strong></td>
-                        <td style=" text-align: right;"><strong>100%</strong></td>
-                        <td style=" text-align: right;"><strong>100%</strong></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Latency p50</td>
-                        <td style=" text-align: right;">140 ms</td>
-                        <td style=" text-align: right;">230 ms</td>
-                        <td style=" text-align: right;">260 ms</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Latency p95</td>
-                        <td style=" text-align: right;">1.1 s</td>
-                        <td style=" text-align: right;">4.0 s</td>
-                        <td style=" text-align: right;">4.1 s</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style=""><strong>Latency p99</strong></td>
-                        <td style=" text-align: right;">1.6 s</td>
-                        <td style=" text-align: right; color: #F64343;"><strong>7.9 s</strong></td>
-                        <td style=" text-align: right;"><strong>6.2 s</strong></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Latency max</td>
-                        <td style=" text-align: right;">2.1 s</td>
-                        <td style=" text-align: right; color: #F64343;">10.8 s</td>
-                        <td style=" text-align: right;">9.3 s</td>
+                      <tr>
+                        <td>Clients</td>
+                        <td>10,000</td>
+                        <td>10,000</td>
+                        <td>10,000</td>
                       </tr>
                       <tr>
-                        <td style=""><strong>Server memory peak</strong></td>
-                        <td style=" text-align: right;">675 MB</td>
-                        <td style=" text-align: right;">627 MB</td>
-                        <td style=" text-align: right;">760 / <strong>271</strong> MB</td>
+                        <td>Expected deliveries</td>
+                        <td>1,200,000</td>
+                        <td>1,200,000</td>
+                        <td>1,200,000</td>
+                      </tr>
+                      <tr>
+                        <td>Jitter events</td>
+                        <td>78,748</td>
+                        <td>82,068</td>
+                        <td>83,328</td>
+                      </tr>
+                      <tr>
+                        <td>CSR resume rate</td>
+                        <td class='t-mute'>n/a</td>
+                        <td>99.5%</td>
+                        <td class='t-mute'>n/a</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Deliveries lost</strong></td>
+                        <td class="is-worst"><strong>156,856</strong></td>
+                        <td class="is-best"><strong>0</strong></td>
+                        <td class="is-best"><strong>0</strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Delivery rate</strong></td>
+                        <td class="is-worst"><strong>~87%</strong></td>
+                        <td class="is-best"><strong>100%</strong></td>
+                        <td class="is-best"><strong>100%</strong></td>
+                      </tr>
+                      <tr>
+                        <td>Latency p50</td>
+                        <td>140 ms</td>
+                        <td>230 ms</td>
+                        <td>260 ms</td>
+                      </tr>
+                      <tr>
+                        <td>Latency p95</td>
+                        <td>1.1 s</td>
+                        <td>4.0 s</td>
+                        <td>4.1 s</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Latency p99</strong> <span style="font-size: 11px; color: #888; font-weight: normal;">(replay tail)</span></td>
+                        <td class='t-mute'>n/a</td>
+                        <td class="is-worst"><strong>7.9 s</strong></td>
+                        <td class="is-best"><strong>6.2 s</strong></td>
+                      </tr>
+                      <tr>
+                        <td>Latency max</td>
+                        <td class='t-mute'>n/a</td>
+                        <td class="is-worst">10.8 s</td>
+                        <td>9.3 s</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Server memory peak</strong></td>
+                        <td>675 MB</td>
+                        <td>627 MB</td>
+                        <td>760 / <strong class="is-best">271</strong> MB</td>
                       </tr>
                     </tbody>
                   </table>
-                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0; line-height: 1.5;">AnyCable cell shows open-source / AnyCable Pro. Same Railway box (32 vCPU / 32 GB) for all four runs. Server memory pulled from Railway's metrics API for the test window. CPU was negligible across all setups (under 1.1% of the 32 vCPU box).</p>
+                  <p class='compare-data-table__footnote'>AnyCable cell shows open-source / AnyCable Pro. Same Railway box (32 vCPU / 32 GB) for all four runs. Server memory pulled from Railway's metrics API for the test window. CPU was negligible across all setups (under 1.1% of the 32 vCPU box).</p>
                 </div>
               </div>
             </div>
@@ -315,14 +318,14 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
                 <p class='about-slide__text'>
                   uWS is the most efficient WebSocket library you can run inside a Node.js app. The "10&times; faster than Socket.io" headline isn't marketing — it's reproducible.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">But the wire is rarely the bottleneck</h3>
+                <h3 class='about-slide__subtitle'>But the wire is rarely the bottleneck</h3>
                 <p class='about-slide__text'>
                   Under jitter, uWS loses <strong>~14% of messages</strong> — almost identical to Socket.io's ~13% loss without CSR. The faster wire doesn't change the math: 1-second blip &times; ~8 events / 60 s of publishing ≈ 13% blind window. Wire speed determines how fast the messages that <em>do</em> arrive land. The ones missed during the offline window are still gone.
                 </p>
                 <p class='about-slide__text'>
                   To deliver every message on uWS, you'd buffer broadcasts per stream, track per-client offsets, replay on reconnect, and absorb reconnect storms — basically reimplement AnyCable's broker by hand. uWS is a WebSocket library; AnyCable is a delivery framework. Different layer of the stack.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Reconnect storms scale with N — regardless of library</h3>
+                <h3 class='about-slide__subtitle'>Reconnect storms scale with N — regardless of library</h3>
                 <p class='about-slide__text'>
                   uWS pushes the avalanche cliff far past Socket.io's, but the user-facing recovery time grows non-linearly. Both libraries hit a "real avalanche" point where every broadcast is lost for minutes — uWS just at a higher N.
                 </p>
@@ -332,55 +335,55 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
                 <p class='about-slide__text' style="margin-top: 32px;">
                   And the deploy problem stays the same. Whether the embedded library is Socket.io or uWS, <strong>your app and your WebSocket layer are the same Node process</strong> — every deploy still kills every connection, and the new container has to absorb a reconnect storm during cold-start. AnyCable's separate-process architecture skips the avalanche entirely: anycable-go doesn't restart on app deploys, connections persist, replay resumes whatever was missed.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">Different problems, different solutions</h3>
+                <h3 class='about-slide__subtitle'>Different problems, different solutions</h3>
                 <p class='about-slide__text'>
                   uWS is the right answer to <em>"Socket.io's wire is too heavy."</em> AnyCable is the right answer to <em>"we lose messages during network blips"</em> or <em>"every deploy hits our users."</em> Both are honest improvements over default Socket.io — they just sit at different layers of the stack.
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
                 <div class='slide-show__frame'>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                  <table class='compare-data-table'>
                     <thead>
-                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
-                        <th style=" text-align: left;">10,000 clients under jitter</th>
-                        <th style=" text-align: right;">uWS</th>
-                        <th style=" text-align: right;">Socket.io</th>
-                        <th style=" text-align: right;">AnyCable OSS</th>
-                        <th style=" text-align: right;">AnyCable Pro</th>
+                      <tr>
+                        <th>10,000 clients under jitter</th>
+                        <th>uWS</th>
+                        <th>Socket.io</th>
+                        <th>AnyCable OSS</th>
+                        <th>AnyCable Pro</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style=""><strong>Server memory peak</strong></td>
-                        <td style=" text-align: right;"><strong>72 MB</strong></td>
-                        <td style=" text-align: right;">675 MB</td>
-                        <td style=" text-align: right;">760 MB</td>
-                        <td style=" text-align: right;">271 MB</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">Replay latency p99</td>
-                        <td style=" text-align: right;"><strong>993 ms</strong></td>
-                        <td style=" text-align: right; color: #888;">no replay</td>
-                        <td style=" text-align: right;">6.2 s</td>
-                        <td style=" text-align: right;">6.2 s</td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style=""><strong>Delivery rate</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>86.4%</strong></td>
-                        <td style=" text-align: right; color: #F64343;">~87%</td>
-                        <td style=" text-align: right;"><strong>100%</strong></td>
-                        <td style=" text-align: right;"><strong>100%</strong></td>
+                      <tr>
+                        <td><strong>Server memory peak</strong></td>
+                        <td class="is-best"><strong>72 MB</strong></td>
+                        <td>675 MB</td>
+                        <td>760 MB</td>
+                        <td>271 MB</td>
                       </tr>
                       <tr>
-                        <td style="">Messages lost</td>
-                        <td style=" text-align: right; color: #F64343;">163,371</td>
-                        <td style=" text-align: right; color: #F64343;">156,856</td>
-                        <td style=" text-align: right;">0</td>
-                        <td style=" text-align: right;">0</td>
+                        <td>Replay latency p99</td>
+                        <td class="is-best"><strong>993 ms</strong></td>
+                        <td class='t-mute'>no replay</td>
+                        <td>6.2 s</td>
+                        <td>6.2 s</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Delivery rate</strong></td>
+                        <td class="is-worst"><strong>86.4%</strong></td>
+                        <td class="is-worst">~87%</td>
+                        <td class="is-best"><strong>100%</strong></td>
+                        <td class="is-best"><strong>100%</strong></td>
+                      </tr>
+                      <tr>
+                        <td>Messages lost</td>
+                        <td class="is-worst">163,371</td>
+                        <td class="is-worst">156,856</td>
+                        <td class="is-best">0</td>
+                        <td class="is-best">0</td>
                       </tr>
                     </tbody>
                   </table>
-                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0 4px; line-height: 1.5;">Same 32 vCPU / 32 GB Railway box. uWS reconnect uses 2&ndash;5 s exponential backoff matched to socket.io-client's defaults. Comparing uWS vs default Socket.io on delivery: nearly identical &mdash; both at-most-once, no replay, lose during the same blind windows. Latency is identical between AnyCable OSS and Pro (same protocol, same broker); memory differs because Pro's broker is more compact.</p>
+                  <p class='compare-data-table__footnote'>Same 32 vCPU / 32 GB Railway box. uWS reconnect uses 2&ndash;5 s exponential backoff matched to socket.io-client's defaults. Comparing uWS vs default Socket.io on delivery: nearly identical &mdash; both at-most-once, no replay, lose during the same blind windows. Latency is identical between AnyCable OSS and Pro (same protocol, same broker); memory differs because Pro's broker is more compact.</p>
                 </div>
               </div>
             </div>
@@ -404,69 +407,69 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
               </div>
               <div class='about-slide__media about-slide__media-align-top'>
                 <div class='slide-show__frame'>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                  <table class='compare-data-table'>
                     <thead>
-                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
-                        <th style=" text-align: left;">Clients</th>
-                        <th style=" text-align: right;">Socket.io recovery</th>
-                        <th style=" text-align: right;">uWS recovery</th>
-                        <th style=" text-align: right;">uWS p50</th>
-                        <th style=" text-align: right;">AnyCable</th>
+                      <tr>
+                        <th>Clients</th>
+                        <th>Socket.io recovery</th>
+                        <th>uWS recovery</th>
+                        <th>uWS p50</th>
+                        <th>AnyCable</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">5,000</td>
-                        <td style=" text-align: right;">4.5 s, 100%</td>
-                        <td style=" text-align: right; color: #888;">&mdash;</td>
-                        <td style=" text-align: right; color: #888;">&mdash;</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">10,000</td>
-                        <td style=" text-align: right;">3.9 s, 100%</td>
-                        <td style=" text-align: right; color: #888;">&mdash;</td>
-                        <td style=" text-align: right; color: #888;">&mdash;</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">15,000</td>
-                        <td style=" text-align: right;">5.8 s, 98.5%</td>
-                        <td style=" text-align: right; color: #888;">&mdash;</td>
-                        <td style=" text-align: right; color: #888;">&mdash;</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style=""><strong>20,000</strong></td>
-                        <td style=" text-align: right;">8.0 s, 96.2%</td>
-                        <td style=" text-align: right;"><strong>4.6 s, 100%</strong></td>
-                        <td style=" text-align: right;"><strong>3.1 s</strong></td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
-                      </tr>
-                      <tr style="background: #fff5f5; border-bottom: 1px solid #f0f0f0;">
-                        <td style=""><strong>25,000</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>never (cliff)</strong></td>
-                        <td style=" text-align: right;">57 s, 100%</td>
-                        <td style=" text-align: right;">6.6 s</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">50,000</td>
-                        <td style=" text-align: right; color: #888;">cliff</td>
-                        <td style=" text-align: right; color: #F64343;">223 s, 98.6%</td>
-                        <td style=" text-align: right; color: #F64343;">151 s</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      <tr>
+                        <td>5,000</td>
+                        <td>4.5 s, 100%</td>
+                        <td class='t-mute'>&mdash;</td>
+                        <td class='t-mute'>&mdash;</td>
+                        <td class="is-best"><strong>0 s</strong></td>
                       </tr>
                       <tr>
-                        <td style="">~90&ndash;100K</td>
-                        <td style=" text-align: right; color: #888;">cliff</td>
-                        <td style=" text-align: right; color: #F64343;"><strong>ramp cliff</strong></td>
-                        <td style=" text-align: right; color: #888;">&mdash;</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                        <td>10,000</td>
+                        <td>3.9 s, 100%</td>
+                        <td class='t-mute'>&mdash;</td>
+                        <td class='t-mute'>&mdash;</td>
+                        <td class="is-best"><strong>0 s</strong></td>
+                      </tr>
+                      <tr>
+                        <td>15,000</td>
+                        <td>5.8 s, 98.5%</td>
+                        <td class='t-mute'>&mdash;</td>
+                        <td class='t-mute'>&mdash;</td>
+                        <td class="is-best"><strong>0 s</strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>20,000</strong></td>
+                        <td>8.0 s, 96.2%</td>
+                        <td><strong>4.6 s, 100%</strong></td>
+                        <td><strong>3.1 s</strong></td>
+                        <td class="is-best"><strong>0 s</strong></td>
+                      </tr>
+                      <tr class='is-row-worst'>
+                        <td><strong>25,000</strong></td>
+                        <td class="is-worst"><strong>never (cliff)</strong></td>
+                        <td>57 s, 100%</td>
+                        <td>6.6 s</td>
+                        <td class="is-best"><strong>0 s</strong></td>
+                      </tr>
+                      <tr>
+                        <td>50,000</td>
+                        <td class='t-mute'>cliff</td>
+                        <td class="is-worst">223 s, 98.6%</td>
+                        <td class="is-worst">151 s</td>
+                        <td class="is-best"><strong>0 s</strong></td>
+                      </tr>
+                      <tr>
+                        <td>~90&ndash;100K</td>
+                        <td class='t-mute'>cliff</td>
+                        <td class="is-worst"><strong>ramp cliff</strong></td>
+                        <td class='t-mute'>&mdash;</td>
+                        <td class="is-best"><strong>0 s</strong></td>
                       </tr>
                     </tbody>
                   </table>
-                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0 4px; line-height: 1.5;">Same 1 vCPU / 0.5 GB Railway box used for Socket.io's 25K cliff. uWS recovery = wall-clock time to 95% reconnected; p50 = median per-client blackout (typical user "Connecting&hellip;" window). At ~90&ndash;100K, uws-server-small can't even ramp the full target &mdash; it's the server-side cliff. AnyCable's WebSocket layer is a separate Go binary, so app deploys never restart it &mdash; no avalanche at any scale.</p>
+                  <p class='compare-data-table__footnote'>Same 1 vCPU / 0.5 GB Railway box used for Socket.io's 25K cliff. uWS recovery = wall-clock time to 95% reconnected; p50 = median per-client blackout (typical user "Connecting&hellip;" window). At ~90&ndash;100K, uws-server-small can't even ramp the full target &mdash; it's the server-side cliff. AnyCable's WebSocket layer is a separate Go binary, so app deploys never restart it &mdash; no avalanche at any scale.</p>
                 </div>
               </div>
             </div>
@@ -577,20 +580,20 @@ Client 2: <span style="color: #86efac;">all 120 received</span>  (p95: 4.1s)</pr
                 </p>
               </div>
               <div class='about-slide__media about-slide__media-top'>
-                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.7; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #ff6b6b; font-weight: 700;"># Socket.io deploy — 5,000 clients</span><span style="color: #888;"> (1 vCPU / 0.5 GB box)</span>
+                <pre class='compare-code-block'><span class='c-err t-bold'># Socket.io deploy — 5,000 clients</span><span class='t-mute'> (1 vCPU / 0.5 GB box)</span>
 t=0.0s → deploy restarts server
-t=0.5s → <span style="color: #ff6b6b;">all 5,000 connections dropped</span>
+t=0.5s → <span class='c-err'>all 5,000 connections dropped</span>
 t=2.6s → p50 reconnected
 t=4.5s → 95% recovery (avalanche over)
 
-<span style="color: #ff6b6b; font-weight: 700;"># Socket.io deploy — 25,000 clients</span><span style="color: #888;"> (same box) — the cliff</span>
+<span class='c-err t-bold'># Socket.io deploy — 25,000 clients</span><span class='t-mute'> (same box) — the cliff</span>
 t=0.0s   → deploy restarts server
-t=0.5s   → <span style="color: #ff6b6b;">all 25,000 connections dropped</span>
-t=300s+  → <span style="color: #ff6b6b;">0 reconnected — box can't absorb the storm</span>
+t=0.5s   → <span class='c-err'>all 25,000 connections dropped</span>
+t=300s+  → <span class='c-err'>0 reconnected — box can't absorb the storm</span>
 
-<span style="color: #86efac; font-weight: 700;"># AnyCable deploy — any client count, any box</span>
+<span class='c-str t-bold'># AnyCable deploy — any client count, any box</span>
 t=0.0s → deploy restarts app
-t=0.0s → <span style="color: #86efac;">zero connections dropped</span>
+t=0.0s → <span class='c-str'>zero connections dropped</span>
 t=0.0s → users don't notice</pre>
               </div>
             </div>
@@ -607,7 +610,7 @@ t=0.0s → users don't notice</pre>
                 <p class='about-slide__text'>
                   The architectural cost of co-locating WebSocket and app: deploy resilience is bounded by what the box absorbs during its weakest moment — cold start.
                 </p>
-                <h3 class='about-slide__subtitle' style="margin-top: 32px;">CSR with the in-memory adapter doesn't help here</h3>
+                <h3 class='about-slide__subtitle'>CSR with the in-memory adapter doesn't help here</h3>
                 <p class='about-slide__text'>
                   CSR depends on server-side state. The in-memory adapter loses it on restart — nothing to replay. Redis Streams or MongoDB persist the state, but the connections still drop. No protocol papers over architecture.
                 </p>
@@ -617,49 +620,49 @@ t=0.0s → users don't notice</pre>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
                 <div class='slide-show__frame'>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                  <table class='compare-data-table'>
                     <thead>
-                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
-                        <th style=" text-align: left;">Clients</th>
-                        <th style=" text-align: right;">Socket.io recovery</th>
-                        <th style=" text-align: right;">Reconnected</th>
-                        <th style=" text-align: right;">AnyCable</th>
+                      <tr>
+                        <th>Clients</th>
+                        <th>Socket.io recovery</th>
+                        <th>Reconnected</th>
+                        <th>AnyCable</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">5,000</td>
-                        <td style=" text-align: right;">4.5 s</td>
-                        <td style=" text-align: right;">100%</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      <tr>
+                        <td>5,000</td>
+                        <td>4.5 s</td>
+                        <td>100%</td>
+                        <td class="is-best"><strong>0 s</strong></td>
                       </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">10,000</td>
-                        <td style=" text-align: right;">3.9 s</td>
-                        <td style=" text-align: right;">100%</td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      <tr>
+                        <td>10,000</td>
+                        <td>3.9 s</td>
+                        <td>100%</td>
+                        <td class="is-best"><strong>0 s</strong></td>
                       </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">15,000</td>
-                        <td style=" text-align: right;">5.8 s</td>
-                        <td style=" text-align: right;">98.5% <span style="color: #888;">(224 lost)</span></td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      <tr>
+                        <td>15,000</td>
+                        <td>5.8 s</td>
+                        <td>98.5% <span class='t-mute'>(224 lost)</span></td>
+                        <td class="is-best"><strong>0 s</strong></td>
                       </tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="">20,000</td>
-                        <td style=" text-align: right;">8.0 s</td>
-                        <td style=" text-align: right; color: #F64343;">96.2% <span style="color: #888;">(753 lost)</span></td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      <tr>
+                        <td>20,000</td>
+                        <td>8.0 s</td>
+                        <td class="is-worst">96.2% <span class='t-mute'>(753 lost)</span></td>
+                        <td class="is-best"><strong>0 s</strong></td>
                       </tr>
-                      <tr style="background: #fff5f5;">
-                        <td style=""><strong>25,000</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>never</strong></td>
-                        <td style=" text-align: right; color: #F64343;"><strong>0% (all 25K lost)</strong></td>
-                        <td style=" text-align: right;"><strong>0 s</strong></td>
+                      <tr class='is-row-worst'>
+                        <td><strong>25,000</strong></td>
+                        <td class="is-worst"><strong>never</strong></td>
+                        <td class="is-worst"><strong>0% (all 25K lost)</strong></td>
+                        <td class="is-best"><strong>0 s</strong></td>
                       </tr>
                     </tbody>
                   </table>
-                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0; line-height: 1.5;">1 vCPU / 0.5 GB Railway box. "Recovery" = wall-clock time until 95% of clients reconnect. AnyCable's WebSocket layer is a separate Go binary, so app deploys don't restart it — no avalanche to recover from at any scale.</p>
+                  <p class='compare-data-table__footnote'>1 vCPU / 0.5 GB Railway box. "Recovery" = wall-clock time until 95% of clients reconnect. AnyCable's WebSocket layer is a separate Go binary, so app deploys don't restart it — no avalanche to recover from at any scale.</p>
                 </div>
               </div>
             </div>
@@ -687,25 +690,25 @@ t=0.0s → users don't notice</pre>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
                 <div class='slide-show__frame'>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                  <table class='compare-data-table'>
                     <thead>
-                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
-                        <th style=" text-align: left;">Idle connections held</th>
-                        <th style=" text-align: right;">Memory at peak</th>
-                        <th style=" text-align: right;">Per-conn</th>
-                        <th style=" text-align: right;">Replay?</th>
+                      <tr>
+                        <th>Idle connections held</th>
+                        <th>Memory at peak</th>
+                        <th>Per-conn</th>
+                        <th>Replay?</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">200,000 <span style="font-size: 11px; color: #888;">AC OSS</span></td><td style=" text-align: right;">8.35 GB</td><td style=" text-align: right;">42 KB</td><td style=" text-align: right;">yes</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">200,000 <span style="font-size: 11px; color: #F64343;">AC Pro</span></td><td style=" text-align: right;">3.56 GB</td><td style=" text-align: right;">18 KB</td><td style=" text-align: right;">yes</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="color: #555;">Socket.io <span style="font-size: 11px; color: #888;">(1M attempted)</span></td><td style=" text-align: right; color: #F64343;">119,826 conns</td><td style=" text-align: right;">~52 KB</td><td style=" text-align: right; color: #888;">no</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style=""><strong>993,994</strong> <span style="font-size: 11px; color: #888;">AC OSS, RAM-bound</span></td><td style=" text-align: right; color: #F64343;"><strong>32.00 GB</strong> (ceiling)</td><td style=" text-align: right;">33 KB</td><td style=" text-align: right;">yes</td></tr>
-                      <tr style="background: #f0fdf4; border-bottom: 1px solid #f0f0f0;"><td style=""><strong>999,954</strong> <span style="font-size: 11px; color: #F64343;">AC Pro</span></td><td style=" text-align: right;"><strong>19.34 GB</strong></td><td style=" text-align: right;">19 KB</td><td style=" text-align: right;">yes</td></tr>
-                      <tr style="background: #f0fdf4;"><td style=""><strong>1,018,366</strong> <span style="font-size: 11px; color: #888;">uWS</span></td><td style=" text-align: right;"><strong>5.45 GB</strong></td><td style=" text-align: right;"><strong>5.4 KB</strong></td><td style=" text-align: right; color: #888;">no</td></tr>
+                      <tr><td>200,000 <span class='t-mute t-tiny'>AC OSS</span></td><td>8.35 GB</td><td>42 KB</td><td class="is-best">yes</td></tr>
+                      <tr><td>200,000 <span class='t-accent t-tiny'>AC Pro</span></td><td>3.56 GB</td><td>18 KB</td><td class="is-best">yes</td></tr>
+                      <tr><td style="color: #555;">Socket.io <span class='t-mute t-tiny'>(1M attempted)</span></td><td class="is-worst">119,826 conns</td><td>~52 KB</td><td class="is-worst">no</td></tr>
+                      <tr><td><strong>993,994</strong> <span class='t-mute t-tiny'>AC OSS, RAM-bound</span></td><td class="is-worst"><strong>32.00 GB</strong> (ceiling)</td><td>33 KB</td><td class="is-best">yes</td></tr>
+                      <tr class='is-row-best'><td><strong>999,954</strong> <span class='t-accent t-tiny'>AC Pro</span></td><td><strong>19.34 GB</strong></td><td>19 KB</td><td class="is-best">yes</td></tr>
+                      <tr class='is-row-best'><td><strong>1,018,366</strong> <span class='t-mute t-tiny'>uWS</span></td><td class="is-best"><strong>5.45 GB</strong></td><td class="is-best"><strong>5.4 KB</strong></td><td class="is-worst">no</td></tr>
                     </tbody>
                   </table>
-                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0; line-height: 1.5;">Same 32 vCPU / 32 GB Railway box. uWS leads on bare-wire density &mdash; no broker overhead. AnyCable Pro is the lightest setup that includes built-in replay; the extra ~14 KB / connection is per-stream history, broker framing, and reconnect-resume protocol.</p>
+                  <p class='compare-data-table__footnote'>Same 32 vCPU / 32 GB Railway box. uWS leads on bare-wire density &mdash; no broker overhead. AnyCable Pro is the lightest setup that includes built-in replay; the extra ~14 KB / connection is per-stream history, broker framing, and reconnect-resume protocol.</p>
                 </div>
 
                 {{!-- Memory + CPU during the 1M Pro run, captured live
@@ -770,16 +773,16 @@ CPU (% of 1 vCPU)
                 </ol>
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
-                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 32px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.7; white-space: pre; overflow-x: auto; margin: 0; width: 100%; box-sizing: border-box;"><span style="color: #888;">// Before: Socket.io (embedded in your app)</span>
-<span style="color: #86efac;">io</span>.to(<span style="color: #fcd34d;">'chat:42'</span>).emit(<span style="color: #fcd34d;">'message'</span>, payload);
+                <pre class='compare-code-block'><span class='t-mute'>// Before: Socket.io (embedded in your app)</span>
+<span class='c-str'>io</span>.to(<span class='c-key'>'chat:42'</span>).emit(<span class='c-key'>'message'</span>, payload);
 
-<span style="color: #888;">// After: broadcast to AnyCable via HTTP</span>
-<span style="color: #86efac;">await fetch</span>(<span style="color: #fcd34d;">'http://anycable:8080/_broadcast'</span>, {
-  method: <span style="color: #fcd34d;">'POST'</span>,
-  headers: { <span style="color: #fcd34d;">'Content-Type'</span>: <span style="color: #fcd34d;">'application/json'</span> },
-  body: <span style="color: #86efac;">JSON</span>.stringify({
-    stream: <span style="color: #fcd34d;">'chat:42'</span>,
-    data: <span style="color: #86efac;">JSON</span>.stringify(payload),
+<span class='t-mute'>// After: broadcast to AnyCable via HTTP</span>
+<span class='c-str'>await fetch</span>(<span class='c-key'>'http://anycable:8080/_broadcast'</span>, {
+  method: <span class='c-key'>'POST'</span>,
+  headers: { <span class='c-key'>'Content-Type'</span>: <span class='c-key'>'application/json'</span> },
+  body: <span class='c-str'>JSON</span>.stringify({
+    stream: <span class='c-key'>'chat:42'</span>,
+    data: <span class='c-str'>JSON</span>.stringify(payload),
   }),
 });</pre>
               </div>
@@ -797,20 +800,20 @@ CPU (% of 1 vCPU)
                   Three places to start: read the code, run a working demo, or wire it into a serverless setup.
                 </p>
                 <div class='compare-try-it-grid'>
-                  <a href='https://github.com/anycable/anycable-client' target='_blank' style="display: block; text-decoration: none; color: inherit; border: 1px solid #ececec; border-radius: 8px; padding: 24px; background: white; text-align: left; transition: border-color 0.15s;">
-                    <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">JS client</div>
-                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">@anycable/core, @anycable/web</div>
-                    <div style="font-size: 14px; color: #666; line-height: 1.5;">The official client for Node.js, browsers, React Native. Connect, subscribe, presence, history — same surface in every JS environment.</div>
+                  <a class='compare-try-card' href='https://github.com/anycable/anycable-client' target='_blank'>
+                    <div class='t-eyebrow' style="margin-bottom: 8px;">JS client</div>
+                    <div class='compare-try-card__title'>@anycable/core, @anycable/web</div>
+                    <div class='compare-try-card__desc'>The official client for Node.js, browsers, React Native. Connect, subscribe, presence, history — same surface in every JS environment.</div>
                   </a>
-                  <a href='https://github.com/anycable/twilio-ai-js-demo' target='_blank' style="display: block; text-decoration: none; color: inherit; border: 1px solid #ececec; border-radius: 8px; padding: 24px; background: white; text-align: left;">
-                    <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Working demo</div>
-                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Next.js + AnyCable + voice AI</div>
-                    <div style="font-size: 14px; color: #666; line-height: 1.5;">A real Twilio + OpenAI streaming demo on Next.js. Clone, set keys, run. Uses AnyCable for the realtime transport.</div>
+                  <a class='compare-try-card' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>
+                    <div class='t-eyebrow' style="margin-bottom: 8px;">Working demo</div>
+                    <div class='compare-try-card__title'>Next.js + AnyCable + voice AI</div>
+                    <div class='compare-try-card__desc'>A real Twilio + OpenAI streaming demo on Next.js. Clone, set keys, run. Uses AnyCable for the realtime transport.</div>
                   </a>
-                  <a href='https://github.com/anycable/anycable-serverless-js' target='_blank' style="display: block; text-decoration: none; color: inherit; border: 1px solid #ececec; border-radius: 8px; padding: 24px; background: white; text-align: left;">
-                    <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Serverless</div>
-                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">@anycable/serverless-js</div>
-                    <div style="font-size: 14px; color: #666; line-height: 1.5;">Channels API for serverless deployments — Vercel, Cloudflare Workers, Lambda. Define channel logic in TS without standing up a long-lived process.</div>
+                  <a class='compare-try-card' href='https://github.com/anycable/anycable-serverless-js' target='_blank'>
+                    <div class='t-eyebrow' style="margin-bottom: 8px;">Serverless</div>
+                    <div class='compare-try-card__title'>@anycable/serverless-js</div>
+                    <div class='compare-try-card__desc'>Channels API for serverless deployments — Vercel, Cloudflare Workers, Lambda. Define channel logic in TS without standing up a long-lived process.</div>
                   </a>
                 </div>
               </div>
@@ -833,29 +836,36 @@ CPU (% of 1 vCPU)
               </div>
               <div class='about-slide__media about-slide__media-align-top about-slide__media-sticky'>
                 <div class='slide-show__frame'>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                  <table class='compare-data-table compare-data-table--compact'>
+                    <colgroup>
+                      <col style="width: 26%;" />
+                      <col style="width: 18.5%;" />
+                      <col style="width: 18.5%;" />
+                      <col style="width: 18.5%;" />
+                      <col style="width: 18.5%;" />
+                    </colgroup>
                     <thead>
-                      <tr style="background: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
-                        <th style=" text-align: left;">Feature</th>
-                        <th style=" text-align: center;">Default Socket.io</th>
-                        <th style=" text-align: center;">Socket.io + CSR</th>
-                        <th style=" text-align: center;">uWebSockets.js</th>
-                        <th style=" text-align: center;">AnyCable</th>
+                      <tr>
+                        <th>Feature</th>
+                        <th>Default<br/>Socket.io</th>
+                        <th>Socket.io<br/>+ CSR</th>
+                        <th>uWeb-<br/>Sockets.js</th>
+                        <th>AnyCable</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Reliable delivery</td><td style=" text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank'>No</a></td><td style=" text-align: center;"><a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Yes (opt-in)</a></td><td style=" text-align: center; color: #F64343;">No</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/durable_streams' target='_blank'>Yes (default)</a></td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Replay latency p99</td><td style=" text-align: center; color: #F64343;">lost</td><td style=" text-align: center; color: #F64343;">~8 s</td><td style=" text-align: center; color: #F64343;">lost</td><td style=" text-align: center;">~6 s</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Survives server restart</td><td style=" text-align: center; color: #F64343;">No</td><td style=" text-align: center;"><a class='link' href='https://socket.io/docs/v4/redis-streams-adapter' target='_blank'>Redis Streams</a> / <a class='link' href='https://socket.io/docs/v4/mongo-adapter' target='_blank'>Mongo</a></td><td style=" text-align: center; color: #F64343;">No</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>NATS / Redis</a></td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Multi-node setup</td><td style=" text-align: center;"><a class='link' href='https://socket.io/docs/v4/redis-adapter' target='_blank'>Redis pub/sub</a></td><td style=" text-align: center; color: #F64343;">Redis pub/sub incompat.</td><td style=" text-align: center; color: #F64343;">DIY (Redis)</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>Any broker</a></td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Deploy resilience</td><td style=" text-align: center; color: #F64343;">All drop</td><td style=" text-align: center; color: #F64343;">All drop</td><td style=" text-align: center; color: #F64343;">All drop</td><td style=" text-align: center;">Connections survive</td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Presence tracking</td><td style=" text-align: center; color: #F64343;">DIY</td><td style=" text-align: center; color: #F64343;">DIY</td><td style=" text-align: center; color: #F64343;">DIY</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/presence' target='_blank'>Built-in</a></td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Authentication</td><td style=" text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/middlewares/' target='_blank'>DIY</a></td><td style=" text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/middlewares/' target='_blank'>DIY</a></td><td style=" text-align: center; color: #F64343;">DIY</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/jwt_identification' target='_blank'>JWT</a>, <a class='link' href='https://docs.anycable.io/anycable-go/signed_streams' target='_blank'>signed streams</a></td></tr>
-                      <tr style="border-bottom: 1px solid #f0f0f0;"><td style="">Backend language</td><td style=" text-align: center; color: #F64343;">Node.js only</td><td style=" text-align: center; color: #F64343;">Node.js only</td><td style=" text-align: center; color: #F64343;">Node.js only</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/broadcasting' target='_blank'>Any (HTTP API)</a></td></tr>
-                      <tr><td style="">Monitoring</td><td style=" text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/admin-ui/' target='_blank'>Admin UI</a></td><td style=" text-align: center; color: #F64343;"><a class='link' href='https://socket.io/docs/v4/admin-ui/' target='_blank'>Admin UI</a></td><td style=" text-align: center; color: #F64343;">DIY</td><td style=" text-align: center;"><a class='link' href='https://docs.anycable.io/anycable-go/instrumentation' target='_blank'>Prometheus &amp; StatsD</a></td></tr>
+                      <tr><td>Reliable delivery</td><td class='is-worst'><a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank'>No</a></td><td><a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank'>Yes (opt-in)</a></td><td class='is-worst'>No</td><td class='is-best'><a class='link' href='https://docs.anycable.io/anycable-go/durable_streams' target='_blank'>Yes (default)</a></td></tr>
+                      <tr><td>Replay latency p99</td><td class='is-worst'>lost</td><td class='is-worst'>~8 s</td><td class='is-worst'>lost</td><td class='is-best'>~6 s</td></tr>
+                      <tr><td>Survives server restart</td><td class='is-worst'>No</td><td><a class='link' href='https://socket.io/docs/v4/redis-streams-adapter' target='_blank'>Redis Streams</a> / <a class='link' href='https://socket.io/docs/v4/mongo-adapter' target='_blank'>Mongo</a></td><td class='is-worst'>No</td><td class='is-best'><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>NATS / Redis</a></td></tr>
+                      <tr><td>Multi-node setup</td><td><a class='link' href='https://socket.io/docs/v4/redis-adapter' target='_blank'>Redis pub/sub</a></td><td class='is-worst'>Redis pub/sub incompat.</td><td class='is-worst'>DIY (Redis)</td><td class='is-best'><a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank'>Any broker</a></td></tr>
+                      <tr><td>Deploy resilience</td><td class='is-worst'>All drop</td><td class='is-worst'>All drop</td><td class='is-worst'>All drop</td><td class='is-best'>Connections survive</td></tr>
+                      <tr><td>Presence tracking</td><td class='is-worst'>DIY</td><td class='is-worst'>DIY</td><td class='is-worst'>DIY</td><td class='is-best'><a class='link' href='https://docs.anycable.io/anycable-go/presence' target='_blank'>Built-in</a></td></tr>
+                      <tr><td>Authentication</td><td class='is-worst'><a class='link' href='https://socket.io/docs/v4/middlewares/' target='_blank'>DIY</a></td><td class='is-worst'><a class='link' href='https://socket.io/docs/v4/middlewares/' target='_blank'>DIY</a></td><td class='is-worst'>DIY</td><td class='is-best'><a class='link' href='https://docs.anycable.io/anycable-go/jwt_identification' target='_blank'>JWT</a>, <a class='link' href='https://docs.anycable.io/anycable-go/signed_streams' target='_blank'>signed streams</a></td></tr>
+                      <tr><td>Backend language</td><td class='is-worst'>Node.js only</td><td class='is-worst'>Node.js only</td><td class='is-worst'>Node.js only</td><td class='is-best'><a class='link' href='https://docs.anycable.io/anycable-go/broadcasting' target='_blank'>Any (HTTP API)</a></td></tr>
+                      <tr><td>Monitoring</td><td class='is-worst'><a class='link' href='https://socket.io/docs/v4/admin-ui/' target='_blank'>Admin UI</a></td><td class='is-worst'><a class='link' href='https://socket.io/docs/v4/admin-ui/' target='_blank'>Admin UI</a></td><td class='is-worst'>DIY</td><td class='is-best'><a class='link' href='https://docs.anycable.io/anycable-go/instrumentation' target='_blank'>Prometheus &amp; StatsD</a></td></tr>
                     </tbody>
                   </table>
-                  <p style="font-size: 12px; color: #888; margin: 12px 4px 0; line-height: 1.5;">uWS solves Socket.io's wire-overhead problem &mdash; not its framework gaps. Every feature beyond raw transport is still DIY, on the same single Node process. The "what you don't have to build" question is the same.</p>
+                  <p class='compare-data-table__footnote'>uWS solves Socket.io's wire-overhead problem &mdash; not its framework gaps. Every feature beyond raw transport is still DIY, on the same single Node process. The "what you don't have to build" question is the same.</p>
                 </div>
               </div>
             </div>
@@ -877,17 +887,17 @@ CPU (% of 1 vCPU)
               </div>
               <div class='about-slide__media'>
                 <div class='slide-show__frame compare-quote-card'>
-                  <div style="font-size: 12px; color: #888; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;">Proven at scale</div>
+                  <div class='compare-quote-card__eyebrow'>Proven at scale</div>
                   {{!-- Doximity quote — public; from On Rails Podcast.
                        Trimmed to focus on the deploy-resilience point. --}}
-                  <blockquote style="font-size: 17px; line-height: 1.6; color: #1a1a1a; margin: 0 0 20px; padding: 0; font-style: normal; quotes: none;">
+                  <blockquote class='compare-quote-card__text'>
                     "We use AnyCable for our dialer products, which is where real-time is critical — it's our video and voice platform. Anytime you restart your application, which happens when you deploy, you're gonna get connection severances. AnyCable allows them to keep that connection open. That Go service stays up, and you can continue shipping your application as normal."
                   </blockquote>
-                  <div style="font-size: 14px; line-height: 1.5; color: #555; margin-bottom: 24px;">
-                    <strong style="color: #1a1a1a;">Ryan Stawarz &amp; Austin Story</strong><br/>
+                  <div class='compare-quote-card__byline'>
+                    <strong>Ryan Stawarz &amp; Austin Story</strong><br/>
                     Engineering at <a class='link' href='https://www.doximity.com' target='_blank'>Doximity</a> &middot; <a class='link' href='https://podcast.rubyonrails.org/2462975/episodes/17653501' target='_blank'>podcast interview</a>
                   </div>
-                  <div style="padding-top: 20px; border-top: 1px solid #ececec; font-size: 13px; color: #777; line-height: 1.65;">
+                  <div class='compare-quote-card__footer'>
                     Also in production at <strong>CompanyCam</strong>, <strong>Headway</strong>, <strong>Jobber</strong>, <strong>CoinGecko</strong>, <strong>ClickFunnels</strong>, and <a class='link' href='https://anycable.io/#customers' target='_blank'>30+ other companies since 2017</a>.
                   </div>
                 </div>
