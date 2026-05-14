@@ -1,9 +1,10 @@
 // =====================================================================
 // Compare-page styles — anycable.io/compare/socket-io
 //
-// All rules are scoped under .compare-page so global components like
-// .about-slide and .slide-show__frame can be safely re-used elsewhere
-// without inheriting the comparison-page treatment.
+// All rules are scoped under .compare-page. The page uses its own
+// compare-rubric / compare-frame / compare-impact-* primitives instead
+// of reusing the .about-slide / .slide-show__frame slideshow classes
+// so the BEM naming reflects the actual content (no "slides" here).
 //
 // Global tokens ($accentPrimaryColor, $backgroundSecondaryColor, etc.)
 // come from src/modules/variables.scss, imported in index.scss.
@@ -58,7 +59,7 @@ $compare-best:           #16a34a;  // green winner accent
 
 .compare-page {
   // Notebook-feel dotted background — continuous from hero through CTA.
-  // Gray panels inside about-slide paint over it.
+  // Gray .compare-rubric__content panels paint over it on the left side.
   background-color: $backgroundPrimaryColor;
   background-image: radial-gradient(
     circle,
@@ -66,82 +67,6 @@ $compare-best:           #16a34a;  // green winner accent
     transparent 1px
   );
   background-size: 22px 22px;
-
-  // !important here defeats per-slide bg rules set globally on
-  // .slide.about-slide, .slide.cases-slide, etc. — we want every
-  // slide on this page to show the dotted page bg through.
-  .slide {
-    background: transparent !important;
-  }
-
-
-  // -------------------------------------------------------------------
-  // Section rhythm
-  // -------------------------------------------------------------------
-  // Padding lives on the COLUMNS, not the slide. The slide stays
-  // unpadded so the gray left-column bg flows continuously between
-  // adjacent sections; the columns each get top + bottom padding so
-  // their content (FAQ items, tables, code, cards) never sits flush
-  // against a gray edge.
-  //
-  // We zero out __title margin-top because the column padding above
-  // already handles the H2's top spacing — the global 120px would
-  // double-stack.
-  .about-slide__content,
-  .about-slide__content-full,
-  .about-slide__media {
-    padding-top: 80px;
-    padding-bottom: 80px;
-  }
-
-  .about-slide__title {
-    margin-top: 0;
-  }
-
-  // Right column: transparent so the dotted page bg shows through
-  // instead of the global white panel fill.
-  .about-slide__media {
-    background-color: transparent !important;
-    background-image: none !important;
-  }
-
-
-  // -------------------------------------------------------------------
-  // Mobile + tablet: bring the right column (data, tables, code, charts)
-  // back into view. The global about-slide hides .about-slide__media on
-  // any screen ≤1023px; that's intentional for marketing pages where the
-  // media is decorative, but on this comparison page the media IS the
-  // argument — the benchmark tables, scaling tables, code samples, and
-  // feature matrix all live there. Without this override, mobile and
-  // tablet users see only the prose, which is roughly half the page.
-  //
-  // Two coordinated changes:
-  //   1. Section flips to flex-direction: column so the media stacks
-  //      below the content instead of trying to share a row.
-  //   2. Media gets display:flex back, full width, and its own bottom
-  //      padding (the column-stack gap is provided by content's bottom
-  //      padding + media's lack of top padding so they read as one
-  //      visual unit).
-  //
-  // Inside the media, tables and <pre> blocks may be wider than the
-  // narrow viewport; we switch the rounded-frame's overflow from hidden
-  // to auto so the data scrolls horizontally rather than getting cropped.
-  @include mediaMax($tablet) {
-    .about-slide__section {
-      flex-direction: column;
-    }
-
-    .about-slide__media {
-      display: flex;
-      width: 100%;
-      padding: 0 0 48px;
-    }
-
-    // overflow-x:auto for the frame and pre blocks lives in their own
-    // rules below — placing it here would source-order-lose to the
-    // later `overflow: hidden` shorthand on .slide-show__frame.
-  }
-
 
   // -------------------------------------------------------------------
   // Mobile: collapse multi-column grids to a single column. The
@@ -187,16 +112,337 @@ $compare-best:           #16a34a;  // green winner accent
 
 
   // -------------------------------------------------------------------
-  // Sub-section spacing inside long prose columns (architecture, each
-  // pillar). The first h3 sits flush to the lead paragraph; subsequent
-  // h3s need breathing room above. Replaces the per-element
-  // style="margin-top: 32px" sprinkled across the markup.
+  // compare-rubric: the page's main section wrapper. Replaces the
+  // formerly-reused `.slide.about-slide` combo (every rubric, the
+  // architecture intro, the migration section, etc.). Owns the
+  // two-column content/media layout, the sticky media variant, and
+  // mobile reflow. Self-contained: pulls in the rules previously
+  // inherited from slide.scss / about-slide.scss / compare.scss
+  // overrides so this page no longer reuses cross-page slideshow CSS.
   // -------------------------------------------------------------------
-  .about-slide__content {
-    h3.about-slide__subtitle + p + h3.about-slide__subtitle,
-    h3.about-slide__subtitle ~ h3.about-slide__subtitle {
-      margin-top: 32px;
+  .compare-rubric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    scroll-margin-top: 64px;
+    background: transparent;
+
+    &__wrapper {
+      width: 100%;
+      max-width: 1920px;
+      display: flex;
+      flex-direction: column;
     }
+
+    &__section {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      align-items: stretch;
+      position: relative;
+
+      &:last-of-type {
+        margin-bottom: 0;
+        border-bottom: 1px solid $borderPrimaryColor;
+      }
+
+      @include mediaMax($tablet) {
+        padding: 0 24px;
+        flex-direction: column;
+        background-color: $backgroundSecondaryColor;
+      }
+    }
+
+    // Left column: the prose. Gray fill, vertical 80px gutter so H2 and
+    // bullets don't sit flush against section edges.
+    &__content {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      background-color: $backgroundSecondaryColor;
+      border-right: 1px solid $borderPrimaryColor;
+      padding: 80px 64px;
+      z-index: 2;
+      position: relative;
+
+      @include mediaMax($tablet) {
+        width: 100%;
+        border-right: none;
+        padding: 0;
+
+        &:first-child { padding-top: 48px; }
+      }
+
+      // For sections without a media partner (FAQ, code samples).
+      &--full {
+        width: 100%;
+        border-right: none;
+      }
+
+      // Sub-section spacing in long prose columns: subsequent h3 subtitles
+      // need breathing room above the previous paragraph.
+      h3.compare-rubric__subtitle + p + h3.compare-rubric__subtitle,
+      h3.compare-rubric__subtitle ~ h3.compare-rubric__subtitle {
+        margin-top: 32px;
+      }
+    }
+
+    // Right column: the data. Transparent so the dotted page bg shows
+    // through (no white panel painted over it).
+    &__media {
+      width: 50%;
+      padding: 80px 64px;
+      background: transparent;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      // On the comparison page the media IS the argument — tables,
+      // charts, code samples. Keep it visible on mobile/tablet (the
+      // global about-slide hides it ≤1023px; we don't).
+      @include mediaMax($tablet) {
+        display: flex;
+        width: 100%;
+        padding: 0 0 48px;
+      }
+
+      &--align-top {
+        align-self: flex-start;
+        margin-bottom: 48px;
+      }
+
+      // Pushes the media column down so it aligns with prose paragraph
+      // ~start (after the H2 title). Used where the H2 lives only on
+      // the left and the media needs to feel aligned with the lead p.
+      &--top {
+        margin-top: 120px;
+
+        @include mediaMax($tablet) {
+          margin-top: 24px;
+        }
+      }
+
+      // Pins the media column while the reader scrolls long prose.
+      &--sticky {
+        align-self: flex-start;
+        position: sticky;
+        top: 80px; // 60px page header + 20px breathing room
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+
+        @include mediaMax($tablet) {
+          position: static;
+          max-height: none;
+          overflow: visible;
+        }
+      }
+
+      // <pre> blocks inside the media column (code samples, ASCII charts)
+      // get the same compact dark slab as compare-code-block.
+      pre {
+        background-color: $compare-bg-code;
+        border-radius: $compare-radius;
+
+        @include mediaMax($tablet) {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+    }
+
+    &__title {
+      font-size: 46px;
+      line-height: 1.2;
+      font-weight: 700;
+      margin: 0 0 56px;
+      scroll-margin-top: $compare-header-offset;
+
+      @include mediaMax($mobile) {
+        font-size: 40px;
+        line-height: 1.3;
+        margin-bottom: 24px;
+      }
+
+      .heading-anchor {
+        margin-left: 8px;
+        color: $compare-text-faint;
+        font-weight: 400;
+        text-decoration: none;
+        opacity: 0;
+        transition: opacity 0.15s;
+      }
+
+      &:hover .heading-anchor { opacity: 1; }
+      .heading-anchor:hover   { color: $accentPrimaryColor; }
+    }
+
+    &__subtitle {
+      font-size: 20px;
+      line-height: 1.6;
+      font-weight: 700;
+      align-self: flex-start;
+      margin-bottom: 24px;
+      scroll-margin-top: $compare-header-offset;
+
+      .heading-anchor {
+        margin-left: 8px;
+        color: $compare-text-faint;
+        font-weight: 400;
+        text-decoration: none;
+        opacity: 0;
+        transition: opacity 0.15s;
+      }
+
+      &:hover .heading-anchor { opacity: 1; }
+      .heading-anchor:hover   { color: $accentPrimaryColor; }
+    }
+
+    // Eyebrow above a section title (e.g. "Impact" above Rubric 1's
+    // affected-workloads section). Replaces .cases-slide__pretitle.
+    &__eyebrow {
+      font-size: 20px;
+      line-height: 1.6;
+      color: $accentPrimaryColor;
+      margin-bottom: 14px;
+
+      @include mediaMax($mobile) {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+
+  // -------------------------------------------------------------------
+  // compare-frame: rounded card wrapper around tables, code blocks, and
+  // figures in the media column. Replaces .slide-show__frame. On mobile
+  // the frame switches from clipping to horizontal scroll so wide data
+  // stays readable.
+  // -------------------------------------------------------------------
+  .compare-frame {
+    display: block;
+    padding: 12px 0;
+    background-color: $backgroundPrimaryColor;
+    border: 1px solid $compare-border;
+    border-radius: $compare-radius;
+    overflow: hidden;
+
+    @include mediaMax($tablet) {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+
+  // -------------------------------------------------------------------
+  // compare-impact-cards: 2-up grid of affected-workload cards in the
+  // "Impact" section. Replaces .cases-slide__companies / __company-card.
+  // -------------------------------------------------------------------
+  .compare-impact-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    padding: 32px 0;
+
+    @include mediaMax($mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .compare-impact-card {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid $compare-border;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: left;
+    color: inherit;
+    background: none;
+    transition: border-color 200ms, box-shadow 200ms, transform 200ms;
+
+    &:hover {
+      border-color: $accentPrimaryColor;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    &__title {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+
+    &__desc {
+      display: block;
+      font-size: 13px;
+      line-height: 1.4;
+      color: $fontSecondaryColor;
+    }
+  }
+
+
+  // -------------------------------------------------------------------
+  // Compare-page prose paragraph. Replaces .about-slide__text on this
+  // page because the comparison page is not an "about slide" — the
+  // shared class brought 84px bottom margin that was too airy here.
+  // Same 20px / 1.6 typography for visual continuity; ~half the gap.
+  // Inline <code> inside gets the same calm pill treatment used in
+  // .about-slide__text on other pages.
+  // -------------------------------------------------------------------
+  .compare-prose {
+    font-size: 20px;
+    line-height: 1.6;
+    margin: 0 0 40px;
+
+    @include mediaMax($mobile) {
+      margin-bottom: 28px;
+    }
+
+    code {
+      font-size: 0.85em;
+      font-weight: 500;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 1px 6px;
+      border-radius: 4px;
+      vertical-align: 1px;
+      white-space: nowrap;
+
+      @include mediaMax($mobile) {
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+    }
+  }
+
+
+  // -------------------------------------------------------------------
+  // Callout — soft-tinted methodology note. Used inline within prose
+  // to flag a caveat or framing for the data that follows. BEM block
+  // (not inline style!) so the visual treatment is consistent and
+  // tweakable in one place.
+  // -------------------------------------------------------------------
+  .compare-callout {
+    padding: 14px 18px;
+    margin: 0 0 32px;
+    background: $compare-bg-soft;
+    border-left: 3px solid $compare-border;
+    border-radius: 0 4px 4px 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: $compare-text-meta;
+
+    strong { color: $compare-text-strong; font-weight: 600; }
+    code { background: rgba(0, 0, 0, 0.06); padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
   }
 
 
@@ -246,6 +492,79 @@ $compare-best:           #16a34a;  // green winner accent
     white-space: pre;
     overflow-x: auto;
     box-sizing: border-box;
+  }
+
+  // -------------------------------------------------------------------
+  // Tabbed code block — radio-input + label trick for no-JS tabs. One
+  // tab visible at a time; clicking a label toggles the matching pre.
+  // Used in the "What do we compare?" section to show all five setups
+  // without dominating page height.
+  // -------------------------------------------------------------------
+  .compare-code-tabs {
+    margin: 24px 0 40px;
+    border-radius: $compare-radius;
+    background: $compare-bg-code;
+    overflow: hidden;
+
+    > input[type='radio'] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &__bar {
+      display: flex;
+      gap: 0;
+      padding: 0 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    &__tab {
+      flex: 0 0 auto;
+      padding: 12px 16px;
+      cursor: pointer;
+      color: #9a9a9a;
+      font-size: 13px;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      transition: color 120ms ease, border-color 120ms ease;
+      user-select: none;
+      white-space: nowrap;
+
+      &:hover { color: #d0d0d0; }
+    }
+
+    &__panel {
+      display: none;
+
+      pre {
+        margin: 0;
+        padding: 28px 32px;
+        background: transparent;
+        color: #e0e0e0;
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        white-space: pre;
+        overflow-x: auto;
+      }
+    }
+  }
+
+  // Tab/panel toggling — kept flat (outside .compare-code-tabs) so the
+  // `~` sibling combinator doesn't get a parent selector injected
+  // between both sides of the combinator, which would break the match.
+  @for $i from 1 through 5 {
+    .compare-code-tabs__radio--#{$i}:checked ~ .compare-code-tabs__bar .compare-code-tabs__tab--#{$i} {
+      color: #fff;
+      border-bottom-color: $accentPrimaryColor;
+    }
+    .compare-code-tabs__radio--#{$i}:checked ~ .compare-code-tabs__panel--#{$i} {
+      display: block;
+    }
   }
 
 
@@ -310,27 +629,6 @@ $compare-best:           #16a34a;  // green winner accent
         text-decoration-color: $compare-text-faint;
       }
     }
-  }
-
-
-  // -------------------------------------------------------------------
-  // Heading anchor (Stripe-style hover-revealed # icon)
-  // -------------------------------------------------------------------
-  .about-slide__title,
-  .about-slide__subtitle {
-    scroll-margin-top: $compare-header-offset;
-
-    .heading-anchor {
-      margin-left: 8px;
-      color: $compare-text-faint;
-      font-weight: 400;
-      text-decoration: none;
-      opacity: 0;
-      transition: opacity 0.15s;
-    }
-
-    &:hover .heading-anchor       { opacity: 1; }
-    .heading-anchor:hover         { color: $accentPrimaryColor; }
   }
 
 
@@ -520,82 +818,48 @@ $compare-best:           #16a34a;  // green winner accent
 
 
   // -------------------------------------------------------------------
-  // Right-column card (slide-show__frame override + variants).
-  // Default: bare rounded card around tables / pre blocks. Cells own
-  // their horizontal padding (14/18px) — the frame only adds vertical
-  // inset so the first/last row don't sit flush against the border.
-  // .compare-quote-card: tinted-bg variant for customer quotes.
+  // .compare-quote-card: tinted-bg variant of .compare-frame used for
+  // customer quotes (Doximity, etc.). Overrides .compare-frame's bare
+  // padding/bg with a panel-shaped soft tint.
   // -------------------------------------------------------------------
-  .about-slide__media .slide-show__frame {
-    display: block; // override the global flex centering
-    padding: 12px 0;
-    background-color: $backgroundPrimaryColor;
-    border: 1px solid $compare-border;
-    border-radius: $compare-radius;
-    overflow: hidden;
+  .compare-quote-card {
+    padding: 40px 32px;
+    background-color: $compare-bg-soft;
 
-    &.compare-quote-card {
-      padding: 40px 32px;
-      background-color: $compare-bg-soft;
-
-      .compare-quote-card__eyebrow {
-        margin-bottom: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: $compare-text-mute;
-      }
-
-      .compare-quote-card__text {
-        margin: 0 0 20px;
-        padding: 0;
-        font-size: 17px;
-        font-style: normal;
-        line-height: 1.6;
-        color: $compare-text-strong;
-        quotes: none;
-      }
-
-      .compare-quote-card__byline {
-        margin-bottom: 24px;
-        font-size: 14px;
-        line-height: 1.5;
-        color: $compare-text-meta;
-
-        strong { color: $compare-text-strong; }
-      }
-
-      .compare-quote-card__footer {
-        padding-top: 20px;
-        border-top: 1px solid $compare-border;
-        font-size: 13px;
-        line-height: 1.65;
-        color: $compare-text-quiet;
-      }
+    &__eyebrow {
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: $compare-text-mute;
     }
 
-    // On mobile, tables inside this card can exceed the viewport width.
-    // Switch from clip-and-crop to horizontal scroll so the data stays
-    // readable. The rounded card still visually contains the data — the
-    // scroll happens inside the border, not under the rest of the page.
-    @include mediaMax($tablet) {
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
+    &__text {
+      margin: 0 0 20px;
+      padding: 0;
+      font-size: 17px;
+      font-style: normal;
+      line-height: 1.6;
+      color: $compare-text-strong;
+      quotes: none;
     }
-  }
 
-  .about-slide__media pre {
-    background-color: $compare-bg-code;
-    border-radius: $compare-radius;
+    &__byline {
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: $compare-text-meta;
 
-    // <pre> defaults to white-space: pre, which keeps lines from
-    // wrapping. On mobile that means long lines push past the viewport.
-    // overflow-x: auto lets the user scroll the code block instead.
-    @include mediaMax($tablet) {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      strong { color: $compare-text-strong; }
+    }
+
+    &__footer {
+      padding-top: 20px;
+      border-top: 1px solid $compare-border;
+      font-size: 13px;
+      line-height: 1.65;
+      color: $compare-text-quiet;
     }
   }
 
@@ -660,7 +924,7 @@ $compare-best:           #16a34a;  // green winner accent
     gap: 16px;
     max-width: 1100px;
     margin: 0 auto;
-    // The grid lives inside a flex column (about-slide__content-full).
+    // The grid lives inside a flex column (.compare-rubric__content--full).
     // Flex items default to min-width: auto = min-content, so grid items
     // with long unbreakable tokens can push the grid past its parent's
     // width. min-width: 0 lets the grid shrink, and width: 100% pins it
@@ -675,14 +939,8 @@ $compare-best:           #16a34a;  // green winner accent
   // capacity, and feature-comparison tables. Right-aligned by default
   // (numeric); first column left-aligned (label). is-worst / is-na /
   // is-key modifiers handle per-cell semantics.
-  //
-  // Two selector forms because the page is mid-migration:
-  //   1. .compare-data-table — preferred, decoupled from where it lives
-  //   2. .slide-show__frame table — legacy, applies to existing tables
-  //      that haven't been class-tagged yet. Remove once HTML is swept.
   // -------------------------------------------------------------------
-  .compare-data-table,
-  .slide-show__frame table {
+  .compare-data-table {
     width: 100%;
     background-color: transparent;
     border-collapse: collapse;
@@ -703,9 +961,14 @@ $compare-best:           #16a34a;  // green winner accent
       letter-spacing: 0.06em;
       color: $compare-text-quiet;
       text-align: right;
+      // Numeric headers ("10K/s", "p99") should stay on one line; the
+      // first-column label header can be a long phrase, so allow wrap.
       white-space: nowrap;
 
-      &:first-child { text-align: left; }
+      &:first-child {
+        text-align: left;
+        white-space: normal;
+      }
     }
 
     tbody tr {
@@ -722,7 +985,11 @@ $compare-best:           #16a34a;  // green winner accent
 
       &:first-child {
         text-align: left;
-        white-space: nowrap;
+        // Allow long labels ("Graceful shutdown controls", "Replay
+        // buffer storage", "Other protocols supported") to wrap into
+        // the column instead of overflowing the cell horizontally.
+        white-space: normal;
+        overflow-wrap: anywhere;
         color: $compare-text-meta;
       }
     }
@@ -957,5 +1224,226 @@ $compare-best:           #16a34a;  // green winner accent
       line-height: 1.7;
       color: #444;
     }
+  }
+
+
+  // -------------------------------------------------------------------
+  // Hub page (/compare) — landscape map + comparison cards.
+  //
+  // Two grids:
+  //   1. .compare-hub-buckets — the four-bucket map (libraries,
+  //      self-hosted brokers, 1st-gen managed, 2nd-gen managed). The
+  //      AnyCable bucket gets the --self modifier (accent border + a
+  //      small "You are here" pill) so the reader can self-locate.
+  //   2. .compare-hub-cards — one card per opponent comparison. Live
+  //      cards (--live) are real anchor links; coming-soon cards
+  //      (--soon) are non-interactive divs with a dimmed treatment.
+  //
+  // Both grids use auto-fit minmax so they reflow from 1 → 2 → 4
+  // columns without a single fixed breakpoint.
+  // -------------------------------------------------------------------
+  .compare-hub-buckets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: 16px;
+    margin: 32px 0 0;
+  }
+
+  .compare-hub-bucket {
+    padding: 24px 24px 20px;
+    background: $backgroundPrimaryColor;
+    border: 1px solid $compare-border;
+    border-radius: $compare-radius;
+
+    // The AnyCable bucket — accent border + "You are here" pill so the
+    // reader can locate AnyCable's category within the landscape map.
+    &--self {
+      border-color: $accentPrimaryColor;
+      box-shadow: 0 0 0 3px rgba($accentPrimaryColor, 0.08);
+    }
+
+    &__label {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: $compare-text-strong;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    &__here {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #fff;
+      background: $accentPrimaryColor;
+      border-radius: 99px;
+    }
+
+    &__lede {
+      margin: 0 0 12px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: $compare-text-body;
+    }
+
+    &__examples {
+      margin: 0 0 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid $compare-border-faint;
+      font-size: 14px;
+      color: $compare-text-meta;
+
+      strong {
+        color: $compare-text-strong;
+      }
+    }
+
+    &__note {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: $compare-text-mute;
+    }
+  }
+
+
+  // ---------- Comparison cards ----------------------------------------
+  .compare-hub-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+
+  .compare-hub-card {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 28px 24px;
+    background: $backgroundPrimaryColor;
+    border: 1px solid $compare-border;
+    border-radius: $compare-radius;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+
+    // Live cards are <a> elements — hover lifts them slightly and pulls
+    // the border to accent so the reader knows they're clickable.
+    &--live {
+      cursor: pointer;
+
+      &:hover {
+        border-color: $accentPrimaryColor;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+      }
+    }
+
+    // Coming-soon cards are <div> elements — dimmed, no hover, no
+    // pointer. The reader gets the message without a dead link.
+    &--soon {
+      opacity: 0.78;
+      cursor: default;
+
+      .compare-hub-card__title,
+      .compare-hub-card__lede,
+      .compare-hub-card__axes {
+        color: $compare-text-meta;
+      }
+    }
+
+    &__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid $compare-border-faint;
+    }
+
+    &__bucket {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: $compare-text-mute;
+    }
+
+    &__status {
+      margin: 0;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: $compare-best;
+      background: rgba($compare-best, 0.1);
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    &--soon &__status {
+      color: $compare-text-mute;
+      background: $compare-bg-soft;
+    }
+
+    &__title {
+      margin: 0 0 10px;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: $compare-text-strong;
+
+      .is-mute {
+        color: $compare-text-fade;
+        font-weight: 400;
+      }
+    }
+
+    &__lede {
+      margin: 0 0 16px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: $compare-text-body;
+    }
+
+    &__axes {
+      margin: 0 0 20px;
+      padding-left: 18px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: $compare-text-meta;
+
+      li {
+        margin-bottom: 4px;
+      }
+    }
+
+    &__cta {
+      margin: auto 0 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: $accentPrimaryColor;
+
+      &.is-soon {
+        color: $compare-text-mute;
+      }
+    }
+  }
+
+
+  .compare-hub-footnote {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: $compare-text-meta;
   }
 }
