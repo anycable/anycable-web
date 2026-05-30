@@ -25,37 +25,35 @@
 //      If a value repeats, promote it to a token or class.
 // =====================================================================
 
-
 // ---------- Local tokens ----------------------------------------------
 // One-off grays we use repeatedly. Globals cover accents and primary
 // surfaces; locals cover the muted divider/text scale we need for a
 // data-heavy page.
-$compare-border:         #ececec;
-$compare-border-soft:    #f0f0f0;
-$compare-border-faint:   #f3f3f3;
-$compare-divider:        #e8e8e8;
-$compare-text-strong:    #1a1a1a;
-$compare-text-body:      #333;
-$compare-text-meta:      #555;
-$compare-text-quiet:     #777;
-$compare-text-mute:      #888;
-$compare-text-fade:      #bbb;
-$compare-text-faint:     #ccc;
-$compare-bg-soft:        #fafafa;
-$compare-bg-code:        #1a1a1a;
-$compare-radius:         8px;
-$compare-header-offset:  80px; // header height + a touch of breathing
+$compare-border: #ececec;
+$compare-border-soft: #f0f0f0;
+$compare-border-faint: #f3f3f3;
+$compare-divider: #e8e8e8;
+$compare-text-strong: #1a1a1a;
+$compare-text-body: #333;
+$compare-text-meta: #555;
+$compare-text-quiet: #777;
+$compare-text-mute: #888;
+$compare-text-fade: #bbb;
+$compare-text-faint: #ccc;
+$compare-bg-soft: #fafafa;
+$compare-bg-code: #1a1a1a;
+$compare-radius: 8px;
+$compare-header-offset: 80px; // header height + a touch of breathing
 
 // Inline syntax-tint palette for the dark <pre> blocks (try-it cards
 // and the bench-chart figure). Kept narrow on purpose; if we ever need
 // real syntax highlighting, swap in a Prism/Highlight.js theme instead
 // of growing this list.
-$compare-code-keyword:   #fcd34d;  // amber
-$compare-code-string:    #86efac;  // green
-$compare-code-error:     #ff6b6b;  // red
-$compare-code-comment:   #cce6ff;  // pale blue
-$compare-best:           #16a34a;  // green winner accent
-
+$compare-code-keyword: #fcd34d; // amber
+$compare-code-string: #86efac; // green
+$compare-code-error: #ff6b6b; // red
+$compare-code-comment: #cce6ff; // pale blue
+$compare-best: #16a34a; // green winner accent
 
 .compare-page {
   // Notebook-feel dotted background — continuous from hero through CTA.
@@ -81,7 +79,6 @@ $compare-best:           #16a34a;  // green winner accent
     }
   }
 
-
   // -------------------------------------------------------------------
   // Utility classes — small, composable, reach for these before inline.
   // Naming: t-* for typography/color, c-* for code-block tints.
@@ -94,22 +91,47 @@ $compare-best:           #16a34a;  // green winner accent
     color: $compare-text-mute;
   }
 
-  .t-mute   { color: $compare-text-mute; }     // #888
-  .t-meta   { color: $compare-text-meta; }     // #555
-  .t-quiet  { color: $compare-text-quiet; }    // #777
-  .t-strong { color: $compare-text-strong; }   // #1a1a1a
-  .t-accent { color: $accentPrimaryColor; }
-  .t-best   { color: $compare-best; }
-  .t-num    { font-variant-numeric: tabular-nums; }
+  .t-mute {
+    color: $compare-text-mute;
+  } // #888
+  .t-meta {
+    color: $compare-text-meta;
+  } // #555
+  .t-quiet {
+    color: $compare-text-quiet;
+  } // #777
+  .t-strong {
+    color: $compare-text-strong;
+  } // #1a1a1a
+  .t-accent {
+    color: $accentPrimaryColor;
+  }
+  .t-best {
+    color: $compare-best;
+  }
+  .t-num {
+    font-variant-numeric: tabular-nums;
+  }
 
-  .c-key { color: $compare-code-keyword; }
-  .c-str { color: $compare-code-string; }
-  .c-err { color: $compare-code-error; }
-  .c-com { color: $compare-code-comment; }
+  .c-key {
+    color: $compare-code-keyword;
+  }
+  .c-str {
+    color: $compare-code-string;
+  }
+  .c-err {
+    color: $compare-code-error;
+  }
+  .c-com {
+    color: $compare-code-comment;
+  }
 
-  .t-tiny  { font-size: 11px; }
-  .t-bold  { font-weight: 600; }
-
+  .t-tiny {
+    font-size: 11px;
+  }
+  .t-bold {
+    font-weight: 600;
+  }
 
   // -------------------------------------------------------------------
   // compare-rubric: the page's main section wrapper. Replaces the
@@ -174,7 +196,9 @@ $compare-best:           #16a34a;  // green winner accent
         border-right: none;
         padding: 0;
 
-        &:first-child { padding-top: 48px; }
+        &:first-child {
+          padding-top: 48px;
+        }
       }
 
       // For sections without a media partner (FAQ, code samples).
@@ -278,8 +302,12 @@ $compare-best:           #16a34a;  // green winner accent
         transition: opacity 0.15s;
       }
 
-      &:hover .heading-anchor { opacity: 1; }
-      .heading-anchor:hover   { color: $accentPrimaryColor; }
+      &:hover .heading-anchor {
+        opacity: 1;
+      }
+      .heading-anchor:hover {
+        color: $accentPrimaryColor;
+      }
     }
 
     &__subtitle {
@@ -299,8 +327,12 @@ $compare-best:           #16a34a;  // green winner accent
         transition: opacity 0.15s;
       }
 
-      &:hover .heading-anchor { opacity: 1; }
-      .heading-anchor:hover   { color: $accentPrimaryColor; }
+      &:hover .heading-anchor {
+        opacity: 1;
+      }
+      .heading-anchor:hover {
+        color: $accentPrimaryColor;
+      }
     }
 
     // Eyebrow above a section title (e.g. "Impact" above Rubric 1's
@@ -317,7 +349,6 @@ $compare-best:           #16a34a;  // green winner accent
       }
     }
   }
-
 
   // -------------------------------------------------------------------
   // compare-frame: rounded card wrapper around tables, code blocks, and
@@ -339,7 +370,6 @@ $compare-best:           #16a34a;  // green winner accent
       -webkit-overflow-scrolling: touch;
     }
   }
-
 
   // -------------------------------------------------------------------
   // compare-impact-cards: 2-up grid of affected-workload cards in the
@@ -390,7 +420,6 @@ $compare-best:           #16a34a;  // green winner accent
     }
   }
 
-
   // -------------------------------------------------------------------
   // Compare-page prose paragraph. Replaces .about-slide__text on this
   // page because the comparison page is not an "about slide" — the
@@ -424,7 +453,6 @@ $compare-best:           #16a34a;  // green winner accent
     }
   }
 
-
   // -------------------------------------------------------------------
   // Callout — soft-tinted methodology note. Used inline within prose
   // to flag a caveat or framing for the data that follows. BEM block
@@ -441,10 +469,17 @@ $compare-best:           #16a34a;  // green winner accent
     line-height: 1.55;
     color: $compare-text-meta;
 
-    strong { color: $compare-text-strong; font-weight: 600; }
-    code { background: rgba(0, 0, 0, 0.06); padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+    strong {
+      color: $compare-text-strong;
+      font-weight: 600;
+    }
+    code {
+      background: rgba(0, 0, 0, 0.06);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
   }
-
 
   // -------------------------------------------------------------------
   // Caveats / red-dot bullet list. Used wherever we want to call out
@@ -472,7 +507,6 @@ $compare-best:           #16a34a;  // green winner accent
     }
   }
 
-
   // -------------------------------------------------------------------
   // Inline code block — dark slab with monospace text and tinted spans
   // (.c-key, .c-str, .c-err, .c-com). Used for the delivery sample
@@ -486,7 +520,7 @@ $compare-best:           #16a34a;  // green winner accent
     background: $compare-bg-code;
     color: #e0e0e0;
     border-radius: $compare-radius;
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
     font-size: 13px;
     line-height: 1.7;
     white-space: pre;
@@ -534,7 +568,9 @@ $compare-best:           #16a34a;  // green winner accent
       user-select: none;
       white-space: nowrap;
 
-      &:hover { color: #d0d0d0; }
+      &:hover {
+        color: #d0d0d0;
+      }
     }
 
     &__panel {
@@ -545,7 +581,7 @@ $compare-best:           #16a34a;  // green winner accent
         padding: 28px 32px;
         background: transparent;
         color: #e0e0e0;
-        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
         font-size: 13px;
         line-height: 1.7;
         white-space: pre;
@@ -558,15 +594,17 @@ $compare-best:           #16a34a;  // green winner accent
   // `~` sibling combinator doesn't get a parent selector injected
   // between both sides of the combinator, which would break the match.
   @for $i from 1 through 5 {
-    .compare-code-tabs__radio--#{$i}:checked ~ .compare-code-tabs__bar .compare-code-tabs__tab--#{$i} {
+    .compare-code-tabs__radio--#{$i}:checked
+      ~ .compare-code-tabs__bar
+      .compare-code-tabs__tab--#{$i} {
       color: #fff;
       border-bottom-color: $accentPrimaryColor;
     }
-    .compare-code-tabs__radio--#{$i}:checked ~ .compare-code-tabs__panel--#{$i} {
+    .compare-code-tabs__radio--#{$i}:checked
+      ~ .compare-code-tabs__panel--#{$i} {
       display: block;
     }
   }
-
 
   // -------------------------------------------------------------------
   // Hero block — the comparison eyebrow + H1 + subhead at the top of
@@ -603,7 +641,10 @@ $compare-best:           #16a34a;  // green winner accent
       letter-spacing: -0.02em;
 
       // The dimmed connector words ("vs", "&") between framework names.
-      .is-mute { color: $compare-text-fade; font-weight: 400; }
+      .is-mute {
+        color: $compare-text-fade;
+        font-weight: 400;
+      }
     }
 
     &__subtitle {
@@ -613,7 +654,9 @@ $compare-best:           #16a34a;  // green winner accent
       line-height: 1.5;
       color: $compare-text-meta;
 
-      strong { color: $compare-text-strong; }
+      strong {
+        color: $compare-text-strong;
+      }
     }
 
     // "Open source — run it yourself" line beneath the subhead.
@@ -630,7 +673,6 @@ $compare-best:           #16a34a;  // green winner accent
       }
     }
   }
-
 
   // -------------------------------------------------------------------
   // Hero stat cards — three at-a-glance comparison cards. Each card is
@@ -671,7 +713,9 @@ $compare-best:           #16a34a;  // green winner accent
       padding: 9px 0;
       border-top: 1px solid $compare-border-faint;
 
-      &:first-child { border-top: none; }
+      &:first-child {
+        border-top: none;
+      }
 
       dt {
         font-size: 14px;
@@ -686,9 +730,16 @@ $compare-best:           #16a34a;  // green winner accent
         font-variant-numeric: tabular-nums;
         letter-spacing: -0.01em;
 
-        &.is-worst { color: $accentPrimaryColor; }
-        &.is-best  { color: $compare-best; }
-        &.is-na    { color: $compare-text-fade; font-weight: 400; }
+        &.is-worst {
+          color: $accentPrimaryColor;
+        }
+        &.is-best {
+          color: $compare-best;
+        }
+        &.is-na {
+          color: $compare-text-fade;
+          font-weight: 400;
+        }
       }
     }
 
@@ -724,7 +775,6 @@ $compare-best:           #16a34a;  // green winner accent
     }
   }
 
-
   // -------------------------------------------------------------------
   // TL;DR / "three findings" block — analytical summary directly under
   // the hero stat cards. Doubles as on-page anchor nav. Designed to be
@@ -754,13 +804,22 @@ $compare-best:           #16a34a;  // green winner accent
       line-height: 1.6;
       color: $compare-text-body;
 
-      li               { margin-bottom: 8px; }
-      li:last-child    { margin-bottom: 0; }
-      strong           { color: #111; }
+      li {
+        margin-bottom: 8px;
+      }
+      li:last-child {
+        margin-bottom: 0;
+      }
+      strong {
+        color: #111;
+      }
 
       // Section-link anchor inside <strong> inherits the strong color
       // — the visual weight comes from the parent, not the link.
-      strong a         { color: inherit; text-decoration: none; }
+      strong a {
+        color: inherit;
+        text-decoration: none;
+      }
     }
 
     // Trailing "Full benchmark →" link in each TL;DR bullet; bolder
@@ -816,7 +875,6 @@ $compare-best:           #16a34a;  // green winner accent
     }
   }
 
-
   // -------------------------------------------------------------------
   // .compare-quote-card: tinted-bg variant of .compare-frame used for
   // customer quotes (Doximity, etc.). Overrides .compare-frame's bare
@@ -851,7 +909,9 @@ $compare-best:           #16a34a;  // green winner accent
       line-height: 1.5;
       color: $compare-text-meta;
 
-      strong { color: $compare-text-strong; }
+      strong {
+        color: $compare-text-strong;
+      }
     }
 
     &__footer {
@@ -862,7 +922,6 @@ $compare-best:           #16a34a;  // green winner accent
       color: $compare-text-quiet;
     }
   }
-
 
   // -------------------------------------------------------------------
   // Architecture diagram (Pillar 2) — inline SVG showing Socket.io's
@@ -875,7 +934,6 @@ $compare-best:           #16a34a;  // green winner accent
       display: block;
     }
   }
-
 
   // -------------------------------------------------------------------
   // Inline benchmark chart (ASCII art from the bench-runner) — embedded
@@ -906,14 +964,13 @@ $compare-best:           #16a34a;  // green winner accent
       background: $compare-bg-code;
       color: #cce6ff;
       border-radius: $compare-radius;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
       font-size: 11px;
       line-height: 1.4;
       white-space: pre;
       overflow-x: auto;
     }
   }
-
 
   // -------------------------------------------------------------------
   // Try-it cards grid — three runnable JS starting points.
@@ -932,7 +989,6 @@ $compare-best:           #16a34a;  // green winner accent
     min-width: 0;
     width: 100%;
   }
-
 
   // -------------------------------------------------------------------
   // Unified data table — one source of truth for jitter, avalanche,
@@ -974,7 +1030,9 @@ $compare-best:           #16a34a;  // green winner accent
     tbody tr {
       border-bottom: 1px solid $compare-border-soft;
 
-      &:last-child { border-bottom: none; }
+      &:last-child {
+        border-bottom: none;
+      }
     }
 
     td {
@@ -1003,8 +1061,12 @@ $compare-best:           #16a34a;  // green winner accent
 
     // Soft-tinted rows: green for the AnyCable / uWS winners
     // (e.g. 1M-conn capacity), red for the cliff/loser rows.
-    tr.is-row-best  { background: #f0fdf4; }
-    tr.is-row-worst { background: #fff5f5; }
+    tr.is-row-best {
+      background: #f0fdf4;
+    }
+    tr.is-row-worst {
+      background: #fff5f5;
+    }
 
     // "Worst per metric" — single accent, used sparingly.
     td.is-worst,
@@ -1041,7 +1103,6 @@ $compare-best:           #16a34a;  // green winner accent
     }
   }
 
-
   // -------------------------------------------------------------------
   // Footnote that sits directly under a data table — quiet gray label
   // explaining methodology / measurement source.
@@ -1052,7 +1113,6 @@ $compare-best:           #16a34a;  // green winner accent
     line-height: 1.5;
     color: $compare-text-mute;
   }
-
 
   // -------------------------------------------------------------------
   // Try-it card — clickable link cards under "Run it yourself" pointing
@@ -1069,7 +1129,9 @@ $compare-best:           #16a34a;  // green winner accent
     text-decoration: none;
     transition: border-color 0.15s, transform 0.15s;
 
-    &:hover { border-color: #d6d6d6; }
+    &:hover {
+      border-color: #d6d6d6;
+    }
 
     &__title {
       margin-bottom: 6px;
@@ -1083,7 +1145,6 @@ $compare-best:           #16a34a;  // green winner accent
       color: #666;
     }
   }
-
 
   // -------------------------------------------------------------------
   // Compact data-table modifier — used when a 5-column matrix would
@@ -1101,17 +1162,20 @@ $compare-best:           #16a34a;  // green winner accent
       padding: 8px 4px;
       text-align: center;
 
-      &:first-child { text-align: left; }
+      &:first-child {
+        text-align: left;
+      }
     }
 
     td {
       padding: 6px 4px;
       text-align: center;
 
-      &:first-child { text-align: left; }
+      &:first-child {
+        text-align: left;
+      }
     }
   }
-
 
   // -------------------------------------------------------------------
   // Closing CTA — leads with self-hosted Pro (monetized), free Managed
@@ -1138,7 +1202,9 @@ $compare-best:           #16a34a;  // green winner accent
       line-height: 1.5;
       color: #666;
 
-      strong { color: #111; }
+      strong {
+        color: #111;
+      }
     }
 
     &__actions {
@@ -1156,7 +1222,6 @@ $compare-best:           #16a34a;  // green winner accent
       color: $compare-text-mute;
     }
   }
-
 
   // -------------------------------------------------------------------
   // FAQ accordion — native <details>, closed by default. Explicit
@@ -1194,7 +1259,9 @@ $compare-best:           #16a34a;  // green winner accent
         line-height: 1.45;
         transition: color 0.15s;
 
-        &::-webkit-details-marker { display: none; }
+        &::-webkit-details-marker {
+          display: none;
+        }
 
         // Plus / minus indicator that flips on open.
         &::after {
@@ -1208,7 +1275,9 @@ $compare-best:           #16a34a;  // green winner accent
           transition: transform 0.2s;
         }
 
-        &:hover { color: $accentPrimaryColor; }
+        &:hover {
+          color: $accentPrimaryColor;
+        }
       }
 
       &[open] summary::after {
@@ -1225,7 +1294,6 @@ $compare-best:           #16a34a;  // green winner accent
       color: #444;
     }
   }
-
 
   // -------------------------------------------------------------------
   // Hub page (/compare) — landscape map + comparison cards.
@@ -1312,7 +1380,6 @@ $compare-best:           #16a34a;  // green winner accent
       color: $compare-text-mute;
     }
   }
-
 
   // ---------- Comparison cards ----------------------------------------
   .compare-hub-cards {
@@ -1439,7 +1506,6 @@ $compare-best:           #16a34a;  // green winner accent
       }
     }
   }
-
 
   .compare-hub-footnote {
     margin: 8px 0 0;
