@@ -23,19 +23,19 @@
 
             <div class='compare-hero-cards'>
               <div class='compare-hero-card'>
-                <div class='compare-hero-card__label'>Latency: <span class='t-mute t-tiny'>p50 roundtrip @ 10k connections</span></div>
+                <div class='compare-hero-card__label'>Latency: <span class='t-mute t-tiny'>p99 roundtrip @ 10k connections</span></div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
                     <dt>Socket.io + CSR</dt>
-                    <dd class='t-mute'>TBD-A2a</dd>
+                    <dd>639 ms</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>uWebSockets.js</dt>
-                    <dd class='t-mute'>TBD-A2a</dd>
+                    <dd class='is-worst'>4-11 s</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable</dt>
-                    <dd class='t-mute'>TBD-A2a</dd>
+                    <dd>895 ms</dd>
                   </div>
                 </dl>
                 <div class='compare-hero-card__footnote'>
@@ -65,23 +65,23 @@
               </div>
 
               <div class='compare-hero-card'>
-                <div class='compare-hero-card__label'>Scalability: <span class='t-mute t-tiny'>downtime during deployment</span></div>
+                <div class='compare-hero-card__label'>Deploy impact: <span class='t-mute t-tiny'>WS connections disrupted per app deploy</span></div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
                     <dt>Socket.io <span class='t-mute t-tiny'>embedded</span></dt>
-                    <dd class='t-mute'>TBD-A2c</dd>
+                    <dd class='is-worst'>100% &middot; 2.5 s freeze</dd>
                   </div>
                   <div class='compare-hero-card__row'>
-                    <dt>uWS <span class='t-mute t-tiny'>embedded</span></dt>
-                    <dd class='t-mute'>TBD-A2c</dd>
+                    <dt>Socket.io <span class='t-mute t-tiny'>standalone</span></dt>
+                    <dd class='is-best'>0%</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable <span class='t-mute t-tiny'>standalone</span></dt>
-                    <dd class='t-mute'>TBD-A2c</dd>
+                    <dd class='is-best'>0%</dd>
                   </div>
                 </dl>
                 <div class='compare-hero-card__footnote'>
-                  <a class='link' href='#clustered'>Scalability test &rarr;</a>
+                  <a class='link' href='#clustered'>Deploy test &rarr;</a>
                 </div>
               </div>
             </div>
@@ -373,14 +373,14 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>+ Redis adapter</span></td><td>TBD-A2a</td><td>TBD-A2a</td><td>TBD-A2a</td></tr>
-                      <tr><td>Socket.io + CSR</td><td>TBD-A2a</td><td>TBD-A2a</td><td>TBD-A2a</td></tr>
-                      <tr><td>uWS <span class='t-mute t-tiny'>custom publish</span></td><td>TBD-A2a</td><td>TBD-A2a</td><td>TBD-A2a</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>+ Redis adapter</span></td><td>24 / 106 ms</td><td>264 / 725 ms</td><td>TBD-A2a</td></tr>
+                      <tr><td>Socket.io + CSR</td><td>23 / 69 ms</td><td>254 / 639 ms</td><td>TBD-A2a</td></tr>
+                      <tr><td>uWS <span class='t-mute t-tiny'>custom publish</span></td><td>16 / 92 ms</td><td class='t-mute'>249 ms / 4-11 s p99<sup>&dagger;</sup></td><td>TBD-A2a</td></tr>
                       <tr><td>AnyCable OSS</td><td>17 / 55 ms</td><td>252 / 895 ms</td><td>TBD-A2a</td></tr>
                       <tr><td>AnyCable Pro</td><td>22 / 145 ms</td><td>246 / 875 ms</td><td>TBD-A2a</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Placeholders pending A2a. 100k tier feasibility depends on the bench-runner shard fanout; if 100k is unreliable we'll surface 50k as the upper tier and document why.</p>
+                  <p class='compare-data-table__footnote'>&dagger; uWS p50 at 10k stays low (249 ms), but the long tail varies wildly across runs (p99 ranged 4.4-10.6 s across 4 samples). The cause is single-process broadcast: <code>app.publish</code> fans out to 10k subscribers in one event-loop iteration, so per-client TCP backpressure variation balloons the tail. Production uWS deployments would shard, which we haven't tested. 100k tier pending multi-shard bench infrastructure.</p>
                 </div>
               </div>
             </div>
@@ -883,16 +883,16 @@ CPU (% of 1 vCPU)
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>embedded + Redis adapter</span></td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>embedded + Redis adapter</span></td><td class='is-worst'>2.17 s</td><td class='is-worst'>2.93 s</td><td class='is-worst'>2-3</td><td class='is-worst'>100%</td></tr>
                       <tr><td>Socket.io + CSR <span class='t-mute t-tiny'>embedded + Redis Streams</span></td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td></tr>
                       <tr><td>uWS <span class='t-mute t-tiny'>embedded + custom pub/sub<sup>&dagger;</sup></span></td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td></tr>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>standalone</span></td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>standalone</span></td><td class='is-best'>0</td><td class='is-best'>0</td><td class='is-best'>0<sup>&Dagger;</sup></td><td class='is-best'>0%</td></tr>
                       <tr><td>uWS <span class='t-mute t-tiny'>standalone + custom publish<sup>&dagger;</sup></span></td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td></tr>
-                      <tr><td>AnyCable OSS <span class='t-mute t-tiny'>standalone, always</span></td><td class='is-best'>TBD-A2c</td><td class='is-best'>TBD-A2c</td><td class='is-best'>TBD-A2c</td><td class='is-best'>TBD-A2c</td></tr>
-                      <tr><td>AnyCable Pro <span class='t-mute t-tiny'>standalone, always</span></td><td class='is-best'>TBD-A2c</td><td class='is-best'>TBD-A2c</td><td class='is-best'>TBD-A2c</td><td class='is-best'>TBD-A2c</td></tr>
+                      <tr><td>AnyCable OSS <span class='t-mute t-tiny'>standalone, always</span></td><td class='is-best'>0</td><td class='is-best'>0</td><td class='is-best'>0<sup>&Dagger;</sup></td><td class='is-best'>0%</td></tr>
+                      <tr><td>AnyCable Pro <span class='t-mute t-tiny'>standalone, always</span></td><td class='is-best'>0</td><td class='is-best'>0</td><td class='is-best'>0<sup>&Dagger;</sup></td><td class='is-best'>0%</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Placeholders pending A2c. Embedded rows show what happens when the WS layer restarts with the app on every node. Standalone rows show what happens when only the app restarts. <sup>&dagger;</sup>uWS has no native clustering or built-in HTTP publish API; both are custom code built for this benchmark. The embedded vs standalone gap is the load-bearing data point: it answers whether horizontal scaling can substitute for a separate-process WS architecture.</p>
+                  <p class='compare-data-table__footnote'>Embedded Socket.io: 10K clients held across a 3-node rolling restart. Every user disconnects once during the cycle (a ~2.5 s freeze) and loses 2-3 messages while reconnecting; cluster recovery 51 s. Standalone Socket.io and AnyCable: same 10K clients, the publisher service restarts mid-test, WS layer untouched, zero connection disruption. CSR embedded and uWS embedded tests pending. <sup>&dagger;</sup>uWS has no native clustering or built-in HTTP publish API; both are custom code built for this benchmark. <sup>&Dagger;</sup>Standalone deploys disrupt publishing, not connections: clients hold the WS link through a 45-46 s publisher restart; broadcasts emitted during that window aren't held server-side, so anything the app would have published is simply not published. AnyCable Pro is mirrored from OSS (same architectural property).</p>
                 </div>
               </div>
             </div>
