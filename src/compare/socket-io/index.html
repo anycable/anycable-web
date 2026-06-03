@@ -225,13 +225,11 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='architecture-note'>Note on architecture<a class='heading-anchor' href='#architecture-note' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  When building production-grade realtime infrastructure, we have to rule out the embedded (in-process with your Node app) mode for Socket.io/uWS in favor of deploying them as a standalone microservice. The embedded mode produces unacceptable disruption on every deployment of the main Node application: every redeployment of each node causes at least a 2-second freeze and loss of messages while clients are reconnecting to another node.
+                  Production realtime needs the WS server as a standalone service, not embedded in your Node app. Embedded Socket.io/uWS freeze every user for ~2 seconds and lose messages on every app deploy. That's what the rest of the page compares: the WS layer as a separate process.
                 </p>
                 <div class='compare-callout'>
-                <p>Test: 3-node cluster, identical Node.js app with embedded Socket.io and Redis. Proper rolling deploy: redeploy each node in turn, wait for it to come back, then move to the next.</p>
-
-                <p>Result: every user experiences a <strong>~2-second freeze</strong> when their node restarts; 99.6% of broadcasts delivered, 2-3 lost per user during the gap.</p>
-
+                <p><strong>What we tested:</strong> 3-node cluster, embedded Socket.io + Redis, rolling deploy (redeploy each node in turn, wait for it back, move on).</p>
+                <p><strong>Result:</strong> every user sees a <strong>~2 s freeze</strong> when their node restarts. 99.6% delivered. 2-3 lost per user during the gap.</p>
                 </div>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -322,42 +320,18 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='latency'>How fast is it?<a class='heading-anchor' href='#latency' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Latency is the floor of what realtime can feel like. We measure two things: how long a message takes to round-trip from one client to others, and how many messages per second the server can fan out before that latency starts inflating. Both are tested at three connection scales (1k, 10k, 100k) so the curve is visible, not just one point.
-                </p>
-                <p class='compare-prose'>
-                  We test each option in two topologies because they tell different stories. <strong>Embedded</strong>: WS server runs in the same Node process as your app code; broadcasts originate in-process with no network hop. <strong>Standalone</strong>: WS server is a separate process; the app publishes broadcasts over the network (HTTP for AnyCable, Redis for Socket.io, custom HTTP for uWS). Standalone always pays a hop tax; the question is how big the tax is. <em>AnyCable is always standalone by design.</em>
+                  Two measurements that decide what realtime feels like: <strong>roundtrip latency</strong> (publisher → all subscribers) and <strong>broadcast throughput</strong> (sustained msg/sec at 100% delivery). All in the standalone shape: WS server as a separate process, publisher posting over HTTP.
                 </p>
               </div>
-              <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
-                <div class='compare-frame'>
-                  <table class='compare-data-table compare-data-table--compact'>
-                    <thead>
-                      <tr>
-                        <th>Setup <span class='t-mute t-tiny'>p50 roundtrip, 10K subs</span></th>
-                        <th>Embedded</th>
-                        <th>Standalone</th>
-                        <th>Hop tax</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>default</span></td><td>TBD-A2a</td><td>TBD-A2a</td><td>TBD-A2e</td></tr>
-                      <tr><td>Socket.io + CSR</td><td>TBD-A2a</td><td>TBD-A2a</td><td>TBD-A2e</td></tr>
-                      <tr><td>uWS <span class='t-mute t-tiny'>topics</span></td><td>TBD-A2a</td><td>TBD-A2a<sup>&dagger;</sup></td><td>TBD-A2e</td></tr>
-                      <tr><td>AnyCable OSS</td><td class='t-mute'>n/a (always standalone)</td><td>TBD-A2a</td><td class='t-mute'>n/a</td></tr>
-                      <tr><td>AnyCable Pro</td><td class='t-mute'>n/a (always standalone)</td><td>TBD-A2a</td><td class='t-mute'>n/a</td></tr>
-                    </tbody>
-                  </table>
-                  <p class='compare-data-table__footnote'>Placeholders pending A2a (latency at scale) and A2e (embedded-vs-standalone hop overhead). <sup>&dagger;</sup>uWS has no built-in HTTP publish API; standalone uWS requires a custom publish endpoint, which is part of what we measure.</p>
-                </div>
-              </div>
+              <div class='compare-rubric__media'></div>
             </div>
 
-            {{!-- Scale-curve sub-section: roundtrip at 1k/10k/100k --}}
+            {{!-- Latency at 1k and 10k subscribers --}}
             <div class='compare-rubric__section'>
               <div class='compare-rubric__content'>
-                <h3 class='compare-rubric__subtitle'>How latency scales with concurrent connections</h3>
+                <h3 class='compare-rubric__subtitle'>Roundtrip latency</h3>
                 <p class='compare-prose'>
-                  Same broadcast workload at three connection counts. The shape of the curve matters more than any single point: a flat line means the server has headroom; a steep climb means you're approaching the wall. Standalone mode is shown here (the production-realistic topology); the embedded vs standalone hop tax is in the table above.
+                  Same broadcast workload at two connection counts. The shape of the curve from 1k to 10k tells you whether the server has headroom or is approaching a wall.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -365,21 +339,20 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
-                        <th>Setup <span class='t-mute t-tiny'>p50 / p99, standalone</span></th>
-                        <th>1k</th>
-                        <th>10k</th>
-                        <th>100k</th>
+                        <th>Setup <span class='t-mute t-tiny'>p50 / p99</span></th>
+                        <th>1k subs</th>
+                        <th>10k subs</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>+ Redis adapter</span></td><td>24 / 106 ms</td><td>264 / 725 ms</td><td>TBD-A2a</td></tr>
-                      <tr><td>Socket.io + CSR</td><td>23 / 69 ms</td><td>254 / 639 ms</td><td>TBD-A2a</td></tr>
-                      <tr><td>uWS <span class='t-mute t-tiny'>custom publish</span></td><td>16 / 92 ms</td><td class='t-mute'>249 ms / 4-11 s p99<sup>&dagger;</sup></td><td>TBD-A2a</td></tr>
-                      <tr><td>AnyCable OSS</td><td>17 / 55 ms</td><td>252 / 895 ms</td><td>TBD-A2a</td></tr>
-                      <tr><td>AnyCable Pro</td><td>22 / 145 ms</td><td>246 / 875 ms</td><td>TBD-A2a</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>default</span></td><td>24 / 106 ms</td><td>264 / 725 ms</td></tr>
+                      <tr><td>Socket.io + CSR</td><td>23 / 69 ms</td><td>254 / 639 ms</td></tr>
+                      <tr><td>uWS <span class='t-mute t-tiny'>topics</span></td><td>16 / 92 ms</td><td class='t-mute'>249 ms / 4-11 s<sup>&dagger;</sup></td></tr>
+                      <tr><td>AnyCable OSS</td><td>17 / 55 ms</td><td>252 / 895 ms</td></tr>
+                      <tr><td>AnyCable Pro</td><td>22 / 145 ms</td><td>246 / 875 ms</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>&dagger; uWS p50 at 10k stays low (249 ms), but the long tail varies wildly across runs (p99 ranged 4.4-10.6 s across 4 samples). The cause is single-process broadcast: <code>app.publish</code> fans out to 10k subscribers in one event-loop iteration, so per-client TCP backpressure variation balloons the tail. Production uWS deployments would shard, which we haven't tested. 100k tier pending multi-shard bench infrastructure.</p>
+                  <p class='compare-data-table__footnote'>&dagger; uWS p50 at 10k stays low, but p99 varies 4.4-10.6 s across 4 samples: <code>app.publish</code> serializes through one writer, so per-client TCP backpressure inflates the tail. Production uWS would shard; not tested here.</p>
                 </div>
               </div>
             </div>
@@ -390,12 +363,9 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                  100% delivery required. --}}
             <div class='compare-rubric__section'>
               <div class='compare-rubric__content'>
-                <h3 class='compare-rubric__subtitle'>How many broadcasts per second the WS layer can sustain</h3>
+                <h3 class='compare-rubric__subtitle'>Broadcast throughput</h3>
                 <p class='compare-prose'>
-                  Same shape as production: each WS server runs as a separate service, the publisher is a separate process posting to its HTTP <code>/_broadcast</code> endpoint with concurrency 16. We push the target at 1M deliveries/sec (100 broadcasts/sec to 10K subscribers); the result is what each server actually sustains end-to-end with 100% delivery.
-                </p>
-                <p class='compare-prose'>
-                  <em>Co-located publisher numbers (publisher and WS server share a Node event loop) get higher headlines but they require app code to live inside the WS process. That's the deploy-resilience tradeoff this page argues against, so those numbers aren't in this table.</em>
+                  Target 1M deliveries/sec to 10K subscribers, 100% delivery required. Publisher is a separate process posting to the WS server's HTTP <code>/_broadcast</code> at concurrency 16. The result is what each server sustains end-to-end.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -429,10 +399,10 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h3 class='compare-rubric__subtitle'>Whispers: client-to-client updates that bypass the backend</h3>
                 <p class='compare-prose'>
-                  Some realtime updates don't need the backend at all. Mouse cursors in a shared doc, typing indicators, presence pings: these go from one client to others through the WS server without ever touching your app. AnyCable supports this natively as a first-class primitive; Socket.io approximates it with rooms; uWS does it with topics but you build the access control yourself.
+                  Cursors, typing indicators, presence pings. These travel client → WS server → peers without invoking your app. AnyCable ships it as a native primitive; Socket.io emulates with rooms; uWS with topics. The differences show up under load.
                 </p>
                 <div class='compare-callout'>
-                  <strong>Why whispers matter for category positioning.</strong> Whispers are how AnyCable competes in the collab-infrastructure category alongside <a class='link' href='https://liveblocks.io/' target='_blank' rel='noopener'>Liveblocks</a>, <a class='link' href='https://github.com/yjs/yjs' target='_blank' rel='noopener'>Yjs</a> providers, and <a class='link' href='https://www.partykit.io/' target='_blank' rel='noopener'>PartyKit</a>, not just in the WS-server category. If your product has live cursors, shared selections, or any UI where one user's local state needs to fan out to peers without a server round-trip, this row matters more than raw throughput. Liveblocks built its entire business on this primitive being good enough to feel real-time.
+                  This is where AnyCable competes with <a class='link' href='https://liveblocks.io/' target='_blank' rel='noopener'>Liveblocks</a>, <a class='link' href='https://github.com/yjs/yjs' target='_blank' rel='noopener'>Yjs</a> providers, and <a class='link' href='https://www.partykit.io/' target='_blank' rel='noopener'>PartyKit</a>, not just with WS libraries. If your product has live cursors or shared selections, this row matters more than raw broadcast throughput.
                 </div>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -468,13 +438,10 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='reliability'>How reliable is delivery?<a class='heading-anchor' href='#reliability' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Your users are not necessarily always connected to a high-speed fiber network. Micro disruptions are largely not noticeable for HTTP requests, but they are the deal breaker for real-time features &mdash; or how reliable and smooth they are going to be. Two things decide it: <strong>how often messages are lost during disruption</strong>, and <strong>how long the recovery window feels</strong>. Both come down to whether the protocol carries <em>replay state</em>.
+                  Users disconnect. WiFi flips, tunnels open, networks switch. The realtime question is what happens to messages sent during those windows. Two things decide it: <strong>how many messages are lost</strong> and <strong>how long the recovery feels</strong>. Both come down to whether the protocol carries <em>replay state</em>.
                 </p>
                 <p class='compare-prose'>
-                  Default Socket.io and uWebSockets.js don't carry replay state &mdash; they lose ~13&ndash;14% of messages under simulated jitter (1-second TCP drops every ~15 s, the pattern WiFi handoffs produce). Socket.io with Connection state recovery fixes delivery to 100%, with constraints on the adapter and a ~8 s p99 replay tail. AnyCable also delivers 100%, clears the tail ~1.7 s sooner, and AnyCable Pro holds the same 10K reconnecting fleet on <strong>less than half</strong> of CSR's server memory. The data:
-                </p>
-                <p class='compare-prose'>
-                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a>; <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, with adapter constraints). AnyCable ships replay by default via <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a>: per-stream history, epoch + offset, restart-survivable with NATS or Redis.
+                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a> and so is uWS: messages during a disconnect are gone. <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, adapter constraints). AnyCable ships <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a> by default: per-stream history, epoch + offset, restart-survivable with NATS or Redis. Under simulated WiFi jitter (1 s TCP drops every ~15 s): AnyCable and CSR deliver 100%; default Socket.io and uWS lose ~13-14%.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -618,10 +585,10 @@ Client 2: <span class='c-str'>all 120 received</span>  (p95: 4.1s)</pre>
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='deploys'>Does the WS layer survive deploys?<a class='heading-anchor' href='#deploys' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Modern teams deploy multiple times a day. Realtime apps have a structural choice: the WebSocket layer lives inside the app process, or it runs as its own service. <strong>The choice you make at small scale becomes a load-bearing decision at growing scale.</strong> Below is what happens when the WS layer is co-located with the app and the app restarts on every deploy &mdash; default for Socket.io, Socket.io+CSR, and uWS, because all three are Node libraries. At small scale the reconnect storm is recoverable; past a certain N, it stops being recoverable.
+                  Teams deploy multiple times a day. The structural choice: WS layer inside the app process, or its own service. <strong>Small-scale tradeoffs become load-bearing at growing N.</strong> Socket.io, +CSR, and uWS are all Node libraries — the WS layer restarts with the app. At small scale the reconnect storm recovers. Past a certain N it stops recovering.
                 </p>
                 <p class='compare-prose'>
-                  The test below is real <code>railway redeploy</code> events on a 1&nbsp;vCPU / 0.5&nbsp;GB box, recording how long the WS layer takes to come back. The architecture and the benchmark, side by side:
+                  Real <code>railway redeploy</code> events on a 1 vCPU / 0.5 GB box, measuring how long the WS layer takes to come back:
                 </p>
 
                 {{!-- Architecture diagram — Socket.io's app+WS in one process
@@ -703,7 +670,7 @@ t=0.0s → users don't notice</pre>
             <div class='compare-rubric__section'>
               <div class='compare-rubric__content'>
                 <p class='compare-prose'>
-                  Through 20K connections, recovery is graceful for the in-process WS setups. <strong>At 25K, recovery never completes</strong> &mdash; the post-redeploy reconnect storm OOMs the new container. CSR doesn't help: its in-memory adapter loses state on restart, and connections still drop. <strong>On a bigger box the cliff exists too, just at higher N.</strong> On the same hardware uWS pushes the catastrophic cliff to ~90K instead of ~25K, but recovery at 25K already takes 57 seconds, and at 90K it stops being recoverable. More RAM moves where the wall is; the wall is still there, because it's the reconnect storm itself &mdash; not the box size &mdash; that overwhelms the new process. Any setup with the WS layer as a separate service avoids this entirely &mdash; the WS layer doesn't restart, so there's nothing to recover from. AnyCable ships that shape by default; anyone scaling Socket.io / uWS in production ends up building it themselves. Methodology &amp; per-N walkthrough: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#avalanche' target='_blank' rel='noopener'>bench repo README</a>. Background reading: <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering-herd safety tips</a>.
+                  Through 20K, recovery is graceful for in-process WS. <strong>At 25K, recovery never completes</strong>: the post-redeploy reconnect storm OOMs the new container. CSR doesn't help (its in-memory adapter loses state on restart). A bigger box just moves the cliff: uWS pushes catastrophic failure to ~90K, but recovery at 25K already takes 57 s. The wall isn't box size — it's the reconnect storm itself. Standalone WS avoids it entirely because the WS layer doesn't restart. Methodology: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#avalanche' target='_blank' rel='noopener'>bench repo</a>. Background: <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering-herd safety tips</a>.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -764,13 +731,19 @@ t=0.0s → users don't notice</pre>
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='headroom'>How efficient is it to scale?<a class='heading-anchor' href='#headroom' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Your user base will grow, and your realtime layer needs to grow with it. The question isn't <em>how cheap is this today</em> &mdash; it's <em>when we 10&times; users, does the bill or the box cliff before we have time to react?</em> Cost predictability matters more than absolute cost: a $5 box that scales smoothly to 100K users beats a $499 plan that hits a wall at 50K. <strong>Three things decide it</strong>: how many idle connections one node holds (steady-state headroom), how the same node behaves during a reconnect storm (the avalanche from above), and <em>useful</em> throughput &mdash; messages per second &times; delivery rate, since raw msg/sec without delivery is vanity.
+                  Two questions: <strong>how many idle connections one node holds</strong>, and <strong>how the same node behaves during a reconnect storm</strong>. Cost shape matters too: a flat-rate setup that scales to 100K beats a per-connection plan that walls at 50K.
                 </p>
                 <p class='compare-prose'>
-                  Same Railway box (32 vCPU / 32 GB), four setups, 1,000,000-connection idle target. <strong>Socket.io accepted 119,826</strong>: the single Node event loop saturates handshakes regardless of memory available. <strong>uWS held 1,018,366 on 5.45 GB</strong> (lightest wire, no replay broker). <strong>AnyCable Pro held 822,037 on 14.80 GB</strong> (the lightest setup that includes built-in replay, at ~18 KB per connection). On cost shape: AnyCable Pro is flat-rate ($1,490/yr, unlimited instances); Pusher is per-connection (Premium $499/mo for 10K, Growth $699/mo for 15K, Plus $899/mo for 20K, see <a class='link' href='https://pusher.com/channels/pricing/' target='_blank' rel='noopener'>2026 plans</a>); uWS and self-hosted Socket.io are box-priced.
+                  Same Railway box (32 vCPU / 32 GB), 1M-connection idle target, single instance, no Redis/NATS backplane:
                 </p>
+                <ul class='compare-bullet-list'>
+                  <li><strong>Socket.io</strong> accepted 119,826 — the single Node event loop saturates handshakes regardless of available memory.</li>
+                  <li><strong>uWS</strong> held 1,018,366 on 5.45 GB. Lightest wire, no replay.</li>
+                  <li><strong>AnyCable Pro</strong> held 822,037 on 14.80 GB (~18 KB/conn). Lightest setup with built-in replay.</li>
+                  <li><strong>AnyCable OSS</strong> held 821,877 on 28.30 GB (~34 KB/conn).</li>
+                </ul>
                 <p class='compare-prose'>
-                  Single instance, no Redis or NATS backplane. Socket.io's idle wall is the event loop (saturates at ~120K). AnyCable OSS and Pro both reached ~822K connections in this run, with OSS at ~34&nbsp;KB/conn (28.3 GB total) and Pro at ~18&nbsp;KB/conn (14.8 GB total). uWS clears 1M at ~5.4 KB/conn without replay. Per-test setup and harness: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#capacity' target='_blank' rel='noopener'>bench repo README</a>.
+                  Cost shape: AnyCable Pro is flat-rate ($1,490/yr, unlimited instances). Pusher charges per connection (Premium $499/mo for 10K, Growth $699/mo for 15K, Plus $899/mo for 20K, <a class='link' href='https://pusher.com/channels/pricing/' target='_blank' rel='noopener'>2026 plans</a>). uWS and self-hosted Socket.io are box-priced.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -846,13 +819,10 @@ CPU (% of 1 vCPU)
               <div class='compare-rubric__content compare-rubric__content--full'>
                 <h2 class='compare-rubric__title' id='clustered'>What does a clustered deployment look like?<a class='heading-anchor' href='#clustered' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Past one node, the question shifts from "how big can the single instance get?" to "what does adding more nodes actually buy?" Three things to measure: <strong>can a rolling deploy survive without dropping connections?</strong> (the test that motivates separate-process WS in the first place), <strong>how does total capacity scale with N nodes?</strong>, and <strong>does the cluster pub/sub layer impose a latency tax on broadcasts?</strong>
-                </p>
-                <p class='compare-prose'>
-                  We use a 3-node cluster behind a load balancer, 10k connections steady. Capacity and 1-of-N-down behavior are pending A2d. We test the same 5 options: Socket.io (Redis adapter), Socket.io + CSR (Redis Streams), uWS, AnyCable OSS, and AnyCable Pro.
+                  Past one node, the question shifts: <strong>can a rolling deploy survive without dropping connections?</strong> 3-node cluster behind a load balancer, 10k connections steady. Same 5 options: Socket.io (Redis adapter), Socket.io + CSR (Redis Streams), uWS, AnyCable OSS, AnyCable Pro. Capacity and 1-of-N-down behavior pending A2d.
                 </p>
                 <div class='compare-callout'>
-                  <strong>Caveat: uWS clustering and standalone are not off-the-shelf configurations.</strong> uWebSockets.js has no built-in cross-node clustering and no built-in HTTP publish endpoint. To benchmark uWS in standalone mode we wrote a custom publish API; to benchmark it clustered we wrote a custom pub/sub bridge (Redis-backed). The numbers reflect what those custom implementations achieve, marked with <sup>&dagger;</sup> in the tables. Production teams who pick uWS for anything past one in-process node end up building the same two things themselves. This is part of the trade Socket.io and AnyCable spare you: both ship the multi-node story as a documented, supported configuration.
+                  <strong>uWS multi-node is DIY.</strong> No built-in cross-node clustering, no built-in HTTP publish. We wrote a custom publish API and a custom Redis pub/sub bridge to test uWS at all. Production uWS teams end up building both themselves. Socket.io and AnyCable ship the multi-node story as documented config.
                 </div>
               </div>
             </div>
@@ -861,9 +831,9 @@ CPU (% of 1 vCPU)
                  horizontal scaling + rolling deploy substitute for separate-process WS?" --}}
             <div class='compare-rubric__section'>
               <div class='compare-rubric__content'>
-                <h3 class='compare-rubric__subtitle'>Rolling deploy: per-client disconnect window + message loss</h3>
+                <h3 class='compare-rubric__subtitle'>Rolling deploy: per-client gap + message loss</h3>
                 <p class='compare-prose'>
-                  3-node cluster, 10k connections steady, drain + restart nodes sequentially. The test measures what every connected user actually experiences during a deploy: how long their connection is broken, how many messages they miss in that window, and whether the surviving nodes can absorb the reconnect storm from the node being recycled.
+                  3-node cluster, 10k connections, drain + restart nodes in sequence. Measures what each user actually sees: connection gap, messages missed, whether surviving nodes absorb the reconnect storm.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -896,9 +866,9 @@ CPU (% of 1 vCPU)
             {{!-- Clustered capacity + avalanche (A2d) --}}
             <div class='compare-rubric__section'>
               <div class='compare-rubric__content'>
-                <h3 class='compare-rubric__subtitle'>Clustered capacity and one-node-down avalanche</h3>
+                <h3 class='compare-rubric__subtitle'>Clustered capacity and 1-of-N down</h3>
                 <p class='compare-prose'>
-                  Total capacity across 3 nodes (the realistic prod question, not single-instance), and what happens when 1 of 3 nodes fails: how fast do the survivors absorb the displaced load, and is anything lost in transit?
+                  Total capacity across 3 nodes, and what happens when 1 of 3 fails: how fast survivors absorb the displaced load, what's lost in transit.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -931,7 +901,7 @@ CPU (% of 1 vCPU)
               <div class='compare-rubric__content compare-rubric__content--full'>
                 <h3 class='compare-rubric__subtitle'>Takeaway: when does in-process WS stop being viable?</h3>
                 <p class='compare-prose'>
-                  <strong>TBD-A2c/A2d narrative.</strong> The rolling-deploy and one-node-down tables above answer the structural question: does horizontal scaling + a rolling deploy give you acceptable UX, or do you need a separate-process WS service to deploy independently? Conclusion depends on numbers we don't have yet. Two plausible outcomes: (1) <em>rolling deploy + Socket.io CSR is fine</em> for many apps, in which case in-process stays a real option; (2) <em>even with CSR, the disconnect storm + replay tail is rough enough at 10k+</em> that production teams end up wanting the WS layer separate, which is what AnyCable ships by default.
+                  CSR + Redis Streams is the best in-process answer we measured: a ~1.5 s per-user freeze with 100% delivery (replay backfills) on every rolling deploy. Default Socket.io is worse (2 s freeze, 99.6% delivered, 2-3 lost per user). <strong>Standalone WS is the only shape where users don't notice the deploy at all</strong>: zero disconnects, zero reconnects, a 45-second publishing pause that affects what gets sent, not what gets received. CSR shrinks the gap; only architecture eliminates it.
                 </p>
               </div>
             </div>
