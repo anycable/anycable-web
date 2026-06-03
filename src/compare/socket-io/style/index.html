@@ -1,406 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead pageTitle="Compare-page style index — design language spine" pageDescription="Internal style index for the AnyCable comparison-page design spine. Every element rendered in one place so we can iterate the lab-notebook design language without redesigning 30 sections in parallel." pageUrl="https://anycable.io/compare/socket-io/style"}}
+  {{> dochead pageTitle="Compare-page style index — system reference" pageDescription="Internal style index for the AnyCable compare-page design system. Every block authors should reach for, rendered once with the HTML structure visible. Copy from here, paste into any compare/* page."}}
   <body>
     <div class="page">
       {{> header}}
-      <main class="content c-spine">
+      <main class="content compare-page c-spine">
 
-        {{!-- ================================================== --}}
-        {{!-- 0. PAGE HEADER — what is this page                --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 96px 64px 32px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket c-label--accent">Style index</span>
-          <h1 class="c-display" style="margin-top: 16px;">
-            AnyCable <span class="c-vs">vs</span> Socket.io
+        {{!-- ============================================================
+              SYSTEM REFERENCE
+              Every section below shows: (1) what it looks like rendered,
+              (2) the HTML structure to copy, (3) when to reach for it.
+              Source of truth — if a pattern isn't here, it isn't part of
+              the system yet. Add it here first, then to the page.
+              ============================================================ --}}
+
+        <section style="max-width: 1200px; margin: 0 auto; padding: 96px 64px 32px;">
+          <h1 class='compare-hero__title' style="font-size: clamp(40px,7vw,72px); line-height: 1.05; letter-spacing: -0.025em; font-weight: 700; margin: 0 0 24px;">
+            Compare-page <span class='c-vs'>system</span> reference
           </h1>
-          <p class="c-prose">
-            Internal style index for the comparison-page design spine. Every typographic role,
-            layout primitive, and component the page uses, rendered once each. Iterate here,
-            not in the 1448-line page. Live tokens are CSS custom properties on
-            <code>.c-spine</code> — tweak in devtools.
+          <p class='compare-prose'>
+            What authors writing or extending a comparison page should reach for. Every block here renders as it will on the live page. Copy the HTML next to each one. If a pattern is missing, add it to the spine (<code>src/modules/blocks/compare-spine.scss</code>) first, then add a demo entry here.
           </p>
-          <p class="c-meta">
-            Signature: lab notebook. Mono structural labels. Light tinted code blocks. Tight
-            580px prose column. No dark surfaces on this page.
+          <p class='compare-prose'>
+            All spine rules are scoped under <code>.c-spine</code>. The comparison page activates them by adding <code>c-spine</code> to its <code>&lt;main class='content compare-page'&gt;</code>.
           </p>
         </section>
 
-        {{!-- ================================================== --}}
-        {{!-- 1. TYPOGRAPHY ROLES                                --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 32px 64px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket">Section 01</span>
-          <h2 class="c-section" style="margin-top: 16px;">Typography roles</h2>
-          <p class="c-prose">
-            Five voices. Anything else is a re-skin of one of these.
+        {{!-- ============================================================
+              01 · TYPOGRAPHY
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 32px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">01 · Typography</h2>
+
+          <h1 class='compare-hero__title' style="font-size: clamp(40px,7vw,72px); line-height: 1.05; letter-spacing: -0.025em; font-weight: 700; margin: 24px 0;">
+            Display heading <span class='c-vs'>with</span> vs
+          </h1>
+          <p class='compare-prose' style="margin-bottom: 8px;"><strong>Use for:</strong> the page H1. The <code>c-vs</code> span is a typographic operator between comparison terms.</p>
+          <pre class='compare-code-block' style="max-width: 880px;"><span class='c-com'>&lt;h1 class=<span class='c-str'>'compare-hero__title'</span>&gt;</span>
+  Socket.io <span class='c-com'>&lt;span class=<span class='c-str'>'c-vs'</span>&gt;</span>vs<span class='c-com'>&lt;/span&gt;</span> AnyCable
+<span class='c-com'>&lt;/h1&gt;</span></pre>
+
+          <h2 class='compare-rubric__title' style="margin: 48px 0 8px;">Section heading</h2>
+          <p class='compare-prose' style="margin-bottom: 8px;"><strong>Use for:</strong> the top of every <code>&lt;section class='compare-rubric'&gt;</code>. Display sized.</p>
+          <pre class='compare-code-block' style="max-width: 880px;">&lt;h2 class='compare-rubric__title' id='latency'&gt;
+  How fast is it?
+  &lt;a class='heading-anchor' href='#latency' aria-label='Permalink'&gt;#&lt;/a&gt;
+&lt;/h2&gt;</pre>
+
+          <h3 class='compare-rubric__subtitle' style="margin-top: 48px;">Sub-section heading</h3>
+          <p class='compare-prose' style="margin-bottom: 8px;"><strong>Use for:</strong> H3 inside a long section.</p>
+          <pre class='compare-code-block' style="max-width: 880px;">&lt;h3 class='compare-rubric__subtitle'&gt;How latency scales&lt;/h3&gt;</pre>
+
+          <p class='compare-prose' style="margin-top: 48px;">
+            <strong>Body prose</strong> — capped at 580px line length. Inline <code>code</code> sits as a calm pill scaled to 0.8em so it optically aligns with Stem. <a class='link' href='#'>Links carry the accent color.</a> <strong>Strong</strong> for emphasis. Use <code>t-mute</code> for <span class='t-mute'>quieter text</span>, <code>t-tiny</code> for <span class='t-mute t-tiny'>11px small print</span>, <code>t-accent</code> for <span class='t-accent'>brand red</span>, and <code>t-num</code> on numbers like <span class='t-num'>123,456</span> for tabular spacing.
+          </p>
+          <pre class='compare-code-block' style="max-width: 880px;">&lt;p class='compare-prose'&gt;
+  Body prose. Inline &lt;code&gt;code&lt;/code&gt;, &lt;strong&gt;strong&lt;/strong&gt;,
+  &lt;a class='link' href='…'&gt;link&lt;/a&gt;, &lt;span class='t-mute'&gt;mute&lt;/span&gt;.
+&lt;/p&gt;</pre>
+        </section>
+
+        {{!-- ============================================================
+              02 · LAYOUT
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 32px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">02 · Section layout</h2>
+          <p class='compare-prose'>
+            Every section on the page is a <code>compare-rubric</code>. Two-column by default (prose left, media right); use <code>--full</code> for single-column sections like FAQ or appendix.
+          </p>
+          <pre class='compare-code-block' style="max-width: 880px;">&lt;section class='compare-rubric'&gt;
+  &lt;div class='compare-rubric__wrapper'&gt;
+    &lt;div class='compare-rubric__section'&gt;
+      &lt;div class='compare-rubric__content'&gt;
+        &lt;h2 class='compare-rubric__title' id='…'&gt;…&lt;/h2&gt;
+        &lt;p class='compare-prose'&gt;…&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'&gt;
+        &lt;!-- a code block, table, diagram, or chart --&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+
+          <p class='compare-prose' style="margin-top: 24px;">
+            <strong>Media modifiers:</strong> <code>--align-top</code> aligns the media column to the top of the prose; <code>--sticky</code> pins it during long scroll. Combine both for the default benchmark rubric.
+          </p>
+          <p class='compare-prose'>
+            <strong>Full-width:</strong> for sections without a media partner (FAQ, appendix, CTA, intro).
+          </p>
+          <pre class='compare-code-block' style="max-width: 880px;">&lt;div class='compare-rubric__content compare-rubric__content--full'&gt;…&lt;/div&gt;</pre>
+        </section>
+
+        {{!-- ============================================================
+              03 · RIGHT-SIDE ARTIFACTS
+              All four share the same outer container: #fafafa bg, #ececec
+              hairline border, 8px radius, 28/32 padding.
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 32px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">03 · Right-side artifacts</h2>
+          <p class='compare-prose'>
+            Four kinds of content go in the media column. They share one visual container so the page rhythm stays consistent.
           </p>
 
-          <div style="display: grid; grid-template-columns: 200px 1fr; gap: 16px 32px; align-items: baseline; border-top: 1px solid var(--c-border); padding-top: 24px; margin-bottom: 48px;">
+          <h3 class='compare-rubric__subtitle'>Code block</h3>
+          <pre class='compare-code-block' style="max-width: 880px;"><span class='c-com'>// Server</span>
+<span class='c-key'>const</span> io = <span class='c-key'>new</span> Server(httpServer);
 
-            <span class="c-label">.c-display</span>
-            <h1 class="c-display" style="margin: 0;">Display heading</h1>
-
-            <span class="c-label">.c-section</span>
-            <h2 class="c-section" style="margin: 0;">Section heading</h2>
-
-            <span class="c-label">.c-sub</span>
-            <h3 class="c-sub" style="margin: 0;">Subsection heading</h3>
-
-            <span class="c-label">.c-label</span>
-            <span class="c-label">A flat label</span>
-
-            <span class="c-label">.c-label--bracket</span>
-            <span class="c-label c-label--bracket">Bench 01</span>
-
-            <span class="c-label">.c-label--accent</span>
-            <span class="c-label c-label--bracket c-label--accent">Best</span>
-
-            <span class="c-label">.c-prose</span>
-            <p class="c-prose" style="margin: 0;">
-              Body prose. Capped at 580px so the line length stays in the readable 60-ish
-              characters at 19px. Inline <code>code</code> sits as a calm pill. <strong>Strong</strong>
-              for emphasis. <a class="c-link" href="#">Links carry the accent color.</a>
-            </p>
-
-            <span class="c-label">.c-meta</span>
-            <p class="c-meta" style="margin: 0;">
-              Meta text. Smaller (15px), darker gray (#555). Used for footnotes under tables
-              and supporting paragraphs that orbit a main one.
-            </p>
-
-            <span class="c-label">.c-caption</span>
-            <span class="c-caption">Caption mono · figure subtitles · methodology footnotes</span>
-
-          </div>
-        </section>
-
-        {{!-- ================================================== --}}
-        {{!-- 2. THE "vs" TREATMENT — before / after            --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 32px 64px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket">Section 02</span>
-          <h2 class="c-section" style="margin-top: 16px;">The "vs" treatment</h2>
-          <p class="c-prose">
-            Operator-style, mono, accent red, vertical-aligned. Reads as a typographic operator
-            instead of a faded word. The grey-mute span is gone.
+io.on(<span class='c-str'>'connection'</span>, (socket) =&gt; {
+  socket.on(<span class='c-str'>'subscribe'</span>, (t) =&gt; socket.join(t));
+});</pre>
+          <pre class='compare-code-block' style="max-width: 880px; margin-top: 16px;">&lt;pre class='compare-code-block'&gt;&lt;span class='c-com'&gt;// comment&lt;/span&gt;
+&lt;span class='c-key'&gt;const&lt;/span&gt; foo = &lt;span class='c-str'&gt;'string'&lt;/span&gt;;
+&lt;/pre&gt;</pre>
+          <p class='compare-prose' style="margin-top: 8px;">
+            <strong>Syntax tokens:</strong> <code>c-key</code> (keyword, amber), <code>c-str</code> (string, green), <code>c-com</code> (comment, slate italic), <code>c-err</code> (error, red).
           </p>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; border-top: 1px solid var(--c-border); padding-top: 24px; margin-bottom: 48px;">
-            <div>
-              <span class="c-label c-label--bracket">Before</span>
-              <div style="margin-top: 12px; padding: 32px; background: #fbfbfb; border-radius: 8px;">
-                <span style="font-size: 46px; font-weight: 700; color: #1a1a1a;">
-                  AnyCable <span style="color: #888;">vs</span> Socket.io
-                </span>
-              </div>
-              <p class="c-caption" style="margin-top: 8px;">46px display, gray span same color as captions</p>
-            </div>
-            <div>
-              <span class="c-label c-label--bracket c-label--accent">After</span>
-              <div style="margin-top: 12px; padding: 32px; background: #fbfbfb; border-radius: 8px;">
-                <h1 class="c-display" style="margin: 0; font-size: 46px;">
-                  AnyCable <span class="c-vs">vs</span> Socket.io
-                </h1>
-              </div>
-              <p class="c-caption" style="margin-top: 8px;">.c-vs · mono 0.42em · accent red · vertical-aligned 0.45em</p>
-            </div>
+          <h3 class='compare-rubric__subtitle' style="margin-top: 48px;">Framed data table</h3>
+          <div class='compare-frame' style="max-width: 880px;">
+            <table class='compare-data-table compare-data-table--compact'>
+              <thead>
+                <tr>
+                  <th>Setup</th>
+                  <th>p50</th>
+                  <th>p99</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Socket.io <span class='t-mute t-tiny'>default</span></td><td>47 ms</td><td>182 ms</td></tr>
+                <tr><td>Socket.io + CSR</td><td>49 ms</td><td>194 ms</td></tr>
+                <tr><td>uWebSockets.js</td><td>31 ms</td><td>98 ms</td></tr>
+                <tr><td>AnyCable</td><td class="is-best"><strong>24 ms</strong></td><td class="is-best"><strong>71 ms</strong></td></tr>
+                <tr class='is-row-best'><td>AnyCable Pro</td><td class="is-best"><strong>19 ms</strong></td><td class="is-best"><strong>58 ms</strong></td></tr>
+              </tbody>
+            </table>
           </div>
-        </section>
-
-        {{!-- ================================================== --}}
-        {{!-- 3. RUBRIC LAYOUT — two-column with sticky media   --}}
-        {{!-- ================================================== --}}
-        <section style="max-width: 1500px; margin: 0 auto;">
-          <div style="padding: 0 64px;">
-            <span class="c-label c-label--bracket">Section 03</span>
-            <h2 class="c-section" style="margin-top: 16px;">Rubric layout</h2>
-            <p class="c-prose">
-              Two columns, prose left at 580px max, media right (data table or code). The
-              media column can be sticky if the prose is long.
-            </p>
-          </div>
-
-          <div class="c-rubric">
-            <div class="c-rubric__content">
-              <span class="c-eyebrow c-label--bracket">Bench 01</span>
-              <h2 class="c-section">How fast is the roundtrip?</h2>
-              <p class="c-prose">
-                Latency at 1k, 10k, and 100k concurrent connections, plus broadcast throughput
-                and whispers. Embedded vs standalone topologies, both measured. Numbers here
-                are p50 roundtrip at 10k — the steady-state of a typical production setup.
-              </p>
-              <p class="c-prose">
-                AnyCable Pro is fastest because the Go broker drops the network hop in the
-                hot path; uWS comes second because it's in-process; Socket.io trails because
-                the JS event loop is shared with your app code.
-              </p>
-              <p class="c-meta">
-                Methodology and the bench harness live on
-                <a class="c-link" href="https://github.com/irinanazarova/anycable-socketio-benchmarks">GitHub</a>.
-              </p>
-            </div>
-
-            <div class="c-rubric__media">
-              <figure class="c-figure">
-                <div class="c-figure__header">
-                  <span class="c-figure__label">Fig. 1</span>
-                  <span class="c-figure__title">p50 roundtrip @ 10K connections</span>
-                </div>
-                <div class="c-figure__body">
-                  <table class="c-table">
-                    <thead>
-                      <tr>
-                        <th>Setup</th>
-                        <th style="text-align: right;">p50</th>
-                        <th style="text-align: right;">p99</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Default Socket.io</td>
-                        <td class="c-num" style="text-align: right;">47 ms</td>
-                        <td class="c-num" style="text-align: right;">182 ms</td>
-                      </tr>
-                      <tr>
-                        <td>Socket.io + CSR</td>
-                        <td class="c-num" style="text-align: right;">49 ms</td>
-                        <td class="c-num" style="text-align: right;">194 ms</td>
-                      </tr>
-                      <tr>
-                        <td>uWebSockets.js</td>
-                        <td class="c-num" style="text-align: right;">31 ms</td>
-                        <td class="c-num" style="text-align: right;">98 ms</td>
-                      </tr>
-                      <tr>
-                        <td>AnyCable</td>
-                        <td class="c-num" style="text-align: right;">24 ms</td>
-                        <td class="c-num" style="text-align: right;">71 ms</td>
-                      </tr>
-                      <tr class="is-best">
-                        <td><strong>AnyCable Pro</strong></td>
-                        <td class="c-num c-best" style="text-align: right;">19 ms</td>
-                        <td class="c-num c-best" style="text-align: right;">58 ms</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <span class="c-figure__caption">Identical Railway hardware · 10K idle subs · 1KB payload · 60s window</span>
-              </figure>
-            </div>
-          </div>
-        </section>
-
-        {{!-- ================================================== --}}
-        {{!-- 4. CODE BLOCK — light tinted, muted syntax        --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 32px 64px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket">Section 04</span>
-          <h2 class="c-section" style="margin-top: 16px;">Code blocks</h2>
-          <p class="c-prose">
-            Light surface (<code>#fafafa</code>), 1px subtle border, muted syntax tints so
-            the block reads as part of the prose layer, not as a foreign material. The
-            tokens are warm amber for keywords, deep green for strings, slate gray for
-            comments, deep red for errors.
+          <p class='compare-data-table__footnote'>Methodology note in mono small. Use <code>compare-data-table__footnote</code> directly below the frame.</p>
+          <pre class='compare-code-block' style="max-width: 880px; margin-top: 16px;">&lt;div class='compare-frame'&gt;
+  &lt;table class='compare-data-table compare-data-table--compact'&gt;
+    &lt;thead&gt;…&lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;&lt;td&gt;Setup&lt;/td&gt;&lt;td class='is-best'&gt;&lt;strong&gt;19 ms&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr class='is-row-best'&gt;…&lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+&lt;p class='compare-data-table__footnote'&gt;Methodology note.&lt;/p&gt;</pre>
+          <p class='compare-prose' style="margin-top: 8px;">
+            <strong>Cell states:</strong> <code>is-best</code> (green winner), <code>is-worst</code> (red loser), <code>is-na</code> (faded n/a), <code>is-row-best</code> (full-row tint), <code>is-row-worst</code>.
+            <br/><strong>Variant:</strong> <code>compare-data-table--compact</code> for tables with many columns.
           </p>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 48px;">
-            <div>
-              <span class="c-label c-label--bracket">Before</span>
-              <pre style="margin-top: 12px; background: #1a1a1a; color: #e0e0e0; padding: 24px; border-radius: 8px; font-family: 'Martian Mono', ui-monospace, Menlo, monospace; font-size: 13px; line-height: 1.7; overflow-x: auto;"><span style="color: #cce6ff;">// Server</span>
-<span style="color: #fcd34d;">const</span> io = <span style="color: #fcd34d;">new</span> Server(httpServer);
-
-io.on(<span style="color: #86efac;">'connection'</span>, (socket) => {
-  socket.on(<span style="color: #86efac;">'subscribe'</span>, (t) => socket.join(t));
-});
-
-io.to(<span style="color: #86efac;">'chat:42'</span>).emit(<span style="color: #86efac;">'message'</span>, payload);</pre>
-              <p class="c-caption" style="margin-top: 8px;">Dark #1a1a1a, bright syntax — reads as island</p>
-            </div>
-            <div>
-              <span class="c-label c-label--bracket c-label--accent">After</span>
-              <pre class="c-code" style="margin-top: 12px;"><span class="c-code-com">// Server</span>
-<span class="c-code-key">const</span> io = <span class="c-code-key">new</span> Server(httpServer);
-
-io.on(<span class="c-code-str">'connection'</span>, (socket) => {
-  socket.on(<span class="c-code-str">'subscribe'</span>, (t) => socket.join(t));
-});
-
-io.to(<span class="c-code-str">'chat:42'</span>).emit(<span class="c-code-str">'message'</span>, payload);</pre>
-              <p class="c-caption" style="margin-top: 8px;">Light #fafafa, muted syntax — part of the page</p>
-            </div>
-          </div>
-
-          <span class="c-label c-label--bracket">Standalone, framed</span>
-          <figure class="c-figure" style="margin-top: 16px;">
-            <div class="c-figure__header">
-              <span class="c-figure__label">Code 03</span>
-              <span class="c-figure__title">AnyCable broadcast from your Node app</span>
-            </div>
-            <div class="c-figure__body">
-              <pre class="c-code"><span class="c-code-com">// Server — broadcast over HTTP to the anycable-go binary</span>
-<span class="c-code-key">import</span> { broadcast } <span class="c-code-key">from</span> <span class="c-code-str">'@anycable/serverless-js'</span>;
-
-<span class="c-code-key">await</span> broadcast(<span class="c-code-str">'chat:42'</span>, {
-  type: <span class="c-code-str">'message'</span>,
-  body: payload,
-});
-
-<span class="c-code-com">// Replay, history, presence — all server-side. Your app stays</span>
-<span class="c-code-com">// stateless. WS layer scales and deploys independently.</span></pre>
-            </div>
-            <span class="c-figure__caption">Server-side broadcast · same code in OSS and Pro · WS-layer process is a separate binary</span>
-          </figure>
         </section>
 
-        {{!-- ================================================== --}}
-        {{!-- 5. CALLOUT                                         --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 32px 64px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket">Section 05</span>
-          <h2 class="c-section" style="margin-top: 16px;">Callouts</h2>
-          <p class="c-prose">
-            One callout primitive. The bracketed label carries the type signal (<code>NOTE</code>,
-            <code>CAVEAT</code>, <code>METHOD</code>), so we don't need different colors.
-          </p>
+        {{!-- ============================================================
+              04 · ASIDES
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 32px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">04 · Callout (aside)</h2>
 
-          <div style="max-width: 580px;">
-            <div class="c-callout">
-              <span class="c-callout__label">Note</span>
-              Numbers are p50 over a 60-second steady-state window. Cold-start latency
-              behaves differently; see the <strong>Headroom</strong> section.
-            </div>
-
-            <div class="c-callout">
-              <span class="c-callout__label">Caveat</span>
-              uWebSockets.js doesn't ship cluster-mode out of the box. The 3-node test
-              uses a Redis-backed adapter we wrote for this benchmark, available in the
-              <code>bench/uws-cluster</code> branch.
-            </div>
-
-            <div class="c-callout">
-              <span class="c-callout__label">Method</span>
-              Each setup runs on identical Railway hardware (4 vCPU, 8GB). Numbers are
-              reproducible from the
-              <a class="c-link" href="#">open-source benchmark repo</a>.
-            </div>
+          <div class='compare-callout'>
+            <strong>Caveat or framing.</strong> Use the callout for a methodology note, caveat, or "how to read this" framing. Accent-red left rule signals "important context, not main body."
           </div>
+
+          <div class='compare-callout'>
+            <strong>Lists inside callouts</strong> get smaller spacing automatically. No need to inline-style anything.
+            <ul class='compare-bullet-list'>
+              <li><strong>100% of users affected</strong> by every deploy</li>
+              <li><strong>~2-second freeze per user</strong></li>
+              <li><strong>2&ndash;3 messages lost per user, per deploy</strong></li>
+            </ul>
+          </div>
+
+          <pre class='compare-code-block' style="max-width: 880px;">&lt;div class='compare-callout'&gt;
+  &lt;strong&gt;Caveat.&lt;/strong&gt; Body text.
+&lt;/div&gt;</pre>
         </section>
 
-        {{!-- ================================================== --}}
-        {{!-- 6. CARDS                                           --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 32px 64px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket">Section 06</span>
-          <h2 class="c-section" style="margin-top: 16px;">Cards</h2>
-          <p class="c-prose">
-            One card primitive. Hero cards, try-it cards, impact cards — same component,
-            different label. The bracketed label is the type signal.
-          </p>
+        {{!-- ============================================================
+              05 · LISTS
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 32px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">05 · Lists</h2>
 
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px;">
-            <a class="c-card c-card--linked" href="#">
-              <span class="c-card__label">Bench 01</span>
-              <h3 class="c-card__title">How fast?</h3>
-              <p class="c-card__desc">p50 roundtrip at 1k / 10k / 100k connections. Broadcast throughput, whispers.</p>
-            </a>
-            <a class="c-card c-card--linked" href="#">
-              <span class="c-card__label">Bench 02</span>
-              <h3 class="c-card__title">How reliable?</h3>
-              <p class="c-card__desc">Delivery under simulated WiFi-drop jitter. Replay vs at-most-once protocols.</p>
-            </a>
-            <a class="c-card c-card--linked" href="#">
-              <span class="c-card__label">Bench 03</span>
-              <h3 class="c-card__title">How efficient to scale?</h3>
-              <p class="c-card__desc">Per-instance load + 3-node clustered rolling-deploy test.</p>
-            </a>
-          </div>
-        </section>
-
-        {{!-- ================================================== --}}
-        {{!-- 7. BULLET LIST + TOC                              --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 32px 64px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket">Section 07</span>
-          <h2 class="c-section" style="margin-top: 16px;">Lists &amp; navigation</h2>
-
-          <h3 class="c-sub">Bullet list</h3>
-          <ul class="c-bullet-list">
-            <li><strong>Default Socket.io</strong> — the baseline most teams have today.</li>
-            <li><strong>Socket.io + CSR</strong> — in-place delivery upgrade Socket.io shipped in 4.6.</li>
-            <li><strong>uWebSockets.js + topics</strong> — the most-cited "just use uWS" alternative.</li>
-            <li><strong>AnyCable OSS</strong> — separate Go binary with broker built in.</li>
-            <li><strong>AnyCable Pro</strong> — same protocol, denser per-connection memory.</li>
+          <h3 class='compare-rubric__subtitle' style="margin-top: 0;">Bullet list</h3>
+          <ul class='compare-bullet-list'>
+            <li><strong>Default Socket.io</strong> — the baseline most teams ship today.</li>
+            <li><strong>Socket.io + CSR</strong> — the in-place delivery upgrade from 4.6, opt-in.</li>
+            <li><strong>uWebSockets.js + topics</strong> — the &ldquo;just use uWS&rdquo; alternative.</li>
+            <li><strong>AnyCable OSS</strong> — a separate Go binary your app broadcasts to.</li>
+            <li><strong>AnyCable Pro</strong> — same protocol; denser per-conn memory.</li>
           </ul>
 
-          <h3 class="c-sub" style="margin-top: 32px;">TOC navigation row</h3>
-          <nav class="c-toc">
-            <span class="c-toc__label">Sections</span>
-            <a href="#architecture">What we compare</a>
-            <a href="#latency">1. How fast</a>
-            <a href="#reliability">2. How reliable</a>
-            <a href="#headroom">3. How efficient to scale</a>
-            <a href="#migration">Migration</a>
-            <a href="#faq">FAQ</a>
-          </nav>
-        </section>
-
-        {{!-- ================================================== --}}
-        {{!-- 8. CTA                                             --}}
-        {{!-- ================================================== --}}
-        <section style="max-width: 1500px; margin: 96px auto 0;">
-          <div class="c-cta">
-            <span class="c-label c-label--bracket c-label--accent">Try it</span>
-            <h2 class="c-cta__title">Run the benchmarks yourself</h2>
-            <p class="c-prose" style="margin-left: auto; margin-right: auto; text-align: left; display: inline-block;">
-              Every number on this page is reproducible from the open-source bench harness.
-              Clone, set your hardware, run the same setups. The numbers below are ours.
-            </p>
-            <div class="c-cta__actions" style="margin-top: 32px;">
-              <a class="c-btn c-btn--primary" href="#">Get started</a>
-              <a class="c-btn c-btn--secondary" href="#">View benchmark repo</a>
-            </div>
-            <p class="c-cta__footnote" style="margin-top: 24px;">
-              Open source · MIT · Identical hardware · Reproducible numbers
-            </p>
-          </div>
-        </section>
-
-        {{!-- ================================================== --}}
-        {{!-- 9. TOKEN INVENTORY (devtools cheat sheet)         --}}
-        {{!-- ================================================== --}}
-        <section style="padding: 32px 64px 128px; max-width: 1200px; margin: 0 auto;">
-          <span class="c-label c-label--bracket">Appendix</span>
-          <h2 class="c-section" style="margin-top: 16px;">Token inventory</h2>
-          <p class="c-prose">
-            Every token is a CSS custom property on <code>.c-spine</code>. Tweak in devtools
-            to iterate. Anything you change here is what we then promote into
-            <code>compare-spine.scss</code>.
+          <h3 class='compare-rubric__subtitle' style="margin-top: 32px;">Ordered list</h3>
+          <ol class='compare-prose'>
+            <li><a class='link' href='#'><strong>How fast</strong></a> — latency at 1k / 10k / 100k.</li>
+            <li><a class='link' href='#'><strong>How reliable</strong></a> — delivery under WiFi-drop jitter.</li>
+            <li><a class='link' href='#'><strong>How efficient to scale</strong></a> — load + 3-node deploy.</li>
+          </ol>
+          <p class='compare-prose'>
+            Numbered <code>&lt;ol class='compare-prose'&gt;</code> renders with mono accent-red <code>01 / 02 / 03</code> markers. No inline styles needed.
           </p>
+        </section>
 
-          <table class="c-table" style="margin-top: 32px;">
+        {{!-- ============================================================
+              06 · CARDS
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 32px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">06 · Cards</h2>
+
+          <h3 class='compare-rubric__subtitle' style="margin-top: 0;">Hero card strip (top of page)</h3>
+          <div class='compare-hero-cards'>
+            <div class='compare-hero-card'>
+              <div class='compare-hero-card__label'>Latency <span class='t-mute t-tiny'>p50 @ 10K</span></div>
+              <dl class='compare-hero-card__rows'>
+                <div class='compare-hero-card__row'><dt>Socket.io</dt><dd>47 ms</dd></div>
+                <div class='compare-hero-card__row'><dt>uWS</dt><dd>31 ms</dd></div>
+                <div class='compare-hero-card__row'><dt>AnyCable</dt><dd class='is-best'>19 ms</dd></div>
+              </dl>
+              <a class='compare-hero-card__deeplink' href='#'>Latency test</a>
+            </div>
+            <div class='compare-hero-card'>
+              <div class='compare-hero-card__label'>Reliability <span class='t-mute t-tiny'>delivery under jitter</span></div>
+              <dl class='compare-hero-card__rows'>
+                <div class='compare-hero-card__row'><dt>Socket.io</dt><dd class='is-worst'>87%</dd></div>
+                <div class='compare-hero-card__row'><dt>uWS</dt><dd class='is-worst'>86%</dd></div>
+                <div class='compare-hero-card__row'><dt>AnyCable</dt><dd class='is-best'>100%</dd></div>
+              </dl>
+              <a class='compare-hero-card__deeplink' href='#'>Reliability test</a>
+            </div>
+            <div class='compare-hero-card'>
+              <div class='compare-hero-card__label'>Scalability <span class='t-mute t-tiny'>downtime per deploy</span></div>
+              <dl class='compare-hero-card__rows'>
+                <div class='compare-hero-card__row'><dt>Socket.io</dt><dd class='is-worst'>~2 s</dd></div>
+                <div class='compare-hero-card__row'><dt>uWS</dt><dd class='is-worst'>~2 s</dd></div>
+                <div class='compare-hero-card__row'><dt>AnyCable</dt><dd class='is-best'>0 s</dd></div>
+              </dl>
+              <a class='compare-hero-card__deeplink' href='#'>Scalability test</a>
+            </div>
+          </div>
+
+          <h3 class='compare-rubric__subtitle' style="margin-top: 32px;">Impact / disqualification cards</h3>
+          <div class='compare-impact-cards'>
+            <div class='compare-impact-card'>
+              <span class='compare-impact-card__title'>Live chat &amp; notifications</span>
+              <span class='compare-impact-card__desc'>Messages disappear during network blips. Users see incomplete conversations.</span>
+            </div>
+            <div class='compare-impact-card'>
+              <span class='compare-impact-card__title'>LLM streaming</span>
+              <span class='compare-impact-card__desc'>Mid-sentence disconnects leave output truncated. Chunks lost, no recovery.</span>
+            </div>
+          </div>
+
+          <h3 class='compare-rubric__subtitle' style="margin-top: 32px;">Try-it card (link card with eyebrow)</h3>
+          <a class='compare-try-card' href='#' style="display: block; max-width: 380px; padding: 20px 22px; text-decoration: none; color: inherit;">
+            <div class='t-eyebrow'>JS client</div>
+            <div class='compare-try-card__title'>@anycable/core, @anycable/web</div>
+            <div class='compare-try-card__desc'>The official client for Node.js, browsers, React Native.</div>
+          </a>
+          <p class='compare-prose' style="margin-top: 12px; font-size: 14px;">
+            <code>t-eyebrow</code> inside <code>compare-try-card</code> gets default <code>margin-bottom</code>. No inline styles needed.
+          </p>
+        </section>
+
+        {{!-- ============================================================
+              07 · FAQ ACCORDION
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 32px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">07 · FAQ accordion</h2>
+          <div class='compare-faq'>
+            <details class='compare-faq__item'>
+              <summary>Does AnyCable replace Socket.io?</summary>
+              <div class='compare-faq__answer'>It replaces it. Your app broadcasts to AnyCable via HTTP instead of <code>io.emit()</code>.</div>
+            </details>
+            <details class='compare-faq__item'>
+              <summary>What's the operational cost?</summary>
+              <div class='compare-faq__answer'>One extra process. A single Go binary or Docker container. Stateless, scales horizontally.</div>
+            </details>
+          </div>
+          <pre class='compare-code-block' style="max-width: 880px; margin-top: 16px;">&lt;div class='compare-faq'&gt;
+  &lt;details class='compare-faq__item'&gt;
+    &lt;summary&gt;Question?&lt;/summary&gt;
+    &lt;div class='compare-faq__answer'&gt;Answer.&lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</pre>
+        </section>
+
+        {{!-- ============================================================
+              08 · INLINE VOCABULARY
+              ============================================================ --}}
+        <section style="max-width: 1200px; margin: 0 auto; padding: 0 64px 96px;">
+          <h2 style="font-family: 'Martian Mono', monospace; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); margin: 64px 0 24px; font-weight: 500;">08 · Inline vocabulary</h2>
+
+          <table class='compare-data-table' style="max-width: 880px;">
             <thead>
-              <tr>
-                <th>Token</th>
-                <th>Value</th>
-                <th>Used by</th>
-              </tr>
+              <tr><th>Class</th><th>Use for</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>--c-fs-display</code></td><td class="c-num">64px</td><td>.c-display (H1)</td></tr>
-              <tr><td><code>--c-fs-section</code></td><td class="c-num">36px</td><td>.c-section (H2)</td></tr>
-              <tr><td><code>--c-fs-sub</code></td><td class="c-num">22px</td><td>.c-sub (H3)</td></tr>
-              <tr><td><code>--c-fs-body</code></td><td class="c-num">19px</td><td>.c-prose</td></tr>
-              <tr><td><code>--c-fs-meta</code></td><td class="c-num">15px</td><td>.c-meta, table cells</td></tr>
-              <tr><td><code>--c-fs-caption</code></td><td class="c-num">13px</td><td>.c-caption, figure caption</td></tr>
-              <tr><td><code>--c-fs-label</code></td><td class="c-num">12px</td><td>.c-label, eyebrows, table heads</td></tr>
-              <tr><td><code>--c-prose-max</code></td><td class="c-num">580px</td><td>.c-prose hard cap</td></tr>
-              <tr><td><code>--c-space-section</code></td><td class="c-num">96px</td><td>section vertical</td></tr>
-              <tr><td><code>--c-space-block</code></td><td class="c-num">32px</td><td>after H2</td></tr>
-              <tr><td><code>--c-space-para</code></td><td class="c-num">24px</td><td>after body paragraph</td></tr>
-              <tr><td><code>--c-accent</code></td><td><span style="display: inline-block; width: 12px; height: 12px; background: #f64343; border-radius: 2px; vertical-align: -1px; margin-right: 6px;"></span><code>#f64343</code></td><td>vs, links, anchors</td></tr>
-              <tr><td><code>--c-best</code></td><td><span style="display: inline-block; width: 12px; height: 12px; background: #16a34a; border-radius: 2px; vertical-align: -1px; margin-right: 6px;"></span><code>#16a34a</code></td><td>winning values only</td></tr>
-              <tr><td><code>--c-code-bg</code></td><td><span style="display: inline-block; width: 12px; height: 12px; background: #fafafa; border: 1px solid #ececec; border-radius: 2px; vertical-align: -1px; margin-right: 6px;"></span><code>#fafafa</code></td><td>.c-code surface</td></tr>
+              <tr><td><code>c-vs</code></td><td>The operator between H1 comparison terms</td></tr>
+              <tr><td><code>link</code></td><td>Inline link (accent-red, underline-on-hover)</td></tr>
+              <tr><td><code>t-mute</code></td><td>Quieter text (gray)</td></tr>
+              <tr><td><code>t-tiny</code></td><td>11px small print (often with t-mute)</td></tr>
+              <tr><td><code>t-meta</code></td><td>Medium gray (footnotes)</td></tr>
+              <tr><td><code>t-strong</code></td><td>Pure black for emphasis</td></tr>
+              <tr><td><code>t-accent</code></td><td>Brand red</td></tr>
+              <tr><td><code>t-num</code></td><td>Tabular-nums for aligned numbers</td></tr>
+              <tr><td><code>t-eyebrow</code></td><td>Mono uppercase label</td></tr>
+              <tr><td><code>c-key</code> / <code>c-str</code> / <code>c-com</code> / <code>c-err</code></td><td>Code syntax tokens inside &lt;pre&gt; blocks</td></tr>
+              <tr><td><code>is-best</code> / <code>is-worst</code> / <code>is-na</code></td><td>Table cell state</td></tr>
+              <tr><td><code>is-row-best</code> / <code>is-row-worst</code></td><td>Full table row tint</td></tr>
             </tbody>
           </table>
         </section>

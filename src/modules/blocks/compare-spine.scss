@@ -909,9 +909,15 @@
     }
 
     &__nav {
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid var(--c-border);
+      // No top border — the abstract band is already bounded by top/bottom
+      // hairlines; a third inner divider was visual noise. Spacing alone
+      // separates prose from the contents row.
+      // Explicit `border-top: none` because compare.scss still sets one;
+      // we override it here so the live page has only the band's outer
+      // hairlines.
+      margin-top: 40px;
+      padding-top: 0;
+      border-top: none;
 
       a {
         font-family: var(--c-font-mono);
@@ -1178,13 +1184,24 @@
   }
 
   // ---- Code tabs: framed unit with mono labels ---------------------
+  // The container is a CSS grid with the bar in row 1 and ALL panels
+  // stacked in row 2 (same grid cell). The grid cell sizes to the
+  // tallest panel, so switching tabs never resizes the container and
+  // the page below never jumps. Inactive panels are kept in layout but
+  // hidden via `visibility: hidden` (not `display: none`, which would
+  // collapse them and re-introduce the jump).
   .compare-code-tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
     border: 1px solid var(--c-code-border);
     border-radius: var(--c-radius);
     overflow: hidden;
     background: var(--c-code-bg);
 
     &__bar {
+      grid-row: 1;
+      grid-column: 1;
       display: flex;
       flex-wrap: wrap;
       background: var(--c-paper);
@@ -1210,13 +1227,27 @@
       }
     }
 
+    // All panels share the same grid cell. The tallest defines the
+    // container height; the rest sit underneath, invisible but present.
+    // `!important` is needed because compare.scss sets `display: none`
+    // and `:checked ~ panel { display: block }` — those rules would
+    // collapse the inactive panels and re-introduce the jump.
+    &__panel {
+      display: block !important;
+      grid-row: 2;
+      grid-column: 1;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
     &__panel pre {
       border: none;
       border-radius: 0;
       margin: 0;
     }
 
-    // Active tab: stripped underline accent in red.
+    // Active tab: underline accent in red.
+    // Active panel: visible (the rest stay invisible but in flow).
     @for $i from 1 through 5 {
       .compare-code-tabs__radio--#{$i}:checked
         ~ .compare-code-tabs__bar
@@ -1224,6 +1255,12 @@
         color: var(--c-accent);
         background: var(--c-code-bg);
         box-shadow: inset 0 -2px 0 0 var(--c-accent);
+      }
+
+      .compare-code-tabs__radio--#{$i}:checked
+        ~ .compare-code-tabs__panel--#{$i} {
+        visibility: visible;
+        pointer-events: auto;
       }
     }
   }
@@ -1332,6 +1369,11 @@
   // `overflow-x: auto` makes the inner table scrollable when its
   // content needs more than the column allows. Scrollbar is forced
   // visible (not auto-hidden) so the user has affordance.
+  // ---- Frame: shared container for data tables --------------------
+  // Frame now provides INTERNAL breathing room (24px top/sides, 20px
+  // bottom) so a headline + table presented inside read as a single
+  // framed artifact, not as a table that fills its container edge-to-
+  // edge. Matches the visual rhythm of the code-block (28/32 padding).
   .compare-frame {
     width: 100%;
     background: var(--c-code-bg);
@@ -1340,7 +1382,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: 0;
+    padding: 24px 24px 20px;
 
     // Firefox
     scrollbar-width: thin;
@@ -1360,29 +1402,64 @@
     }
   }
 
-  // Data-table footnotes that follow a .compare-frame are part of the
-  // same artifact — pull them inside visually with mono treatment.
+  // ---- Data-table footnote (sits OUTSIDE the frame) ---------------
+  // Mono small. Lives below the frame as a sibling, acting as the
+  // methodology line for the figure.
   .compare-data-table__footnote {
     font-family: var(--c-font-mono);
     font-size: 12px;
+    line-height: 1.55;
     letter-spacing: 0.02em;
     color: var(--c-text-quiet);
-    margin-top: 12px;
+    margin: 12px 0 0;
     max-width: 880px;
+
+    strong {
+      color: var(--c-text-meta);
+      font-weight: 600;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.04);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 0.95em;
+      white-space: nowrap;
+    }
   }
 
-  // Headline conclusion above every data table — pairs with the left-side
-  // H3 subtitle. The H3 frames the question; the headline gives the
-  // takeaway. Sans-serif and weighted to feel like a sibling of the H3.
+  // ---- Data-table headline (sits INSIDE the frame, above the table) -
+  // Acts as the figure's title: a one-line conclusion that says what the
+  // reader should take from the numbers. Stem display, semibold, dark.
+  // Bottom hairline separates it from the table data below — same
+  // weight as the header underline so the eye reads three bands inside
+  // the frame: headline · headers · data.
   .compare-data-table__headline {
-    font-family: var(--c-font-display, Stem, Arial, sans-serif);
-    font-size: 15px;
-    font-weight: 600;
+    font-family: var(--c-font-display);
+    font-size: 16px;
     line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--c-text);
-    letter-spacing: -0.005em;
-    margin: 0 0 14px;
-    max-width: 880px;
+    margin: 0 0 16px;
+    padding: 0 0 16px;
+    border-bottom: 1px solid var(--c-code-border);
+
+    strong {
+      color: var(--c-text);
+      font-weight: 700;
+    }
+
+    // Inline numbers inside the headline get tabular treatment so
+    // "AnyCable holds 999,954" lines up cleanly.
+    code,
+    .t-num {
+      font-family: var(--c-font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.92em;
+      background: transparent;
+      padding: 0;
+    }
   }
 
   // ---- Kill stray inline text-align: center on headings/content ----
@@ -1473,48 +1550,91 @@
     }
   }
 
-  // ---- Data tables: sit inside .compare-frame, no own chrome -------
-  // The frame provides the bg + border + radius. Table itself is
-  // transparent so the unified light-#fafafa surface reads as a single
-  // artifact, like the code block. Tighter padding + smaller body
-  // font lets dense tables fit in the 50% media column without
-  // horizontal overflow.
+  // ---- Data tables: refined typographic hierarchy ----------------
+  // Sits inside .compare-frame which provides bg + border + radius +
+  // 24px of breathing room. Table itself is transparent.
+  //
+  // Reading hierarchy inside the frame:
+  //   ─ Headline (16px Stem 600, hairline below)
+  //   ─ Column headers (11px mono caps, stronger hairline below)
+  //   ─ Data rows (13.5px Stem, tabular nums, hairline between rows)
+  //   ─ (last row's hairline is removed; frame bottom padding closes it)
+  //
+  // Column alignment: first column left (labels), others right (numbers).
+  // Authors can opt into center via `style="text-align: center"` on a
+  // specific <th>/<td> when the data is glyph-y (✓ / ⚠ / n/a).
   .compare-data-table {
+    width: 100%;
     background: transparent;
     border: none;
     border-radius: 0;
-    font-size: 13px;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    line-height: 1.45;
 
     th {
       font-family: var(--c-font-mono);
       font-size: 11px;
-      line-height: 1.3;
-      letter-spacing: var(--c-tracking-label);
+      line-height: 1.35;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       color: var(--c-text-meta);
       font-weight: 500;
       background: transparent;
       border-bottom: 1px solid var(--c-code-border);
-      padding: 12px 10px;
+      padding: 0 12px 12px;
+      text-align: right;
+      vertical-align: bottom;
       // Allow headers to wrap so dense tables fit in the 50% column.
-      // The original compare.scss forced `white-space: nowrap`.
       white-space: normal;
+
+      &:first-child {
+        text-align: left;
+        padding-left: 0;
+      }
+      &:last-child {
+        padding-right: 0;
+      }
     }
 
     td {
       font-variant-numeric: tabular-nums;
       border-bottom: 1px solid var(--c-code-border);
-      padding: 10px 10px;
+      padding: 12px 12px;
+      color: var(--c-text);
+      vertical-align: baseline;
+      text-align: right;
+
+      &:first-child {
+        text-align: left;
+        padding-left: 0;
+        color: var(--c-text);
+        font-weight: 500;
+      }
+      &:last-child {
+        padding-right: 0;
+      }
+
+      // Secondary text within a cell (e.g. "Socket.io default" → "default")
+      // sits muted on the same line as the primary label.
+      .t-mute,
+      .t-tiny {
+        color: var(--c-text-quiet);
+      }
     }
 
+    // Last row: no bottom border. Frame padding-bottom (20px) finishes
+    // the table cleanly without a redundant hairline near the frame edge.
     tr:last-child td {
       border-bottom: none;
     }
 
+    // Row tints — sit ON the existing border-bottom (no border collision).
     tr.is-row-best {
-      background: rgba(22, 163, 74, 0.06);
+      background: rgba(22, 163, 74, 0.05);
     }
     tr.is-row-worst {
-      background: rgba(185, 28, 28, 0.06);
+      background: rgba(185, 28, 28, 0.05);
     }
 
     td.is-best,
@@ -1692,9 +1812,11 @@
   }
 
   // ---- CTA: lab-notebook footer rather than marketing hero ---------
+  // No `border-top` — the FAQ rubric above already provides a border-
+  // bottom hairline. Adding our own here doubled the line at the
+  // transition.
   .compare-cta {
     padding: 128px 64px 96px;
-    border-top: 1px solid var(--c-border);
     text-align: center;
 
     &__title {
@@ -1733,6 +1855,12 @@
     border-bottom: 1px solid var(--c-border);
     border-radius: 0;
 
+    // The last item's bottom border duplicates the FAQ rubric's section
+    // divider just below; drop it so the FAQ stack ends cleanly.
+    &:last-child {
+      border-bottom: none;
+    }
+
     &:hover,
     &[open] {
       border-color: var(--c-border);
@@ -1756,9 +1884,101 @@
   }
 
   // ---- Heading anchor (#) hidden by default, shown on hover --------
+  // Bumped color from --c-text-faint (#bbb, 2.2:1 contrast — fails AA)
+  // to --c-text-quiet (#777, 4.7:1) so the # is readable when visible.
+  .compare-rubric__title .heading-anchor,
+  .compare-rubric__subtitle .heading-anchor,
+  .compare-tldr__title .heading-anchor {
+    color: var(--c-text-quiet);
+  }
+
   .compare-rubric__title:not(:hover) .heading-anchor,
   .compare-rubric__subtitle:not(:hover) .heading-anchor,
   .compare-tldr__title:not(:hover) .heading-anchor {
     opacity: 0;
+  }
+
+  // ===================================================================
+  // ACCESSIBILITY + USER PREFERENCES
+  // ===================================================================
+
+  // ---- Focus-visible: visible keyboard focus on every interactive ---
+  // Single accent outline + 2px offset, rendered only when navigation
+  // comes from the keyboard (not on click). `outline` is used (not
+  // box-shadow) so it follows border-radius and never affects layout.
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  label:focus-visible,
+  input:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  // Code-tab radios are visually hidden but receive focus. Forward the
+  // focus ring onto the matching <label> so keyboard users see which
+  // tab is focused. -2px offset places the ring inside the label box.
+  @for $i from 1 through 5 {
+    .compare-code-tabs__radio--#{$i}:focus-visible
+      ~ .compare-code-tabs__bar
+      .compare-code-tabs__tab--#{$i} {
+      outline: 2px solid var(--c-accent);
+      outline-offset: -2px;
+    }
+  }
+
+  // ---- Text-wrap balance on display headings ------------------------
+  // Prevents 1-word last lines ("widows") on H1/H2/H3. Supported in
+  // every modern browser; degrades silently elsewhere.
+  .compare-hero__title,
+  .compare-rubric__title,
+  .compare-rubric__subtitle,
+  .compare-tldr__title,
+  .compare-cta__title {
+    text-wrap: balance;
+  }
+
+  // ---- scroll-margin-top so anchor jumps land with breathing room --
+  // Without this, jumping to #section lands the heading flush against
+  // the page top (or sticky header). 80px = header height + air.
+  .compare-hero__title,
+  .compare-rubric__title,
+  .compare-rubric__subtitle,
+  .compare-tldr__title,
+  [id]:where(.compare-rubric, .compare-rubric *, .compare-tldr, .compare-cta) {
+    scroll-margin-top: 80px;
+  }
+
+  // ---- touch-action: manipulation on tap targets -------------------
+  // Removes the ~300 ms double-tap-zoom delay on mobile for our
+  // interactive elements. (Modern browsers already skip the delay
+  // when viewport is mobile-optimized, but explicit is safer.)
+  button,
+  .button,
+  a,
+  summary,
+  label,
+  .compare-try-card,
+  .compare-impact-card,
+  .compare-hero-card__deeplink {
+    touch-action: manipulation;
+  }
+}
+
+// ---- Reduced motion — disable transitions/animations sitewide -----
+// Honor `prefers-reduced-motion: reduce` for users with vestibular
+// sensitivity. Set as low-but-nonzero duration (per Mozilla guidance)
+// so JS-triggered animation events still fire, but visual motion is
+// gone. Sits OUTSIDE .c-spine so it covers the whole document.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
