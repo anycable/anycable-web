@@ -99,8 +99,7 @@
                 <a href='#reliability'>02 · How reliable</a>
                 <a href='#headroom'>03 · How efficient</a>
                 <a href='#clustered'>04 · Scale-out</a>
-                <a href='#migration'>05 · Migration</a>
-                <a href='#appendix'>Appendix</a>
+                <a href='#try-it'>Run in your stack</a>
                 <a href='#faq'>FAQ</a>
               </nav>
             </div>
@@ -228,7 +227,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                 <p class='compare-prose'>
                   When building production-grade realtime infrastructure, we have to rule out the embedded (in-process with your Node app) mode for Socket.io/uWS in favor of deploying them as a standalone microservice. The embedded mode produces unacceptable disruption on every deployment of the main Node application: every redeployment of each node causes at least a 2-second freeze and loss of messages while clients are reconnecting to another node.
                 </p>
-                <div class='compare-callout' style="margin-top: 16px;">
+                <div class='compare-callout'>
                 <p>Test: we have a 2-node cluster - identical Node.js app with embedded Socket.io. and Redis. We do a proper rolling deploy: redeploy Node 1, wait until it's fully back, then redeploy Node 2.</p>
 
                 <p>Result: every user experiences a <strong>~2-second freeze</strong> when their node restarts.</p>
@@ -437,7 +436,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                   Default Socket.io and uWebSockets.js don't carry replay state &mdash; they lose ~13&ndash;14% of messages under simulated jitter (1-second TCP drops every ~15 s, the pattern WiFi handoffs produce). Socket.io with Connection state recovery fixes delivery to 100%, with constraints on the adapter and a ~8 s p99 replay tail. AnyCable also delivers 100%, clears the tail ~1.7 s sooner, and AnyCable Pro holds the same 10K reconnecting fleet on <strong>less than half</strong> of CSR's server memory. The data:
                 </p>
                 <p class='compare-prose'>
-                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a>; <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, with adapter constraints). AnyCable ships replay by default via <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a> &mdash; per-stream history, epoch + offset, restart-survivable with NATS or Redis. Mechanism &amp; caveats: <a class='link' href='#appendix'>see appendix</a>.
+                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a>; <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, with adapter constraints). AnyCable ships replay by default via <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a>: per-stream history, epoch + offset, restart-survivable with NATS or Redis.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -748,7 +747,7 @@ t=0.0s → users don't notice</pre>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td style="color: #555;">Socket.io <span class='t-mute t-tiny'>(1M attempted)</span></td><td class="is-worst">119,826 conns</td><td>~52 KB</td><td class="is-worst">no</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>(1M attempted)</span></td><td class="is-worst">119,826 conns</td><td>~52 KB</td><td class="is-worst">no</td></tr>
                       <tr><td>200,000 <span class='t-mute t-tiny'>AC OSS</span></td><td>8.35 GB</td><td>42 KB</td><td class="is-best">yes</td></tr>
                       <tr><td>200,000 <span class='t-accent t-tiny'>AC Pro</span></td><td>3.56 GB</td><td>18 KB</td><td class="is-best">yes</td></tr>
                       <tr><td><strong>821,877</strong> <span class='t-mute t-tiny'>AC OSS</span></td><td><strong>28.30 GB</strong></td><td>34 KB</td><td class="is-best">yes</td></tr>
@@ -942,93 +941,6 @@ CPU (% of 1 vCPU)
           </div>
         </section>
 
-        {{!-- Migration path for Node.js teams --}}
-        <section class='compare-rubric'>
-          <div class='compare-rubric__wrapper'>
-            <div class='compare-rubric__section'>
-              <div class='compare-rubric__content'>
-                <h2 class='compare-rubric__title' id='migration'>Migrating from Socket.io<a class='heading-anchor' href='#migration' aria-label='Permalink'>#</a></h2>
-                <p class='compare-prose'>
-                  Your Node.js app stays. Swap <code>io.to().emit()</code> for an HTTP POST to AnyCable's broadcast endpoint. Auth, validation, DB access — all unchanged.
-                </p>
-                <p class='compare-prose'>
-                  On the client: <code>socket.io-client</code> → <code>@anycable/core</code>. The API is similar (connect, subscribe, receive).
-                </p>
-                <p class='compare-prose'>
-                  <strong>Trade-off:</strong> one extra process (anycable-go, a Go binary). Your Node.js app becomes stateless for WebSockets.
-                </p>
-                <p class='compare-prose'><strong>Migration checklist — what changes in your code:</strong></p>
-                <ol class='compare-prose' style="padding-left: 24px; margin-top: -8px;">
-                  <li>Replace <code>io.to(room).emit(event, payload)</code> with an HTTP <code>POST</code> to anycable-go's <code>/_broadcast</code>.</li>
-                  <li>Swap <code>socket.io-client</code> for <code>@anycable/core</code> on the frontend (or <code>@anycable/web</code> for browser-only). Same connect / subscribe / receive shape.</li>
-                  <li>Drop the <code>socket.io</code> server dependency. Your app no longer holds WebSocket connections — anycable-go does.</li>
-                  <li>Run anycable-go alongside your app (one Go binary, Docker image, or our Managed tier — same protocol either way).</li>
-                </ol>
-              </div>
-              <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
-                <pre class='compare-code-block'><span class='t-mute'>// SERVER — broadcast</span>
-<span class='t-mute'>// Before: io.to().emit() in your Node app</span>
-<span class='c-str'>io</span>.to(<span class='c-key'>'chat:42'</span>).emit(<span class='c-key'>'message'</span>, payload);
-
-<span class='t-mute'>// After: HTTP POST to anycable-go</span>
-<span class='c-str'>await fetch</span>(<span class='c-key'>'http://anycable:8080/_broadcast'</span>, {
-  method: <span class='c-key'>'POST'</span>,
-  headers: { <span class='c-key'>'Content-Type'</span>: <span class='c-key'>'application/json'</span> },
-  body: <span class='c-str'>JSON</span>.stringify({
-    stream: <span class='c-key'>'chat:42'</span>,
-    data: <span class='c-str'>JSON</span>.stringify(payload),
-  }),
-});
-
-
-<span class='t-mute'>// CLIENT (browser / React / RN) — subscribe</span>
-<span class='t-mute'>// Before: socket.io-client</span>
-<span class='c-key'>import</span> { io } <span class='c-key'>from</span> <span class='c-str'>'socket.io-client'</span>;
-<span class='c-key'>const</span> socket = io(<span class='c-str'>'/chat'</span>);
-socket.emit(<span class='c-str'>'subscribe'</span>, <span class='c-str'>'chat:42'</span>);
-socket.on(<span class='c-str'>'message'</span>, render);
-
-<span class='t-mute'>// After: @anycable/core (native WebSocket inside)</span>
-<span class='c-key'>import</span> { createCable } <span class='c-key'>from</span> <span class='c-str'>'@anycable/core'</span>;
-<span class='c-key'>const</span> cable = createCable(<span class='c-str'>'ws://anycable:8080/cable'</span>);
-<span class='c-key'>const</span> channel = cable.streamFrom(<span class='c-str'>'chat:42'</span>);
-channel.on(<span class='c-str'>'message'</span>, render);</pre>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {{!-- Try-it-in-your-stack: low-friction links to runnable JS code --}}
-        <section class='compare-rubric'>
-          <div class='compare-rubric__wrapper'>
-            <div class='compare-rubric__section'>
-              <div class='compare-rubric__content compare-rubric__content--full' style="text-align: center;">
-                <h2 class='compare-rubric__title' id='try-it'>Run it in your stack<a class='heading-anchor' href='#try-it' aria-label='Permalink'>#</a></h2>
-                <p class='compare-prose'>
-                  Three places to start: read the code, run a working demo, or wire it into a serverless setup.
-                </p>
-                <div class='compare-try-it-grid'>
-                  <a class='compare-try-card' href='https://github.com/anycable/anycable-client' target='_blank'>
-                    <div class='t-eyebrow' style="margin-bottom: 8px;">JS client</div>
-                    <div class='compare-try-card__title'>@anycable/core, @anycable/web</div>
-                    <div class='compare-try-card__desc'>The official client for Node.js, browsers, React Native. Connect, subscribe, presence, history — same surface in every JS environment.</div>
-                  </a>
-                  <a class='compare-try-card' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>
-                    <div class='t-eyebrow' style="margin-bottom: 8px;">Working demo</div>
-                    <div class='compare-try-card__title'>Next.js + AnyCable + voice AI</div>
-                    <div class='compare-try-card__desc'>A real Twilio + OpenAI streaming demo on Next.js. Clone, set keys, run. Uses AnyCable for the realtime transport.</div>
-                  </a>
-                  <a class='compare-try-card' href='https://github.com/anycable/anycable-serverless-js' target='_blank'>
-                    <div class='t-eyebrow' style="margin-bottom: 8px;">Serverless</div>
-                    <div class='compare-try-card__title'>@anycable/serverless-js</div>
-                    <div class='compare-try-card__desc'>Channels API for serverless deployments — Vercel, Cloudflare Workers, Lambda. Define channel logic in TS without standing up a long-lived process.</div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {{!-- Feature comparison --}}
         <section class='compare-rubric'>
           <div class='compare-rubric__wrapper'>
@@ -1073,83 +985,32 @@ channel.on(<span class='c-str'>'message'</span>, render);</pre>
           </div>
         </section>
 
-        {{!-- When Socket.io is right / Proven at scale --}}
+        {{!-- Run AnyCable in your stack — demos + JS libs + serverless. --}}
         <section class='compare-rubric'>
           <div class='compare-rubric__wrapper'>
             <div class='compare-rubric__section'>
-              <div class='compare-rubric__content'>
-                <h2 class='compare-rubric__title'>When Socket.io is the right choice</h2>
-                <p class='compare-prose'>
-                  Small Node.js app. Prototype. Custom protocol you control end-to-end. Socket.io is well-documented, widely used, and free.
-                </p>
-                <p class='compare-prose'>
-                  If your users are on mobile or switching networks, you need delivery guarantees. If you deploy more than occasionally, you need connections to survive deploys. AnyCable: both by default.
-                </p>
-              </div>
-              <div class='compare-rubric__media'>
-                <div class='compare-frame compare-quote-card'>
-                  <div class='compare-quote-card__eyebrow'>Proven at scale</div>
-                  {{!-- Doximity quote — public; from On Rails Podcast.
-                       Trimmed to focus on the deploy-resilience point. --}}
-                  <blockquote class='compare-quote-card__text'>
-                    "We use AnyCable for our dialer products, which is where real-time is critical — it's our video and voice platform. Anytime you restart your application, which happens when you deploy, you're gonna get connection severances. AnyCable allows them to keep that connection open. That Go service stays up, and you can continue shipping your application as normal."
-                  </blockquote>
-                  <div class='compare-quote-card__byline'>
-                    <strong>Ryan Stawarz &amp; Austin Story</strong><br/>
-                    Engineering at <a class='link' href='https://www.doximity.com' target='_blank'>Doximity</a> &middot; <a class='link' href='https://podcast.rubyonrails.org/2462975/episodes/17653501' target='_blank'>podcast interview</a>
-                  </div>
-                  <div class='compare-quote-card__footer'>
-                    Also in production at <strong>CompanyCam</strong>, <strong>Headway</strong>, <strong>Jobber</strong>, <strong>CoinGecko</strong>, <strong>ClickFunnels</strong>, and <a class='link' href='https://anycable.io/#customers' target='_blank'>30+ other companies since 2017</a>.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {{!-- APPENDIX — high-value mechanism explanations cut from the
-             rubric sections above. Slim by design; the deep-dive
-             methodology + per-test walkthroughs live in the benchmark
-             repo README, linked from each rubric. --}}
-        <section class='compare-rubric' id='appendix'>
-          <div class='compare-rubric__wrapper'>
-            <div class='compare-rubric__section'>
               <div class='compare-rubric__content compare-rubric__content--full'>
-                <h2 class='compare-rubric__title' id='appendix-heading'>Appendix<a class='heading-anchor' href='#appendix-heading' aria-label='Permalink'>#</a></h2>
+                <h2 class='compare-rubric__title' id='try-it'>Run AnyCable in your stack<a class='heading-anchor' href='#try-it' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  The high-value mechanism behind each rubric, in one place. Full per-test methodology, raw output, and reproduction steps live in the <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#readme' target='_blank' rel='noopener'>benchmark repo README</a>.
+                  Three places to start: read the code, run a working demo, or wire it into a serverless setup.
                 </p>
-
-                <h3 class='compare-rubric__subtitle'>Why the message loss is structural, not a bug</h3>
-                <p class='compare-prose'>
-                  Each jitter event creates <em>d</em> seconds of blind window. Over publishing window <em>T</em> with <em>N</em> events, expected loss &asymp; (<em>d</em> &times; <em>N</em>) / <em>T</em>. For our run: 1.3&nbsp;s &times; ~8 / 60 &asymp; 17% upper bound; we measured 13.1% (lower because not every event fully overlaps publishing). Default Socket.io and naked uWS lose messages in proportion to <em>frequency &times; disruption</em> &mdash; tuning doesn't change the curve, only adding replay does.
-                </p>
-
-                <h3 class='compare-rubric__subtitle'>Why a 1-second blip becomes a multi-second recovery tail</h3>
-                <p class='compare-prose'>
-                  Every realtime client &mdash; <code>socket.io-client</code>, <code>@anycable/core</code>, anything that wants to stay up under load &mdash; reconnects with a 0.5&ndash;5&nbsp;s backoff window to avoid stampeding the server. Any TCP-level blip becomes multiple seconds of offline window by design. Without delivery guarantees, those seconds are lost messages; with replay, they're delayed. The CSR &rarr; AnyCable gap on p99 (~8&nbsp;s vs ~6&nbsp;s) is the replay protocol itself: CSR drains a buffered packet list per socket through one event loop; AnyCable's history replay is per-stream, batched, parallel.
-                </p>
-
-                <h3 class='compare-rubric__subtitle'>CSR's known constraints</h3>
-                <ul class='compare-bullet-list'>
-                  <li><strong>Opt-in.</strong> Most production Socket.io apps don't enable it.</li>
-                  <li><strong>Adapter compatibility.</strong> Incompatible with the most common scaling adapter (Redis pub/sub). Multi-node CSR needs Redis Streams or MongoDB; Postgres + Cluster adapters are WIP. Source: <a class='link' href='https://socket.io/docs/v4/connection-state-recovery/' target='_blank' rel='noopener'>Socket.io docs</a>.</li>
-                  <li><strong>Restart-fragile by default.</strong> The in-memory adapter wipes all state on every server restart.</li>
-                  <li><strong>Fallible by design.</strong> "The recovery will not always be successful" &mdash; their words. Application-level reconciliation is still required.</li>
-                </ul>
-
-                <h3 class='compare-rubric__subtitle'>Why the deploy avalanche cliffs at ~25K (Socket.io) and ~90K (uWS)</h3>
-                <p class='compare-prose'>
-                  The bottleneck is server-resource, not library overhead: handshake serialization, kernel rate limiting, and TCP backpressure. On a 1&nbsp;vCPU&nbsp;/&nbsp;0.5&nbsp;GB box, Socket.io's ~25K cliff is the cold-start OOM &mdash; memory hits 95% of cap right before redeploy, the post-redeploy reconnect storm OOMs the new container before any client establishes a session. uWS pushes that cliff past 90K but the curve is still non-linear (20K&nbsp;&rarr;&nbsp;25K already takes recovery from 4.6&nbsp;s to 57&nbsp;s). AnyCable's separate Go binary doesn't restart on app deploys, so there's no avalanche to recover from at any scale.
-                </p>
-
-                <h3 class='compare-rubric__subtitle'>AnyCable's epoch + offset replay protocol, in two paragraphs</h3>
-                <p class='compare-prose'>
-                  AnyCable's protocol identifier is <code>actioncable-v1-ext-json</code> &mdash; an extended Action Cable. Each stream is tracked by <strong>epoch</strong> (server-cycle id) + <strong>offset</strong> (monotonic per-stream counter). On reconnect, the client sends a <code>history</code> command; the server replays the missed range as a batch and acks with <code>confirm_history</code> (or <code>reject_history</code> if the offset is older than the retention window).
-                </p>
-                <p class='compare-prose'>
-                  Retention is per stream: <code>history_limit</code> (default 100 messages), <code>history_ttl</code> (default 300&nbsp;s). With <a class='link' href='https://docs.anycable.io/anycable-go/broker' target='_blank' rel='noopener'>NATS JetStream or Redis brokers</a>, history survives restart and works across nodes. Default behavior &mdash; not opt-in, not experimental. Full spec: <a class='link' href='https://docs.anycable.io/misc/action_cable_protocol' target='_blank' rel='noopener'>docs.anycable.io/misc/action_cable_protocol</a>.
-                </p>
+                <div class='compare-try-it-grid'>
+                  <a class='compare-try-card' href='https://github.com/anycable/anycable-client' target='_blank'>
+                    <div class='t-eyebrow'>JS client</div>
+                    <div class='compare-try-card__title'>@anycable/core, @anycable/web</div>
+                    <div class='compare-try-card__desc'>The official client for Node.js, browsers, React Native. Connect, subscribe, presence, history. Same surface in every JS environment.</div>
+                  </a>
+                  <a class='compare-try-card' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>
+                    <div class='t-eyebrow'>Working demo</div>
+                    <div class='compare-try-card__title'>Next.js + AnyCable + voice AI</div>
+                    <div class='compare-try-card__desc'>A real Twilio + OpenAI streaming demo on Next.js. Clone, set keys, run. Uses AnyCable for the realtime transport.</div>
+                  </a>
+                  <a class='compare-try-card' href='https://github.com/anycable/anycable-serverless-js' target='_blank'>
+                    <div class='t-eyebrow'>Serverless</div>
+                    <div class='compare-try-card__title'>@anycable/serverless-js</div>
+                    <div class='compare-try-card__desc'>Channels API for serverless deployments: Vercel, Cloudflare Workers, Lambda. Define channel logic in TS without standing up a long-lived process.</div>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -1230,65 +1091,6 @@ channel.on(<span class='c-str'>'message'</span>, render);</pre>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {{!-- When AnyCable is the WRONG choice — voluntary disqualification.
-             Sits between FAQ and CTA on purpose: a CTO reading this far is
-             close to deciding, and naming the cases where AnyCable is overkill
-             or unsuited builds more trust than another green checkmark. --}}
-        <section class='compare-rubric'>
-          <div class='compare-rubric__wrapper'>
-            <div class='compare-rubric__section'>
-              <div class='compare-rubric__content'>
-                <h2 class='compare-rubric__title' id='not-for-you'>When AnyCable is the wrong choice<a class='heading-anchor' href='#not-for-you' aria-label='Permalink'>#</a></h2>
-                <p class='compare-prose'>
-                  This page argued for AnyCable on the rubrics above. Honesty cuts both ways &mdash; here are the cases where you should keep what you have, or pick something else. If any of these describe you, AnyCable isn't the right migration.
-                </p>
-                <p class='compare-prose'>
-                  Real-time infrastructure choices are sticky and they matter; "we don't need this yet" is a valid answer.
-                </p>
-              </div>
-              <div class='compare-rubric__media'>
-                <div class='compare-impact-cards'>
-                  <div class='compare-impact-card'>
-                    <span class='compare-impact-card__title'>You have under ~500 concurrent connections</span>
-                    <span class='compare-impact-card__desc'>Default Socket.io is fine. You don't have the deploy storm, you don't have the memory pressure, and a separate WS process is complexity you don't yet need. Re-evaluate when messages drop under jitter, or deploys flicker the product.</span>
-                  </div>
-                  <div class='compare-impact-card'>
-                    <span class='compare-impact-card__title'>Your app server is the bottleneck</span>
-                    <span class='compare-impact-card__desc'>AnyCable scales the WebSocket layer &mdash; not your database queries, auth middleware, or business logic. If your slow request is the slow query, AnyCable doesn't help. Profile the app first.</span>
-                  </div>
-                  <div class='compare-impact-card'>
-                    <span class='compare-impact-card__title'>You need binary or transport-level features</span>
-                    <span class='compare-impact-card__desc'>AnyCable speaks JSON over WebSocket. If you need Protobuf / MsgPack framing, QUIC, datagrams, or sub-millisecond financial-tier tick distribution, this is the wrong tool. Build on raw uWS or a purpose-built transport.</span>
-                  </div>
-                  <div class='compare-impact-card'>
-                    <span class='compare-impact-card__title'>Your scale is stable and you deploy rarely</span>
-                    <span class='compare-impact-card__desc'>The deploy-resilience and headroom story matters because deploys hit users and traffic grows. If you ship weekly at off-hours and your concurrent count is a stable plateau, default Socket.io stays the simpler answer.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {{!-- CTA — leads with evaluation paths (OSS local, then Managed
-             free trial). Pro pricing is mentioned in the footnote because
-             a skeptical CTO won't pay $1,490 before running anything. --}}
-        <section class='compare-cta'>
-          <div class='compare-cta__inner'>
-            <h2 class='compare-cta__title'>Try AnyCable in your stack</h2>
-            <p class='compare-cta__subhead'>
-              The shortest evaluation path: run anycable-go locally with one Docker command and point your Node app at it. Or skip the deploy and try the hosted version.
-            </p>
-            <div class='compare-cta__actions'>
-              <a href='https://docs.anycable.io/anycable-go/getting_started' target='_blank' class='button button_size_big' data-ph-capture-attribute-link-id='compare-cta-oss'>Run anycable-go locally</a>
-              <a href='https://plus.anycable.io/' target='_blank' class='button button_size_big button_variant_outlined' data-ph-capture-attribute-link-id='compare-cta-managed'>Try AnyCable+ Managed</a>
-            </div>
-            <p class='compare-cta__footnote'>
-              When you're ready for production, <strong>AnyCable Pro</strong> is flat $1,490/yr (unlimited instances) with a <a class='link' href='https://plus.anycable.io/pro' target='_blank' data-ph-capture-attribute-link-id='compare-cta-pro'>2-month free trial</a>. Open source under MIT &mdash; <a class='link' href='https://github.com/anycable/anycable' target='_blank'>anycable/anycable</a>. Built by <a class='link' href='https://evilmartians.com' target='_blank'>Evil Martians</a>, in production since 2017 at <a class='link' href='https://anycable.io/#customers'>Doximity, CompanyCam, Headway, and 30+ others</a>. Benchmark code: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>github.com/irinanazarova/anycable-socketio-benchmarks</a>.
-            </p>
           </div>
         </section>
 
