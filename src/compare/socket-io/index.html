@@ -313,9 +313,9 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
           </div>
         </section>
 
-        {{!-- TBD-B1: Section 1 (NEW) — How fast is it? Latency at 1k/10k/100k,
-             broadcast throughput, whispers. All numbers are placeholders awaiting
-             A2a (latency suite), A2b (whispers test), A2e (standalone hop overhead). --}}
+        {{!-- Section 1 — How fast is it? Latency at 1k/10k/100k,
+             broadcast throughput, whispers. 100k tier, uWS topics whispers,
+             AnyCable Pro whispers, and standalone hop overhead still TBD. --}}
         <section class='compare-rubric'>
           <div class='compare-rubric__wrapper'>
             <div class='compare-rubric__section'>
@@ -402,21 +402,21 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
-                        <th>Setup <span class='t-mute t-tiny'>10k clients, 100 rooms</span></th>
+                        <th>Setup <span class='t-mute t-tiny'>10k clients, 100 rooms, 2 Hz</span></th>
                         <th>Native?</th>
+                        <th>Delivered</th>
                         <th>p50</th>
                         <th>p99</th>
-                        <th>CPU/msg</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>rooms</span></td><td class='is-worst'>Emulated</td><td>TBD-A2b</td><td>TBD-A2b</td><td>TBD-A2b</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>rooms</span></td><td class='is-worst'>Emulated</td><td class='is-worst'><strong>3.5%</strong></td><td class='is-worst'>1.87 s</td><td class='is-worst'>8.48 s</td></tr>
                       <tr><td>uWS <span class='t-mute t-tiny'>topics</span></td><td class='is-worst'>Emulated</td><td>TBD-A2b</td><td>TBD-A2b</td><td>TBD-A2b</td></tr>
-                      <tr><td>AnyCable OSS</td><td class='is-best'>Native</td><td>TBD-A2b</td><td>TBD-A2b</td><td>TBD-A2b</td></tr>
+                      <tr><td>AnyCable OSS</td><td class='is-best'>Native</td><td class='is-best'><strong>99.3%</strong></td><td class='is-best'>1.33 s</td><td class='is-best'>3.67 s</td></tr>
                       <tr><td>AnyCable Pro</td><td class='is-best'>Native</td><td>TBD-A2b</td><td>TBD-A2b</td><td>TBD-A2b</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Placeholders pending A2b. Server CPU per delivered message is the load-bearing metric here: whispers should be effectively free for the backend. "Emulated" means the test implements whisper semantics on top of the library's broadcast primitive (rooms / topics) and we measure the same workload as the native path.</p>
+                  <p class='compare-data-table__footnote'>10K clients distributed across 100 rooms (100 peers/room), each whispering a 64-byte payload every 500 ms (2 Hz, cursor-style) for 30 s. Expected fan-out: ~20 M deliveries. AnyCable native delivered 11.2 M (99.3%); Socket.io rooms emulation delivered 0.7 M (3.5%) and lost 96% to server-side backpressure: every whisper still hits the WS process to re-emit. AnyCable's native whisper fans out without invoking the app or the server's broadcast loop. uWS topics test and AnyCable Pro (anycable-go-pro) pending.</p>
                 </div>
               </div>
             </div>
