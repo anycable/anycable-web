@@ -228,9 +228,9 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                   When building production-grade realtime infrastructure, we have to rule out the embedded (in-process with your Node app) mode for Socket.io/uWS in favor of deploying them as a standalone microservice. The embedded mode produces unacceptable disruption on every deployment of the main Node application: every redeployment of each node causes at least a 2-second freeze and loss of messages while clients are reconnecting to another node.
                 </p>
                 <div class='compare-callout'>
-                <p>Test: we have a 2-node cluster - identical Node.js app with embedded Socket.io. and Redis. We do a proper rolling deploy: redeploy Node 1, wait until it's fully back, then redeploy Node 2.</p>
+                <p>Test: 3-node cluster, identical Node.js app with embedded Socket.io and Redis. Proper rolling deploy: redeploy each node in turn, wait for it to come back, then move to the next.</p>
 
-                <p>Result: every user experiences a <strong>~2-second freeze</strong> when their node restarts.</p>
+                <p>Result: every user experiences a <strong>~2-second freeze</strong> when their node restarts; 99.6% of broadcasts delivered, 2-3 lost per user during the gap.</p>
 
                 </div>
               </div>
@@ -852,7 +852,7 @@ CPU (% of 1 vCPU)
                   Past one node, the question shifts from "how big can the single instance get?" to "what does adding more nodes actually buy?" Three things to measure: <strong>can a rolling deploy survive without dropping connections?</strong> (the test that motivates separate-process WS in the first place), <strong>how does total capacity scale with N nodes?</strong>, and <strong>does the cluster pub/sub layer impose a latency tax on broadcasts?</strong>
                 </p>
                 <p class='compare-prose'>
-                  Current measurements use a 2-node cluster behind a load balancer (10k connections steady). The 3-node tier remains the production-realistic target; capacity and 1-of-N-down behavior are pending A2d. We test the same 5 options: Socket.io (Redis adapter), Socket.io + CSR (Redis Streams), uWS, AnyCable OSS, and AnyCable Pro.
+                  We use a 3-node cluster behind a load balancer, 10k connections steady. Capacity and 1-of-N-down behavior are pending A2d. We test the same 5 options: Socket.io (Redis adapter), Socket.io + CSR (Redis Streams), uWS, AnyCable OSS, and AnyCable Pro.
                 </p>
                 <div class='compare-callout'>
                   <strong>Caveat: uWS clustering and standalone are not off-the-shelf configurations.</strong> uWebSockets.js has no built-in cross-node clustering and no built-in HTTP publish endpoint. To benchmark uWS in standalone mode we wrote a custom publish API; to benchmark it clustered we wrote a custom pub/sub bridge (Redis-backed). The numbers reflect what those custom implementations achieve, marked with <sup>&dagger;</sup> in the tables. Production teams who pick uWS for anything past one in-process node end up building the same two things themselves. This is part of the trade Socket.io and AnyCable spare you: both ship the multi-node story as a documented, supported configuration.
@@ -866,7 +866,7 @@ CPU (% of 1 vCPU)
               <div class='compare-rubric__content'>
                 <h3 class='compare-rubric__subtitle'>Rolling deploy: per-client disconnect window + message loss</h3>
                 <p class='compare-prose'>
-                  2-node cluster, 10k connections steady, drain + restart nodes sequentially. The test measures what every connected user actually experiences during a deploy: how long their connection is broken, how many messages they miss in that window, and whether the surviving nodes can absorb the reconnect storm from the node being recycled. 3-node tier pending A2d.
+                  3-node cluster, 10k connections steady, drain + restart nodes sequentially. The test measures what every connected user actually experiences during a deploy: how long their connection is broken, how many messages they miss in that window, and whether the surviving nodes can absorb the reconnect storm from the node being recycled.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -874,7 +874,7 @@ CPU (% of 1 vCPU)
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
-                        <th>Setup <span class='t-mute t-tiny'>10k, 2 nodes</span></th>
+                        <th>Setup <span class='t-mute t-tiny'>10k, 3 nodes</span></th>
                         <th>Gap p50</th>
                         <th>Gap p99</th>
                         <th>Msgs lost</th>
@@ -882,7 +882,7 @@ CPU (% of 1 vCPU)
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>embedded + Redis adapter</span></td><td class='is-worst'>2.17 s</td><td class='is-worst'>2.93 s</td><td class='is-worst'>2-3</td><td class='is-worst'>100%</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>embedded + Redis adapter</span></td><td class='is-worst'>1.95 s</td><td class='is-worst'>2.80 s</td><td class='is-worst'>2-3</td><td class='is-worst'>100%</td></tr>
                       <tr><td>Socket.io + CSR <span class='t-mute t-tiny'>embedded + Redis Streams</span></td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td></tr>
                       <tr><td>uWS <span class='t-mute t-tiny'>embedded + custom pub/sub<sup>&dagger;</sup></span></td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td><td>TBD-A2c</td></tr>
                       <tr><td>Socket.io <span class='t-mute t-tiny'>standalone</span></td><td class='is-best'>0</td><td class='is-best'>0</td><td class='is-best'>0<sup>&Dagger;</sup></td><td class='is-best'>0%</td></tr>
@@ -891,7 +891,7 @@ CPU (% of 1 vCPU)
                       <tr><td>AnyCable Pro <span class='t-mute t-tiny'>standalone, always</span></td><td class='is-best'>0</td><td class='is-best'>0</td><td class='is-best'>0<sup>&Dagger;</sup></td><td class='is-best'>0%</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Embedded Socket.io: 10K clients held across a 2-node rolling restart. Every user disconnects once during the cycle (a ~2.5 s freeze) and loses 2-3 messages while reconnecting; cluster recovery 51 s. The 3-node tier is pending A2d, but the per-user property doesn't change with more nodes: each rolling step disconnects everyone on the node being recycled. Standalone Socket.io and AnyCable: same 10K clients, the publisher service restarts mid-test, WS layer untouched, zero connection disruption. CSR embedded and uWS embedded tests pending. <sup>&dagger;</sup>uWS has no native clustering or built-in HTTP publish API; both are custom code built for this benchmark. <sup>&Dagger;</sup>Standalone deploys disrupt publishing, not connections: clients hold the WS link through a 45-46 s publisher restart; broadcasts emitted during that window aren't held server-side, so anything the app would have published is simply not published. AnyCable Pro is mirrored from OSS (same architectural property).</p>
+                  <p class='compare-data-table__footnote'>Embedded Socket.io: 10K clients across a 3-node rolling restart (Redis adapter). Every user disconnects once during the cycle (a ~2 s freeze) and loses 2-3 messages while reconnecting; cluster recovery 82 s, delivery rate 99.6%. Standalone Socket.io and AnyCable: same 10K clients, the publisher service restarts mid-test, WS layer untouched, zero connection disruption. CSR embedded and uWS embedded tests pending. <sup>&dagger;</sup>uWS has no native clustering or built-in HTTP publish API; both are custom code built for this benchmark. <sup>&Dagger;</sup>Standalone deploys disrupt publishing, not connections: clients hold the WS link through a 45-46 s publisher restart; broadcasts emitted during that window aren't held server-side, so anything the app would have published is simply not published. AnyCable Pro is mirrored from OSS (same architectural property).</p>
                 </div>
               </div>
             </div>
