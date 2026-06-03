@@ -88,7 +88,10 @@
 
             <div class='compare-tldr'>
               <p class='compare-prose'>
-                Five WebSocket setups under production-shaped conditions, scored on three rubrics: latency + throughput, reliability, scalability. Same hardware on Railway, reproducible from the <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank' rel='noopener'>open-source bench repo</a>.
+                Your TS/JS application doesn't want to sit still: it needs WebSockets for all sorts of real-time messaging, streaming from LLMs, and collaborative features. What to choose? We benchmarked Socket.io, uWebSockets, and AnyCable across three rubrics: latency + throughput, reliability, and scalability. If we want to dance, let's dance smoothly.
+              </p>
+              <p class='compare-prose'>
+                Same hardware on Railway, reproducible from the <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank' rel='noopener'>open-source bench repo</a>.
               </p>
               <nav class='compare-tldr__nav' aria-label='Sections on this page'>
                 <a href='#architecture'>What we compare</a>
@@ -317,7 +320,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='latency'>How fast is it?<a class='heading-anchor' href='#latency' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Two measurements that decide what realtime feels like: <strong>roundtrip latency</strong> (publisher → all subscribers) and <strong>broadcast throughput</strong> (sustained msg/sec at 100% delivery). All in the standalone shape: WS server as a separate process, publisher posting over HTTP.
+                  Latency is the floor of what realtime can feel like. Two things to measure: <strong>roundtrip latency</strong> (one publisher to all subscribers) and <strong>broadcast throughput</strong> (how many messages per second the server can fan out before that latency starts inflating). All in the standalone shape: WS server as a separate process, publisher posting over HTTP.
                 </p>
               </div>
               <div class='compare-rubric__media'></div>
@@ -435,10 +438,10 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='reliability'>How reliable is delivery?<a class='heading-anchor' href='#reliability' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Users disconnect. WiFi flips, tunnels open, networks switch. The realtime question is what happens to messages sent during those windows. Two things decide it: <strong>how many messages are lost</strong> and <strong>how long the recovery feels</strong>. Both come down to whether the protocol carries <em>replay state</em>.
+                  Your users aren't always on a high-speed fiber network. Micro disruptions are mostly invisible to HTTP, but they're the deal-breaker for realtime. Two things decide how it feels: <strong>how often messages are lost</strong> and <strong>how long the recovery window drags</strong>. Both come down to whether the protocol carries <em>replay state</em>.
                 </p>
                 <p class='compare-prose'>
-                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a> and so is uWS: messages during a disconnect are gone. <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, adapter constraints). AnyCable ships <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a> by default: per-stream history, epoch + offset, restart-survivable with NATS or Redis. Under simulated WiFi jitter (1 s TCP drops every ~15 s): AnyCable and CSR deliver 100%; default Socket.io and uWS lose ~13-14%.
+                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a>; so is uWS. <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, adapter constraints). AnyCable ships <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a> by default: per-stream history, epoch + offset, restart-survivable with NATS or Redis. Under simulated WiFi jitter (1 s TCP drops every ~15 s): AnyCable and CSR deliver 100%; default Socket.io and uWS lose ~13-14%.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -582,10 +585,7 @@ Client 2: <span class='c-str'>all 120 received</span>  (p95: 4.1s)</pre>
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='deploys'>Does the WS layer survive deploys?<a class='heading-anchor' href='#deploys' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Teams deploy multiple times a day. The structural choice: WS layer inside the app process, or its own service. <strong>Small-scale tradeoffs become load-bearing at growing N.</strong> Socket.io, +CSR, and uWS are all Node libraries — the WS layer restarts with the app. At small scale the reconnect storm recovers. Past a certain N it stops recovering.
-                </p>
-                <p class='compare-prose'>
-                  Real <code>railway redeploy</code> events on a 1 vCPU / 0.5 GB box, measuring how long the WS layer takes to come back:
+                  Modern teams deploy multiple times a day. Socket.io, +CSR, and uWS are Node libraries — the WS layer restarts every time the app does. At small N the reconnect storm recovers. Past a certain N it stops recovering. The test: real <code>railway redeploy</code> on a 1 vCPU / 0.5 GB box.
                 </p>
 
                 {{!-- Architecture diagram — Socket.io's app+WS in one process
@@ -642,7 +642,7 @@ Client 2: <span class='c-str'>all 120 received</span>  (p95: 4.1s)</pre>
                 </figure>
 
                 <p class='compare-prose'>
-                  The takeaway is architectural, not vendor-specific: <strong>once you're past a few thousand persistent connections, the WS layer should be its own service.</strong> Socket.io / uWS can be deployed that way with extra engineering &mdash; multiple Node processes, a Redis-backed adapter, sticky sessions, careful deploy choreography. <strong>AnyCable defaults to it</strong>: <code>anycable-go</code> is a separate Go binary; deploying the app process leaves it untouched. The 0&nbsp;s recovery row in the table below is what that buys you.
+                  <strong>Past a few thousand connections, the WS layer should be its own service.</strong> Socket.io / uWS can be deployed that way (extra Node processes, Redis adapter, sticky sessions, deploy choreography). AnyCable defaults to it. The 0 s recovery row below is what that buys.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--top'>
@@ -667,7 +667,7 @@ t=0.0s → users don't notice</pre>
             <div class='compare-rubric__section'>
               <div class='compare-rubric__content'>
                 <p class='compare-prose'>
-                  Through 20K, recovery is graceful for in-process WS. <strong>At 25K, recovery never completes</strong>: the post-redeploy reconnect storm OOMs the new container. CSR doesn't help (its in-memory adapter loses state on restart). A bigger box just moves the cliff: uWS pushes catastrophic failure to ~90K, but recovery at 25K already takes 57 s. The wall isn't box size — it's the reconnect storm itself. Standalone WS avoids it entirely because the WS layer doesn't restart. Methodology: <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#avalanche' target='_blank' rel='noopener'>bench repo</a>. Background: <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering-herd safety tips</a>.
+                  Through 20K, recovery is graceful. <strong>At 25K, recovery never completes</strong> — the reconnect storm OOMs the new container. CSR doesn't help (in-memory adapter loses state on restart). A bigger box just moves the cliff: uWS pushes it to ~90K, but at 25K it's already 57 s. Standalone WS avoids the cliff because the WS layer doesn't restart. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#avalanche' target='_blank' rel='noopener'>Methodology</a> · <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>thundering-herd reading</a>.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -728,7 +728,7 @@ t=0.0s → users don't notice</pre>
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='headroom'>How efficient is it to scale?<a class='heading-anchor' href='#headroom' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Two questions: <strong>how many idle connections one node holds</strong>, and <strong>how it behaves during a reconnect storm</strong>. Single instance, 32 vCPU / 32 GB Railway box, 1M-connection idle target, no backplane.
+                  Your user base will grow, and your realtime layer needs to grow with it. The question isn't <em>how cheap is this today</em>: it's <em>when we 10× users, does the bill or the box cliff before we have time to react?</em> Two things to measure: <strong>how many idle connections one node holds</strong>, and <strong>how it behaves during a reconnect storm</strong>. Single instance, 32 vCPU / 32 GB Railway box, 1M-connection idle target.
                 </p>
                 <p class='compare-prose'>
                   Cost shape matters too. AnyCable Pro is flat-rate ($1,490/yr, unlimited instances). Pusher charges per connection ($499/mo for 10K, scaling with size, <a class='link' href='https://pusher.com/channels/pricing/' target='_blank' rel='noopener'>2026 plans</a>). uWS and self-hosted Socket.io are box-priced.
