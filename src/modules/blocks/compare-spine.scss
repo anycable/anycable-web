@@ -1,28 +1,78 @@
 // =====================================================================
-// Compare-page SPINE — design language proposal
-// Scope: anycable.io/compare/socket-io and any sibling comparison pages.
+// Compare-page SPINE — design system for /compare/* pages
+// =====================================================================
 //
-// Status: iteration partial. Scoped under .c-spine so it can be previewed
-// on /compare/socket-io/style/ without disturbing the existing styles
-// in compare.scss. Once approved, lift the scope and let the c-* roles
-// govern .compare-page (and retire the duplicates in compare.scss).
+// QUICK REFERENCE for authors (writing or extending a compare page):
 //
-// What's in here:
-//   1. Tokens (CSS custom properties + Sass vars) for the five roles:
-//      typography / spacing / surface / accent / radius.
-//   2. Base role classes — one per typographic voice, no more.
-//      Display .c-display, Section .c-section, Sub .c-sub, Label .c-label,
-//      Body .c-prose, Meta .c-meta, Caption .c-caption.
-//   3. The lab-notebook signatures:
-//        .c-label    bracketed mono uppercase, [ BENCH 01 ] style
-//        .c-vs       mono operator-style "vs", accent red
-//        .c-figure   labelled figure with caption below
-//        .c-code     light tinted code, muted syntax
-//   4. Layout primitives — .c-rubric (two-col), prose col capped 580px.
-//   5. Components — .c-table, .c-callout, .c-card, .c-cta.
+//   See the live style index at:  /compare/socket-io/style/
+//   (Every block authors should reach for, rendered + with HTML.)
 //
-// Tokens are also exposed as CSS custom properties on .c-spine so the
-// style index can demo overrides in devtools without recompiling Sass.
+//   Activation:  add `c-spine` to the page's <main class="content compare-page">
+//                so spine rules apply.
+//
+// ─── DESIGN TOKENS (CSS custom properties on .c-spine) ──────────────
+//   --c-font-display / --c-font-body  Stem
+//   --c-font-mono                     Martian Mono
+//   --c-fs-display / -section / -sub / -body / -meta / -caption / -label
+//   --c-space-section / -block / -sub / -para / -bullet  (8px scale)
+//   --c-prose-max / -prose-max-full   prose width caps (580 / 680 px)
+//   --c-paper / -panel / -code-bg / -code-border         surfaces
+//   --c-text / -text-meta / -text-quiet / -text-faint    text grays
+//   --c-accent / -best / -worst                          accents
+//   --c-code-key / -str / -com / -err                    syntax tokens
+//   --c-radius                                            8px
+//
+// ─── LAYOUT (BEM) ───────────────────────────────────────────────────
+//   .compare-rubric > __wrapper > __section > __content + __media
+//   .compare-rubric__content--full         single-column section
+//   .compare-rubric__media--sticky         pins media during scroll
+//   .compare-rubric__media--align-top      align media to prose top
+//
+// ─── TYPOGRAPHY (use as class on element) ───────────────────────────
+//   .compare-hero__title    page H1 (display sized, +.c-vs span)
+//   .compare-rubric__title  section H2
+//   .compare-rubric__subtitle  sub-section H3
+//   .compare-prose          body paragraph (max 580px)
+//   ol.compare-prose        numbered list with mono 01/02/03 markers
+//   .compare-bullet-list    bulleted list with red dot
+//   .c-vs                   typographic "vs" operator (inside H1)
+//
+// ─── RIGHT-SIDE ARTIFACTS (all share #fafafa frame) ─────────────────
+//   .compare-code-block     naked light-tinted code
+//   .compare-code-tabs      tabbed code with multiple panels
+//   .compare-frame          container for a data table
+//   .compare-data-table     transparent table inside .compare-frame
+//   .compare-arch-diagram   SVG diagram in a framed figure
+//   .compare-bench-chart    ASCII chart in a framed figure
+//
+// ─── ASIDES + CARDS ─────────────────────────────────────────────────
+//   .compare-callout        accent-red left-rule aside
+//   .compare-hero-cards     top results strip (three columns)
+//   .compare-impact-cards   feature/disqualification grid
+//   .compare-try-card       link card with eyebrow + title + desc
+//   .compare-quote-card     customer quote with byline
+//
+// ─── INLINE UTILITIES ───────────────────────────────────────────────
+//   t-mute / t-tiny / t-meta / t-strong / t-accent / t-num  text qualifiers
+//   t-eyebrow                                               mono label
+//   c-key / c-str / c-com / c-err                           code syntax
+//   is-best / is-worst / is-na                              table cell state
+//   is-row-best / is-row-worst                              full-row tint
+//
+// ─── RULES OF THE ROAD ──────────────────────────────────────────────
+//   1. No inline style="" on content elements. If you need a pattern,
+//      add it to this spine (or the style index) first.
+//   2. No magic numbers. Use the spacing scale (--c-space-*) and
+//      the 8px tokens (4/8/12/16/24/32) for any layout work.
+//   3. Right-side artifacts must use the .compare-frame / __pre / __code
+//      surface. Don't paint your own light box.
+//   4. Brand red is reserved for: links, "vs", winners (data), eyebrows.
+//      Don't use it as decoration.
+//
+// ─── ARCHITECTURE ───────────────────────────────────────────────────
+//   Loaded after compare.scss in src/index.scss so overrides win on
+//   specificity ties. Rules scoped under .c-spine so they only apply
+//   to pages that opt in.
 // =====================================================================
 
 @import '../variables.scss';
@@ -826,7 +876,7 @@
     }
   }
 
-  // ---- TL;DR: editorial ABSTRACT block with double-rule -------------
+  // ---- TL;DR: editorial abstract block with double-rule -------------
   // Was a centered card with border. Now: full-width band with hairline
   // rule top and bottom, label-style header in mono, prose flush.
   .compare-tldr {
@@ -850,16 +900,8 @@
       margin: 0 0 24px;
       display: inline-block;
 
-      &::before {
-        content: '[ ';
-        color: var(--c-text-faint);
-        font-weight: 400;
-      }
-      &::after {
-        content: ' ]';
-        color: var(--c-text-faint);
-        font-weight: 400;
-      }
+      // Brackets removed; the mono-uppercase styling alone signals
+      // "this is a label."
 
       .heading-anchor {
         display: none;
@@ -894,17 +936,6 @@
       font-size: var(--c-fs-label);
       letter-spacing: var(--c-tracking-label);
       color: var(--c-text-meta);
-
-      &::before {
-        content: '[ ';
-        color: var(--c-text-faint);
-        font-weight: 400;
-      }
-      &::after {
-        content: ' ]';
-        color: var(--c-text-faint);
-        font-weight: 400;
-      }
     }
 
     @include mediaMax($mobile) {
@@ -1198,12 +1229,15 @@
   }
 
   // ---- Callout: minimal, label-led ---------------------------------
+  // Default margins absorb the ad-hoc "margin-top: 16px" pattern that
+  // authors were inlining. A callout following prose gets enough air;
+  // a callout starting a block does too.
   .compare-callout {
     background: transparent;
     border: none;
     border-left: 2px solid var(--c-accent);
     padding: 8px 0 8px 20px;
-    margin: 0 0 32px;
+    margin: 16px 0 32px;
     font-size: 15px;
     line-height: 1.55;
     color: var(--c-text-meta);
@@ -1213,9 +1247,19 @@
       color: var(--c-text);
       font-weight: 600;
     }
+
+    // Lists inside callouts get the same treatment as bullet lists,
+    // already at the right size for the callout body text.
+    .compare-bullet-list {
+      margin: 8px 0 0;
+
+      li {
+        margin-bottom: 8px;
+      }
+    }
   }
 
-  // ---- Utility eyebrows: bracketed mono labels ---------------------
+  // ---- Utility eyebrows: mono uppercase labels (no brackets) -------
   .t-eyebrow {
     font-family: var(--c-font-mono);
     font-size: var(--c-fs-label);
@@ -1224,17 +1268,6 @@
     font-weight: 500;
     text-transform: uppercase;
     color: var(--c-text-meta);
-
-    &::before {
-      content: '[ ';
-      color: var(--c-text-faint);
-      font-weight: 400;
-    }
-    &::after {
-      content: ' ]';
-      color: var(--c-text-faint);
-      font-weight: 400;
-    }
   }
 
   // ---- Frame, chart, diagram: shared container conventions ---------
@@ -1293,12 +1326,38 @@
   }
 
   // ---- Frame: shared container for data tables, same treatment as code
+  // `width: 100%` is needed because the parent media column is a flex
+  // container with `align-items: center`, which would otherwise let
+  // the frame keep its content's natural width (and overflow the col).
+  // `overflow-x: auto` makes the inner table scrollable when its
+  // content needs more than the column allows. Scrollbar is forced
+  // visible (not auto-hidden) so the user has affordance.
   .compare-frame {
+    width: 100%;
     background: var(--c-code-bg);
     border: 1px solid var(--c-code-border);
     border-radius: var(--c-radius);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
     padding: 0;
+
+    // Firefox
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-text-faint) transparent;
+
+    // WebKit (Chrome, Safari) — show a slim, always-visible scrollbar.
+    &::-webkit-scrollbar {
+      height: 8px;
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--c-text-faint);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--c-code-border);
+    }
   }
 
   // Data-table footnotes that follow a .compare-frame are part of the
@@ -1309,6 +1368,20 @@
     letter-spacing: 0.02em;
     color: var(--c-text-quiet);
     margin-top: 12px;
+    max-width: 880px;
+  }
+
+  // Headline conclusion above every data table — pairs with the left-side
+  // H3 subtitle. The H3 frames the question; the headline gives the
+  // takeaway. Sans-serif and weighted to feel like a sibling of the H3.
+  .compare-data-table__headline {
+    font-family: var(--c-font-display, Stem, Arial, sans-serif);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--c-text);
+    letter-spacing: -0.005em;
+    margin: 0 0 14px;
     max-width: 880px;
   }
 
@@ -1324,11 +1397,13 @@
   // ---- Visible markers on inline <ol> prose lists ------------------
   // Global reset killed list markers; add them back as mono numbers
   // in accent red so the 3-question / migration / checklist items
-  // have proper hierarchy.
+  // have proper hierarchy. Absorbs the inline `padding-left: 24px;
+  // margin-top: -8px` pattern authors were adding by hand.
   ol.compare-prose,
   .compare-rubric__content > ol {
     list-style: none;
     padding-left: 0;
+    margin: 0 0 var(--c-space-block);
     counter-reset: prose-item;
 
     > li {
@@ -1336,6 +1411,7 @@
       position: relative;
       padding-left: 36px;
       margin-bottom: 12px;
+      line-height: 1.55;
 
       &::before {
         content: counter(prose-item, decimal-leading-zero);
@@ -1400,26 +1476,34 @@
   // ---- Data tables: sit inside .compare-frame, no own chrome -------
   // The frame provides the bg + border + radius. Table itself is
   // transparent so the unified light-#fafafa surface reads as a single
-  // artifact, like the code block.
+  // artifact, like the code block. Tighter padding + smaller body
+  // font lets dense tables fit in the 50% media column without
+  // horizontal overflow.
   .compare-data-table {
     background: transparent;
     border: none;
     border-radius: 0;
-    font-size: 15px;
+    font-size: 13px;
 
     th {
       font-family: var(--c-font-mono);
-      font-size: var(--c-fs-label);
+      font-size: 11px;
+      line-height: 1.3;
       letter-spacing: var(--c-tracking-label);
       color: var(--c-text-meta);
       font-weight: 500;
       background: transparent;
       border-bottom: 1px solid var(--c-code-border);
+      padding: 12px 10px;
+      // Allow headers to wrap so dense tables fit in the 50% column.
+      // The original compare.scss forced `white-space: nowrap`.
+      white-space: normal;
     }
 
     td {
       font-variant-numeric: tabular-nums;
       border-bottom: 1px solid var(--c-code-border);
+      padding: 10px 10px;
     }
 
     tr:last-child td {
@@ -1488,33 +1572,82 @@
     }
   }
 
-  // ---- Quote card: editorial framing -------------------------------
+  // ---- Quote card: editorial blockquote, not a card ---------------
+  // Was double-framed (the HTML uses both .compare-frame + .compare-quote-card
+  // on the same element). Stripping the container box entirely: the quote
+  // stands on its own with a left accent rule. Eyebrow + display-sized
+  // quote + byline + integrated footer, no box chrome.
   .compare-quote-card {
-    background: var(--c-paper);
-    border: 1px solid var(--c-border);
-    border-radius: var(--c-radius);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0 0 0 24px;
+    border-left: 3px solid var(--c-accent);
 
     &__eyebrow {
+      display: block;
       font-family: var(--c-font-mono);
       font-size: var(--c-fs-label);
       letter-spacing: var(--c-tracking-label);
       text-transform: uppercase;
-      color: var(--c-text-meta);
+      color: var(--c-accent);
+      margin-bottom: 20px;
+    }
 
-      &::before {
-        content: '[ ';
-        color: var(--c-text-faint);
-        font-weight: 400;
+    &__text {
+      font-family: var(--c-font-display);
+      font-size: clamp(20px, 2vw, 24px);
+      font-weight: 500;
+      font-style: normal;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--c-text);
+      margin: 0 0 24px;
+      padding: 0;
+      quotes: none;
+    }
+
+    &__byline {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--c-text-meta);
+      margin-bottom: 24px;
+
+      strong {
+        color: var(--c-text);
+        font-weight: 600;
       }
-      &::after {
-        content: ' ]';
-        color: var(--c-text-faint);
-        font-weight: 400;
+    }
+
+    &__footer {
+      padding-top: 20px;
+      border-top: 1px solid var(--c-border);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--c-text-quiet);
+
+      strong {
+        color: var(--c-text-meta);
+        font-weight: 600;
       }
     }
   }
 
+  // When .compare-quote-card sits ON a .compare-frame element (current
+  // HTML has both classes on one div), the quote-card styling above
+  // must beat the frame's container styling. These overrides ensure
+  // no box-in-box visual collision.
+  .compare-frame.compare-quote-card {
+    background: transparent;
+    border: none;
+    border-left: 3px solid var(--c-accent);
+    border-radius: 0;
+    overflow: visible;
+  }
+
   // ---- Try card: light surface, mono label -------------------------
+  // The eyebrow inside a try-card gets default spacing so authors
+  // don't need to inline `style="margin-bottom: 8px"` on it.
   .compare-try-card {
     background: var(--c-paper);
     border: 1px solid var(--c-border);
@@ -1527,6 +1660,8 @@
     .t-eyebrow {
       font-family: var(--c-font-mono);
       color: var(--c-text-meta);
+      display: block;
+      margin-bottom: 8px;
     }
   }
 

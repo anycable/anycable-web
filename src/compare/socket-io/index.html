@@ -320,7 +320,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='latency'>How fast is it?<a class='heading-anchor' href='#latency' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Latency is the floor of what realtime can feel like. Two things to measure: <strong>roundtrip latency</strong> (one publisher to all subscribers) and <strong>broadcast throughput</strong> (how many messages per second the server can fan out before that latency starts inflating). All in the standalone shape: WS server as a separate process, publisher posting over HTTP.
+                  Latency is the floor of what realtime can feel like — the tempo your app dances to. Two things to measure: <strong>roundtrip latency</strong> (one publisher to all subscribers) and <strong>broadcast throughput</strong> (how many messages per second the server can fan out before that latency starts inflating). All in the standalone shape: WS server as a separate process, publisher posting over HTTP.
                 </p>
               </div>
               <div class='compare-rubric__media'></div>
@@ -336,6 +336,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>AnyCable OSS holds the lowest p99 tail at 10k. uWS's tail explodes when one writer fans out to that many subscribers.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -370,6 +371,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>uWS leads on raw deliveries/sec; AnyCable OSS and Pro keep up while holding the smoothest tail. Socket.io default's tail balloons under HTTP-pool concurrency.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -407,6 +409,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>Socket.io rooms lose 96% of whispers at cursor-style load: every whisper still goes back through the WS process. AnyCable and uWS skip that hop.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -438,7 +441,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='reliability'>How reliable is delivery?<a class='heading-anchor' href='#reliability' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Your users aren't always on a high-speed fiber network. Micro disruptions are mostly invisible to HTTP, but they're the deal-breaker for realtime. Two things decide how it feels: <strong>how often messages are lost</strong> and <strong>how long the recovery window drags</strong>. Both come down to whether the protocol carries <em>replay state</em>.
+                  Your users aren't always on a high-speed fiber network. Micro disruptions are mostly invisible to HTTP, but they're the deal-breaker for realtime: a missed beat in the music. Two things decide how it feels: <strong>how often messages are lost</strong> and <strong>how long the recovery window drags</strong>. Both come down to whether the protocol carries <em>replay state</em>.
                 </p>
                 <p class='compare-prose'>
                   Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a>; so is uWS. <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, adapter constraints). AnyCable ships <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a> by default: per-stream history, epoch + offset, restart-survivable with NATS or Redis. Under simulated WiFi jitter (1 s TCP drops every ~15 s): AnyCable and CSR deliver 100%; default Socket.io and uWS lose ~13-14%.
@@ -474,6 +477,7 @@ Client 2: <span class='c-str'>all 120 received</span>  (p95: 4.1s)</pre>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>Replay protocols (AnyCable, CSR) deliver 100%. Default Socket.io and uWS lose 13-14% on every WiFi blip.</p>
                   <table class='compare-data-table'>
                     <thead>
                       <tr>
@@ -585,7 +589,7 @@ Client 2: <span class='c-str'>all 120 received</span>  (p95: 4.1s)</pre>
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='deploys'>Does the WS layer survive deploys?<a class='heading-anchor' href='#deploys' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Modern teams deploy multiple times a day. Socket.io, +CSR, and uWS are Node libraries — the WS layer restarts every time the app does. At small N the reconnect storm recovers. Past a certain N it stops recovering. The test: real <code>railway redeploy</code> on a 1 vCPU / 0.5 GB box.
+                  Modern teams deploy multiple times a day. Every deploy is a beat: does the WS layer skip it? Socket.io, +CSR, and uWS are Node libraries — the WS layer restarts every time the app does. At small N the reconnect storm recovers. Past a certain N it stops recovering. The test: real <code>railway redeploy</code> on a 1 vCPU / 0.5 GB box.
                 </p>
 
                 {{!-- Architecture diagram — Socket.io's app+WS in one process
@@ -672,6 +676,7 @@ t=0.0s → users don't notice</pre>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>Past 25K, in-process WS can't recover from its own restart. Standalone WS doesn't restart, so there's nothing to recover from.</p>
                   <table class='compare-data-table'>
                     <thead>
                       <tr>
@@ -736,6 +741,7 @@ t=0.0s → users don't notice</pre>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>uWS holds the most idle connections per byte. AnyCable Pro is the lightest setup that includes built-in replay. Socket.io tops out at ~120K.</p>
                   <table class='compare-data-table'>
                     <thead>
                       <tr>
@@ -826,6 +832,7 @@ CPU (% of 1 vCPU)
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>Embedded WS makes every user skip a beat on every deploy. Standalone leaves the dance floor untouched.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -861,6 +868,7 @@ CPU (% of 1 vCPU)
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>Cluster capacity and 1-of-N survivor behavior. Pending A2d.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -889,7 +897,7 @@ CPU (% of 1 vCPU)
               <div class='compare-rubric__content compare-rubric__content--full'>
                 <h3 class='compare-rubric__subtitle'>Takeaway: when does in-process WS stop being viable?</h3>
                 <p class='compare-prose'>
-                  CSR + Redis Streams is the best in-process answer we measured: a ~1.5 s per-user freeze with 100% delivery (replay backfills) on every rolling deploy. Default Socket.io is worse (2 s freeze, 99.6% delivered, 2-3 lost per user). <strong>Standalone WS is the only shape where users don't notice the deploy at all</strong>: zero disconnects, zero reconnects, a 45-second publishing pause that affects what gets sent, not what gets received. CSR shrinks the gap; only architecture eliminates it.
+                  CSR + Redis Streams is the best in-process answer we measured: every user skips ~1.5 s on every deploy, but the replay backfills the missed beats (100% delivery). Default Socket.io is worse (~2 s freeze, 99.6% delivered, 2-3 messages lost per user). <strong>Standalone WS is the only shape where users don't notice the deploy at all</strong>: zero disconnects, zero reconnects, a 45-second publishing pause that affects what gets sent, not what gets received. CSR shrinks the missed beat. Only architecture eliminates it.
                 </p>
               </div>
             </div>
@@ -911,6 +919,7 @@ CPU (% of 1 vCPU)
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
+                  <p class='compare-data-table__headline'>Socket.io and uWS give you transport. AnyCable gives you the whole realtime framework: reliability, presence, auth, deploy resilience.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
