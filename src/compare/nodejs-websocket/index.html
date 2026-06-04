@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {{> dochead pageTitle="AnyCable vs Socket.io vs uWebSockets.js | Benchmarking WebSocket infrastructure for JS/TS apps" pageDescription="A measured comparison of five WebSocket setups on identical hardware: default Socket.io, Socket.io with Connection state recovery, uWebSockets.js, AnyCable OSS, AnyCable Pro. Three questions: how fast (roundtrip latency at 1k/10k and broadcast throughput, including whispers), how reliable (message delivery under WiFi-drop jitter), and how efficient to scale (single-node load test with avalanche behavior at deploy). Tested in both embedded and standalone topologies. All numbers reproducible from the open-source benchmark repo." pageUrl="https://anycable.io/compare/socket-io"}}
+  {{> dochead pageTitle="Node.js WebSocket Server Comparison: Socket.io vs uWebSockets.js vs AnyCable (2026 Benchmark)" pageDescription="Benchmark of five Node.js WebSocket setups on identical hardware: default Socket.io, Socket.io with Connection State Recovery, uWebSockets.js, AnyCable OSS, AnyCable Pro. Compared on memory per connection, broadcast throughput, message delivery under WiFi-drop jitter, and deploy resilience. Includes a self-hosted Pusher and Ably alternative for teams who want flat pricing. All numbers reproducible from the open-source benchmark repo." pageUrl="https://anycable.io/compare/nodejs-websocket"}}
   <body>
     <div class="page">
       {{> header}}
@@ -13,11 +13,12 @@
         <section class='compare-hero'>
           <div class='compare-hero__inner'>
             <div class='compare-hero__intro'>
+              <p class='compare-hero__kicker'>Looking for a Socket.io alternative for production Node.js?</p>
               <h1 class='compare-hero__title'>
                 Socket.io <span class='c-vs'>vs</span> uWS <span class='c-vs'>vs</span> AnyCable
               </h1>
               <p class='compare-hero__subtitle'>
-                Benchmarking realtime WebSocket infrastructure options for JS/TS serverfull apps.
+                A 2026 benchmark of five WebSocket setups for Node.js, TypeScript, Bun, and Deno apps. Self-hosted alternative to Pusher Channels and Ably included.
               </p>
             </div>
 
@@ -926,12 +927,12 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "AnyCable vs Socket.io vs uWebSockets.js: Benchmarking WebSocket infrastructure for JS/TS apps",
-        "description": "A measured comparison of five WebSocket setups on identical hardware: default Socket.io, Socket.io with Connection state recovery, uWebSockets.js, AnyCable OSS, AnyCable Pro. Three questions answered with reproducible benchmarks: (1) how fast: roundtrip latency at 1k/10k subscribers, broadcast throughput, plus whispers (client-to-client without backend hop) where AnyCable competes with Liveblocks, Yjs, PartyKit; (2) how reliable: message delivery under WiFi-drop jitter, separating at-most-once protocols (default Socket.io, uWS) from those with replay state (Socket.io+CSR, AnyCable); (3) how efficient to scale: single-node load (RAM per connection, max concurrent) plus the avalanche behavior at app deploy that decides whether in-process WS is sustainable. Tested in embedded and standalone topologies. All numbers reproducible from the open-source bench repo at github.com/irinanazarova/anycable-socketio-benchmarks.",
-        "url": "https://anycable.io/compare/socket-io",
-        "mainEntityOfPage": "https://anycable.io/compare/socket-io",
+        "headline": "Node.js WebSocket Server Comparison: Socket.io vs uWebSockets.js vs AnyCable (2026 Benchmark)",
+        "description": "A measured comparison of five Node.js WebSocket setups on identical hardware: default Socket.io, Socket.io with Connection State Recovery, uWebSockets.js, AnyCable OSS, AnyCable Pro. Three questions answered with reproducible benchmarks: (1) how fast: roundtrip latency at 1k/10k subscribers, broadcast throughput, plus whispers (client-to-client without backend hop) where AnyCable competes with Liveblocks, Yjs, PartyKit; (2) how reliable: message delivery under WiFi-drop jitter, separating at-most-once protocols (default Socket.io, uWS) from those with replay state (Socket.io+CSR, AnyCable); (3) how efficient to scale: single-node load (RAM per connection, max concurrent) plus the avalanche behavior at app deploy that decides whether in-process WS is sustainable. Covers Node.js, TypeScript, Bun, and Deno. Includes a self-hosted alternative to Pusher Channels and Ably. Tested in embedded and standalone topologies. All numbers reproducible from the open-source bench repo.",
+        "url": "https://anycable.io/compare/nodejs-websocket",
+        "mainEntityOfPage": "https://anycable.io/compare/nodejs-websocket",
         "datePublished": "2026-04-30",
-        "dateModified": "2026-05-28",
+        "dateModified": "2026-06-04",
         "author": {
           "@type": "Organization",
           "name": "AnyCable team",
@@ -943,21 +944,31 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
           "url": "https://evilmartians.com/"
         },
         "about": [
-          "WebSocket server",
+          "Node.js WebSocket server",
           "Socket.io alternative",
+          "Socket.io alternatives",
+          "Best WebSocket server for Node.js",
+          "Self-hosted Pusher alternative",
+          "Self-hosted Ably alternative",
           "uWebSockets.js comparison",
           "uWebSockets.js vs Socket.io",
           "uWebSockets.js vs AnyCable",
           "Real-time messaging",
-          "Node.js WebSocket server",
-          "WebSocket scaling",
+          "WebSocket scaling Node.js",
           "Node.js WebSocket scaling bottleneck",
           "1,000,000 WebSocket connections single instance",
           "AnyCable Pro vs open source",
           "AnyCable Pro memory efficiency",
           "Connection State Recovery",
           "WebSocket delivery guarantees",
-          "WebSocket deploy resilience"
+          "WebSocket deploy resilience",
+          "WebSocket connections drop on deploy",
+          "Next.js realtime WebSocket",
+          "Bun WebSocket server",
+          "TypeScript WebSocket server",
+          "Liveblocks alternative",
+          "PartyKit alternative",
+          "Whispers client-to-client WebSocket"
         ]
       }
     </script>

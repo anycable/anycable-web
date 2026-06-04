@@ -4,7 +4,7 @@
 //
 // QUICK REFERENCE for authors (writing or extending a compare page):
 //
-//   See the live style index at:  /compare/socket-io/style/
+//   See the live style index at:  /compare/nodejs-websocket/style/
 //   (Every block authors should reach for, rendered + with HTML.)
 //
 //   Activation:  add `c-spine` to the page's <main class="content compare-page">
@@ -714,6 +714,20 @@
       @extend %c-bracket-label;
       color: var(--c-accent);
       margin-bottom: 24px;
+    }
+
+    // Kicker sits above the H1: a small mono accent line that
+    // carries query-bait keywords for organic discovery
+    // ("Looking for a Socket.io alternative..."). Doesn't compete with
+    // the display H1 for attention; reads as a pointed lead-in.
+    &__kicker {
+      font-family: var(--c-font-mono);
+      font-size: 13px;
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+      color: var(--c-accent);
+      margin: 0 0 20px;
+      max-width: 640px;
     }
 
     &__title {
