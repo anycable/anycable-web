@@ -992,7 +992,11 @@
     &__content {
       padding: 80px 64px;
       background: var(--c-paper);
-      border-right: 1px solid var(--c-border);
+      // Softer border (--c-border-soft #f0f0f0 vs --c-border #e8e8e8)
+      // so the column divider recedes when the media column ends
+      // before the prose column (or vice versa), instead of marching
+      // through empty space as an orphan line.
+      border-right: 1px solid var(--c-border-soft);
 
       @include mediaMax($tablet) {
         background: transparent;
