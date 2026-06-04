@@ -759,7 +759,12 @@
     border-top: 1px solid var(--c-border);
     border-bottom: 1px solid var(--c-border);
 
-    @include mediaMax($mobile) {
+    // Tablet and narrower: stack the cards to one column. At 768px
+    // the 3-column grid cramped the headline labels and the setup
+    // names ("Socket.io + CSR") wrapped mid-line awkwardly. A single
+    // column gives each card the full width and reads cleanly down
+    // to phones.
+    @include mediaMax($tablet) {
       grid-template-columns: 1fr;
     }
   }
@@ -775,7 +780,9 @@
       border-right: none;
     }
 
-    @include mediaMax($mobile) {
+    // Switch the divider to horizontal when the strip stacks to one
+    // column (same `$tablet` breakpoint as `.compare-hero-cards` above).
+    @include mediaMax($tablet) {
       border-right: none;
       border-bottom: 1px solid var(--c-border);
       &:last-child {
