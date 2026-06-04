@@ -973,6 +973,13 @@
 
       // Reset the sub-counter at every new section.
       counter-reset: subrubric;
+
+      // Mobile: section provides the horizontal padding so content
+      // and media (both set to padding 0 below) sit 24px from the
+      // viewport edges instead of touching them.
+      @include mediaMax($tablet) {
+        padding: 0 24px;
+      }
     }
 
     &__content {
@@ -983,12 +990,28 @@
       @include mediaMax($tablet) {
         background: transparent;
         border-right: none;
-        padding: 0;
+        padding: 32px 0;
       }
     }
 
     &__media {
       padding: 80px 64px;
+
+      // Mobile: kill horizontal padding (the __section provides it),
+      // tighten vertical so the media column doesn't tower over the
+      // prose. Also drop the sticky behavior on small screens — there's
+      // no two-column to keep aligned.
+      @include mediaMax($tablet) {
+        padding: 0 0 48px;
+      }
+    }
+
+    &__media--sticky {
+      @include mediaMax($tablet) {
+        position: static;
+        max-height: none;
+        overflow: visible;
+      }
     }
 
     &__eyebrow {
@@ -1192,12 +1215,17 @@
   // collapse them and re-introduce the jump).
   .compare-code-tabs {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto;
     border: 1px solid var(--c-code-border);
     border-radius: var(--c-radius);
     overflow: hidden;
     background: var(--c-code-bg);
+    // `min-width: 0` so this grid container can shrink below the
+    // intrinsic width of its widest <pre> child. Without it, a long
+    // line of code (e.g. `await fetch('http://anycable:8080/...')`)
+    // forces the whole container wider than the viewport on mobile.
+    min-width: 0;
 
     &__bar {
       grid-row: 1;
@@ -1207,6 +1235,7 @@
       background: var(--c-paper);
       border-bottom: 1px solid var(--c-code-border);
       padding: 0;
+      min-width: 0;
     }
 
     &__tab {
@@ -1232,18 +1261,25 @@
     // `!important` is needed because compare.scss sets `display: none`
     // and `:checked ~ panel { display: block }` — those rules would
     // collapse the inactive panels and re-introduce the jump.
+    // `min-width: 0` allows the cell to shrink below its natural
+    // content width so the inner <pre> can scroll horizontally
+    // instead of pushing the whole container off-screen.
     &__panel {
       display: block !important;
       grid-row: 2;
       grid-column: 1;
       visibility: hidden;
       pointer-events: none;
+      min-width: 0;
+      overflow: hidden;
     }
 
     &__panel pre {
       border: none;
       border-radius: 0;
       margin: 0;
+      overflow-x: auto;
+      max-width: 100%;
     }
 
     // Active tab: underline accent in red.
@@ -1610,6 +1646,19 @@
         padding-left: 0;
         color: var(--c-text);
         font-weight: 500;
+        // Keep brand names like "Socket.io" / "AnyCable" intact on
+        // narrow viewports — the frame already scrolls horizontally,
+        // so awkward mid-word breaks ("Socke / t.io") are worse than
+        // a wider sticky first column. Secondary span text below
+        // ("default", "topics") is allowed to wrap to a second line.
+        @include mediaMax($mobile) {
+          white-space: nowrap;
+
+          > span {
+            display: block;
+            white-space: normal;
+          }
+        }
       }
       &:last-child {
         padding-right: 0;
