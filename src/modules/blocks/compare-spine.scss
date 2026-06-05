@@ -991,6 +991,7 @@
 
     &__section {
       padding: 24px 0;
+      position: relative;
 
       // Reset the sub-counter at every new section.
       counter-reset: subrubric;
@@ -1000,6 +1001,41 @@
       // viewport edges instead of touching them.
       @include mediaMax($tablet) {
         padding: 0 24px;
+      }
+    }
+
+    // Sub-chapter break indicator: small dot sits on the column
+    // divider line at the boundary between two adjacent sub-sections.
+    // Marks the break as deliberate instead of letting the hairline
+    // trail off through empty space when prose and media columns
+    // end at different heights. Only renders on desktop where the
+    // two-column layout (and the vertical divider) exists.
+    // `@at-root` escapes the .c-spine .compare-rubric ancestor stack
+    // because Sass would otherwise generate
+    //   .compare-rubric__section + .c-spine .compare-rubric__section
+    // (mixing combinators) for the sibling selector.
+    @include mediaMin($tablet) {
+      @at-root .c-spine .compare-rubric__section + .compare-rubric__section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 6px;
+        height: 6px;
+        background: var(--c-text-faint);
+        border-radius: 50%;
+        z-index: 1;
+      }
+
+      // Hide the dot when either side of the boundary is a full-width
+      // sub-section: there's no column divider for the dot to anchor
+      // against, so it'd float in empty space.
+      @at-root {
+        .c-spine .compare-rubric__section + .compare-rubric__section:has(.compare-rubric__content--full)::before,
+        .c-spine .compare-rubric__section:has(.compare-rubric__content--full) + .compare-rubric__section::before {
+          display: none;
+        }
       }
     }
 
