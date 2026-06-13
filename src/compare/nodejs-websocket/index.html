@@ -362,8 +362,8 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                     <thead>
                       <tr>
                         <th>Clients</th>
-                        <th>Socket.io recovery <span class='t-mute t-tiny'>(also +CSR, uWS)<sup>&dagger;</sup></span></th>
-                        <th>Reconnected <span class='t-mute t-tiny'>within 10&nbsp;min</span></th>
+                        <th>Recovery<sup>&dagger;</sup></th>
+                        <th>Reconnected</th>
                         <th>AnyCable <span class='t-mute t-tiny'>OSS &amp; Pro</span></th>
                       </tr>
                     </thead>
@@ -400,7 +400,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       </tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'><sup>&dagger;</sup>Socket.io, +CSR, and uWS run the WS layer inside the Node app, so <code>railway redeploy</code> restarts it. Past 10K the reconnect storm hits faster than the new container can accept connections, and within a 10-minute window only a fraction of clients are back. uWS pushes the cliff further but the shape is the same. AnyCable runs WS as a separate Go binary; app deploys never touch it.</p>
+                  <p class='compare-data-table__footnote'><sup>&dagger;</sup>Recovery wall-clock and reconnect % measured against Socket.io as the representative; +CSR and uWS share the in-process Node.js shape so they show the same cliff. Past 10K the reconnect storm hits faster than the new container can accept connections, and within a 10-minute window only a fraction of clients are back. uWS pushes the cliff further but the shape is the same. AnyCable runs WS as a separate Go binary; app deploys never touch it.</p>
                 </div>
               </div>
             </div>
