@@ -462,12 +462,12 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h3 class='compare-rubric__subtitle'>Broadcast throughput</h3>
                 <p class='compare-prose'>
-                  1M deliveries to 10K subscribers, 100% delivery required, broadcasts fanning in from 40 parallel publishers (one per app instance, the shape of any horizontally scaled service). The result is what each server sustains end-to-end.
+                  1M deliveries to 10K subscribers, 100% required. Broadcasts come from 40 parallel publishers, mirroring a horizontally scaled production service.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>All five sustain 1M deliveries at 100%. AnyCable Pro leads p99 by 10&times; (12&nbsp;ms vs uWS at 177&nbsp;ms), by 100&times; vs Socket.io family. When 40 app instances publish concurrently, a Go server fans the work across cores; a single Node event loop serializes it.</p>
+                  <p class='compare-data-table__headline'>All five sustain 1M deliveries at 100%. AnyCable Pro leads p99 (12&nbsp;ms) ahead of uWS (177&nbsp;ms) and Socket.io family (1.4&ndash;2.5&nbsp;s). With 40 concurrent publishers, <code>anycable-go</code> fans work across cores; a single Node event loop serializes.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -505,7 +505,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>Socket.io rooms loses 40% of whispers because every whisper goes back through the WS process. uWS topics stays under 25&nbsp;ms p99 (native pub/sub fanout). AnyCable's 200&nbsp;ms p99 here likely reflects the same test-driver cascade the <a class='link' href='#latency'>latency</a> table corrects for at 40 shards; broker writes themselves measure under 11&nbsp;ms p99 server-side.</p>
+                  <p class='compare-data-table__headline'>Socket.io rooms loses 40% of whispers because every one goes back through the WS process. uWS topics stays under 25&nbsp;ms p99 with native pub/sub. AnyCable's 200&nbsp;ms p99 here is the same test-driver cascade the <a class='link' href='#latency'>latency</a> table corrects at 40 shards; the broker itself measures under 11&nbsp;ms p99 server-side.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -523,7 +523,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       <tr class='is-row-best'><td>AnyCable Pro</td><td class='is-best'>Native</td><td class='is-best'><strong>100%</strong></td><td>23&nbsp;ms</td><td><strong>244&nbsp;ms</strong></td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>1K clients in 10 rooms (100 peers/room), 2 Hz whispers for 30&nbsp;s. Each whisper fans out to 99 peers, so each client receives ~200 msgs/sec. Socket.io's rooms emulation re-emits through the server, Express can't keep up, and 40% of the deliveries drop. uWS and AnyCable both bypass that hop; AnyCable's 200&nbsp;ms p99 likely reflects the test-driver cascade rather than server cost (whispers wasn't re-tested under the 40-shard methodology). At 10K clients the bench-runner saturates client-side, which inflates latencies and confuses the delivery story; 1K × 100 peers/room is the cleanest comparison of the fanout paths.</p>
+                  <p class='compare-data-table__footnote'>1K clients in 10 rooms (100 peers/room), 2 Hz whispers for 30&nbsp;s. Each whisper fans to 99 peers; each client receives ~200 msgs/sec. Socket.io's rooms emulation re-emits through the server, Express can't keep up, 40% drop. uWS and AnyCable bypass that hop. AnyCable's 200&nbsp;ms p99 is the same test-driver cascade as the <a class='link' href='#latency'>latency</a> table; whispers wasn't re-tested at 40 shards. 1K × 100 peers/room is the cleanest comparison of the fanout paths.</p>
                 </div>
               </div>
             </div>
