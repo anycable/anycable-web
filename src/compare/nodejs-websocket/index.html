@@ -124,7 +124,7 @@
             </div>
 
             <div class='compare-callout compare-callout--hero'>
-              <strong>AnyCable adds reliability and stability, leads throughput at scale (10&times; lower p99 than uWS under parallel publishers), and saves 2.5&times; RAM vs Socket.io</strong> &mdash; at latency comparable to the alternatives (3&nbsp;ms p50, 11&nbsp;ms p99 at 10K subs).
+              <strong>AnyCable adds reliability and stability, leads throughput at scale (10&times; lower p99 than uWS under parallel publishers), and saves 2.5&times; RAM vs Socket.io.</strong> Latency stays in line with the alternatives (3&nbsp;ms p50, 11&nbsp;ms p99 at 10K subs).
             </div>
 
             <div class='compare-tldr'>
@@ -449,7 +449,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       <tr><td>AnyCable Pro</td><td>3 / 10&nbsp;ms</td><td>3 / 11&nbsp;ms</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Methodology: each broadcast is a separate HTTP POST to the server's <code>/_broadcast</code> endpoint, modeling how production publishers emit. 1K runs use 4 bench-runner shards × 250 clients; 10K runs use 40 shards × 250. The shard distribution keeps each test driver's Node.js event loop under saturation, so each measurement reflects what one real browser would see for one message — not the cascade you get from packing 2500 cables into one synthetic test process (which inflated earlier numbers by 15&times;). Server-side timing matches the intra-Railway trace of <code>broker.Store</code> + HTTP <code>/_broadcast</code> on AnyCable: <strong>under 11&nbsp;ms p99</strong> at 2500 subs.</p>
+                  <p class='compare-data-table__footnote'>Per-message HTTP POST to <code>/_broadcast</code>, matching production publishers. 1K: 4 shards × 250 cables. 10K: 40 shards × 250. Sharding the test drivers keeps each Node.js event loop unsaturated, so we measure what one real browser sees, not what 2500 cables in one process queue up. Intra-Railway tracing of AnyCable's <code>broker.Store</code> + HTTP roundtrip: <strong>under 11&nbsp;ms p99</strong> at 2500 subs.</p>
                 </div>
               </div>
             </div>
@@ -462,12 +462,12 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h3 class='compare-rubric__subtitle'>Broadcast throughput</h3>
                 <p class='compare-prose'>
-                  Target 1M deliveries/sec to 10K subscribers, 100% delivery required. Publisher is a separate process posting to the WS server's HTTP <code>/_broadcast</code> at concurrency 16. The result is what each server sustains end-to-end.
+                  1M deliveries to 10K subscribers, 100% delivery required, broadcasts fanning in from 40 parallel publishers (one per app instance, the shape of any horizontally scaled service). The result is what each server sustains end-to-end.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>All five servers sustain 1M deliveries at 100%. AnyCable Pro leads p99 by 10&times; (12&nbsp;ms vs uWS at 177&nbsp;ms), and by 100&times; vs Socket.io family. The order reverses vs single-publisher tests: that's what happens when many app instances broadcast at once and a Go server (anycable-go) scales across cores while a single Node loop bottlenecks.</p>
+                  <p class='compare-data-table__headline'>All five sustain 1M deliveries at 100%. AnyCable Pro leads p99 by 10&times; (12&nbsp;ms vs uWS at 177&nbsp;ms), by 100&times; vs Socket.io family. When 40 app instances publish concurrently, a Go server fans the work across cores; a single Node event loop serializes it.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -485,7 +485,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       <tr class='is-row-best'><td>AnyCable Pro</td><td>100%</td><td class='is-best'><strong>4&nbsp;ms</strong></td><td class='is-best'><strong>12&nbsp;ms</strong></td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Methodology: 40 bench-runner shards × 250 cables each, every shard runs its own external publisher pool. Aggregate target: 100 broadcasts/sec across all publishers, 1M deliveries. This shape models a horizontally scaled app where many service instances broadcast simultaneously — exactly the case where Socket.io's single Node event loop becomes the server-side bottleneck and AnyCable Go fans the work across 8 cores. Earlier single-runner numbers had AnyCable at 4-7&nbsp;s p99 and uWS at 0.5&nbsp;s — that was Node.js client-library cost on the test driver, not a server cost (the <a class='link' href='#latency'>latency methodology</a> footnote has the full breakdown).</p>
+                  <p class='compare-data-table__footnote'>40 bench-runner shards × 250 cables, each shard runs its own publisher pool. Aggregate: 100 broadcasts/sec across publishers, 1M deliveries. Models a horizontally scaled app with many service instances broadcasting simultaneously. See the <a class='link' href='#latency'>latency methodology</a> footnote for why we shard the test drivers.</p>
                 </div>
               </div>
             </div>
@@ -608,7 +608,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title'>What this breaks</h2>
                 <div class='compare-prose'>
-                  <p>Lost messages cluster around network events — exactly when the user is watching. CSR resumes about 20% of reconnects cleanly, and its p99 replay tail stretches to nearly two minutes, which reads as &ldquo;the app stopped working.&rdquo; AnyCable replays the same messages in about 6 seconds, with full delivery. For sequential workloads, both loss and delay break the flow.</p>
+                  <p>Lost messages cluster around network events, exactly when the user is watching. CSR replays 80% of deliveries under jitter, but its p99 replay tail stretches to nearly two minutes for resumed connections, which reads as &ldquo;the app stopped working.&rdquo; AnyCable replays the same messages in about 6 seconds with full delivery. For sequential workloads, both loss and delay break the flow.</p>
                 </div>
               </div>
               <div class='compare-rubric__media'>
