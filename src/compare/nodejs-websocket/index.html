@@ -81,15 +81,15 @@
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
                     <dt>Socket.io + CSR</dt>
-                    <dd class='is-worst'>fails &gt; 20K</dd>
+                    <dd class='is-worst'>fails &gt; 10K</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>uWS</dt>
-                    <dd class='is-worst'>fails &gt; 20K</dd>
+                    <dd>9&nbsp;s @ 20K</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable</dt>
-                    <dd class='is-best'>resumes</dd>
+                    <dd class='is-best'>0&nbsp;s, no restart</dd>
                   </div>
                 </dl>
                 <div class='compare-hero-card__footnote'>
@@ -357,7 +357,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>Recovery degrades as connection count climbs. At 15K only three quarters reconnect within 10&nbsp;min; at 25K just one fifth. Standalone WS doesn't restart, so there's nothing to recover from.</p>
+                  <p class='compare-data-table__headline'>Recovery degrades for Socket.io as connection count climbs: at 15K only three quarters reconnect within 10 min; at 25K just one fifth. uWS's C++ engine absorbs the storm cleanly (2.3&nbsp;s at 10K, 8.8&nbsp;s at 20K, both 100%). AnyCable doesn't restart, so there's nothing to recover from.</p>
                   <table class='compare-data-table'>
                     <thead>
                       <tr>
@@ -400,7 +400,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       </tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'><sup>&dagger;</sup>Recovery wall-clock and reconnect % measured against Socket.io as the representative; +CSR and uWS share the in-process Node.js shape so they show the same cliff. Past 10K the reconnect storm hits faster than the new container can accept connections, and within a 10-minute window only a fraction of clients are back. uWS pushes the cliff further but the shape is the same. AnyCable runs WS as a separate Go binary; app deploys never touch it.</p>
+                  <p class='compare-data-table__footnote'><sup>&dagger;</sup>Recovery wall-clock and reconnect % measured for Socket.io. uWS recovery measured separately: 10K&nbsp;→&nbsp;2.3&nbsp;s / 98% back, 20K&nbsp;→&nbsp;8.8&nbsp;s / 100% back. uWS's C++ engine absorbs the reconnect storm where Socket.io's Node loop can't past 10K. AnyCable runs WS as a separate Go binary; app deploys never touch it, so reconnect time is zero by construction.</p>
                 </div>
               </div>
             </div>
