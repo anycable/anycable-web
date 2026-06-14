@@ -432,7 +432,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>At 10K subscribers, the three Node.js servers (Socket.io, +CSR, uWS) cluster around p99 ~45&nbsp;ms. AnyCable holds the same p50 floor (~25&nbsp;ms) but pays ~200&nbsp;ms in p99 for the broker write that gives it 100% delivery in <a class='link' href='#reliability'>reliability</a>.</p>
+                  <p class='compare-data-table__headline'>At 10K subscribers, the three Node.js servers (Socket.io, +CSR, uWS) cluster around p99 ~45&nbsp;ms. AnyCable's p50 floor matches them (~25&nbsp;ms); the 234&nbsp;ms p99 tail is the <code>@anycable/core</code> JS client deserializing ActionCable envelopes across 2500 cables in one test-driver process, not server cost (see methodology).</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -449,7 +449,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       <tr><td>AnyCable Pro</td><td>11 / 40&nbsp;ms</td><td>24 / 234&nbsp;ms</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Methodology: each broadcast is a separate HTTP POST to the server's <code>/_broadcast</code> endpoint, modeling how production publishers emit. 10K runs split across four bench-runner shards (2500 clients each); a single Node.js test driver saturates around 5K subscribers regardless of protocol, and that saturation distorted earlier numbers. AnyCable's ~234&nbsp;ms p99 is the cost of the broker preset that backs replay; same trade that buys the 100% delivery in the <a class='link' href='#reliability'>reliability</a> table.</p>
+                  <p class='compare-data-table__footnote'>Methodology: each broadcast is a separate HTTP POST to the server's <code>/_broadcast</code> endpoint, modeling how production publishers emit. 10K runs split across four bench-runner shards (2500 clients each); a single Node.js test driver saturates around 5K subscribers regardless of protocol, and that saturation distorted earlier numbers. AnyCable's 234&nbsp;ms p99 tail is the cost of <code>@anycable/core</code>'s ActionCable envelope parsing at 2500 cables per Node process; intra-Railway tracing of the server itself (<code>broker.Store</code> + HTTP <code>/_broadcast</code>) measures <strong>under 11&nbsp;ms p99</strong> at the same scale. In production, one user = one browser = one event loop, so the cascade we synthesize across 2500 cables in one driver doesn't apply.</p>
                 </div>
               </div>
             </div>
