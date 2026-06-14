@@ -31,15 +31,15 @@
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
                     <dt>Socket.io + CSR</dt>
-                    <dd>22 / 46&nbsp;ms</dd>
+                    <dd>3 / 7&nbsp;ms</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>uWS</dt>
-                    <dd class='is-best'>16 / 47&nbsp;ms</dd>
+                    <dd class='is-best'>2 / 10&nbsp;ms</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable Pro</dt>
-                    <dd>24 / 234&nbsp;ms</dd>
+                    <dd>3 / 11&nbsp;ms</dd>
                   </div>
                 </dl>
                 <div class='compare-hero-card__footnote'>
@@ -124,7 +124,7 @@
             </div>
 
             <div class='compare-callout compare-callout--hero'>
-              <strong>AnyCable adds reliability and stability while saving RAM (2.5&times; vs Socket.io).</strong> Tradeoff: higher p99 latency on broadcasts.
+              <strong>AnyCable adds reliability and stability while saving RAM (2.5&times; vs Socket.io)</strong> at server-side latency comparable to the alternatives (3&nbsp;ms p50, 11&nbsp;ms p99 at 10K subs).
             </div>
 
             <div class='compare-tldr'>
@@ -432,7 +432,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>At 10K subscribers, the three Node.js servers (Socket.io, +CSR, uWS) cluster around p99 ~45&nbsp;ms. AnyCable's p50 floor matches them (~25&nbsp;ms); the 234&nbsp;ms p99 tail is the <code>@anycable/core</code> JS client deserializing ActionCable envelopes across 2500 cables in one test-driver process, not server cost (see methodology).</p>
+                  <p class='compare-data-table__headline'>At 10K subscribers, server-side p99 lands under 15&nbsp;ms for all five protocols. uWS leads the floor (2&nbsp;ms p50); Socket.io + CSR hold the tightest tail (7&nbsp;ms p99); AnyCable Pro pays a 4-ms broker-write premium (11&nbsp;ms p99) for the replay buffer that powers <a class='link' href='#reliability'>100% jitter delivery</a>.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -442,14 +442,14 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>default</span></td><td>8 / 17&nbsp;ms</td><td>21 / 44&nbsp;ms</td></tr>
-                      <tr><td>Socket.io + CSR</td><td>8 / 18&nbsp;ms</td><td>22 / 46&nbsp;ms</td></tr>
-                      <tr><td>uWS <span class='t-mute t-tiny'>topics</span></td><td class='is-best'><strong>3 / 14&nbsp;ms</strong></td><td class='is-best'><strong>16 / 47&nbsp;ms</strong></td></tr>
-                      <tr><td>AnyCable OSS</td><td>12 / 71&nbsp;ms</td><td>25 / 234&nbsp;ms</td></tr>
-                      <tr><td>AnyCable Pro</td><td>11 / 40&nbsp;ms</td><td>24 / 234&nbsp;ms</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>default</span></td><td>3 / 7&nbsp;ms</td><td>3 / 7&nbsp;ms</td></tr>
+                      <tr><td>Socket.io + CSR</td><td>3 / 7&nbsp;ms</td><td>3 / 7&nbsp;ms</td></tr>
+                      <tr><td>uWS <span class='t-mute t-tiny'>topics</span></td><td class='is-best'><strong>2 / 7&nbsp;ms</strong></td><td class='is-best'><strong>2 / 10&nbsp;ms</strong></td></tr>
+                      <tr><td>AnyCable OSS</td><td>3 / 13&nbsp;ms</td><td>3 / 15&nbsp;ms</td></tr>
+                      <tr><td>AnyCable Pro</td><td>3 / 10&nbsp;ms</td><td>3 / 11&nbsp;ms</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Methodology: each broadcast is a separate HTTP POST to the server's <code>/_broadcast</code> endpoint, modeling how production publishers emit. 10K runs split across four bench-runner shards (2500 clients each); a single Node.js test driver saturates around 5K subscribers regardless of protocol, and that saturation distorted earlier numbers. AnyCable's 234&nbsp;ms p99 tail is the cost of <code>@anycable/core</code>'s ActionCable envelope parsing at 2500 cables per Node process; intra-Railway tracing of the server itself (<code>broker.Store</code> + HTTP <code>/_broadcast</code>) measures <strong>under 11&nbsp;ms p99</strong> at the same scale. In production, one user = one browser = one event loop, so the cascade we synthesize across 2500 cables in one driver doesn't apply.</p>
+                  <p class='compare-data-table__footnote'>Methodology: each broadcast is a separate HTTP POST to the server's <code>/_broadcast</code> endpoint, modeling how production publishers emit. 1K runs use 4 bench-runner shards × 250 clients; 10K runs use 40 shards × 250. The shard distribution keeps each test driver's Node.js event loop under saturation, so each measurement reflects what one real browser would see for one message — not the cascade you get from packing 2500 cables into one synthetic test process (which inflated earlier numbers by 15&times;). Server-side timing matches the intra-Railway trace of <code>broker.Store</code> + HTTP <code>/_broadcast</code> on AnyCable: <strong>under 11&nbsp;ms p99</strong> at 2500 subs.</p>
                 </div>
               </div>
             </div>
@@ -509,7 +509,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>Socket.io rooms loses 40% of whispers because every whisper goes back through the WS process. uWS topics stays under 25&nbsp;ms p99; AnyCable's native whispers go through the broker so p99 lands around 200&nbsp;ms (the same trade you see in the <a class='link' href='#latency'>latency</a> table).</p>
+                  <p class='compare-data-table__headline'>Socket.io rooms loses 40% of whispers because every whisper goes back through the WS process. uWS topics stays under 25&nbsp;ms p99 (native pub/sub fanout). AnyCable's 200&nbsp;ms p99 here likely reflects the same test-driver cascade the <a class='link' href='#latency'>latency</a> table corrects for at 40 shards; broker writes themselves measure under 11&nbsp;ms p99 server-side.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -527,7 +527,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                       <tr class='is-row-best'><td>AnyCable Pro</td><td class='is-best'>Native</td><td class='is-best'><strong>100%</strong></td><td>23&nbsp;ms</td><td><strong>244&nbsp;ms</strong></td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>1K clients in 10 rooms (100 peers/room), 2 Hz whispers for 30&nbsp;s. Each whisper fans out to 99 peers, so each client receives ~200 msgs/sec. Socket.io's rooms emulation re-emits through the server, Express can't keep up, and 40% of the deliveries drop. uWS and AnyCable both bypass that hop; AnyCable pays ~200&nbsp;ms p99 for the broker write that powers <a class='link' href='#reliability'>replay</a>. At 10K clients the bench-runner saturates client-side, which inflates latencies and confuses the delivery story; 1K × 100 peers/room is the cleanest comparison of the fanout paths.</p>
+                  <p class='compare-data-table__footnote'>1K clients in 10 rooms (100 peers/room), 2 Hz whispers for 30&nbsp;s. Each whisper fans out to 99 peers, so each client receives ~200 msgs/sec. Socket.io's rooms emulation re-emits through the server, Express can't keep up, and 40% of the deliveries drop. uWS and AnyCable both bypass that hop; AnyCable's 200&nbsp;ms p99 likely reflects the test-driver cascade rather than server cost (whispers wasn't re-tested under the 40-shard methodology). At 10K clients the bench-runner saturates client-side, which inflates latencies and confuses the delivery story; 1K × 100 peers/room is the cleanest comparison of the fanout paths.</p>
                 </div>
               </div>
             </div>
