@@ -124,7 +124,7 @@
             </div>
 
             <div class='compare-callout compare-callout--hero'>
-              <strong>AnyCable adds reliability and stability while saving RAM (2.5&times; vs Socket.io)</strong> at server-side latency comparable to the alternatives (3&nbsp;ms p50, 11&nbsp;ms p99 at 10K subs).
+              <strong>AnyCable adds reliability and stability, leads throughput at scale (10&times; lower p99 than uWS under parallel publishers), and saves 2.5&times; RAM vs Socket.io</strong> &mdash; at latency comparable to the alternatives (3&nbsp;ms p50, 11&nbsp;ms p99 at 10K subs).
             </div>
 
             <div class='compare-tldr'>
@@ -467,29 +467,25 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>All five servers sustain 1M deliveries at 100%. uWS leads on both floor (32&nbsp;ms p50) and tail (80&nbsp;ms p99). AnyCable OSS + Pro cluster around 150&nbsp;ms p99; Socket.io family lands at 1.0-1.4&nbsp;s, an order of magnitude higher.</p>
+                  <p class='compare-data-table__headline'>All five servers sustain 1M deliveries at 100%. AnyCable Pro leads p99 by 10&times; (12&nbsp;ms vs uWS at 177&nbsp;ms), and by 100&times; vs Socket.io family. The order reverses vs single-publisher tests: that's what happens when many app instances broadcast at once and a Go server (anycable-go) scales across cores while a single Node loop bottlenecks.</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
-                        <th>Setup <span class='t-mute t-tiny'>10K subs, 1M deliveries, HTTP pool=16</span></th>
+                        <th>Setup <span class='t-mute t-tiny'>10K subs, 1M deliveries, 40 parallel publishers</span></th>
                         <th>Delivered</th>
                         <th>p50</th>
                         <th>p99</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Socket.io <span class='t-mute t-tiny'>default</span></td><td>100%</td><td>220&nbsp;ms</td><td>1.37&nbsp;s</td></tr>
-                      <tr><td>Socket.io + CSR</td><td>100%</td><td>200&nbsp;ms</td><td>1.08&nbsp;s</td></tr>
-                      <tr><td>uWS</td><td>100%</td><td class='is-best'><strong>32&nbsp;ms</strong></td><td class='is-best'><strong>80&nbsp;ms</strong></td></tr>
-                      <tr><td>AnyCable OSS</td><td>100%</td><td>25&nbsp;ms</td><td>150&nbsp;ms</td></tr>
-                      <tr><td>AnyCable Pro</td><td>100%</td><td>24&nbsp;ms</td><td>160&nbsp;ms</td></tr>
+                      <tr><td>Socket.io <span class='t-mute t-tiny'>default</span></td><td>100%</td><td>155&nbsp;ms</td><td>1.41&nbsp;s</td></tr>
+                      <tr><td>Socket.io + CSR</td><td>100%</td><td>127&nbsp;ms</td><td>2.54&nbsp;s</td></tr>
+                      <tr><td>uWS</td><td>100%</td><td>18&nbsp;ms</td><td>177&nbsp;ms</td></tr>
+                      <tr><td>AnyCable OSS</td><td>100%</td><td class='is-best'><strong>4&nbsp;ms</strong></td><td>15&nbsp;ms</td></tr>
+                      <tr class='is-row-best'><td>AnyCable Pro</td><td>100%</td><td class='is-best'><strong>4&nbsp;ms</strong></td><td class='is-best'><strong>12&nbsp;ms</strong></td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>Methodology: target rate 100 broadcasts/sec, split across multiple bench-runner shards so the test driver itself never saturates (earlier single-runner numbers had AnyCable and uWS p99 at 4-7&nbsp;s and 0.5&nbsp;s respectively; that was Node.js client-library cost on the driver, not a server cost). External publisher pools post to <code>/_broadcast</code> at concurrency 16. uWS's <code>app.publish</code> is the fastest C++ hot path. AnyCable's tail reflects the broker write that powers <a class='link' href='#reliability'>100% replay</a>. See the <a class='link' href='#latency'>latency methodology</a> footnote for the same correction at the latency layer.</p>
-
-                  <div class='compare-callout'>
-                    <strong>Scaling under parallel publishers.</strong> Adding more concurrent app instances each pushing broadcasts is where the architectures diverge. At 4&times; broadcast rate Socket.io's single Node.js event loop bottlenecks the server and p99 degrades 3&times; (1.4&nbsp;s &rarr; 4.7&nbsp;s); AnyCable Go and uWS C++ scale across cores and p99 stays flat. The number on this page is what one publisher sees; the cliff for Socket.io shows up as soon as you fan in from multiple services.
-                  </div>
+                  <p class='compare-data-table__footnote'>Methodology: 40 bench-runner shards × 250 cables each, every shard runs its own external publisher pool. Aggregate target: 100 broadcasts/sec across all publishers, 1M deliveries. This shape models a horizontally scaled app where many service instances broadcast simultaneously — exactly the case where Socket.io's single Node event loop becomes the server-side bottleneck and AnyCable Go fans the work across 8 cores. Earlier single-runner numbers had AnyCable at 4-7&nbsp;s p99 and uWS at 0.5&nbsp;s — that was Node.js client-library cost on the test driver, not a server cost (the <a class='link' href='#latency'>latency methodology</a> footnote has the full breakdown).</p>
                 </div>
               </div>
             </div>
@@ -776,7 +772,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
 
                 <details class='compare-faq__item'>
                   <summary>How does AnyCable compare on performance?</summary>
-                  <div class='compare-faq__answer'>Three workloads on the same 32&nbsp;vCPU / 32&nbsp;GB Railway box, every option as a standalone WS service.<br/><br/><strong>1M-connection idle:</strong> uWS 1,018,366 / 5.45&nbsp;GB. AnyCable Pro 822,037 / 14.8&nbsp;GB (lightest with built-in replay). AnyCable OSS 821,877 / 28.3&nbsp;GB. Socket.io caps around 100K (Node event loop saturates handshakes).<br/><br/><strong>10K reconnecting clients under WiFi jitter:</strong> AnyCable delivers 100% (p99 ~6&nbsp;s replay tail). Socket.io+CSR replays about 80% of the test, with a 100&nbsp;s p95 tail on the reconnect window. Default Socket.io and uWS drop two-thirds (37% delivered each) once reconnect storms overlap with broadcast load.<br/><br/><strong>Broadcast throughput at 100 broadcasts/sec to 10K subs:</strong> all five sustain 100% delivery. uWS leads on floor (32&nbsp;ms p50) and tail (80&nbsp;ms p99). AnyCable OSS + Pro cluster around 150&nbsp;ms p99; Socket.io family lands at 1-1.4&nbsp;s, an order of magnitude higher. Under parallel publishers (multiple app instances broadcasting at once), Socket.io's single Node loop bottlenecks and p99 degrades 3&times;; AnyCable Go and uWS C++ scale across cores so p99 stays flat. AnyCable Pro's edge is memory and embedded broker, not raw msg/sec. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>Reproduce</a>.</div>
+                  <div class='compare-faq__answer'>Three workloads on the same 32&nbsp;vCPU / 32&nbsp;GB Railway box, every option as a standalone WS service.<br/><br/><strong>1M-connection idle:</strong> uWS 1,018,366 / 5.45&nbsp;GB. AnyCable Pro 822,037 / 14.8&nbsp;GB (lightest with built-in replay). AnyCable OSS 821,877 / 28.3&nbsp;GB. Socket.io caps around 100K (Node event loop saturates handshakes).<br/><br/><strong>10K reconnecting clients under WiFi jitter:</strong> AnyCable delivers 100% (p99 ~6&nbsp;s replay tail). Socket.io+CSR replays about 80% of the test, with a 100&nbsp;s p95 tail on the reconnect window. Default Socket.io and uWS drop two-thirds (37% delivered each) once reconnect storms overlap with broadcast load.<br/><br/><strong>Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers):</strong> all five sustain 100% delivery. AnyCable Pro leads on both floor (4&nbsp;ms p50) and tail (12&nbsp;ms p99). uWS lands at 18&nbsp;ms p50 / 177&nbsp;ms p99. Socket.io family bottlenecks at 1.4-2.5&nbsp;s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>Reproduce</a>.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -881,7 +877,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "How does AnyCable compare on performance?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Three workloads, 32 vCPU / 32 GB Railway box, every option standalone. Idle 1M target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K. WiFi jitter at 10K: AnyCable delivers 100% (p99 ~6 s replay tail); CSR replays about 80% of the test; default Socket.io and uWS drop two-thirds (37% delivered each) once reconnect storms overlap broadcast load. Broadcast throughput at 100 broadcasts/sec to 10K subs: all five sustain 100% delivery. uWS leads on floor (32 ms p50) and tail (80 ms p99); AnyCable OSS + Pro cluster around 150 ms p99; Socket.io family lands at 1-1.4 s, an order of magnitude higher. Under parallel publishers, Socket.io's single Node loop bottlenecks and p99 degrades 3x; AnyCable Go and uWS C++ scale across cores so p99 stays flat. AnyCable Pro's edge is memory and embedded broker, not raw msg/sec. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
+              "text": "Three workloads, 32 vCPU / 32 GB Railway box, every option standalone. Idle 1M target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K. WiFi jitter at 10K: AnyCable delivers 100% (p99 ~6 s replay tail); CSR replays about 80% of the test; default Socket.io and uWS drop two-thirds (37% delivered each) once reconnect storms overlap broadcast load. Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers): all five sustain 100% delivery. AnyCable Pro leads on both floor (4 ms p50) and tail (12 ms p99). uWS lands at 18 ms p50 / 177 ms p99. Socket.io family bottlenecks at 1.4-2.5 s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
             }
           },
           {
