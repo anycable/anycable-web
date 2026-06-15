@@ -768,23 +768,24 @@
   // metric blocks separated by hairline rules. Big mono tabular numbers.
   .compare-hero-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 0;
     border-top: 1px solid var(--c-border);
     border-bottom: 1px solid var(--c-border);
 
-    // Tablet and narrower: stack the cards to one column. At 768px
-    // the 3-column grid cramped the headline labels and the setup
-    // names ("Socket.io + CSR") wrapped mid-line awkwardly. A single
-    // column gives each card the full width and reads cleanly down
-    // to phones.
+    // Tablet and narrower: stack to 2x2 (still legible, fits in landscape
+    // iPad and small laptops). Below tablet, fall to a single column —
+    // setup names like "Socket.io + CSR" wrap mid-line otherwise.
+    @include mediaMax($desktop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
     @include mediaMax($tablet) {
       grid-template-columns: 1fr;
     }
   }
 
   .compare-hero-card {
-    padding: 32px 28px;
+    padding: 28px 22px;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -794,11 +795,25 @@
       border-right: none;
     }
 
-    // Switch the divider to horizontal when the strip stacks to one
-    // column (same `$tablet` breakpoint as `.compare-hero-cards` above).
+    // 2x2 layout: card 2 ends the first row (no right border); cards 1
+    // and 2 get a bottom border to separate the two rows.
+    @include mediaMax($desktop) {
+      &:nth-child(2n) {
+        border-right: none;
+      }
+      &:nth-child(-n+2) {
+        border-bottom: 1px solid var(--c-border);
+      }
+    }
+
+    // Single-column stack — same `$tablet` breakpoint as
+    // `.compare-hero-cards` above. Overrides any 2x2 rules.
     @include mediaMax($tablet) {
       border-right: none;
       border-bottom: 1px solid var(--c-border);
+      &:nth-child(2n) {
+        border-right: none;
+      }
       &:last-child {
         border-bottom: none;
       }
@@ -811,10 +826,24 @@
 
       .t-mute,
       .t-tiny {
+        display: block;
+        margin-top: 6px;
         color: var(--c-text-quiet);
         font-size: 11px;
         letter-spacing: 0.05em;
       }
+    }
+
+    &__question {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--c-font-body);
+      font-size: 13px;
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--c-text-meta);
     }
 
     &__rows {
