@@ -55,12 +55,12 @@
                 </div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
-                    <dt>Socket.io + CSR</dt>
-                    <dd class='is-worst'>80%</dd>
+                    <dt>Socket.io <span class='t-mute t-tiny'>default</span></dt>
+                    <dd class='is-worst'>85%</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>uWS</dt>
-                    <dd class='is-worst'>37%</dd>
+                    <dd class='is-worst'>87%</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable</dt>
@@ -540,12 +540,12 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                   Your users aren't always on a high-speed fiber network. Micro disruptions are mostly invisible to HTTP, but they're the deal-breaker for realtime: a missed beat in the music. Two things decide how it feels: <strong>how often messages are lost</strong> and <strong>how long the recovery window drags</strong>. Both come down to whether the protocol carries <em>replay state</em>.
                 </p>
                 <p class='compare-prose'>
-                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a>; so is uWS. <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, adapter constraints). AnyCable ships <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a> by default: per-stream history, epoch + offset, restart-survivable with NATS or Redis. Under simulated WiFi jitter (1&nbsp;s TCP drops every ~15&nbsp;s) at 10K subscribers, AnyCable delivers 100%, CSR replays about 80% of the test, and the no-replay options drop two-thirds of the deliveries once the reconnect storm overlaps with broadcast load.
+                  Default Socket.io is <a class='link' href='https://socket.io/docs/v4/delivery-guarantees' target='_blank' rel='noopener'>at-most-once</a>; so is uWS. <a class='link' href='https://socket.io/docs/v4/connection-state-recovery' target='_blank' rel='noopener'>CSR</a> adds replay (opt-in, marked &ldquo;experimental,&rdquo; adapter constraints). AnyCable ships <a class='link' href='https://docs.anycable.io/anycable-go/reliable_streams' target='_blank' rel='noopener'>reliable streams</a> by default: per-stream history, epoch + offset, restart-survivable with NATS or Redis. Under WiFi jitter (~2&nbsp;s TCP drops every ~15&nbsp;s) at 10K subscribers, both replay protocols deliver 100%. At-most-once protocols lose what landed during each offline window: about 15% of broadcasts for default Socket.io, 13% for uWS.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>Replay protocols (AnyCable, CSR) deliver under heavy jitter. Default Socket.io and uWS drop most messages once reconnects start failing.</p>
+                  <p class='compare-data-table__headline'>Replay protocols (CSR, AnyCable) deliver 100% under jitter. At-most-once protocols (default Socket.io, uWS) lose the broadcasts that landed during each offline window.</p>
                   <table class='compare-data-table'>
                     <thead>
                       <tr>
@@ -559,42 +559,42 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                     <tbody>
                       <tr>
                         <td>Socket.io <span class='t-mute t-tiny'>default</span></td>
-                        <td class="is-worst"><strong>37%</strong></td>
-                        <td class="is-worst">752,000</td>
-                        <td>0.31&nbsp;s</td>
+                        <td class="is-worst"><strong>84.6%</strong></td>
+                        <td class="is-worst">184,000</td>
+                        <td>0.39&nbsp;s</td>
                         <td class='t-mute'>no replay</td>
                       </tr>
                       <tr>
                         <td>Socket.io + CSR</td>
-                        <td class="is-worst"><strong>80%</strong></td>
-                        <td class="is-worst">237,000<sup>&dagger;</sup></td>
-                        <td class="is-worst">100&nbsp;s</td>
-                        <td class="is-worst">122&nbsp;s</td>
+                        <td class="is-best"><strong>100%</strong></td>
+                        <td class="is-best">0</td>
+                        <td>1.97&nbsp;s</td>
+                        <td>4.58&nbsp;s</td>
                       </tr>
                       <tr>
                         <td>uWS <span class='t-mute t-tiny'>topics</span></td>
-                        <td class="is-worst"><strong>37%</strong></td>
-                        <td class="is-worst">757,000</td>
-                        <td class='t-mute'>&mdash;</td>
+                        <td class="is-worst"><strong>87.0%</strong></td>
+                        <td class="is-worst">154,000</td>
+                        <td>0.72&nbsp;s</td>
                         <td class='t-mute'>no replay</td>
                       </tr>
                       <tr>
                         <td>AnyCable OSS</td>
                         <td class="is-best"><strong>100%</strong></td>
                         <td class="is-best">0</td>
-                        <td>4.0&nbsp;s</td>
-                        <td class="is-best"><strong>6.1&nbsp;s</strong></td>
+                        <td>4.10&nbsp;s</td>
+                        <td>6.14&nbsp;s</td>
                       </tr>
                       <tr class='is-row-best'>
                         <td>AnyCable Pro</td>
                         <td class="is-best"><strong>100%</strong></td>
                         <td class="is-best">0</td>
-                        <td>4.1&nbsp;s</td>
-                        <td class="is-best"><strong>6.2&nbsp;s</strong></td>
+                        <td>4.10&nbsp;s</td>
+                        <td>6.15&nbsp;s</td>
                       </tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>10K clients, 120 broadcasts, each client TCP-drops 1&nbsp;s every ~15&nbsp;s. 1.2M expected deliveries. Socket.io and uWS deliver well when reconnects succeed, but each WiFi blip is also a chance to lose the connection entirely; the page numbers reflect what users actually see when reconnect storms overlap with broadcast load. CSR resumes ~17K of disconnects cleanly; the rest fall back to live-from-now. <sup>&dagger;</sup>CSR's lost count counts what fell outside the retention window; in-gap losses on the resumed connections are zero. AnyCable replays across the full disconnect, 100% delivery, sub-7&nbsp;s p99. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#jitter' target='_blank' rel='noopener'>Methodology</a>.</p>
+                  <p class='compare-data-table__footnote'>10K clients, 120 broadcasts, each client TCP-drops every ~15&nbsp;s, ~2&nbsp;s offline per event (set by each client library&rsquo;s reconnect backoff; default Socket.io is floored to match via <code>MIN_OFFLINE_MS</code>). 1.2M expected deliveries. CSR resumes 99.7% of disconnects cleanly via its pid + offset protocol; AnyCable replays per-stream history on every reconnect. CSR&rsquo;s tail is slightly shorter at p99 in this in-memory setup; AnyCable&rsquo;s edge is elsewhere (deploy resilience, horizontal scaling, memory efficiency, native whispers). <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#jitter' target='_blank' rel='noopener'>Methodology</a>.</p>
                 </div>
               </div>
             </div>
@@ -608,7 +608,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title'>What this breaks</h2>
                 <div class='compare-prose'>
-                  <p>Lost messages cluster around network events, exactly when the user is watching. CSR replays 80% of deliveries under jitter, but its p99 replay tail stretches to nearly two minutes for resumed connections, which reads as &ldquo;the app stopped working.&rdquo; AnyCable replays the same messages in about 6 seconds with full delivery. For sequential workloads, both loss and delay break the flow.</p>
+                  <p>Lost messages cluster around network events, exactly when the user is watching. Default Socket.io and uWS lose about one in seven broadcasts under jitter: the user sees a half-finished chat thread, a stale presence indicator, a cursor that snaps. Replay protocols close that gap. The CSR-vs-AnyCable trade-off is no longer about delivery; it&rsquo;s about what survives a redeploy and what scales beyond one node.</p>
                 </div>
               </div>
               <div class='compare-rubric__media'>
@@ -772,12 +772,12 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
 
                 <details class='compare-faq__item'>
                   <summary>How does AnyCable compare on performance?</summary>
-                  <div class='compare-faq__answer'>Three workloads on the same 32&nbsp;vCPU / 32&nbsp;GB Railway box, every option as a standalone WS service.<br/><br/><strong>1M-connection idle:</strong> uWS 1,018,366 / 5.45&nbsp;GB. AnyCable Pro 822,037 / 14.8&nbsp;GB (lightest with built-in replay). AnyCable OSS 821,877 / 28.3&nbsp;GB. Socket.io caps around 100K (Node event loop saturates handshakes).<br/><br/><strong>10K reconnecting clients under WiFi jitter:</strong> AnyCable delivers 100% (p99 ~6&nbsp;s replay tail). Socket.io+CSR replays about 80% of the test, with a 100&nbsp;s p95 tail on the reconnect window. Default Socket.io and uWS drop two-thirds (37% delivered each) once reconnect storms overlap with broadcast load.<br/><br/><strong>Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers):</strong> all five sustain 100% delivery. AnyCable Pro leads on both floor (4&nbsp;ms p50) and tail (12&nbsp;ms p99). uWS lands at 18&nbsp;ms p50 / 177&nbsp;ms p99. Socket.io family bottlenecks at 1.4-2.5&nbsp;s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>Reproduce</a>.</div>
+                  <div class='compare-faq__answer'>Three workloads on the same 32&nbsp;vCPU / 32&nbsp;GB Railway box, every option as a standalone WS service.<br/><br/><strong>1M-connection idle:</strong> uWS 1,018,366 / 5.45&nbsp;GB. AnyCable Pro 822,037 / 14.8&nbsp;GB (lightest with built-in replay). AnyCable OSS 821,877 / 28.3&nbsp;GB. Socket.io caps around 100K (Node event loop saturates handshakes).<br/><br/><strong>10K reconnecting clients under WiFi jitter:</strong> both replay protocols deliver 100% — CSR with a ~4.6&nbsp;s p99 replay tail, AnyCable with a ~6.1&nbsp;s p99. At-most-once protocols lose proportional to the offline window: default Socket.io 84.6% delivered, uWS 87.0% delivered.<br/><br/><strong>Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers):</strong> all five sustain 100% delivery. AnyCable Pro leads on both floor (4&nbsp;ms p50) and tail (12&nbsp;ms p99). uWS lands at 18&nbsp;ms p50 / 177&nbsp;ms p99. Socket.io family bottlenecks at 1.4-2.5&nbsp;s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>Reproduce</a>.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>What about uWebSockets.js? It's faster than Socket.io.</summary>
-                  <div class='compare-faq__answer'>uWS is genuinely faster on the wire, we measured it. At 1M idle connections it uses <strong>5.45&nbsp;GB</strong> (5.4&nbsp;KB per conn) vs AnyCable Pro's 14.8&nbsp;GB at 822K (18&nbsp;KB per conn). The &ldquo;10&times; faster than Socket.io&rdquo; claim is honest. But uWS is a WebSocket <em>library</em>, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it drops to 37% delivery, in line with default Socket.io, because both are at-most-once and embedded in the same Node process as your app. uWS solves &ldquo;Socket.io's wire is too heavy.&rdquo; It doesn't solve &ldquo;we lose messages during disruption&rdquo; or &ldquo;every deploy hits our users.&rdquo;</div>
+                  <div class='compare-faq__answer'>uWS is genuinely faster on the wire, we measured it. At 1M idle connections it uses <strong>5.45&nbsp;GB</strong> (5.4&nbsp;KB per conn) vs AnyCable Pro's 14.8&nbsp;GB at 822K (18&nbsp;KB per conn). The &ldquo;10&times; faster than Socket.io&rdquo; claim is honest. But uWS is a WebSocket <em>library</em>, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it delivers 87.0% (vs default Socket.io's 84.6%); both lose the broadcasts that land during each offline window because both are at-most-once. uWS solves &ldquo;Socket.io's wire is too heavy.&rdquo; It doesn't solve &ldquo;we lose messages during disruption&rdquo; or &ldquo;every deploy hits our users.&rdquo;</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -877,7 +877,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "How does AnyCable compare on performance?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Three workloads, 32 vCPU / 32 GB Railway box, every option standalone. Idle 1M target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K. WiFi jitter at 10K: AnyCable delivers 100% (p99 ~6 s replay tail); CSR replays about 80% of the test; default Socket.io and uWS drop two-thirds (37% delivered each) once reconnect storms overlap broadcast load. Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers): all five sustain 100% delivery. AnyCable Pro leads on both floor (4 ms p50) and tail (12 ms p99). uWS lands at 18 ms p50 / 177 ms p99. Socket.io family bottlenecks at 1.4-2.5 s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
+              "text": "Three workloads, 32 vCPU / 32 GB Railway box, every option standalone. Idle 1M target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K. WiFi jitter at 10K (~2 s offline per event): both replay protocols deliver 100% — CSR with a ~4.6 s p99 replay tail, AnyCable with ~6.1 s p99. At-most-once protocols lose proportional to the offline window: default Socket.io 84.6% delivered, uWS 87.0%. Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers): all five sustain 100% delivery. AnyCable Pro leads on both floor (4 ms p50) and tail (12 ms p99). uWS lands at 18 ms p50 / 177 ms p99. Socket.io family bottlenecks at 1.4-2.5 s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
             }
           },
           {
@@ -885,7 +885,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "What about uWebSockets.js? It's faster than Socket.io.",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "uWS is genuinely faster on the wire, measured. At 1M idle connections it uses 5.45 GB (5.4 KB per conn) vs AnyCable Pro's 14.8 GB at 822K (18 KB per conn). The '10x faster than Socket.io' claim is honest. But uWS is a WebSocket library, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it drops to 37% delivery, in line with default Socket.io, because both are at-most-once and embedded in the same Node process as your app. uWS solves 'Socket.io's wire is too heavy.' It doesn't solve 'we lose messages during disruption' or 'every deploy hits our users.'"
+              "text": "uWS is genuinely faster on the wire, measured. At 1M idle connections it uses 5.45 GB (5.4 KB per conn) vs AnyCable Pro's 14.8 GB at 822K (18 KB per conn). The '10x faster than Socket.io' claim is honest. But uWS is a WebSocket library, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it delivers 87.0% (vs default Socket.io's 84.6%); both lose the broadcasts that land during each offline window because both are at-most-once. uWS solves 'Socket.io's wire is too heavy.' It doesn't solve 'we lose messages during disruption' or 'every deploy hits our users.'"
             }
           },
           {
