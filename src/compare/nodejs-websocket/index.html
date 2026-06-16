@@ -505,7 +505,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>Socket.io rooms loses 40% of whispers because every one goes back through the WS process. uWS topics stays under 25&nbsp;ms p99 with native pub/sub. AnyCable's 200&nbsp;ms p99 here is the same test-driver cascade the <a class='link' href='#latency'>latency</a> table corrects at 40 shards; the broker itself measures under 11&nbsp;ms p99 server-side.</p>
+                  <p class='compare-data-table__headline'>Socket.io rooms saturates and loses ~40% of whispers because every one goes back through the WS process. uWS topics and AnyCable both deliver 100% with single-digit p50 and a p99 under 15&nbsp;ms; AnyCable leads p50 (2&nbsp;ms vs 5&nbsp;ms).</p>
                   <table class='compare-data-table compare-data-table--compact'>
                     <thead>
                       <tr>
@@ -518,12 +518,12 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
                     </thead>
                     <tbody>
                       <tr><td>Socket.io <span class='t-mute t-tiny'>rooms</span></td><td class='is-worst'>Emulated</td><td class='is-worst'><strong>61%</strong></td><td class='is-worst'>1.39&nbsp;s</td><td class='is-worst'>8.90&nbsp;s</td></tr>
-                      <tr><td>uWS <span class='t-mute t-tiny'>topics</span></td><td class='is-worst'>Emulated</td><td class='is-best'><strong>100%</strong></td><td class='is-best'>11&nbsp;ms</td><td class='is-best'>24&nbsp;ms</td></tr>
-                      <tr><td>AnyCable OSS</td><td class='is-best'>Native</td><td class='is-best'><strong>100%</strong></td><td>21&nbsp;ms</td><td>208&nbsp;ms</td></tr>
-                      <tr class='is-row-best'><td>AnyCable Pro</td><td class='is-best'>Native</td><td class='is-best'><strong>100%</strong></td><td>23&nbsp;ms</td><td><strong>244&nbsp;ms</strong></td></tr>
+                      <tr><td>uWS <span class='t-mute t-tiny'>topics</span></td><td class='is-best'>Emulated</td><td class='is-best'><strong>100%</strong></td><td>5&nbsp;ms</td><td class='is-best'><strong>14&nbsp;ms</strong></td></tr>
+                      <tr><td>AnyCable OSS</td><td class='is-best'>Native</td><td class='is-best'><strong>100%</strong></td><td class='is-best'><strong>2&nbsp;ms</strong></td><td class='is-best'><strong>13&nbsp;ms</strong></td></tr>
+                      <tr class='is-row-best'><td>AnyCable Pro</td><td class='is-best'>Native</td><td class='is-best'><strong>100%</strong></td><td class='is-best'><strong>2&nbsp;ms</strong></td><td class='is-best'><strong>13&nbsp;ms</strong></td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>1K clients in 10 rooms (100 peers/room), 2 Hz whispers for 30&nbsp;s. Each whisper fans to 99 peers; each client receives ~200 msgs/sec. Socket.io's rooms emulation re-emits through the server, Express can't keep up, 40% drop. uWS and AnyCable bypass that hop. AnyCable's 200&nbsp;ms p99 is the same test-driver cascade as the <a class='link' href='#latency'>latency</a> table; whispers wasn't re-tested at 40 shards. 1K × 100 peers/room is the cleanest comparison of the fanout paths.</p>
+                  <p class='compare-data-table__footnote'>1K clients in 10 rooms (100 peers/room), 2 Hz whispers for 30&nbsp;s. Each whisper fans to 99 peers; each client receives ~200 msgs/sec. uWS, AnyCable OSS, and AnyCable Pro were re-measured at 40&nbsp;shards × 25 cables so the bench-runner's Node event loop wasn't the bottleneck (single-shard measured the test driver's library overhead at high receive rates, not the broker). Socket.io's row stays at the single-shard number; its limit is server-side rooms emit, not driver-side, and the multi-shard re-test confirms saturation in the same 25–50% range. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks#whispers' target='_blank' rel='noopener'>Methodology</a>.</p>
                 </div>
               </div>
             </div>
