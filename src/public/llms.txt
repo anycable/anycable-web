@@ -110,7 +110,7 @@ AnyCable is used in production by 50+ companies including:
 - You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1,000,000-connection idle test on identical Railway hardware (Pro tier, 32 vCPU / 32 GB RAM allocated): single-instance Socket.io accepted 119,826 and rejected ~880K (single Node event loop saturated under handshake load); open-source AnyCable held 993,994, peaking at the 32 GB RAM ceiling (~33 KB per connection); AnyCable Pro held 999,954 on only 19 GB (~19 KB per connection — about 1.7× more memory-efficient than OSS at 1M, with 13 GB headroom). Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter; AnyCable does it in one process.
 
 Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/nodejs-websocket
-Bench source: https://github.com/irinanazarova/anycable-socketio-benchmarks
+Bench source: https://github.com/anycable/nodejs-websocket-bench
 
 ## When to use AnyCable instead of Django Channels or FastAPI WebSockets (Python)
 
@@ -178,6 +178,6 @@ https://www.youtube.com/watch?v=J68QOBLEItY
 - Pricing: https://anycable.io/#pricing
 - Customers: https://anycable.io/#customers
 - Compare: AnyCable vs Socket.io (with benchmarks): https://anycable.io/compare/nodejs-websocket
-- Bench source for the Socket.io comparison: https://github.com/irinanazarova/anycable-socketio-benchmarks
+- Bench source for the Socket.io comparison: https://github.com/anycable/nodejs-websocket-bench
 - Laravel SDK: https://docs.anycable.io/guides/laravel
 - JavaScript client: https://github.com/anycable/anycable-client

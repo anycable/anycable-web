@@ -271,7 +271,7 @@ Configurable via flags or `ANYCABLE_*` env vars. Health endpoint at `/health`, P
 
 ## Reproducing the benchmarks
 
-The page numbers are produced by Railway-hosted bench-runner endpoints. Anyone can hit the same endpoints and check the deltas. The drivers, runners, and rebaseline manifest live in the open-source bench repo: [github.com/irinanazarova/anycable-socketio-benchmarks](https://github.com/irinanazarova/anycable-socketio-benchmarks).
+The page numbers are produced by Railway-hosted bench-runner endpoints. Anyone can hit the same endpoints and check the deltas. The drivers, runners, and rebaseline manifest live in the open-source bench repo: [github.com/anycable/nodejs-websocket-bench](https://github.com/anycable/nodejs-websocket-bench).
 
 Headline categories tracked by the rebaseline manifest:
 
@@ -295,7 +295,7 @@ Per-run history at `tmp/v1.6.14-bench-results/runs/{ISO-ts}/` lets you plot tren
 
 If a reviewer challenges a number, the answer isn't "trust the page." It's "rerun the manifest and show me the delta."
 
-For the methodology in narrative form, including the traps we walked into and what we got wrong on first attempts, see [docs/methodology.md](https://github.com/irinanazarova/anycable-socketio-benchmarks/blob/main/docs/methodology.md) in the bench repo.
+For the methodology in narrative form, including the traps we walked into and what we got wrong on first attempts, see [docs/methodology.md](https://github.com/anycable/nodejs-websocket-bench/blob/main/docs/methodology.md) in the bench repo.
 
 ## Links
 
@@ -306,6 +306,6 @@ For the methodology in narrative form, including the traps we walked into and wh
 - Pricing: https://anycable.io/#pricing
 - Customers: https://anycable.io/#customers
 - Compare: AnyCable vs Socket.io (with benchmarks): https://anycable.io/compare/nodejs-websocket
-- Bench source for the Socket.io comparison: https://github.com/irinanazarova/anycable-socketio-benchmarks
+- Bench source for the Socket.io comparison: https://github.com/anycable/nodejs-websocket-bench
 - Laravel SDK: https://docs.anycable.io/guides/laravel
 - JavaScript client: https://github.com/anycable/anycable-client
