@@ -767,57 +767,57 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
 
                 <details class='compare-faq__item'>
                   <summary>What's the operational cost of running AnyCable?</summary>
-                  <div class='compare-faq__answer'>One extra process — a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub.</div>
+                  <div class='compare-faq__answer'>One extra process: a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>How does AnyCable compare on performance?</summary>
-                  <div class='compare-faq__answer'>Three workloads on the same 32&nbsp;vCPU / 32&nbsp;GB Railway box, every option as a standalone WS service.<br/><br/><strong>1M-connection idle:</strong> uWS 1,018,366 / 5.45&nbsp;GB. AnyCable Pro 822,037 / 14.8&nbsp;GB (lightest with built-in replay). AnyCable OSS 821,877 / 28.3&nbsp;GB. Socket.io caps around 100K (Node event loop saturates handshakes).<br/><br/><strong>10K reconnecting clients under WiFi jitter:</strong> both replay protocols deliver 100% — CSR with a ~4.6&nbsp;s p99 replay tail, AnyCable with a ~6.1&nbsp;s p99. At-most-once protocols lose proportional to the offline window: default Socket.io 84.6% delivered, uWS 87.0% delivered.<br/><br/><strong>Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers):</strong> all five sustain 100% delivery. AnyCable Pro leads on both floor (4&nbsp;ms p50) and tail (12&nbsp;ms p99). uWS lands at 18&nbsp;ms p50 / 177&nbsp;ms p99. Socket.io family bottlenecks at 1.4-2.5&nbsp;s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>Reproduce</a>.</div>
+                  <div class='compare-faq__answer'>Four workloads on the same 32&nbsp;vCPU / 32&nbsp;GB Railway box, every option as a standalone WS service.<br/><br/><strong>1M-connection idle:</strong> uWS 1,018,366 / 5.45&nbsp;GB. AnyCable Pro 822,037 / 14.8&nbsp;GB (lightest with built-in replay). AnyCable OSS 821,877 / 28.3&nbsp;GB. Socket.io caps around 100K (Node event loop saturates handshakes).<br/><br/><strong>10K reconnecting clients under WiFi jitter:</strong> both replay protocols deliver 100%. CSR replay tail ~4.6&nbsp;s p99; AnyCable ~6.1&nbsp;s p99. At-most-once protocols lose proportional to the offline window: default Socket.io 84.6% delivered, uWS 87.0% delivered.<br/><br/><strong>Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers):</strong> all five sustain 100% delivery. AnyCable Pro leads on both floor (4&nbsp;ms p50) and tail (12&nbsp;ms p99). uWS lands at 18&nbsp;ms p50 / 177&nbsp;ms p99. Socket.io family bottlenecks at 1.4&ndash;2.5&nbsp;s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores.<br/><br/><strong>Whispers (client-to-client at 2&nbsp;Hz, 1K clients in 10 rooms):</strong> AnyCable delivers 100% at 2&nbsp;ms p50 / 13&nbsp;ms p99, leading p50 vs uWS topics (5&nbsp;ms / 14&nbsp;ms). Socket.io rooms saturates at the WS server's emit path and drops ~40% of whispers. <a class='link' href='https://github.com/irinanazarova/anycable-socketio-benchmarks' target='_blank'>Reproduce</a>.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>What about uWebSockets.js? It's faster than Socket.io.</summary>
-                  <div class='compare-faq__answer'>uWS is genuinely faster on the wire, we measured it. At 1M idle connections it uses <strong>5.45&nbsp;GB</strong> (5.4&nbsp;KB per conn) vs AnyCable Pro's 14.8&nbsp;GB at 822K (18&nbsp;KB per conn). The &ldquo;10&times; faster than Socket.io&rdquo; claim is honest. But uWS is a WebSocket <em>library</em>, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it delivers 87.0% (vs default Socket.io's 84.6%); both lose the broadcasts that land during each offline window because both are at-most-once. uWS solves &ldquo;Socket.io's wire is too heavy.&rdquo; It doesn't solve &ldquo;we lose messages during disruption&rdquo; or &ldquo;every deploy hits our users.&rdquo;</div>
+                  <div class='compare-faq__answer'>uWS is genuinely faster on the wire, we measured it. At 1M idle connections it uses <strong>5.45&nbsp;GB</strong> (5.4&nbsp;KB per conn) vs AnyCable Pro's 14.8&nbsp;GB at 822K (18&nbsp;KB per conn). The &ldquo;10&times; faster than Socket.io&rdquo; claim is honest. But uWS is a WebSocket <em>library</em>, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it delivers 87.0% (vs default Socket.io's 84.6%); both lose the broadcasts that land during each offline window because both are at-most-once. AnyCable matches uWS on whispers p99 (13 vs 14&nbsp;ms) and beats it at p50 (2 vs 5&nbsp;ms), while also delivering 100% under jitter and surviving app deploys. uWS solves &ldquo;Socket.io's wire is too heavy.&rdquo; It doesn't solve &ldquo;we lose messages during disruption&rdquo; or &ldquo;every deploy hits our users.&rdquo;</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>Can I use AnyCable for streaming LLM responses?</summary>
-                  <div class='compare-faq__answer'>Yes — message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The <a class='link' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>Next.js + Twilio + OpenAI demo</a> linked above shows this end-to-end.</div>
+                  <div class='compare-faq__answer'>Yes. Message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The <a class='link' href='https://github.com/anycable/twilio-ai-js-demo' target='_blank'>Next.js + Twilio + OpenAI demo</a> linked above shows this end-to-end.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>What backends can use AnyCable?</summary>
-                  <div class='compare-faq__answer'>Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement.</div>
+                  <div class='compare-faq__answer'>Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir, anything that can issue an HTTP POST works. There is no language SDK requirement.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>Can I self-host AnyCable for HIPAA / SOC2 compliance?</summary>
-                  <div class='compare-faq__answer'>Yes. anycable-go runs entirely on your infrastructure — no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network.</div>
+                  <div class='compare-faq__answer'>Yes. anycable-go runs entirely on your infrastructure: no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>Is AnyCable open source?</summary>
-                  <div class='compare-faq__answer'>Yes, MIT-licensed since 2017. <a class='link' href='https://github.com/anycable/anycable' target='_blank'>anycable/anycable</a> on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support — free for small deployments.</div>
+                  <div class='compare-faq__answer'>Yes, MIT-licensed since 2017. <a class='link' href='https://github.com/anycable/anycable' target='_blank'>anycable/anycable</a> on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support, free for small deployments.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>Is there a managed (hosted) AnyCable?</summary>
-                  <div class='compare-faq__answer'>Yes. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+</a> is the managed tier &mdash; zero ops, free for early users, paid plans for scale. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.</div>
+                  <div class='compare-faq__answer'>Yes. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+</a> is the managed tier: zero ops, free for early users, paid plans for scale. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>How does the cost compare to Pusher or Ably?</summary>
-                  <div class='compare-faq__answer'>Pusher and Ably charge per concurrent connection &mdash; costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license &mdash; $1,490/yr with a 2-month free trial. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+ Managed</a> is free for early users. At 10K+ concurrent connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.</div>
+                  <div class='compare-faq__answer'>Pusher and Ably charge per concurrent connection, so costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license at $1,490/yr with a 2-month free trial. <a class='link' href='https://plus.anycable.io/' target='_blank'>AnyCable+ Managed</a> is free for early users. At 10K+ concurrent connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>How do you handle authentication?</summary>
-                  <div class='compare-faq__answer'>Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe — your app stays the source of truth for identity without being on the hot path.</div>
+                  <div class='compare-faq__answer'>Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe, so your app stays the source of truth for identity without being on the hot path.</div>
                 </details>
 
                 <details class='compare-faq__item'>
                   <summary>What happens if AnyCable itself restarts?</summary>
-                  <div class='compare-faq__answer'>Less often than app deploys (you don't ship anycable-go on every code change), but it does happen — version upgrades, config changes, host reboots. The behavior depends on the broker: <strong>with an external broker (NATS JetStream or Redis Streams)</strong>, replay state survives the restart, so clients reconnect and resume from the last offset they saw. <strong>With the default in-memory broker (or AnyCable Pro's embedded broker)</strong>, replay state is lost on restart and clients fall back to &ldquo;live from now&rdquo; — same delivery profile as a cold reconnect to default Socket.io. For production, run multiple anycable-go instances behind a load balancer and a shared broker; restart one at a time during upgrades and clients seamlessly reconnect to the others.</div>
+                  <div class='compare-faq__answer'>Less often than app deploys (you don't ship anycable-go on every code change), but it does happen: version upgrades, config changes, host reboots. The behavior depends on the broker. <strong>With an external broker (NATS JetStream or Redis Streams)</strong>, replay state survives the restart, so clients reconnect and resume from the last offset they saw. <strong>With the default in-memory broker (or AnyCable Pro's embedded broker)</strong>, replay state is lost on restart and clients fall back to &ldquo;live from now,&rdquo; meaning broadcasts during the brief restart window can be missed. For production, run multiple anycable-go instances behind a load balancer and a shared broker; restart one at a time during upgrades and clients seamlessly reconnect to the others.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -869,7 +869,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "What's the operational cost of running AnyCable?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "One extra process — a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub."
+              "text": "One extra process: a single Go binary (or Docker container). It's stateless for broadcasts and scales horizontally. No database, no custom build. Defaults work for most apps; Redis or NATS can be added for multi-node pub/sub."
             }
           },
           {
@@ -877,7 +877,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "How does AnyCable compare on performance?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Three workloads, 32 vCPU / 32 GB Railway box, every option standalone. Idle 1M target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K. WiFi jitter at 10K (~2 s offline per event): both replay protocols deliver 100% — CSR with a ~4.6 s p99 replay tail, AnyCable with ~6.1 s p99. At-most-once protocols lose proportional to the offline window: default Socket.io 84.6% delivered, uWS 87.0%. Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers): all five sustain 100% delivery. AnyCable Pro leads on both floor (4 ms p50) and tail (12 ms p99). uWS lands at 18 ms p50 / 177 ms p99. Socket.io family bottlenecks at 1.4-2.5 s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. AnyCable Pro's edge is memory + embedded broker, but at this load it also leads on raw msg/sec. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
+              "text": "Four workloads, 32 vCPU / 32 GB Railway box, every option standalone. Idle 1M target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K. WiFi jitter at 10K (~2 s offline per event): both replay protocols deliver 100%. CSR replay tail ~4.6 s p99; AnyCable ~6.1 s p99. At-most-once protocols lose proportional to the offline window: default Socket.io 84.6%, uWS 87.0%. Broadcast throughput at 100 broadcasts/sec to 10K subs (40 parallel publishers): all five sustain 100% delivery. AnyCable Pro leads p50 (4 ms) and p99 (12 ms). uWS lands at 18 ms p50 / 177 ms p99. Socket.io family bottlenecks at 1.4 to 2.5 s p99 because the single Node event loop serializes incoming broadcasts from 40 concurrent publishers; AnyCable Go fans this work across cores. Whispers (client-to-client at 2 Hz, 1K clients in 10 rooms): AnyCable delivers 100% at 2 ms p50 / 13 ms p99, leading p50 vs uWS topics (5 ms / 14 ms). Socket.io rooms saturates at the WS server's emit path and drops ~40% of whispers. Source: github.com/irinanazarova/anycable-socketio-benchmarks."
             }
           },
           {
@@ -885,7 +885,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "What about uWebSockets.js? It's faster than Socket.io.",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "uWS is genuinely faster on the wire, measured. At 1M idle connections it uses 5.45 GB (5.4 KB per conn) vs AnyCable Pro's 14.8 GB at 822K (18 KB per conn). The '10x faster than Socket.io' claim is honest. But uWS is a WebSocket library, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it delivers 87.0% (vs default Socket.io's 84.6%); both lose the broadcasts that land during each offline window because both are at-most-once. uWS solves 'Socket.io's wire is too heavy.' It doesn't solve 'we lose messages during disruption' or 'every deploy hits our users.'"
+              "text": "uWS is genuinely faster on the wire, measured. At 1M idle connections it uses 5.45 GB (5.4 KB per conn) vs AnyCable Pro's 14.8 GB at 822K (18 KB per conn). The '10x faster than Socket.io' claim is honest. But uWS is a WebSocket library, not a realtime framework: no replay buffer, no broker, no separate-process deploy resilience. Under jitter it delivers 87.0% (vs default Socket.io's 84.6%); both lose the broadcasts that land during each offline window because both are at-most-once. AnyCable matches uWS on whispers p99 (13 vs 14 ms) and beats it at p50 (2 vs 5 ms), while also delivering 100% under jitter and surviving app deploys. uWS solves 'Socket.io's wire is too heavy.' It doesn't solve 'we lose messages during disruption' or 'every deploy hits our users.'"
             }
           },
           {
@@ -893,7 +893,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "Can I use AnyCable for streaming LLM responses?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes — message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The Next.js + Twilio + OpenAI demo at github.com/anycable/twilio-ai-js-demo shows this end-to-end."
+              "text": "Yes. Message ordering and durable streams are exactly what token streaming needs. If a user briefly disconnects mid-response, AnyCable replays the missed chunks in order from the last offset they saw. Out-of-order arrivals (which corrupt LLM output) don't happen because each stream is monotonically ordered. The Next.js + Twilio + OpenAI demo at github.com/anycable/twilio-ai-js-demo shows this end-to-end."
             }
           },
           {
@@ -901,7 +901,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "What backends can use AnyCable?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir — anything that can issue an HTTP POST works. There is no language SDK requirement."
+              "text": "Any. Anycable-go is a standalone server with an HTTP broadcast API; your app pushes messages over plain HTTP. Node.js, Laravel, FastAPI, Django, Go, Elixir, anything that can issue an HTTP POST works. There is no language SDK requirement."
             }
           },
           {
@@ -909,7 +909,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "Can I self-host AnyCable for HIPAA / SOC2 compliance?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. anycable-go runs entirely on your infrastructure — no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network."
+              "text": "Yes. anycable-go runs entirely on your infrastructure: no data flows through third-party servers, no shared cloud. Multiple healthcare and fintech teams self-host AnyCable for this reason: real-time features (patient-doctor chat, live data feeds) without data ever leaving controlled environments. For HIPAA specifically, deploy AnyCable inside your existing PHI boundary; it's just another service on your network."
             }
           },
           {
@@ -917,7 +917,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "Is AnyCable open source?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support — free for small deployments."
+              "text": "Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support, free for small deployments."
             }
           },
           {
@@ -925,7 +925,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "Is there a managed (hosted) AnyCable?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. AnyCable+ is the managed tier — zero ops, free for early users, paid plans for scale. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code."
+              "text": "Yes. AnyCable+ is the managed tier: zero ops, free for early users, paid plans for scale. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code."
             }
           },
           {
@@ -933,7 +933,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "How does the cost compare to Pusher or Ably?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Pusher and Ably charge per concurrent connection — costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license — $1,490/yr with a 2-month free trial. AnyCable+ Managed is free for early users. At 10K+ concurrent connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing."
+              "text": "Pusher and Ably charge per concurrent connection, so costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license at $1,490/yr with a 2-month free trial. AnyCable+ Managed is free for early users. At 10K+ concurrent connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing."
             }
           },
           {
@@ -941,7 +941,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "How do you handle authentication?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe — your app stays the source of truth for identity without being on the hot path."
+              "text": "Signed JWT tokens or signed stream names, issued by your application. AnyCable verifies the signature on connect and channel subscribe, so your app stays the source of truth for identity without being on the hot path."
             }
           },
           {
@@ -949,7 +949,7 @@ app.publish(<span class='c-str'>'chat:42'</span>, <span class='c-str'>JSON</span
             "name": "What happens if AnyCable itself restarts?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Less often than app deploys, but it does happen — version upgrades, config changes, host reboots. With an external broker (NATS JetStream or Redis Streams), replay state survives the restart, so clients reconnect and resume from the last offset they saw. With the default in-memory broker, replay state is lost on restart and clients fall back to live-from-now. For production, run multiple anycable-go instances behind a load balancer with a shared broker; restart one at a time during upgrades so clients seamlessly reconnect to the others."
+              "text": "Less often than app deploys, but it does happen: version upgrades, config changes, host reboots. With an external broker (NATS JetStream or Redis Streams), replay state survives the restart, so clients reconnect and resume from the last offset they saw. With the default in-memory broker, replay state is lost on restart and clients fall back to live-from-now. For production, run multiple anycable-go instances behind a load balancer with a shared broker; restart one at a time during upgrades so clients seamlessly reconnect to the others."
             }
           },
           {

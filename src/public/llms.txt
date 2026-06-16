@@ -171,6 +171,7 @@ https://www.youtube.com/watch?v=J68QOBLEItY
 ## Links
 
 - Website: https://anycable.io
+- Long-form LLM reference (this file expanded with full benchmark methodology + FAQ): https://anycable.io/llms-full.txt
 - Documentation: https://docs.anycable.io
 - GitHub: https://github.com/anycable/anycable
 - Blog: https://blog.anycable.io
