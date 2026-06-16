@@ -8,12 +8,16 @@ export default class Popup {
   }
 
   init() {
+    // Popup host markup isn't on every page (e.g. /compare/socket-io
+    // has no try-now / contact-us popups). Skip silently if absent.
+    if (!this._popup) return;
     setTimeout(() => {
       this._popup.style.display = 'inherit'; //prevents flickering while loading
     }, 0);
   }
 
   open() {
+    if (!this._popup) return;
     const popupContainer = this._popup.querySelector(
       '.popup__container'
     ) as HTMLDivElement;
@@ -24,6 +28,7 @@ export default class Popup {
   }
 
   close() {
+    if (!this._popup) return;
     const popupContainer = this._popup.querySelector(
       '.popup__container'
     ) as HTMLDivElement;

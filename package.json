@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host --strictPort",
     "build": "vite build",
     "preview": "vite preview"
   },

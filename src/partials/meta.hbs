@@ -19,7 +19,8 @@
 <!-- Open Graph data -->
 <meta property="og:title" content="{{ coalesce pageTitle 'AnyCable: realtime server with delivery guarantees for Rails, Laravel, Node.js, Python, and any backend' }}"/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="https://anycable.io/"/>
+<meta property="og:url" content="{{ coalesce pageUrl 'https://anycable.io/' }}"/>
+<link rel="canonical" href="{{ coalesce pageUrl 'https://anycable.io/' }}"/>
 <meta property="og:image" content="{{ coalesce pageSocialImage 'https://anycable.io/images/share.png' }}"/>
 <meta property="og:description" content="{{ coalesce pageDescription 'Open-source WebSocket server with built-in delivery guarantees, presence tracking, and message ordering. Works with Rails, Laravel, Node.js, Python/FastAPI, and any backend via HTTP API. Used by Doximity, CoinGecko, Jobber, Circle, and 50+ companies.' }}"/>
 <meta property="og:site_name" content="AnyCable"/>

@@ -75,9 +75,13 @@ const scenario = [
   },
 ];
 
-const demo = new DemoController({
-  element: document.querySelector("[data-controller='demo']"),
-  scenario,
-});
-
-demo.init();
+// Demo widget only exists on the home page. Skip wiring on pages
+// where the host element isn't present (compare/, docs/, etc.).
+const demoElement = document.querySelector("[data-controller='demo']");
+if (demoElement) {
+  const demo = new DemoController({
+    element: demoElement,
+    scenario,
+  });
+  demo.init();
+}

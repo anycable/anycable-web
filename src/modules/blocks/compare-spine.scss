@@ -1,0 +1,2123 @@
+// =====================================================================
+// Compare-page SPINE — design system for /compare/* pages
+// =====================================================================
+//
+// QUICK REFERENCE for authors (writing or extending a compare page):
+//
+//   See the live style index at:  /compare/nodejs-websocket/style/
+//   (Every block authors should reach for, rendered + with HTML.)
+//
+//   Activation:  add `c-spine` to the page's <main class="content compare-page">
+//                so spine rules apply.
+//
+// ─── DESIGN TOKENS (CSS custom properties on .c-spine) ──────────────
+//   --c-font-display / --c-font-body  Stem
+//   --c-font-mono                     Martian Mono
+//   --c-fs-display / -section / -sub / -body / -meta / -caption / -label
+//   --c-space-section / -block / -sub / -para / -bullet  (8px scale)
+//   --c-prose-max / -prose-max-full   prose width caps (580 / 680 px)
+//   --c-paper / -panel / -code-bg / -code-border         surfaces
+//   --c-text / -text-meta / -text-quiet / -text-faint    text grays
+//   --c-accent / -best / -worst                          accents
+//   --c-code-key / -str / -com / -err                    syntax tokens
+//   --c-radius                                            8px
+//
+// ─── LAYOUT (BEM) ───────────────────────────────────────────────────
+//   .compare-rubric > __wrapper > __section > __content + __media
+//   .compare-rubric__content--full         single-column section
+//   .compare-rubric__media--sticky         pins media during scroll
+//   .compare-rubric__media--align-top      align media to prose top
+//
+// ─── TYPOGRAPHY (use as class on element) ───────────────────────────
+//   .compare-hero__title    page H1 (display sized, +.c-vs span)
+//   .compare-rubric__title  section H2
+//   .compare-rubric__subtitle  sub-section H3
+//   .compare-prose          body paragraph (max 580px)
+//   ol.compare-prose        numbered list with mono 01/02/03 markers
+//   .compare-bullet-list    bulleted list with red dot
+//   .c-vs                   typographic "vs" operator (inside H1)
+//
+// ─── RIGHT-SIDE ARTIFACTS (all share #fafafa frame) ─────────────────
+//   .compare-code-block     naked light-tinted code
+//   .compare-code-tabs      tabbed code with multiple panels
+//   .compare-frame          container for a data table
+//   .compare-data-table     transparent table inside .compare-frame
+//   .compare-arch-diagram   SVG diagram in a framed figure
+//   .compare-bench-chart    ASCII chart in a framed figure
+//
+// ─── ASIDES + CARDS ─────────────────────────────────────────────────
+//   .compare-callout        accent-red left-rule aside
+//   .compare-hero-cards     top results strip (three columns)
+//   .compare-impact-cards   feature/disqualification grid
+//   .compare-try-card       link card with eyebrow + title + desc
+//   .compare-quote-card     customer quote with byline
+//
+// ─── INLINE UTILITIES ───────────────────────────────────────────────
+//   t-mute / t-tiny / t-meta / t-strong / t-accent / t-num  text qualifiers
+//   t-eyebrow                                               mono label
+//   c-key / c-str / c-com / c-err                           code syntax
+//   is-best / is-worst / is-na                              table cell state
+//   is-row-best / is-row-worst                              full-row tint
+//
+// ─── RULES OF THE ROAD ──────────────────────────────────────────────
+//   1. No inline style="" on content elements. If you need a pattern,
+//      add it to this spine (or the style index) first.
+//   2. No magic numbers. Use the spacing scale (--c-space-*) and
+//      the 8px tokens (4/8/12/16/24/32) for any layout work.
+//   3. Right-side artifacts must use the .compare-frame / __pre / __code
+//      surface. Don't paint your own light box.
+//   4. Brand red is reserved for: links, "vs", winners (data), eyebrows.
+//      Don't use it as decoration.
+//
+// ─── ARCHITECTURE ───────────────────────────────────────────────────
+//   Loaded after compare.scss in src/index.scss so overrides win on
+//   specificity ties. Rules scoped under .c-spine so they only apply
+//   to pages that opt in.
+// =====================================================================
+
+@import '../variables.scss';
+@import '../mixins.scss';
+
+// ---------- Spine scope ----------------------------------------------
+.c-spine {
+  // ----- Tokens as CSS custom properties (live, devtools-tweakable) --
+  --c-font-display: 'Stem', Arial, sans-serif;
+  --c-font-body: 'Stem', Arial, sans-serif;
+  --c-font-mono: 'Martian Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  // Type scale (px). Six roles, one display, one body, two heading levels,
+  // one label voice (mono), and two demote sizes (meta + caption).
+  --c-fs-display: 64px;
+  --c-fs-section: 36px;
+  --c-fs-sub: 22px;
+  --c-fs-body: 19px;
+  --c-fs-meta: 15px;
+  --c-fs-caption: 13px;
+  --c-fs-label: 12px;
+
+  --c-lh-display: 1.05;
+  --c-lh-section: 1.15;
+  --c-lh-sub: 1.3;
+  --c-lh-body: 1.6;
+  --c-lh-meta: 1.5;
+  --c-lh-caption: 1.4;
+
+  --c-tracking-display: -0.02em;
+  --c-tracking-section: -0.01em;
+  --c-tracking-label: 0.08em;
+
+  // Spacing scale (8px base). Use multiples; do not invent magic numbers.
+  --c-space-section: 96px;
+  --c-space-section-wide: 128px;
+  --c-space-block: 32px; // after H2
+  --c-space-sub: 20px; // after H3
+  --c-space-para: 24px; // after body paragraph
+  --c-space-bullet: 12px; // between bullet items
+  --c-space-inline-1: 4px;
+  --c-space-inline-2: 8px;
+  --c-space-inline-3: 12px;
+  --c-space-inline-4: 16px;
+
+  // Prose width — Stripe Docs-tight, 580px is ~58–62 characters at 19px.
+  --c-prose-max: 580px;
+  --c-prose-max-full: 680px;
+
+  // Surfaces — three materials, no dark.
+  --c-paper: #{$backgroundPrimaryColor}; // #fff
+  --c-panel: #{$backgroundSecondaryColor}; // #f5f5f5
+  --c-code-bg: #fafafa;
+  --c-code-border: #ececec;
+
+  // Hairlines and text grays. One gray scale, four steps.
+  --c-text: #1a1a1a;
+  --c-text-meta: #555;
+  --c-text-quiet: #777;
+  --c-text-faint: #bbb;
+  --c-border: #e8e8e8;
+  --c-border-soft: #f0f0f0;
+
+  // Accents — accent red is the comparison voice, green is the winner.
+  --c-accent: #{$accentPrimaryColor}; // #f64343
+  --c-best: #16a34a;
+  --c-worst: #b91c1c;
+
+  // Muted syntax tokens (light code surface) — readable on #fafafa.
+  --c-code-key: #b45309; // amber-brown
+  --c-code-str: #166534; // deep green
+  --c-code-com: #6b7280; // slate
+  --c-code-err: #991b1b; // deep red
+
+  --c-radius: 8px;
+
+  // ----- Page base ----------------------------------------------------
+  // Dotted notebook bg was removed — pure decoration, communicated
+  // nothing. Plain paper bg lets data + type carry the page.
+  font-family: var(--c-font-body);
+  font-size: var(--c-fs-body);
+  line-height: var(--c-lh-body);
+  color: var(--c-text);
+  background: var(--c-paper);
+
+  // ----- Role classes ------------------------------------------------
+  .c-display {
+    font-family: var(--c-font-display);
+    font-size: var(--c-fs-display);
+    line-height: var(--c-lh-display);
+    letter-spacing: var(--c-tracking-display);
+    font-weight: 700;
+    margin: 0 0 var(--c-space-block);
+
+    @include mediaMax($mobile) {
+      font-size: 44px;
+      line-height: 1.08;
+    }
+  }
+
+  .c-section {
+    font-family: var(--c-font-display);
+    font-size: var(--c-fs-section);
+    line-height: var(--c-lh-section);
+    letter-spacing: var(--c-tracking-section);
+    font-weight: 700;
+    margin: 0 0 var(--c-space-block);
+
+    @include mediaMax($mobile) {
+      font-size: 28px;
+    }
+  }
+
+  .c-sub {
+    font-family: var(--c-font-display);
+    font-size: var(--c-fs-sub);
+    line-height: var(--c-lh-sub);
+    font-weight: 600;
+    margin: 0 0 var(--c-space-sub);
+  }
+
+  // Label — mono, uppercase, tracked, optional brackets via .c-label--bracket
+  // Used everywhere structural: eyebrows, figure numbers, table headers,
+  // hero card titles. This is the lab-notebook signature.
+  .c-label {
+    font-family: var(--c-font-mono);
+    font-size: var(--c-fs-label);
+    line-height: 1.4;
+    letter-spacing: var(--c-tracking-label);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--c-text-meta);
+    display: inline-block;
+
+    &--bracket::before {
+      content: '[ ';
+      color: var(--c-text-faint);
+    }
+    &--bracket::after {
+      content: ' ]';
+      color: var(--c-text-faint);
+    }
+
+    &--accent {
+      color: var(--c-accent);
+    }
+    &--strong {
+      color: var(--c-text);
+    }
+  }
+
+  // Eyebrow above a section title — semantic shortcut, .c-label sized
+  // and spaced as a block.
+  .c-eyebrow {
+    @extend .c-label;
+    display: block;
+    margin: 0 0 var(--c-space-inline-3);
+  }
+
+  .c-prose {
+    font-size: var(--c-fs-body);
+    line-height: var(--c-lh-body);
+    margin: 0 0 var(--c-space-para);
+    max-width: var(--c-prose-max);
+
+    // Inline code — calm pill, doesn't fight prose.
+    code {
+      font-family: var(--c-font-mono);
+      font-size: 0.85em;
+      font-weight: 500;
+      background: rgba(0, 0, 0, 0.045);
+      padding: 1px 6px;
+      border-radius: 4px;
+      vertical-align: 1px;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--c-text);
+    }
+  }
+
+  .c-meta {
+    font-size: var(--c-fs-meta);
+    line-height: var(--c-lh-meta);
+    color: var(--c-text-meta);
+    margin: 0 0 var(--c-space-para);
+    max-width: var(--c-prose-max);
+  }
+
+  .c-caption {
+    font-family: var(--c-font-mono);
+    font-size: var(--c-fs-caption);
+    line-height: var(--c-lh-caption);
+    color: var(--c-text-quiet);
+    letter-spacing: 0.02em;
+  }
+
+  // ----- The "vs" operator — mono accent, small, optical-vertical -----
+  // Use inside .c-display: <span class="c-vs">vs</span>
+  // Reads as a typographic operator, not a faded word.
+  .c-vs {
+    font-family: var(--c-font-mono);
+    font-size: 0.42em; // relative to parent .c-display
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    vertical-align: 0.45em; // optically center against descenders
+    margin: 0 0.25em;
+  }
+
+  // ----- Layout primitive: .c-rubric two-col with sticky media --------
+  .c-rubric {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding: var(--c-space-section) 64px;
+    border-bottom: 1px solid var(--c-border);
+    background: transparent;
+
+    @include mediaMax($tablet) {
+      grid-template-columns: 1fr;
+      gap: var(--c-space-block);
+      padding: 56px 24px;
+    }
+
+    &--full {
+      grid-template-columns: 1fr;
+      justify-items: center;
+
+      > * {
+        max-width: var(--c-prose-max-full);
+        width: 100%;
+      }
+    }
+
+    &__content {
+      // Prose lives capped at --c-prose-max so the eye lands at a stable
+      // x-position. The grid track is still 1fr; the cap is on the prose
+      // itself, not the column.
+      > * {
+        max-width: var(--c-prose-max);
+      }
+      > .c-figure,
+      > .c-table,
+      > .c-callout,
+      > .c-code {
+        max-width: none;
+      }
+    }
+
+    &__media {
+      align-self: start;
+
+      &--sticky {
+        position: sticky;
+        top: 80px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+
+        @include mediaMax($tablet) {
+          position: static;
+          max-height: none;
+          overflow: visible;
+        }
+      }
+    }
+  }
+
+  // ----- Figure: labelled container for tables, code, charts ----------
+  // [ FIG. 3 ]  How latency scales with concurrent connections
+  // ┌─────────────────────────────────┐
+  // │ figure body (table / code / svg) │
+  // └─────────────────────────────────┘
+  // Methodology footnote, in mono small.
+  .c-figure {
+    display: block;
+    margin: 0 0 var(--c-space-block);
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--c-space-inline-3);
+      margin-bottom: var(--c-space-inline-3);
+    }
+
+    &__label {
+      @extend .c-label;
+      @extend .c-label--bracket;
+      flex: 0 0 auto;
+    }
+
+    &__title {
+      font-family: var(--c-font-body);
+      font-size: var(--c-fs-meta);
+      font-weight: 600;
+      color: var(--c-text);
+      line-height: var(--c-lh-meta);
+    }
+
+    &__body {
+      // The body is whatever lives inside: table, code, chart.
+      // Nothing painted here — the contained component owns its surface.
+    }
+
+    &__caption {
+      @extend .c-caption;
+      display: block;
+      margin-top: var(--c-space-inline-3);
+      max-width: 100%;
+    }
+  }
+
+  // ----- Code block: light, muted syntax ------------------------------
+  .c-code {
+    width: 100%;
+    margin: 0;
+    padding: 24px 28px;
+    background: var(--c-code-bg);
+    border: 1px solid var(--c-code-border);
+    border-radius: var(--c-radius);
+    color: var(--c-text);
+    font-family: var(--c-font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre;
+    overflow-x: auto;
+
+    .c-code-key {
+      color: var(--c-code-key);
+    }
+    .c-code-str {
+      color: var(--c-code-str);
+    }
+    .c-code-com {
+      color: var(--c-code-com);
+      font-style: italic;
+    }
+    .c-code-err {
+      color: var(--c-code-err);
+    }
+  }
+
+  // ----- Table -------------------------------------------------------
+  // Mono headers (uppercase tracked), tabular-num body cells, best/worst
+  // tints. Lives inside .c-figure for the label + caption.
+  .c-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--c-fs-meta);
+    line-height: var(--c-lh-meta);
+
+    th,
+    td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--c-border-soft);
+    }
+
+    th {
+      font-family: var(--c-font-mono);
+      font-size: var(--c-fs-label);
+      font-weight: 500;
+      letter-spacing: var(--c-tracking-label);
+      text-transform: uppercase;
+      color: var(--c-text-meta);
+      border-bottom: 1px solid var(--c-border);
+      background: var(--c-paper);
+    }
+
+    td.c-num,
+    td .c-num {
+      font-family: var(--c-font-mono);
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    .c-best {
+      color: var(--c-best);
+      font-weight: 600;
+    }
+    .c-worst {
+      color: var(--c-worst);
+    }
+
+    tr.is-best td {
+      background: rgba(22, 163, 74, 0.04);
+    }
+    tr.is-worst td {
+      background: rgba(185, 28, 28, 0.04);
+    }
+  }
+
+  // ----- Callout: soft tinted aside, left-rule + label ---------------
+  // [ NOTE ]  Methodology caveat or framing for the data that follows.
+  .c-callout {
+    padding: 16px 20px;
+    margin: 0 0 var(--c-space-block);
+    background: #fbfbfb;
+    border-left: 3px solid var(--c-border);
+    border-radius: 0 4px 4px 0;
+    font-size: var(--c-fs-meta);
+    line-height: var(--c-lh-meta);
+    color: var(--c-text-meta);
+
+    &__label {
+      @extend .c-label;
+      @extend .c-label--bracket;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    strong {
+      color: var(--c-text);
+      font-weight: 600;
+    }
+    code {
+      font-family: var(--c-font-mono);
+      background: rgba(0, 0, 0, 0.05);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+  }
+
+  // ----- Card: hero-cards, try-it cards, impact cards ----------------
+  // One card primitive, three uses. Variant via modifier classes.
+  .c-card {
+    display: block;
+    padding: 20px 22px;
+    background: var(--c-paper);
+    border: 1px solid var(--c-border);
+    border-radius: var(--c-radius);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 200ms, transform 200ms, box-shadow 200ms;
+
+    &__label {
+      @extend .c-label;
+      @extend .c-label--bracket;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    &__title {
+      font-family: var(--c-font-display);
+      font-size: var(--c-fs-sub);
+      font-weight: 600;
+      line-height: var(--c-lh-sub);
+      margin: 0 0 6px;
+      color: var(--c-text);
+    }
+
+    &__desc {
+      font-size: var(--c-fs-meta);
+      line-height: var(--c-lh-meta);
+      color: var(--c-text-meta);
+      margin: 0;
+    }
+
+    &--linked:hover {
+      border-color: var(--c-accent);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  // ----- Bullet list (red dot, same scale as prose) ------------------
+  .c-bullet-list {
+    margin: 0 0 var(--c-space-block);
+    padding: 0;
+    list-style: none;
+    line-height: var(--c-lh-body);
+    max-width: var(--c-prose-max);
+
+    li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: var(--c-space-bullet);
+    }
+
+    li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--c-accent);
+      font-weight: 700;
+    }
+  }
+
+  // ----- Link --------------------------------------------------------
+  a.c-link {
+    color: var(--c-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms;
+
+    &:hover {
+      border-bottom-color: var(--c-accent);
+    }
+  }
+
+  // ----- TOC nav (TL;DR style row of section links) ------------------
+  .c-toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--c-space-inline-3) var(--c-space-inline-4);
+    margin: var(--c-space-block) 0 0;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--c-border);
+    max-width: var(--c-prose-max);
+
+    &__label {
+      @extend .c-label;
+      @extend .c-label--bracket;
+    }
+
+    a {
+      font-family: var(--c-font-mono);
+      font-size: var(--c-fs-caption);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--c-text-meta);
+      text-decoration: none;
+      border-bottom: 1px solid var(--c-border);
+      padding-bottom: 1px;
+      transition: color 200ms, border-color 200ms;
+
+      &:hover {
+        color: var(--c-accent);
+        border-bottom-color: var(--c-accent);
+      }
+    }
+  }
+
+  // ----- CTA --------------------------------------------------------
+  .c-cta {
+    text-align: center;
+    padding: var(--c-space-section-wide) 24px;
+    border-top: 1px solid var(--c-border);
+
+    &__title {
+      @extend .c-section;
+      margin-bottom: var(--c-space-block);
+    }
+
+    &__actions {
+      display: inline-flex;
+      gap: var(--c-space-inline-4);
+      margin-bottom: var(--c-space-block);
+    }
+
+    &__footnote {
+      @extend .c-caption;
+      color: var(--c-text-quiet);
+    }
+  }
+
+  // ----- Button (one primitive, two variants) -----------------------
+  .c-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-family: var(--c-font-body);
+    font-size: var(--c-fs-meta);
+    font-weight: 600;
+    line-height: 1;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: opacity 200ms, transform 200ms;
+
+    &--primary {
+      background: var(--c-accent);
+      color: #fff;
+
+      &:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+    }
+
+    &--secondary {
+      background: transparent;
+      color: var(--c-text);
+      border: 1px solid var(--c-border);
+
+      &:hover {
+        border-color: var(--c-text);
+      }
+    }
+  }
+
+  // =====================================================================
+  // MIGRATION OVERRIDES — STRICT REDESIGN
+  // Activated by adding class="c-spine" to the .compare-page main element.
+  // Imported AFTER compare.scss in src/index.scss so these rules win on
+  // specificity ties (last loaded wins).
+  //
+  // This block is NOT cosmetic. It restructures: left-aligned hero with
+  // a results-strip card row, auto-numbered sections, display-sized H2s,
+  // editorial TL;DR with rules, figure framing for every table + code
+  // block, hairline section dividers, mono label vocabulary across the
+  // entire page.
+  // =====================================================================
+
+  // ---- Reusable mono label placeholder -------------------------------
+  // Mono uppercase tracked text. No brackets — they were aesthetic
+  // decoration. The label content itself communicates the idea.
+  %c-bracket-label {
+    font-family: var(--c-font-mono);
+    font-size: var(--c-fs-label);
+    line-height: 1.4;
+    letter-spacing: var(--c-tracking-label);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--c-text-meta);
+    display: inline-block;
+  }
+
+  // ---- Hero: LEFT-ALIGNED, paper-feel, asymmetric --------------------
+  // Was centered + 3-card grid. New: flush-left hero, display-sized H1,
+  // sub-580 subtitle column, then the hero cards reflow as a results
+  // strip below the hero block instead of a card grid.
+  .compare-hero {
+    padding: 96px 64px 64px;
+
+    &__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    &__intro {
+      max-width: 880px;
+      margin: 0 0 64px;
+      text-align: left;
+    }
+
+    &__eyebrow {
+      @extend %c-bracket-label;
+      color: var(--c-accent);
+      margin-bottom: 24px;
+    }
+
+    // Kicker sits above the H1: a small mono accent line that
+    // carries query-bait keywords for organic discovery
+    // ("Looking for a Socket.io alternative..."). Doesn't compete with
+    // the display H1 for attention; reads as a pointed lead-in.
+    &__kicker {
+      font-family: var(--c-font-mono);
+      font-size: 13px;
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+      color: var(--c-accent);
+      margin: 0 0 20px;
+      max-width: 640px;
+    }
+
+    &__title {
+      font-family: var(--c-font-display);
+      // Push the display bigger and bolder than the soft migration step.
+      font-size: clamp(40px, 8vw, 88px);
+      line-height: 1;
+      letter-spacing: -0.025em;
+      font-weight: 700;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    &__subtitle {
+      max-width: 640px;
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.5;
+      color: var(--c-text-meta);
+      text-align: left;
+
+      strong {
+        color: var(--c-text);
+        font-weight: 600;
+      }
+    }
+
+    @include mediaMax($mobile) {
+      padding: 56px 24px 32px;
+      &__intro {
+        margin-bottom: 40px;
+      }
+    }
+  }
+
+  // ---- Hero cards: REFLOWED as a results strip ----------------------
+  // Was a 3-column card grid. Now: flush-left, no card chrome, three
+  // metric blocks separated by hairline rules. Big mono tabular numbers.
+  .compare-hero-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+
+    // Tablet and narrower: stack to 2x2 (still legible, fits in landscape
+    // iPad and small laptops). Below tablet, fall to a single column —
+    // setup names like "Socket.io + CSR" wrap mid-line otherwise.
+    @include mediaMax($desktop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include mediaMax($tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .compare-hero-card {
+    padding: 28px 22px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    border-right: 1px solid var(--c-border);
+
+    &:last-child {
+      border-right: none;
+    }
+
+    // 2x2 layout: card 2 ends the first row (no right border); cards 1
+    // and 2 get a bottom border to separate the two rows.
+    @include mediaMax($desktop) {
+      &:nth-child(2n) {
+        border-right: none;
+      }
+      &:nth-child(-n+2) {
+        border-bottom: 1px solid var(--c-border);
+      }
+    }
+
+    // Single-column stack — same `$tablet` breakpoint as
+    // `.compare-hero-cards` above. Overrides any 2x2 rules.
+    @include mediaMax($tablet) {
+      border-right: none;
+      border-bottom: 1px solid var(--c-border);
+      &:nth-child(2n) {
+        border-right: none;
+      }
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    &__label {
+      @extend %c-bracket-label;
+      margin-bottom: 20px;
+      display: block;
+
+      .t-mute,
+      .t-tiny {
+        display: block;
+        margin-top: 6px;
+        color: var(--c-text-quiet);
+        font-size: 11px;
+        letter-spacing: 0.05em;
+      }
+    }
+
+    &__question {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--c-font-body);
+      font-size: 13px;
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--c-text-meta);
+    }
+
+    &__rows {
+      margin: 0;
+      padding: 0;
+    }
+
+    &__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-top: 1px solid var(--c-border-soft);
+
+      &:first-child {
+        border-top: none;
+      }
+
+      dt {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--c-text-meta);
+      }
+
+      dd {
+        margin: 0;
+        // Treat the metric as data display: mono tabular, bigger.
+        font-family: var(--c-font-mono);
+        font-size: 18px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.01em;
+        color: var(--c-text);
+
+        &.is-worst {
+          color: var(--c-worst);
+        }
+        &.is-best {
+          color: var(--c-best);
+          font-weight: 600;
+        }
+        &.is-na {
+          color: var(--c-text-faint);
+          font-weight: 400;
+        }
+      }
+    }
+
+    &__footnote {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--c-border-soft);
+      font-family: var(--c-font-body);
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--c-text-quiet);
+    }
+
+    &__deeplink {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: var(--c-font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--c-text-meta);
+      text-decoration: none;
+      border-bottom: 1px solid var(--c-border);
+      padding-bottom: 1px;
+
+      &::after {
+        content: ' \2192';
+      }
+
+      &:hover {
+        color: var(--c-accent);
+        border-bottom-color: var(--c-accent);
+      }
+    }
+  }
+
+  // ---- TL;DR: editorial abstract block with double-rule -------------
+  // Was a centered card with border. Now: full-width band with hairline
+  // rule top and bottom, label-style header in mono, prose flush.
+  .compare-tldr {
+    max-width: none;
+    margin: 80px 0 0;
+    padding: 56px 64px;
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+    border-radius: 0;
+
+    &__title {
+      font-family: var(--c-font-mono);
+      font-size: var(--c-fs-label);
+      line-height: 1.4;
+      letter-spacing: var(--c-tracking-label);
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--c-accent);
+      margin: 0 0 24px;
+      display: inline-block;
+
+      // Brackets removed; the mono-uppercase styling alone signals
+      // "this is a label."
+
+      .heading-anchor {
+        display: none;
+      }
+    }
+
+    &__nav {
+      // No top border — the abstract band is already bounded by top/bottom
+      // hairlines; a third inner divider was visual noise. Spacing alone
+      // separates prose from the contents row.
+      // Explicit `border-top: none` because compare.scss still sets one;
+      // we override it here so the live page has only the band's outer
+      // hairlines.
+      margin-top: 40px;
+      padding-top: 0;
+      border-top: none;
+
+      a {
+        font-family: var(--c-font-mono);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--c-text-meta);
+        text-decoration: none;
+        border-bottom: 1px solid var(--c-border);
+        padding-bottom: 1px;
+        transition: color 200ms, border-color 200ms;
+
+        &:hover {
+          color: var(--c-accent);
+          border-bottom-color: var(--c-accent);
+        }
+      }
+    }
+
+    &__nav-label {
+      font-family: var(--c-font-mono);
+      font-size: var(--c-fs-label);
+      letter-spacing: var(--c-tracking-label);
+      color: var(--c-text-meta);
+    }
+
+    @include mediaMax($mobile) {
+      padding: 40px 24px;
+    }
+  }
+
+  // The TL;DR paragraphs (prose inside the abstract) get tightened too.
+  .compare-tldr .compare-prose {
+    max-width: 720px;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  // ---- Auto-numbering removed -------------------------------------
+  // Section badges ([ NN ]) and figure labels ([ FIG. NN ]) were
+  // counters — position info, not idea info. Eyebrows above each H2
+  // already say what the section is about. Figures that deserve a
+  // label get a content-specific one via data-fig-label="..."
+  // (see .compare-frame[data-fig-label]::before below).
+
+  // ---- Rubric: hairline dividers + display H2 + numbered prefix -----
+  .compare-rubric {
+    border-bottom: 1px solid var(--c-border);
+
+    &__section {
+      padding: 24px 0;
+      position: relative;
+
+      // Reset the sub-counter at every new section.
+      counter-reset: subrubric;
+
+      // Mobile: section provides the horizontal padding so content
+      // and media (both set to padding 0 below) sit 24px from the
+      // viewport edges instead of touching them.
+      @include mediaMax($tablet) {
+        padding: 0 24px;
+      }
+    }
+
+    // Sub-chapter break indicator: small dot sits on the column
+    // divider line at the boundary between two adjacent sub-sections.
+    // Marks the break as deliberate instead of letting the hairline
+    // trail off through empty space when prose and media columns
+    // end at different heights. Only renders on desktop where the
+    // two-column layout (and the vertical divider) exists.
+    // `@at-root` escapes the .c-spine .compare-rubric ancestor stack
+    // because Sass would otherwise generate
+    //   .compare-rubric__section + .c-spine .compare-rubric__section
+    // (mixing combinators) for the sibling selector.
+    @include mediaMin($tablet) {
+      @at-root .c-spine .compare-rubric__section + .compare-rubric__section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 6px;
+        height: 6px;
+        background: var(--c-text-faint);
+        border-radius: 50%;
+        z-index: 1;
+      }
+
+      // Hide the dot when either side of the boundary is a full-width
+      // sub-section: there's no column divider for the dot to anchor
+      // against, so it'd float in empty space.
+      @at-root {
+        .c-spine .compare-rubric__section + .compare-rubric__section:has(.compare-rubric__content--full)::before,
+        .c-spine .compare-rubric__section:has(.compare-rubric__content--full) + .compare-rubric__section::before {
+          display: none;
+        }
+      }
+    }
+
+    &__content {
+      padding: 80px 64px;
+      background: var(--c-paper);
+      // Softer border (--c-border-soft #f0f0f0 vs --c-border #e8e8e8)
+      // so the column divider recedes when the media column ends
+      // before the prose column (or vice versa), instead of marching
+      // through empty space as an orphan line.
+      border-right: 1px solid var(--c-border-soft);
+
+      @include mediaMax($tablet) {
+        background: transparent;
+        border-right: none;
+        padding: 32px 0;
+      }
+    }
+
+    &__media {
+      padding: 80px 64px;
+
+      // Mobile: kill horizontal padding (the __section provides it),
+      // tighten vertical so the media column doesn't tower over the
+      // prose. Also drop the sticky behavior on small screens — there's
+      // no two-column to keep aligned.
+      @include mediaMax($tablet) {
+        padding: 0 0 48px;
+      }
+    }
+
+    &__media--sticky {
+      @include mediaMax($tablet) {
+        position: static;
+        max-height: none;
+        overflow: visible;
+      }
+    }
+
+    &__eyebrow {
+      @extend %c-bracket-label;
+      color: var(--c-accent);
+      margin-bottom: 20px;
+    }
+
+    &__title {
+      font-family: var(--c-font-display);
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      margin: 0 0 32px;
+      position: relative;
+
+      // No auto-numbered [ NN ] badge — the eyebrow above carries the
+      // idea (e.g. [ BENCHMARK ], [ CLUSTER ], [ COUNTERPOINT ]) and a
+      // bare digit didn't add information.
+
+      .heading-anchor {
+        font-size: 0.5em;
+        font-weight: 400;
+        color: var(--c-text-faint);
+      }
+    }
+
+    &__subtitle {
+      // Dropped the §N.M academic numbering — it read as pretentious.
+      // The H3 itself is enough; major rubrics keep their [ NN ] badge.
+      font-family: var(--c-font-display);
+      font-size: clamp(20px, 2.4vw, 26px);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      font-weight: 600;
+      margin: 48px 0 16px;
+
+      .heading-anchor {
+        font-size: 0.7em;
+        font-weight: 400;
+        color: var(--c-text-faint);
+      }
+    }
+
+    &__content {
+      .compare-prose,
+      p:not([class]) {
+        max-width: var(--c-prose-max);
+      }
+
+      .compare-bullet-list {
+        max-width: var(--c-prose-max);
+      }
+
+      // Full-width sections: anchor LEFT, don't center. Earlier the
+      // auto-margins made short URLs look "lost in the middle." Now
+      // every block in --full sits flush-left with a comfortable max.
+      &--full {
+        text-align: left;
+
+        > .compare-prose,
+        > .compare-bullet-list,
+        > p:not([class]),
+        > ol,
+        > .compare-callout {
+          max-width: var(--c-prose-max-full);
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        // Frames + tables get a wider cap but stay left-anchored.
+        > .compare-frame,
+        > .compare-bench-chart,
+        > .compare-arch-diagram,
+        > .compare-code-tabs,
+        > .compare-code-block,
+        > figure {
+          max-width: 880px;
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  // ---- Bullet list: red dot, mono key for the bolded term ---------
+  .compare-bullet-list {
+    margin: 0 0 var(--c-space-block);
+    max-width: var(--c-prose-max);
+
+    li::before {
+      content: '·';
+      color: var(--c-accent);
+    }
+
+    strong {
+      font-family: var(--c-font-body);
+      font-weight: 700;
+      color: var(--c-text);
+    }
+  }
+
+  // ---- Prose: 580px cap in any context, calm inline code ------------
+  .compare-prose {
+    font-size: 19px;
+    line-height: 1.6;
+    margin: 0 0 28px;
+
+    strong {
+      font-weight: 600;
+      color: var(--c-text);
+    }
+
+    a,
+    a.link {
+      color: var(--c-accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 200ms;
+
+      &:hover {
+        border-bottom-color: var(--c-accent);
+      }
+    }
+  }
+
+  // ---- Inline <code> alongside Stem prose -------------------------
+  // Martian Mono renders ~15% larger on the body than Stem at the
+  // same em (higher x-height for code legibility). We compensate by
+  // scaling inline mono down to 0.8em and nudging it +1px so it
+  // optically sits on the same baseline as the surrounding Stem.
+  // Applied globally inside the spine — wherever Stem meets mono.
+  // <pre> code blocks are excluded; their sizing lives in .compare-code-block.
+  :not(pre) > code,
+  .compare-prose code,
+  .compare-meta code,
+  .compare-callout code,
+  .compare-tldr code,
+  p code,
+  li code,
+  td code,
+  summary code {
+    font-family: var(--c-font-mono);
+    font-size: 0.8em;
+    font-weight: 500;
+    line-height: 1;
+    background: rgba(0, 0, 0, 0.045);
+    padding: 2px 6px;
+    border-radius: 4px;
+    vertical-align: 1px;
+    color: var(--c-text);
+    white-space: nowrap;
+  }
+
+  // ---- Code blocks: LIGHT, framed, with mono "figure" feel ---------
+  .compare-code-block,
+  .compare-code-tabs__panel pre,
+  .compare-rubric__media pre,
+  .compare-bench-chart__pre {
+    background: var(--c-code-bg);
+    color: var(--c-text);
+    border: 1px solid var(--c-code-border);
+    border-radius: var(--c-radius);
+    box-shadow: none;
+    padding: 28px 32px;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+
+  // Muted syntax tokens (works for the spine class definitions AND the
+  // .c-* utilities used inside compare-page code blocks).
+  .c-key {
+    color: var(--c-code-key);
+  }
+  .c-str {
+    color: var(--c-code-str);
+  }
+  .c-com {
+    color: var(--c-code-com);
+    font-style: italic;
+  }
+  .c-err {
+    color: var(--c-code-err);
+  }
+
+  // .t-mute used as code comment — keep it readable, italicize.
+  pre .t-mute,
+  .compare-code-block .t-mute,
+  .compare-code-tabs__panel .t-mute {
+    color: var(--c-code-com);
+    font-style: italic;
+  }
+
+  // ---- Code tabs: framed unit with mono labels ---------------------
+  // The container is a CSS grid with the bar in row 1 and ALL panels
+  // stacked in row 2 (same grid cell). The grid cell sizes to the
+  // tallest panel, so switching tabs never resizes the container and
+  // the page below never jumps. Inactive panels are kept in layout but
+  // hidden via `visibility: hidden` (not `display: none`, which would
+  // collapse them and re-introduce the jump).
+  .compare-code-tabs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    border: 1px solid var(--c-code-border);
+    border-radius: var(--c-radius);
+    overflow: hidden;
+    background: var(--c-code-bg);
+    // `min-width: 0` so this grid container can shrink below the
+    // intrinsic width of its widest <pre> child. Without it, a long
+    // line of code (e.g. `await fetch('http://anycable:8080/...')`)
+    // forces the whole container wider than the viewport on mobile.
+    min-width: 0;
+
+    &__bar {
+      grid-row: 1;
+      grid-column: 1;
+      display: flex;
+      flex-wrap: wrap;
+      background: var(--c-paper);
+      border-bottom: 1px solid var(--c-code-border);
+      padding: 0;
+      min-width: 0;
+    }
+
+    &__tab {
+      flex: 0 0 auto;
+      padding: 12px 18px;
+      font-family: var(--c-font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--c-text-meta);
+      cursor: pointer;
+      border-right: 1px solid var(--c-border-soft);
+      transition: color 200ms, background 200ms;
+
+      &:hover {
+        color: var(--c-text);
+        background: var(--c-paper);
+      }
+    }
+
+    // All panels share the same grid cell. The tallest defines the
+    // container height; the rest sit underneath, invisible but present.
+    // `!important` is needed because compare.scss sets `display: none`
+    // and `:checked ~ panel { display: block }` — those rules would
+    // collapse the inactive panels and re-introduce the jump.
+    // `min-width: 0` allows the cell to shrink below its natural
+    // content width so the inner <pre> can scroll horizontally
+    // instead of pushing the whole container off-screen.
+    &__panel {
+      display: block !important;
+      grid-row: 2;
+      grid-column: 1;
+      visibility: hidden;
+      pointer-events: none;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    &__panel pre {
+      border: none;
+      border-radius: 0;
+      margin: 0;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    // Active tab: underline accent in red.
+    // Active panel: visible (the rest stay invisible but in flow).
+    @for $i from 1 through 5 {
+      .compare-code-tabs__radio--#{$i}:checked
+        ~ .compare-code-tabs__bar
+        .compare-code-tabs__tab--#{$i} {
+        color: var(--c-accent);
+        background: var(--c-code-bg);
+        box-shadow: inset 0 -2px 0 0 var(--c-accent);
+      }
+
+      .compare-code-tabs__radio--#{$i}:checked
+        ~ .compare-code-tabs__panel--#{$i} {
+        visibility: visible;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  // ---- Callout: minimal, label-led ---------------------------------
+  // Default margins absorb the ad-hoc "margin-top: 16px" pattern that
+  // authors were inlining. A callout following prose gets enough air;
+  // a callout starting a block does too.
+  .compare-callout {
+    background: transparent;
+    border: none;
+    border-left: 2px solid var(--c-accent);
+    padding: 8px 0 8px 20px;
+    margin: 16px 0 32px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--c-text-meta);
+    max-width: var(--c-prose-max);
+
+    strong {
+      color: var(--c-text);
+      font-weight: 600;
+    }
+
+    // Lists inside callouts get the same treatment as bullet lists,
+    // already at the right size for the callout body text.
+    .compare-bullet-list {
+      margin: 8px 0 0;
+
+      li {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  // ---- Utility eyebrows: mono uppercase labels (no brackets) -------
+  .t-eyebrow {
+    font-family: var(--c-font-mono);
+    font-size: var(--c-fs-label);
+    line-height: 1.4;
+    letter-spacing: var(--c-tracking-label);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--c-text-meta);
+  }
+
+  // ---- Frame, chart, diagram: shared container conventions ---------
+  .compare-frame,
+  .compare-bench-chart,
+  .compare-arch-diagram {
+    max-width: 880px;
+    margin: 0 0 16px;
+    position: relative;
+  }
+
+  // ---- Architecture diagram: shared system for SVG diagrams --------
+  // Goals: one typography (Stem + Martian Mono), one color palette
+  // (accent red for the "fragile" path, dark for the "stable" path,
+  // muted grays for chrome), one frame treatment.
+  //
+  // SVG text elements use font-family directly in markup, so the spine
+  // can't override font-family on <text> via CSS. Authors must set
+  // font-family on each <text> in the SVG. Use:
+  //   font-family="Stem, Arial, sans-serif"             — for box titles + body
+  //   font-family="'Martian Mono', ui-monospace"        — for labels + annotations
+  //
+  // Color tokens used inside the SVG (kept inline for SVG portability):
+  //   fragile/embedded stroke + label:  #f64343
+  //   stable/separated stroke + label:  #1a1a1a
+  //   inner box stroke:                 #ececec
+  //   description text:                 #555
+  //   helper / arrow text:              #777
+  //   light fragile fill (optional):    #fff5f5
+  .compare-arch-diagram {
+    // Match the code block container: light #fafafa, hairline border,
+    // 8px radius, matching padding. Every right-side artifact (code,
+    // diagram, table, chart) shares this visual frame.
+    padding: 28px 32px;
+    background: var(--c-code-bg);
+    border: 1px solid var(--c-code-border);
+    border-radius: var(--c-radius);
+
+    > svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      display: block;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--c-code-border);
+      font-family: var(--c-font-mono);
+      font-size: 12px;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+      color: var(--c-text-quiet);
+    }
+  }
+
+  // ---- Frame: shared container for data tables, same treatment as code
+  // `width: 100%` is needed because the parent media column is a flex
+  // container with `align-items: center`, which would otherwise let
+  // the frame keep its content's natural width (and overflow the col).
+  // `overflow-x: auto` makes the inner table scrollable when its
+  // content needs more than the column allows. Scrollbar is forced
+  // visible (not auto-hidden) so the user has affordance.
+  // ---- Frame: shared container for data tables --------------------
+  // Frame now provides INTERNAL breathing room (24px top/sides, 20px
+  // bottom) so a headline + table presented inside read as a single
+  // framed artifact, not as a table that fills its container edge-to-
+  // edge. Matches the visual rhythm of the code-block (28/32 padding).
+  .compare-frame {
+    width: 100%;
+    background: var(--c-code-bg);
+    border: 1px solid var(--c-code-border);
+    border-radius: var(--c-radius);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 24px 24px 20px;
+
+    // Firefox
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-text-faint) transparent;
+
+    // WebKit (Chrome, Safari) — show a slim, always-visible scrollbar.
+    &::-webkit-scrollbar {
+      height: 8px;
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--c-text-faint);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--c-code-border);
+    }
+  }
+
+  // ---- Data-table footnote (sits OUTSIDE the frame) ---------------
+  // Mono small. Lives below the frame as a sibling, acting as the
+  // methodology line for the figure.
+  .compare-data-table__footnote {
+    font-family: var(--c-font-mono);
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0.02em;
+    color: var(--c-text-quiet);
+    margin: 12px 0 0;
+    max-width: 880px;
+
+    strong {
+      color: var(--c-text-meta);
+      font-weight: 600;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.04);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 0.95em;
+      white-space: nowrap;
+    }
+  }
+
+  // ---- Data-table headline (sits INSIDE the frame, above the table) -
+  // Acts as the figure's title: a one-line conclusion that says what the
+  // reader should take from the numbers. Stem display, semibold, dark.
+  // Bottom hairline separates it from the table data below — same
+  // weight as the header underline so the eye reads three bands inside
+  // the frame: headline · headers · data.
+  .compare-data-table__headline {
+    font-family: var(--c-font-display);
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--c-text);
+    margin: 0 0 16px;
+    padding: 0 0 16px;
+    border-bottom: 1px solid var(--c-code-border);
+
+    strong {
+      color: var(--c-text);
+      font-weight: 700;
+    }
+
+    // Inline numbers inside the headline get tabular treatment so
+    // "AnyCable holds 999,954" lines up cleanly.
+    code,
+    .t-num {
+      font-family: var(--c-font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.92em;
+      background: transparent;
+      padding: 0;
+    }
+  }
+
+  // ---- Kill stray inline text-align: center on headings/content ----
+  // FAQ and try-it sections had `style="text-align: center"` baked in.
+  // The lab-notebook is left-anchored; override any inline center.
+  .compare-rubric__title[style*='center'],
+  .compare-rubric__content[style*='center'],
+  .compare-rubric__content--full {
+    text-align: left !important;
+  }
+
+  // ---- Visible markers on inline <ol> prose lists ------------------
+  // Global reset killed list markers; add them back as mono numbers
+  // in accent red so the 3-question / migration / checklist items
+  // have proper hierarchy. Absorbs the inline `padding-left: 24px;
+  // margin-top: -8px` pattern authors were adding by hand.
+  ol.compare-prose,
+  .compare-rubric__content > ol {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 var(--c-space-block);
+    counter-reset: prose-item;
+
+    > li {
+      counter-increment: prose-item;
+      position: relative;
+      padding-left: 36px;
+      margin-bottom: 12px;
+      line-height: 1.55;
+
+      &::before {
+        content: counter(prose-item, decimal-leading-zero);
+        position: absolute;
+        left: 0;
+        top: 0.1em;
+        font-family: var(--c-font-mono);
+        font-size: 0.8em;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--c-accent);
+      }
+    }
+  }
+
+  // ---- Editorial moments: pull quote + big inline number -----------
+  // .c-pullquote: turn a paragraph into a dramatic accented block.
+  // .c-bignum: wrap a number in prose to render mono tabular at display
+  // size, inline — for "AnyCable Pro holds [bignum]999,954[/bignum]" etc.
+  .c-pullquote {
+    margin: 32px 0;
+    padding: 4px 0 4px 24px;
+    border-left: 4px solid var(--c-accent);
+    font-family: var(--c-font-display);
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--c-text);
+    max-width: 720px;
+  }
+
+  .c-bignum {
+    display: inline-block;
+    font-family: var(--c-font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--c-text);
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    vertical-align: -0.05em;
+
+    // Default size: a touch larger than surrounding prose.
+    font-size: 1.2em;
+
+    &--xl {
+      font-size: 1.6em;
+    }
+    &--xxl {
+      font-size: 2.2em;
+      vertical-align: -0.15em;
+    }
+
+    &--accent {
+      color: var(--c-accent);
+    }
+    &--best {
+      color: var(--c-best);
+    }
+  }
+
+  // ---- Data tables: refined typographic hierarchy ----------------
+  // Sits inside .compare-frame which provides bg + border + radius +
+  // 24px of breathing room. Table itself is transparent.
+  //
+  // Reading hierarchy inside the frame:
+  //   ─ Headline (16px Stem 600, hairline below)
+  //   ─ Column headers (11px mono caps, stronger hairline below)
+  //   ─ Data rows (13.5px Stem, tabular nums, hairline between rows)
+  //   ─ (last row's hairline is removed; frame bottom padding closes it)
+  //
+  // Column alignment: first column left (labels), others right (numbers).
+  // Authors can opt into center via `style="text-align: center"` on a
+  // specific <th>/<td> when the data is glyph-y (✓ / ⚠ / n/a).
+  .compare-data-table {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    line-height: 1.45;
+
+    th {
+      font-family: var(--c-font-mono);
+      font-size: 11px;
+      line-height: 1.35;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--c-text-meta);
+      font-weight: 500;
+      background: transparent;
+      border-bottom: 1px solid var(--c-code-border);
+      padding: 0 12px 12px;
+      text-align: right;
+      vertical-align: bottom;
+      // Allow headers to wrap so dense tables fit in the 50% column.
+      white-space: normal;
+
+      &:first-child {
+        text-align: left;
+        padding-left: 0;
+      }
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    td {
+      font-variant-numeric: tabular-nums;
+      border-bottom: 1px solid var(--c-code-border);
+      padding: 12px 12px;
+      color: var(--c-text);
+      vertical-align: baseline;
+      text-align: right;
+
+      &:first-child {
+        text-align: left;
+        padding-left: 0;
+        color: var(--c-text);
+        font-weight: 500;
+        // Keep brand names like "Socket.io" / "AnyCable" intact on
+        // narrow viewports — the frame already scrolls horizontally,
+        // so awkward mid-word breaks ("Socke / t.io") are worse than
+        // a wider sticky first column. Secondary span text below
+        // ("default", "topics") is allowed to wrap to a second line.
+        @include mediaMax($mobile) {
+          white-space: nowrap;
+
+          > span {
+            display: block;
+            white-space: normal;
+          }
+        }
+      }
+      &:last-child {
+        padding-right: 0;
+      }
+
+      // Secondary text within a cell (e.g. "Socket.io default" → "default")
+      // sits muted on the same line as the primary label.
+      .t-mute,
+      .t-tiny {
+        color: var(--c-text-quiet);
+      }
+    }
+
+    // Last row: no bottom border. Frame padding-bottom (20px) finishes
+    // the table cleanly without a redundant hairline near the frame edge.
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    // Row tints — sit ON the existing border-bottom (no border collision).
+    tr.is-row-best {
+      background: rgba(22, 163, 74, 0.05);
+    }
+    tr.is-row-worst {
+      background: rgba(185, 28, 28, 0.05);
+    }
+
+    td.is-best,
+    td.is-best strong {
+      color: var(--c-best);
+      font-weight: 600;
+    }
+
+    td.is-worst,
+    td.is-worst strong {
+      color: var(--c-worst);
+    }
+
+    td.is-na,
+    td.is-na strong {
+      color: var(--c-text-faint);
+      font-weight: 400;
+    }
+  }
+
+  .compare-data-table__footnote {
+    font-family: var(--c-font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    color: var(--c-text-quiet);
+    margin-top: 12px;
+  }
+
+  // ---- Impact cards: minimal chrome --------------------------------
+  .compare-impact-card {
+    background: var(--c-paper);
+    border: 1px solid var(--c-border);
+    border-radius: var(--c-radius);
+    padding: 20px 22px;
+    transition: border-color 200ms, transform 200ms;
+
+    &:hover {
+      border-color: var(--c-accent);
+      transform: translateY(-1px);
+    }
+
+    &__title {
+      font-family: var(--c-font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--c-text);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    &__desc {
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: var(--c-text-meta);
+    }
+  }
+
+  // ---- Quote card: editorial blockquote, not a card ---------------
+  // Was double-framed (the HTML uses both .compare-frame + .compare-quote-card
+  // on the same element). Stripping the container box entirely: the quote
+  // stands on its own with a left accent rule. Eyebrow + display-sized
+  // quote + byline + integrated footer, no box chrome.
+  .compare-quote-card {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0 0 0 24px;
+    border-left: 3px solid var(--c-accent);
+
+    &__eyebrow {
+      display: block;
+      font-family: var(--c-font-mono);
+      font-size: var(--c-fs-label);
+      letter-spacing: var(--c-tracking-label);
+      text-transform: uppercase;
+      color: var(--c-accent);
+      margin-bottom: 20px;
+    }
+
+    &__text {
+      font-family: var(--c-font-display);
+      font-size: clamp(20px, 2vw, 24px);
+      font-weight: 500;
+      font-style: normal;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--c-text);
+      margin: 0 0 24px;
+      padding: 0;
+      quotes: none;
+    }
+
+    &__byline {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--c-text-meta);
+      margin-bottom: 24px;
+
+      strong {
+        color: var(--c-text);
+        font-weight: 600;
+      }
+    }
+
+    &__footer {
+      padding-top: 20px;
+      border-top: 1px solid var(--c-border);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--c-text-quiet);
+
+      strong {
+        color: var(--c-text-meta);
+        font-weight: 600;
+      }
+    }
+  }
+
+  // When .compare-quote-card sits ON a .compare-frame element (current
+  // HTML has both classes on one div), the quote-card styling above
+  // must beat the frame's container styling. These overrides ensure
+  // no box-in-box visual collision.
+  .compare-frame.compare-quote-card {
+    background: transparent;
+    border: none;
+    border-left: 3px solid var(--c-accent);
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  // ---- Try card: light surface, mono label -------------------------
+  // The eyebrow inside a try-card gets default spacing so authors
+  // don't need to inline `style="margin-bottom: 8px"` on it.
+  .compare-try-card {
+    background: var(--c-paper);
+    border: 1px solid var(--c-border);
+    border-radius: var(--c-radius);
+
+    &:hover {
+      border-color: var(--c-accent);
+    }
+
+    .t-eyebrow {
+      font-family: var(--c-font-mono);
+      color: var(--c-text-meta);
+      display: block;
+      margin-bottom: 8px;
+    }
+  }
+
+  // ---- Bench chart: same framed container as code / diagram --------
+  .compare-bench-chart {
+    padding: 28px 32px;
+    background: var(--c-code-bg);
+    border: 1px solid var(--c-code-border);
+    border-radius: var(--c-radius);
+
+    // The ASCII chart <pre> inside the figure sits naked on the
+    // surface — the figure itself IS the visual frame.
+    &__pre {
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    figcaption {
+      font-family: var(--c-font-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: var(--c-text-quiet);
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--c-code-border);
+    }
+  }
+
+  // ---- CTA: lab-notebook footer rather than marketing hero ---------
+  // No `border-top` — the FAQ rubric above already provides a border-
+  // bottom hairline. Adding our own here doubled the line at the
+  // transition.
+  .compare-cta {
+    padding: 128px 64px 96px;
+    text-align: center;
+
+    &__title {
+      font-family: var(--c-font-display);
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    &__footnote {
+      font-family: var(--c-font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--c-text-quiet);
+    }
+  }
+
+  // ---- FAQ: hairline-only accordion, anchored left -----------------
+  // compare.scss has bordered cards centered in a 720px column with
+  // margin auto. Lab-notebook strips the chrome: hairline between
+  // items, full-width left-anchored stack.
+  .compare-faq {
+    margin: 0;
+    max-width: 720px;
+    gap: 0;
+    border-top: 1px solid var(--c-border);
+  }
+
+  .compare-faq__item {
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--c-border);
+    border-radius: 0;
+
+    // The last item's bottom border duplicates the FAQ rubric's section
+    // divider just below; drop it so the FAQ stack ends cleanly.
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover,
+    &[open] {
+      border-color: var(--c-border);
+    }
+
+    summary {
+      font-family: var(--c-font-display);
+      font-size: 18px;
+      font-weight: 600;
+      padding: 20px 0;
+      color: var(--c-text);
+    }
+  }
+
+  .compare-faq__answer {
+    padding-top: 0;
+    padding-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--c-text-meta);
+  }
+
+  // ---- Heading anchor (#) hidden by default, shown on hover --------
+  // Bumped color from --c-text-faint (#bbb, 2.2:1 contrast — fails AA)
+  // to --c-text-quiet (#777, 4.7:1) so the # is readable when visible.
+  .compare-rubric__title .heading-anchor,
+  .compare-rubric__subtitle .heading-anchor,
+  .compare-tldr__title .heading-anchor {
+    color: var(--c-text-quiet);
+  }
+
+  .compare-rubric__title:not(:hover) .heading-anchor,
+  .compare-rubric__subtitle:not(:hover) .heading-anchor,
+  .compare-tldr__title:not(:hover) .heading-anchor {
+    opacity: 0;
+  }
+
+  // ===================================================================
+  // ACCESSIBILITY + USER PREFERENCES
+  // ===================================================================
+
+  // ---- Focus-visible: visible keyboard focus on every interactive ---
+  // Single accent outline + 2px offset, rendered only when navigation
+  // comes from the keyboard (not on click). `outline` is used (not
+  // box-shadow) so it follows border-radius and never affects layout.
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  label:focus-visible,
+  input:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  // Code-tab radios are visually hidden but receive focus. Forward the
+  // focus ring onto the matching <label> so keyboard users see which
+  // tab is focused. -2px offset places the ring inside the label box.
+  @for $i from 1 through 5 {
+    .compare-code-tabs__radio--#{$i}:focus-visible
+      ~ .compare-code-tabs__bar
+      .compare-code-tabs__tab--#{$i} {
+      outline: 2px solid var(--c-accent);
+      outline-offset: -2px;
+    }
+  }
+
+  // ---- Text-wrap balance on display headings ------------------------
+  // Prevents 1-word last lines ("widows") on H1/H2/H3. Supported in
+  // every modern browser; degrades silently elsewhere.
+  .compare-hero__title,
+  .compare-rubric__title,
+  .compare-rubric__subtitle,
+  .compare-tldr__title,
+  .compare-cta__title {
+    text-wrap: balance;
+  }
+
+  // ---- scroll-margin-top so anchor jumps land with breathing room --
+  // Without this, jumping to #section lands the heading flush against
+  // the page top (or sticky header). 80px = header height + air.
+  .compare-hero__title,
+  .compare-rubric__title,
+  .compare-rubric__subtitle,
+  .compare-tldr__title,
+  [id]:where(.compare-rubric, .compare-rubric *, .compare-tldr, .compare-cta) {
+    scroll-margin-top: 80px;
+  }
+
+  // ---- touch-action: manipulation on tap targets -------------------
+  // Removes the ~300 ms double-tap-zoom delay on mobile for our
+  // interactive elements. (Modern browsers already skip the delay
+  // when viewport is mobile-optimized, but explicit is safer.)
+  button,
+  .button,
+  a,
+  summary,
+  label,
+  .compare-try-card,
+  .compare-impact-card,
+  .compare-hero-card__deeplink {
+    touch-action: manipulation;
+  }
+}
+
+// ---- Reduced motion — disable transitions/animations sitewide -----
+// Honor `prefers-reduced-motion: reduce` for users with vestibular
+// sensitivity. Set as low-but-nonzero duration (per Mozilla guidance)
+// so JS-triggered animation events still fire, but visual motion is
+// gone. Sits OUTSIDE .c-spine so it covers the whole document.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

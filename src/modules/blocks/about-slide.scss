@@ -51,6 +51,12 @@ $className: 'about-slide';
         padding-top: 48px;
       }
     }
+
+    // Use when the section has no media partner (e.g. FAQ).
+    &-full {
+      width: 100%;
+      border-right: none;
+    }
   }
 
   &__media {
@@ -74,6 +80,23 @@ $className: 'about-slide';
     &-align-top {
       align-self: flex-start;
       margin-bottom: 48px;
+    }
+
+    // Keeps the illustrating column visible while the reader scrolls through
+    // long left-column explanations. Pins from the top of the viewport
+    // (with header offset) and releases when its section ends.
+    &-sticky {
+      align-self: flex-start;
+      position: sticky;
+      top: 80px; // 60px page header + 20px breathing room
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+
+      @include mediaMax($tablet) {
+        position: static;
+        max-height: none;
+        overflow: visible;
+      }
     }
 
     @include mediaMax($tablet) {
@@ -122,6 +145,28 @@ $className: 'about-slide';
 
     @include mediaMax($mobile) {
       margin-bottom: 48px;
+    }
+  }
+
+  // Calm inline code: smaller, faint background, never breaks the rhythm
+  // of the surrounding sans-serif text.
+  &__text code,
+  &__subtitle code,
+  &__content li code {
+    font-size: 0.85em;
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 1px 6px;
+    border-radius: 4px;
+    vertical-align: 1px;
+    white-space: nowrap;
+
+    // On narrow viewports, a long `io.to(room).emit(event, payload)`
+    // chunk overflows the line. Allow breaking inside the code token
+    // rather than letting it push past the viewport edge.
+    @include mediaMax($mobile) {
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
   }
 

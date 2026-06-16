@@ -3,6 +3,21 @@
   publish="/dist"
   command="yarn build"
 
+# Preserve SEO from the original /compare/socket-io URL after we
+# renamed the slug to /compare/nodejs-websocket for organic
+# discoverability ("Node.js WebSocket server" / "Socket.io alternative"
+# queries). The new page is the canonical home; old inbound links
+# transfer their rank via the 301.
+[[redirects]]
+  from = "/compare/socket-io"
+  to = "/compare/nodejs-websocket"
+  status = 301
+
+[[redirects]]
+  from = "/compare/socket-io/"
+  to = "/compare/nodejs-websocket/"
+  status = 301
+
 [[redirects]]
   from = "/anycasts/anycable-v1-4-reliable-real-time-for-all/"
   to = "https://blog.anycable.io/p/anycable-v14-reliable-real-time-for-all"

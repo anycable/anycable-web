@@ -31,3 +31,36 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Benchmarks live in their own repo: irinanazarova/anycable-socketio-benchmarks
+benchmark/
+
+# Tooling / Claude Code session artifacts
+.claude/
+.playwright-mcp/
+
+# Scratch / audit notes that aren't part of the site
+TODO-*.md
+llm-*.md
+*-audit.md
+
+# Scratch directory for ephemeral notes, drafts, research dumps.
+# Anything inside is ignored. Use this instead of leaving stray files
+# at the repo root.
+tmp/
+
+# Editor settings
+.zed/
+
+# Test screenshots / page captures at repo root (real images live under src/)
+/*.png
+/*.jpeg
+/*.jpg
+
+# Stray benchmark / report HTML dumps at repo root
+/*-report.html
+/*-benchmark.html
+
+# package-lock.json is generated locally; project bundles via Vite
+package-lock.json
+.gstack/

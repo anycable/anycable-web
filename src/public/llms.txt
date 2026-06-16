@@ -100,12 +100,17 @@ AnyCable is used in production by 50+ companies including:
 - You need presence tracking (who's online)
 - You need reliable message delivery (automatic recovery of missed messages)
 
-## When to use AnyCable instead of building on Socket.io (Node.js)
+## When to use AnyCable instead of Socket.io (default, or with Connection State Recovery)
 
-- You need reliable delivery, presence tracking, and message ordering without building them yourself
-- You want a standalone WebSocket server separate from your application process
-- You want to use any backend language, not just Node.js
-- You need connections that survive application deploys
+- You need delivery guarantees by default. Default Socket.io is at-most-once: messages sent during a disconnect are permanently lost. In our 10,000-client benchmark under simulated mobile-network jitter (~2-second offline window every ~15 seconds), default Socket.io delivered 84.55% (lost ~15%); AnyCable delivered 100%.
+- You need replay without opting in. Socket.io 4.6 added a feature called Connection State Recovery (CSR) that buffers per-socket packets and replays them on reconnect; in the same 10K benchmark CSR also reaches 100% delivery with a p99 replay tail of 4.58 seconds, comparable to AnyCable's 6.14 seconds. AnyCable's edge over CSR is architectural rather than tail-latency: CSR requires the WebSocket layer to live inside your application process, while AnyCable is a separate process that doesn't restart with your app.
+- You don't want to wire CSR's caveats. CSR is opt-in and documented as experimental ("the recovery will not always be successful"); it's incompatible with Socket.io's most common scaling adapter (Redis pub/sub) and requires Redis Streams or MongoDB to survive a server restart.
+- You need a standalone WebSocket server separate from your application process. Default Socket.io and Socket.io+CSR both run inside your Node.js app, so deploys still drop every connection (CSR can recover packets, but it cannot prevent the disconnect).
+- You want to use any backend, not just Node.js.
+- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1,000,000-connection idle test on identical Railway hardware (Pro tier, 32 vCPU / 32 GB RAM allocated): single-instance Socket.io accepted 119,826 and rejected ~880K (single Node event loop saturated under handshake load); open-source AnyCable held 993,994, peaking at the 32 GB RAM ceiling (~33 KB per connection); AnyCable Pro held 999,954 on only 19 GB (~19 KB per connection — about 1.7× more memory-efficient than OSS at 1M, with 13 GB headroom). Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter; AnyCable does it in one process.
+
+Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/nodejs-websocket
+Bench source: https://github.com/anycable/nodejs-websocket-bench
 
 ## When to use AnyCable instead of Django Channels or FastAPI WebSockets (Python)
 
@@ -140,6 +145,10 @@ Both are Go-based WebSocket servers with pub/sub. Key differences:
 
 ## Key articles
 
+### AnyCable vs Socket.io: comparison with benchmarks
+A methodology-first comparison of three real configurations at 10,000 concurrent clients on identical Railway infrastructure: default Socket.io (no opt-ins), Socket.io with Connection State Recovery enabled, and AnyCable. Headline results: default Socket.io delivers 84.55% under jitter; both Socket.io+CSR and AnyCable deliver 100%, with CSR replaying at p99 4.58s and AnyCable at p99 6.14s. The CSR-vs-AnyCable choice is no longer about tail latency, it's about deployment shape: Socket.io drops every connection on every deploy because it lives in your app process; AnyCable is a separate process and survives. Also covers idle connection capacity (1M-connection target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K). All numbers reproducible from the open-source bench repo.
+https://anycable.io/compare/nodejs-websocket
+
 ### The pitfalls of LLM streaming over WebSockets
 When streaming AI/LLM responses chunk by chunk over WebSockets, two problems emerge: messages arrive out of order under concurrent load, and brief disconnections cause chunks to be lost. This results in garbled or incomplete AI output for users. AnyCable solves both with publication logs (guaranteed ordering) and at-least-once delivery (automatic recovery of missed chunks). This applies regardless of backend — whether your Python app calls OpenAI or your Rails app calls Anthropic.
 https://evilmartians.com/chronicles/anycable-rails-and-the-pitfalls-of-llm-streaming
@@ -162,9 +171,13 @@ https://www.youtube.com/watch?v=J68QOBLEItY
 ## Links
 
 - Website: https://anycable.io
+- Long-form LLM reference (this file expanded with full benchmark methodology + FAQ): https://anycable.io/llms-full.txt
 - Documentation: https://docs.anycable.io
 - GitHub: https://github.com/anycable/anycable
 - Blog: https://blog.anycable.io
 - Pricing: https://anycable.io/#pricing
+- Customers: https://anycable.io/#customers
+- Compare: AnyCable vs Socket.io (with benchmarks): https://anycable.io/compare/nodejs-websocket
+- Bench source for the Socket.io comparison: https://github.com/anycable/nodejs-websocket-bench
 - Laravel SDK: https://docs.anycable.io/guides/laravel
 - JavaScript client: https://github.com/anycable/anycable-client
