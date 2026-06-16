@@ -1526,6 +1526,16 @@
     &::-webkit-scrollbar-track {
       background: var(--c-code-border);
     }
+
+    // Mobile: tighter padding so more table fits before horizontal scroll
+    // engages. Sticky first column on the table itself keeps row labels
+    // visible while the user scrolls horizontally. The visible scrollbar
+    // (above) plus the peeking right column communicate "scrollable"
+    // without a faded edge that's tricky to position correctly inside
+    // an overflow-x: auto container.
+    @include mediaMax($mobile) {
+      padding: 20px 16px 16px;
+    }
   }
 
   // ---- Data-table footnote (sits OUTSIDE the frame) ---------------
@@ -1791,6 +1801,56 @@
     td.is-na strong {
       color: var(--c-text-faint);
       font-weight: 400;
+    }
+
+    // Mobile breathing room: tighten cell padding, drop font half a step,
+    // and pin the first column so the row label (Socket.io, AnyCable Pro,
+    // etc.) stays visible while the user horizontally-scrolls to see the
+    // wider columns (capacity 463 px, jitter 408 px, avalanche-scaling
+    // 363 px). The compare-frame parent provides the scroll container,
+    // an always-visible scrollbar, and a right-edge fade hint.
+    @include mediaMax($mobile) {
+      font-size: 12.5px;
+
+      th {
+        font-size: 10.5px;
+        padding: 0 8px 10px;
+      }
+
+      td {
+        padding: 10px 8px;
+      }
+
+      th:first-child,
+      td:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        // Background covers the column below as it slides over scrolled
+        // cells. compare-frame uses --c-code-bg.
+        background: var(--c-code-bg);
+      }
+
+      // Sticky first column needs an inheriting background on row tints
+      // so the colored row stays visually contiguous under the sticky
+      // cell (without this, the sticky cell shows the frame's bg over
+      // the row's tint, breaking the row read).
+      tr.is-row-best {
+        > th:first-child,
+        > td:first-child {
+          background: var(--c-code-bg);
+          // Layer the tint on top of the bg so the sticky cell matches
+          // the row's coloring.
+          box-shadow: inset 0 0 0 999px rgba(22, 163, 74, 0.05);
+        }
+      }
+      tr.is-row-worst {
+        > th:first-child,
+        > td:first-child {
+          background: var(--c-code-bg);
+          box-shadow: inset 0 0 0 999px rgba(185, 28, 28, 0.05);
+        }
+      }
     }
   }
 
