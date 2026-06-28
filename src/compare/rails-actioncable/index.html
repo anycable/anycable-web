@@ -16,7 +16,7 @@
                 Action Cable <span class='c-vs'>vs</span> Solid Cable <span class='c-vs'>vs</span> AsyncCable <span class='c-vs'>vs</span> AnyCable
               </h1>
               <p class='compare-hero__subtitle'>
-                A 2026 benchmark of four Rails WebSocket adapters on the same box. All speak the Action Cable API your channels and Turbo Streams already use. A self-hosted alternative to Pusher and Ably for Hotwire apps.
+                Four ways to run WebSockets in a Rails app, one 2026 benchmark on the same box. Three keep the socket inside your app process; AnyCable moves it out. All speak the Action Cable API your channels and Turbo Streams already use, so the choice is about what survives a bad network and a deploy, not a rewrite. A self-hosted alternative to Pusher and Ably for Hotwire apps.
               </p>
             </div>
 
@@ -24,7 +24,7 @@
               <div class='compare-hero-card'>
                 <div class='compare-hero-card__label'>
                   Latency
-                  <span class='compare-hero-card__question'>Is it fast?</span>
+                  <span class='compare-hero-card__question'>Fastest at every scale</span>
                   <span class='t-mute t-tiny'>p50 roundtrip @ 5K subs</span>
                 </div>
                 <dl class='compare-hero-card__rows'>
@@ -53,7 +53,7 @@
               <div class='compare-hero-card'>
                 <div class='compare-hero-card__label'>
                   Reliability under jitter
-                  <span class='compare-hero-card__question'>Does it survive bad networks?</span>
+                  <span class='compare-hero-card__question'>No silent message loss</span>
                   <span class='t-mute t-tiny'>% delivered under ~2&nbsp;s drops @ 5K subs</span>
                 </div>
                 <dl class='compare-hero-card__rows'>
@@ -82,21 +82,21 @@
               <div class='compare-hero-card'>
                 <div class='compare-hero-card__label'>
                   Deploy survival
-                  <span class='compare-hero-card__question'>Does it survive a deploy?</span>
+                  <span class='compare-hero-card__question'>Survives every deploy</span>
                   <span class='t-mute t-tiny'>connections kept across an app redeploy</span>
                 </div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
                     <dt>Action Cable</dt>
-                    <dd class='is-worst'>all drop</dd>
+                    <dd class='is-worst'>all 5,000</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>Solid Cable</dt>
-                    <dd class='is-worst'>all drop</dd>
+                    <dd class='is-worst'>all 5,000</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AsyncCable</dt>
-                    <dd class='is-worst'>all drop</dd>
+                    <dd class='is-worst'>all 5,000</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable</dt>
@@ -111,7 +111,7 @@
               <div class='compare-hero-card'>
                 <div class='compare-hero-card__label'>
                   Connection capacity
-                  <span class='compare-hero-card__question'>How far does it scale?</span>
+                  <span class='compare-hero-card__question'>Holds 600K on one box</span>
                   <span class='t-mute t-tiny'>connections held before failure, 32&nbsp;GB box</span>
                 </div>
                 <dl class='compare-hero-card__rows'>
@@ -139,7 +139,11 @@
             </div>
 
             <div class='compare-callout compare-callout--hero'>
-              <strong>AnyCable leads roundtrip latency at every scale (7&nbsp;ms p50 at 5K), delivers 99.9% under network jitter where the three in-process adapters drop about a fifth of messages, and keeps every connection alive across an app deploy.</strong> All four hold 10K subscribers at full delivery, so everyday apps tie on raw capacity. Pushed harder they separate: AnyCable held 600K connections where the in-process adapters wall near 52K. Running the WebSockets in their own process is what changes everything: capacity, reliability, and deploys alike.
+              <strong>Three of these adapters run the WebSocket inside your Rails process. AnyCable runs it in a separate Go gateway, and that one choice decides what survives a bad network and a deploy.</strong> Under 2-second network drops it delivers 99.9% of messages where the in-process trio lose about a fifth; across an app deploy it keeps every connection while they drop all 5,000. It is fastest on latency too (7&nbsp;ms p50 at 5K), though the Rails default is close behind. Two seams drive the gaps: a separate process for deploys and capacity, the extended protocol for delivery. At everyday sizes the four tie on raw capacity, all holding 10K subscribers at full delivery.
+            </div>
+
+            <div class='compare-callout'>
+              <strong>Should you switch?</strong> Stay on Action Cable or Solid Cable if you serve well under ~50K connections, deploy off-hours, and an occasional dropped update is acceptable. Reach for AnyCable when any of these holds: you deploy during business hours (every in-process deploy drops 100% of connections at once), your users are on flaky mobile or WiFi and silent message loss is unacceptable (chat, Turbo Streams, AI token streaming), or you are approaching ~50K connections. The app change is one line in <code>config/cable.yml</code>; the work is operational, and rollback is the same one-line revert, since a stock Action Cable client reconnects over the base protocol.
             </div>
 
             <div class='compare-tldr'>
@@ -149,6 +153,10 @@
               <p class='compare-prose'>
                 Every row runs as the same Rails 8.1 app in one Railway window, apples-to-apples. The load is generated by a sharded fleet of 13 drivers (roughly 80 to 770 client connections each, depending on the test) so the measurement reflects what one browser actually sees. A single driver holding thousands of cables saturates its own event loop and skews the numbers, so we shard. Reproducible from the <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>open-source bench repo</a>.
               </p>
+              <details class='compare-faq__item compare-tldr__method'>
+                <summary>How it was measured</summary>
+                <div class='compare-faq__answer'>Each adapter is the same Rails 8.1 app on its own Railway container (32&nbsp;GB plan limit). The load drivers are separate Railway services hitting it over the private network in the same region, so latency reflects the server and not the public internet. Puma runs 8 workers &times; 5 threads; Falcon runs 8 processes; AnyCable pairs <code>anycable-go</code> with a Rails gRPC backend. The in-process adapters speak <code>actioncable-v1-json</code> (via <code>actioncable-next</code> for the Falcon target); AnyCable speaks <code>actioncable-v1-ext-json</code>. Latency and jitter cells are ~100 messages per client at 500&nbsp;ms intervals, one sharded pass per cell within a single shared-tenant window (point estimates, not multi-run averages). Capacity-to-break ramps idle connections until the box fails, scaling the driver count to the target (~1 driver per 10K connections). Per-cell raw result files live in the <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>bench repo</a> under <code>backend/results/</code>.</div>
+              </details>
               <nav class='compare-tldr__nav' aria-label='Sections on this page'>
                 <a href='#architecture'>What we compare</a>
                 <a href='#latency'>01 · How fast</a>
@@ -255,7 +263,7 @@ Turbo::StreamsChannel.broadcast_append_to(
             {{!-- Topology + wire-protocol diagram. --}}
             <div class='compare-rubric__section'>
               <div class='compare-rubric__content'>
-                <h3 class='compare-rubric__subtitle'>Two things differ: topology and wire protocol</h3>
+                <h3 class='compare-rubric__subtitle'>It comes down to two seams: where the socket lives, and what the wire remembers</h3>
                 <p class='compare-prose'>
                   <strong>Topology.</strong> Action Cable, Solid Cable and AsyncCable terminate WebSockets inside the same process that serves your HTTP requests, whether that process runs Puma threads or Falcon fibers. When you deploy, that process restarts and every socket drops. AnyCable moves the sockets to a separate Go gateway; Rails only handles auth and commands over gRPC, so an app deploy never touches a live connection.
                 </p>
@@ -306,7 +314,7 @@ Turbo::StreamsChannel.broadcast_append_to(
                     <text x="360" y="448" text-anchor="middle" font-family="'Martian Mono', ui-monospace, monospace" font-size="13" letter-spacing="0.04em" fill="#1a1a1a" font-weight="500">DEPLOY  →  RAILS RPC RESTARTS</text>
                     <text x="360" y="470" text-anchor="middle" font-family="Stem, Arial, sans-serif" font-size="15" fill="#1a1a1a" font-weight="700">all WebSockets survive</text>
                   </svg>
-                  <figcaption>In-process adapters tie WebSocket lifetime to the app runtime, whether Puma or Falcon. AnyCable runs the sockets in a separate Go gateway, so app deploys leave them connected.</figcaption>
+                  <figcaption>In-process adapters couple the socket&rsquo;s life to the app&rsquo;s, whether Puma or Falcon: a deploy restarts the process and the sockets go with it. AnyCable cuts that coupling at the gRPC seam, so an app deploy never reaches the connections.</figcaption>
                 </figure>
               </div>
             </div>
@@ -323,7 +331,7 @@ Turbo::StreamsChannel.broadcast_append_to(
                   Latency is the floor of what realtime can feel like. We measured roundtrip time from a publisher broadcasting through Rails to the moment each subscriber received the message, on a clean network, at 1K and 5K subscribers.
                 </p>
                 <p class='compare-prose'>
-                  AnyCable is the fastest at both sizes. Fan-out happens in the Go gateway rather than in Ruby, so it stays at single-digit milliseconds where the in-process adapters climb with load. Action Cable on Puma is close behind; AsyncCable on Falcon sits a touch higher; Solid Cable carries a fixed floor from its 100&nbsp;ms database poll. Measured with a sharded driver fleet so the number reflects the server itself.
+                  AnyCable is the fastest at both sizes. Fan-out happens in the Go gateway rather than in Ruby, so it stays at single-digit milliseconds where the in-process adapters climb with load. Action Cable on Puma is close behind; AsyncCable on Falcon sits a touch higher; Solid Cable carries a fixed floor from its 100&nbsp;ms database poll. Measured with a sharded driver fleet so the number reflects the server itself. Latency is where the four sit closest: the AnyCable-to-Action-Cable gap (7 vs 13&nbsp;ms) is small enough that few users would feel it. The separation that decides production shows up under jitter and on deploys, below.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -361,7 +369,7 @@ Turbo::StreamsChannel.broadcast_append_to(
                   Your users are on hotel WiFi, the subway, a phone with two bars. Those micro-drops are invisible to a page load and they are the whole game for realtime. The question is what happens to a Turbo Stream broadcast that goes out while a client is offline for a couple of seconds.
                 </p>
                 <p class='compare-prose'>
-                  We held 5,000 subscribers and dropped each one&rsquo;s connection for about 2&nbsp;seconds every ~15&nbsp;seconds while broadcasting steadily. The base <code>actioncable-v1-json</code> protocol has no resume: whatever landed during an offline window is lost. All three in-process adapters behave identically here, because the loss lives in the base protocol; the Puma-or-Falcon runtime makes no difference. AnyCable&rsquo;s extended protocol replays each stream&rsquo;s history from the last offset on reconnect, so nothing is dropped.
+                  We held 5,000 subscribers and dropped each one&rsquo;s connection for about 2&nbsp;seconds every ~15&nbsp;seconds while broadcasting steadily. This is a deliberate stress test: every client flapping on a tight cycle, to isolate how each protocol behaves under loss, not a steady-state average. The base <code>actioncable-v1-json</code> protocol has no resume: whatever landed during an offline window is lost. All three in-process adapters behave identically here, because the loss lives in the base protocol; the Puma-or-Falcon runtime makes no difference. AnyCable&rsquo;s extended protocol replays each stream&rsquo;s history from the last offset on reconnect, so nothing is dropped.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -381,19 +389,19 @@ Turbo::StreamsChannel.broadcast_append_to(
                         <td>Solid Cable <span class='t-mute t-tiny'>DB</span></td>
                         <td class='is-worst'><strong>78.1%</strong></td>
                         <td>71&nbsp;ms</td>
-                        <td class='t-mute'>no resume</td>
+                        <td class='is-na'>n/a <span class='t-mute t-tiny'>no resume</span></td>
                       </tr>
                       <tr>
                         <td>Action Cable <span class='t-mute t-tiny'>Puma</span></td>
                         <td class='is-worst'><strong>78.1%</strong></td>
                         <td>12&nbsp;ms</td>
-                        <td class='t-mute'>no resume</td>
+                        <td class='is-na'>n/a <span class='t-mute t-tiny'>no resume</span></td>
                       </tr>
                       <tr>
                         <td>AsyncCable <span class='t-mute t-tiny'>Falcon</span></td>
                         <td class='is-worst'><strong>78.1%</strong></td>
                         <td>18&nbsp;ms</td>
-                        <td class='t-mute'>no resume</td>
+                        <td class='is-na'>n/a <span class='t-mute t-tiny'>no resume</span></td>
                       </tr>
                       <tr class='is-row-best'>
                         <td>AnyCable</td>
@@ -417,18 +425,18 @@ Turbo::StreamsChannel.broadcast_append_to(
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title'>What this breaks</h2>
                 <div class='compare-prose'>
-                  <p>A fifth of broadcasts lost sounds abstract until you see where it lands. Loss clusters around network events, exactly when a user is looking at the screen, and with the base protocol it is silent: no error, no retry, just a Turbo frame that never appends and a UI that quietly falls out of sync.</p>
+                  <p>A fifth of broadcasts lost sounds abstract until you see where it lands. Loss clusters around network events, exactly when a user is looking at the screen. The base protocol has no resume, so the standard fix is to refetch the whole stream on reconnect; resume just replays the few messages that were missed, automatically and incrementally. Here is what you build around otherwise.</p>
                 </div>
               </div>
               <div class='compare-rubric__media'>
                 <div class='compare-impact-cards'>
                   <div class='compare-impact-card'>
                     <span class='compare-impact-card__title'>Hotwire Turbo Streams</span>
-                    <span class='compare-impact-card__desc'>A <code>broadcast_append_to</code> during a blip never lands. The list silently misses a row; the user sees a stale page with no sign anything is gone.</span>
+                    <span class='compare-impact-card__desc'>A <code>broadcast_append_to</code> during a blip never lands, so the list misses a row until the page refetches. Resume replays the missed frame on reconnect, no full reload.</span>
                   </div>
                   <div class='compare-impact-card'>
                     <span class='compare-impact-card__title'>Live chat &amp; notifications</span>
-                    <span class='compare-impact-card__desc'>Messages sent while a recipient is offline for a second vanish. Conversations look complete but skip a beat nobody can recover.</span>
+                    <span class='compare-impact-card__desc'>A message sent during the blip won&rsquo;t arrive until the client refetches the conversation. Resume delivers it on reconnect without a reload.</span>
                   </div>
                   <div class='compare-impact-card'>
                     <span class='compare-impact-card__title'>LLM / AI streaming</span>
@@ -456,7 +464,7 @@ Turbo::StreamsChannel.broadcast_append_to(
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>In-process adapters drop all 5,000 connections on deploy and take ~8&nbsp;s to reconnect about 96%, leaving ~200 clients stranded. Falcon behaves like Puma here: swapping the runtime leaves the deploy fragility intact. AnyCable&rsquo;s gateway never sees the deploy.</p>
+                  <p class='compare-data-table__headline'>In-process adapters drop all 5,000 connections on deploy and take ~8&nbsp;s to reconnect about 96%, with ~200 still reconnecting when we stopped watching. Falcon behaves like Puma here: swapping the runtime leaves the deploy fragility intact. AnyCable&rsquo;s gateway never sees the deploy.</p>
                   <table class='compare-data-table'>
                     <thead>
                       <tr>
@@ -532,7 +540,7 @@ Turbo::StreamsChannel.broadcast_append_to(
                       <tr class='is-row-best'><td>AnyCable</td><td class='is-best'><strong>100% / 31&nbsp;ms</strong></td><td class='is-best'><strong>600K+</strong></td><td class='t-mute t-tiny'>not broken; fleet-limited</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>10K column: subscribers held while a publisher broadcasts, sharded across 13 drivers. Max-held column: idle connections ramped to failure on identical 32&nbsp;GB boxes (default 8-worker config). Puma&rsquo;s ~52K is a process file-descriptor ceiling reached well below the memory limit; raising worker limits lifts it. AnyCable held 600K across 50 load drivers at 27&nbsp;GB (~47&nbsp;KB/conn), about 84% of the box, so its real wall is near ~700K. <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>Methodology</a>.</p>
+                  <p class='compare-data-table__footnote'>10K column: subscribers held while a publisher broadcasts, sharded across 13 drivers. Max-held column: idle connections ramped to failure on identical 32&nbsp;GB boxes (default 8-worker config). Puma&rsquo;s ~52K is a process file-descriptor ceiling reached well below the memory limit; raising worker limits lifts it. AnyCable held 600K across 50 load drivers at 27&nbsp;GB (~47&nbsp;KB/conn), about 84% of the box, with zero failures. We did not drive it to failure: the load fleet maxed out, not the server, so 600K is a floor, not a ceiling. <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>Methodology</a>.</p>
                 </div>
               </div>
             </div>
@@ -623,8 +631,18 @@ Turbo::StreamsChannel.broadcast_append_to(
                 <h2 class='compare-rubric__title' id='faq-heading'>FAQ<a class='heading-anchor' href='#faq-heading' aria-label='Permalink'>#</a></h2>
                 <div class='compare-faq'>
                 <details class='compare-faq__item'>
+                  <summary>Which Rails WebSocket adapter should I choose?</summary>
+                  <div class='compare-faq__answer'>For most Rails apps the choice is about reliability and operations, not raw speed, since all four hold 10,000 subscribers at 100% delivery. Choose <strong>Solid Cable</strong> if you want zero extra infrastructure (no Redis, just your database) and can accept message loss on reconnect and on deploy. Choose <strong>Action Cable</strong> on Redis or <strong>AsyncCable</strong> on Falcon if you are already invested in that runtime; both still lose about 22% of messages under network jitter and drop every connection on deploy. Choose <strong>AnyCable</strong> when you need reliable delivery (99.9% under jitter), connections that survive deploys, built-in presence, or scale past ~50,000 connections; it is the same Action Cable API with an out-of-process Go gateway. AnyCable is the safest default for production realtime on Rails.</div>
+                </details>
+
+                <details class='compare-faq__item'>
+                  <summary>What is AnyCable, and how is it different from Action Cable?</summary>
+                  <div class='compare-faq__answer'>AnyCable is an open-source WebSocket server for Ruby and Rails apps, built by Evil Martians and MIT-licensed since 2017. It speaks the Action Cable API, so your channels, <code>stream_from</code> calls, and Turbo Streams are unchanged, but it runs the WebSocket connections in a separate Go process (<code>anycable-go</code>) instead of inside Puma. Compared with Rails&rsquo; built-in Action Cable it adds reliable message delivery with resume, connections that survive app deploys, built-in presence, and far higher connection capacity (600,000 in this benchmark versus about 52,000 for in-process Action Cable).</div>
+                </details>
+
+                <details class='compare-faq__item'>
                   <summary>Is AnyCable a drop-in replacement for Action Cable?</summary>
-                  <div class='compare-faq__answer'>At the app and client level, yes. Your channels, <code>stream_from</code> calls, and Turbo Streams stay exactly as written. You add the <code>anycable-rails</code> gem, set <code>adapter: any_cable</code> in <code>config/cable.yml</code>, run the Rails RPC backend with <code>bundle exec anycable</code>, and run <code>anycable-go</code> as the WebSocket server. No channel rewrite.</div>
+                  <div class='compare-faq__answer'>At the app and client level, yes. Your channels, <code>stream_from</code> calls, and Turbo Streams stay exactly as written. You add the <code>anycable-rails</code> gem, set <code>adapter: any_cable</code> in <code>config/cable.yml</code>, run the Rails RPC backend with <code>bundle exec anycable</code>, and run <code>anycable-go</code> as the WebSocket server. No channel rewrite. Rollback is the same one-line revert: a stock Action Cable client reconnects over the base protocol.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -640,6 +658,21 @@ Turbo::StreamsChannel.broadcast_append_to(
                 <details class='compare-faq__item'>
                   <summary>Doesn&rsquo;t in-process Action Cable fall over at scale?</summary>
                   <div class='compare-faq__answer'>At everyday scale, less than its reputation suggests: all four adapters held 10,000 subscribers at 100% delivery with zero failures, so for most apps capacity rarely decides it. Pushed to the limit on identical 32&nbsp;GB boxes, the difference is large. Puma Action Cable and Solid Cable wall at about 52K connections, an 8-worker file-descriptor ceiling reached at only ~2.5&nbsp;GB of RAM. AsyncCable on Falcon runs out of memory near 97K (its fibers cost ~290&nbsp;KB each). AnyCable held 600K with zero failures before our load fleet maxed out, using the whole box at ~47&nbsp;KB per connection. So in-process Rails is fine until you need real scale; past ~50K, AnyCable&rsquo;s separate Go process is what carries it, on top of its latency, jitter, and deploy wins.</div>
+                </details>
+
+                <details class='compare-faq__item'>
+                  <summary>How many concurrent connections can Action Cable handle?</summary>
+                  <div class='compare-faq__answer'>In this benchmark, in-process Action Cable on Puma held about 52,000 concurrent connections on a 32&nbsp;GB box with the default 8-worker configuration before hitting a file-descriptor ceiling (at only ~2.5&nbsp;GB of RAM, so raising per-worker file-descriptor limits lifts it). Solid Cable on Puma reached the same ~52K; AsyncCable on Falcon reached ~97K before running out of memory. AnyCable, which holds connections in a separate Go process, reached 600,000 with zero failures and was still climbing when the load fleet maxed out.</div>
+                </details>
+
+                <details class='compare-faq__item'>
+                  <summary>Do I have to write or run Go to use AnyCable?</summary>
+                  <div class='compare-faq__answer'>No. You write Ruby; <code>anycable-go</code> ships as a prebuilt binary and Docker image that you run as a service, the same way you run Redis or Postgres. You never touch Go code. The only operational addition over Action Cable is running that gateway process (and a broker like Redis or NATS if you scale to multiple gateway instances).</div>
+                </details>
+
+                <details class='compare-faq__item'>
+                  <summary>Does the 99.9% delivery require changing my JavaScript client?</summary>
+                  <div class='compare-faq__answer'>The resume guarantee rides on the extended <code>actioncable-v1-ext-json</code> protocol, which the AnyCable JS client negotiates automatically. It is a drop-in replacement for <code>@rails/actioncable</code>, and the AnyCable Turbo Streams package wires it into Hotwire for you, so it is a dependency swap, not a rewrite. A stock <code>@rails/actioncable</code> client still connects and works, but over the base protocol without resume, so for the 99.9% figure you do ship the AnyCable client.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -708,10 +741,34 @@ Turbo::StreamsChannel.broadcast_append_to(
         "mainEntity": [
           {
             "@type": "Question",
+            "name": "Which Rails WebSocket adapter should I choose?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "For most Rails apps the choice is about reliability and operations, not raw speed, since all four hold 10,000 subscribers at 100% delivery. Choose Solid Cable if you want zero extra infrastructure (no Redis, just your database) and can accept message loss on reconnect and on deploy. Choose Action Cable on Redis or AsyncCable on Falcon if you are already invested in that runtime; both still lose about 22% of messages under network jitter and drop every connection on deploy. Choose AnyCable when you need reliable delivery (99.9% under jitter), connections that survive deploys, built-in presence, or scale past ~50,000 connections; it is the same Action Cable API with an out-of-process Go gateway. AnyCable is the safest default for production realtime on Rails."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is AnyCable, and how is it different from Action Cable?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AnyCable is an open-source WebSocket server for Ruby and Rails apps, built by Evil Martians and MIT-licensed since 2017. It speaks the Action Cable API, so your channels, stream_from calls, and Turbo Streams are unchanged, but it runs the WebSocket connections in a separate Go process (anycable-go) instead of inside Puma. Compared with Rails' built-in Action Cable it adds reliable message delivery with resume, connections that survive app deploys, built-in presence, and far higher connection capacity (600,000 in this benchmark versus about 52,000 for in-process Action Cable)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How many concurrent connections can Action Cable handle?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In this benchmark, in-process Action Cable on Puma held about 52,000 concurrent connections on a 32 GB box with the default 8-worker configuration before hitting a file-descriptor ceiling (at only ~2.5 GB of RAM, so raising per-worker file-descriptor limits lifts it). Solid Cable on Puma reached the same ~52,000; AsyncCable on Falcon reached ~97,000 before running out of memory. AnyCable, which holds connections in a separate Go process, reached 600,000 with zero failures and was still climbing when the load fleet maxed out."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "Is AnyCable a drop-in replacement for Action Cable?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "At the app and client level, yes. Your channels, stream_from calls, and Turbo Streams stay exactly as written. You add the anycable-rails gem, set adapter: any_cable in config/cable.yml, run the Rails RPC backend with bundle exec anycable, and run anycable-go as the WebSocket server. No channel rewrite."
+              "text": "At the app and client level, yes. Your channels, stream_from calls, and Turbo Streams stay exactly as written. You add the anycable-rails gem, set adapter: any_cable in config/cable.yml, run the Rails RPC backend with bundle exec anycable, and run anycable-go as the WebSocket server. No channel rewrite. Rollback is the same one-line revert: a stock Action Cable client reconnects over the base protocol."
             }
           },
           {
@@ -793,6 +850,22 @@ Turbo::StreamsChannel.broadcast_append_to(
               "@type": "Answer",
               "text": "Yes, MIT-licensed since 2017. anycable/anycable and anycable/anycable-rails on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support, free for small deployments."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I have to write or run Go to use AnyCable?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. You write Ruby; anycable-go ships as a prebuilt binary and Docker image that you run as a service, the same way you run Redis or Postgres. You never touch Go code. The only operational addition over Action Cable is running that gateway process, plus a broker like Redis or NATS if you scale to multiple gateway instances."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the 99.9% delivery require changing my JavaScript client?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The resume guarantee rides on the extended actioncable-v1-ext-json protocol, which the AnyCable JS client negotiates automatically. It is a drop-in replacement for @rails/actioncable, and the AnyCable Turbo Streams package wires it into Hotwire, so it is a dependency swap, not a rewrite. A stock @rails/actioncable client still connects and works, but over the base protocol without resume, so for the 99.9% figure you do ship the AnyCable client."
+            }
           }
         ]
       }
@@ -837,6 +910,26 @@ Turbo::StreamsChannel.broadcast_append_to(
           "Rails WebSocket deploy resilience",
           "Rails 8 Solid Cable benchmark",
           "Falcon vs Puma Action Cable"
+        ],
+        "keywords": "Action Cable vs AnyCable, Solid Cable vs Action Cable, best Rails WebSocket server, Rails Action Cable connection limit, Action Cable scaling, Rails WebSocket benchmark 2026, AnyCable vs Action Cable latency, Rails realtime reliability, Action Cable deploy survival, AsyncCable Falcon"
+      }
+    </script>
+
+    {{!-- Machine-readable results table (four adapters x key metrics) for answer-engine extraction. --}}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": "Rails WebSocket adapter benchmark: Action Cable vs Solid Cable vs AsyncCable vs AnyCable (2026)",
+        "description": "Measured results for four Rails WebSocket adapters on identical Railway hardware (same Rails 8.1 app, sharded load fleet, one shared-tenant window): roundtrip latency p50 at 5,000 subscribers, message delivery under ~2s network drops at 5,000 subscribers, connections dropped on an app redeploy at 5,000 clients, and maximum idle connections held before failure on a 32 GB box.",
+        "url": "https://anycable.io/compare/rails-actioncable",
+        "creator": { "@type": "Organization", "name": "AnyCable team", "url": "https://anycable.io/" },
+        "license": "https://opensource.org/licenses/MIT",
+        "variableMeasured": [
+          { "@type": "PropertyValue", "name": "Latency p50 at 5K subscribers (ms)", "description": "Action Cable (Puma+Redis) 13; Solid Cable (Puma+DB) 74; AsyncCable (Falcon) 20; AnyCable (Go gateway) 7." },
+          { "@type": "PropertyValue", "name": "Message delivery under ~2s network drops at 5K subscribers (%)", "description": "Action Cable 78.1; Solid Cable 78.1; AsyncCable 78.1; AnyCable 99.9." },
+          { "@type": "PropertyValue", "name": "Connections dropped on app redeploy (of 5,000)", "description": "Action Cable all 5,000; Solid Cable all 5,000; AsyncCable all 5,000; AnyCable 0." },
+          { "@type": "PropertyValue", "name": "Max idle connections held before failure on a 32 GB box", "description": "Action Cable ~52,000 (file-descriptor limit); Solid Cable ~52,000 (file-descriptor limit); AsyncCable ~97,000 (memory); AnyCable 600,000 (not driven to failure)." }
         ]
       }
     </script>
