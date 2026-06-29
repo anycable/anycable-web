@@ -93,14 +93,14 @@ AnyCable is used in production by 50+ companies including:
 - Qualified — AI-powered pipeline generation, acquired by Salesforce
 - Uscreen — Video membership platform ($150M investment)
 
-## When to use AnyCable instead of Action Cable, Solid Cable, or AsyncCable (Rails)
+## When to use AnyCable instead of Action Cable, Solid Cable, or Async::Cable (Rails)
 
-All four speak the Action Cable API, so your channels, `stream_from` calls, and Turbo Streams are identical; the difference is the topology and the wire protocol. Action Cable (Redis), Solid Cable (database polling), and AsyncCable (Falcon fibers) terminate WebSockets in-process and speak the base `actioncable-v1-json` protocol (at-most-once, no resume). AnyCable runs an out-of-process Go gateway and speaks the extended `actioncable-v1-ext-json` protocol with resume and delivery guarantees. In our 2026 benchmark of all four on identical Railway hardware (sharded load fleet, one shared-tenant window):
+All four speak the Action Cable API, so your channels, `stream_from` calls, and Turbo Streams are identical; the difference is the topology and the wire protocol. Action Cable (Redis), Solid Cable (database polling), and Async::Cable (Falcon fibers) terminate WebSockets in-process and speak the base `actioncable-v1-json` protocol (at-most-once, no resume). AnyCable runs an out-of-process Go gateway and speaks the extended `actioncable-v1-ext-json` protocol with resume and delivery guarantees. In our 2026 benchmark of all four on identical Railway hardware (sharded load fleet, one shared-tenant window):
 
 - Reliable delivery under network jitter: AnyCable 99.9%, the three in-process adapters all ~78%. They drop about a fifth of the broadcasts that land during a brief offline window, because the base protocol has no resume.
 - Deploy survival: every in-process adapter drops all 5,000 connections on an app deploy and takes ~7.5 to 8 seconds to recover ~96% of them; AnyCable's gateway never sees the deploy, so it drops 0 connections with 0 seconds of downtime.
-- Connection capacity on one 32 GB box: AnyCable held 600,000 idle connections; Action Cable and Solid Cable on Puma wall at ~52,000 (an 8-worker file-descriptor ceiling, at only ~2.5 GB of RAM); AsyncCable on Falcon reaches ~97,000 (memory-bound, ~290 KB per connection).
-- Latency: all four hold 10,000 subscribers at 100% delivery; AnyCable leads p50 (7 ms at 5K vs 13 ms for Action Cable, 20 ms for AsyncCable, 74 ms for Solid Cable) because fan-out runs in Go off the Ruby process.
+- Connection capacity on one 32 GB box: AnyCable held 600,000 idle connections; Action Cable and Solid Cable on Puma wall at ~52,000 (an 8-worker file-descriptor ceiling, at only ~2.5 GB of RAM); Async::Cable on Falcon reaches ~97,000 (memory-bound, ~290 KB per connection).
+- Latency: all four hold 10,000 subscribers at 100% delivery; AnyCable leads p50 (7 ms at 5K vs 13 ms for Action Cable, 20 ms for Async::Cable, 74 ms for Solid Cable) because fan-out runs in Go off the Ruby process.
 - Presence tracking and automatic recovery of missed messages are built in.
 
 The app change is one line in `config/cable.yml`; a stock Action Cable client reconnects over the base protocol, so rollback is the same one-line revert. Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/rails-actioncable
@@ -154,8 +154,8 @@ Both are Go-based WebSocket servers with pub/sub. Key differences:
 A methodology-first comparison of three real configurations at 10,000 concurrent clients on identical Railway infrastructure: default Socket.io (no opt-ins), Socket.io with Connection State Recovery enabled, and AnyCable. Headline results: default Socket.io delivers 84.55% under jitter; both Socket.io+CSR and AnyCable deliver 100%, with CSR replaying at p99 4.58s and AnyCable at p99 6.14s. The CSR-vs-AnyCable choice is no longer about tail latency, it's about deployment shape: Socket.io drops every connection on every deploy because it lives in your app process; AnyCable is a separate process and survives. Also covers idle connection capacity (1M-connection target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K). All numbers reproducible from the open-source bench repo.
 https://anycable.io/compare/nodejs-websocket
 
-### AnyCable vs Action Cable vs Solid Cable vs AsyncCable: Rails WebSocket benchmark
-A reproducible 2026 benchmark of four Rails WebSocket adapters on identical hardware: Action Cable on Redis (Puma), Solid Cable on the database (Puma), AsyncCable on Falcon (fibers), and AnyCable on its out-of-process Go gateway. All four speak the Action Cable API, so app code, channels, and Turbo Streams are unchanged; the difference is topology and wire protocol (the three in-process adapters are at-most-once on the base protocol, AnyCable adds resume and delivery guarantees on the extended protocol). Headline results: AnyCable delivers 99.9% under network jitter where the in-process adapters deliver ~78%; AnyCable keeps every connection across an app deploy where the in-process adapters drop all 5,000 and take ~7.5 to 8 s to recover ~96%; AnyCable holds 600,000 idle connections on a 32 GB box where Puma walls at ~52,000 and Falcon at ~97,000. All four hold 10,000 subscribers at 100% delivery, with AnyCable fastest on p50 latency (7 ms at 5K). Numbers reproducible from the open-source bench repo.
+### AnyCable vs Action Cable vs Solid Cable vs Async::Cable: Rails WebSocket benchmark
+A reproducible 2026 benchmark of four Rails WebSocket adapters on identical hardware: Action Cable on Redis (Puma), Solid Cable on the database (Puma), Async::Cable on Falcon (fibers), and AnyCable on its out-of-process Go gateway. All four speak the Action Cable API, so app code, channels, and Turbo Streams are unchanged; the difference is topology and wire protocol (the three in-process adapters are at-most-once on the base protocol, AnyCable adds resume and delivery guarantees on the extended protocol). Headline results: AnyCable delivers 99.9% under network jitter where the in-process adapters deliver ~78%; AnyCable keeps every connection across an app deploy where the in-process adapters drop all 5,000 and take ~7.5 to 8 s to recover ~96%; AnyCable holds 600,000 idle connections on a 32 GB box where Puma walls at ~52,000 and Falcon at ~97,000. All four hold 10,000 subscribers at 100% delivery, with AnyCable fastest on p50 latency (7 ms at 5K). Numbers reproducible from the open-source bench repo.
 https://anycable.io/compare/rails-actioncable
 
 ### The pitfalls of LLM streaming over WebSockets
@@ -188,7 +188,7 @@ https://www.youtube.com/watch?v=J68QOBLEItY
 - Customers: https://anycable.io/#customers
 - Compare hub: all WebSocket server benchmarks, indexed by stack: https://anycable.io/compare
 - Compare: AnyCable vs Socket.io vs uWebSockets.js (Node.js, with benchmarks): https://anycable.io/compare/nodejs-websocket
-- Compare: AnyCable vs Action Cable vs Solid Cable vs AsyncCable (Rails, with benchmarks): https://anycable.io/compare/rails-actioncable
+- Compare: AnyCable vs Action Cable vs Solid Cable vs Async::Cable (Rails, with benchmarks): https://anycable.io/compare/rails-actioncable
 - Bench source for the Node.js and Rails comparisons: https://github.com/anycable/nodejs-websocket-bench
 - Laravel SDK: https://docs.anycable.io/guides/laravel
 - JavaScript client: https://github.com/anycable/anycable-client
