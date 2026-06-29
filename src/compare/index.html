@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{> dochead pageTitle="WebSocket Server Comparisons: AnyCable vs Socket.io, Action Cable, Pusher, Ably (2026 Benchmarks)" pageDescription="Reproducible 2026 benchmarks of WebSocket servers and realtime adapters across stacks. Node.js: Socket.io vs uWebSockets.js vs AnyCable. Rails: Action Cable vs Solid Cable vs AsyncCable vs AnyCable. Every setup runs on identical hardware and is compared on latency, message delivery under network jitter, connection capacity, and deploy survival. A self-hosted alternative to Pusher Channels and Ably. All numbers reproducible from the open-source bench repo." pageUrl="https://anycable.io/compare"}}
+  <body>
+    <div class="page">
+      {{> header}}
+      <main class="content compare-page c-spine">
+
+        {{!-- Hub hero — orients the reader: this is the index of head-to-head
+             WebSocket benchmarks. No metric cards here; the per-stack numbers
+             live on the linked pages below. --}}
+        <section class='compare-hero'>
+          <div class='compare-hero__inner'>
+            <div class='compare-hero__intro'>
+              <p class='compare-hero__eyebrow'>Benchmarks</p>
+              <h1 class='compare-hero__title'>
+                WebSocket server comparisons
+              </h1>
+              <p class='compare-hero__subtitle'>
+                Head-to-head benchmarks of realtime servers across stacks, each on identical hardware and the same bad networks. We measure what decides whether realtime holds up in production: latency, delivery under jitter, connection capacity, and survival across a deploy. Pick your stack below. Every number is reproducible from the <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>open-source bench repo</a>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {{!-- The hosted comparison pages. Two live, one in progress. Live
+             cards are <a>; the coming-soon card is a dimmed <div>. --}}
+        <section class='compare-rubric' id='comparisons'>
+          <div class='compare-rubric__wrapper'>
+            <div class='compare-rubric__section'>
+              <div class='compare-rubric__content compare-rubric__content--full'>
+                <p class='compare-rubric__eyebrow'>Pick your stack</p>
+                <h2 class='compare-rubric__title'>Two benchmarks live, one on the way</h2>
+
+                <div class='compare-hub-cards'>
+              <a class='compare-hub-card compare-hub-card--live' href='/compare/nodejs-websocket'>
+                <div class='compare-hub-card__head'>
+                  <p class='compare-hub-card__bucket'>Node.js · TypeScript · Bun</p>
+                  <p class='compare-hub-card__status'>Live · 2026</p>
+                </div>
+                <h3 class='compare-hub-card__title'>Socket.io <span class='is-mute'>vs</span> uWS <span class='is-mute'>vs</span> AnyCable</h3>
+                <p class='compare-hub-card__lede'>
+                  Five WebSocket setups for Node.js on one box: Socket.io default and with Connection State Recovery, uWebSockets.js, and AnyCable OSS and Pro. A self-hosted alternative to Pusher Channels and Ably.
+                </p>
+                <ul class='compare-hub-card__axes'>
+                  <li>100% delivered under WiFi-drop jitter, where default Socket.io falls to 85%</li>
+                  <li>Memory per connection and the reconnect storm each setup absorbs before OOM</li>
+                  <li>Single-digit p50 latency at 10K connections</li>
+                </ul>
+                <p class='compare-hub-card__cta'>Read the Node.js benchmark &rarr;</p>
+              </a>
+
+              <a class='compare-hub-card compare-hub-card--live' href='/compare/rails-actioncable'>
+                <div class='compare-hub-card__head'>
+                  <p class='compare-hub-card__bucket'>Rails · Hotwire · Ruby</p>
+                  <p class='compare-hub-card__status'>Live · 2026</p>
+                </div>
+                <h3 class='compare-hub-card__title'>Action Cable <span class='is-mute'>vs</span> Solid Cable <span class='is-mute'>vs</span> AsyncCable <span class='is-mute'>vs</span> AnyCable</h3>
+                <p class='compare-hub-card__lede'>
+                  Four Rails WebSocket adapters on the same box, all speaking the Action Cable API your channels and Turbo Streams already use. You swap one line of <code>cable.yml</code>, not your app.
+                </p>
+                <ul class='compare-hub-card__axes'>
+                  <li>99.9% delivered under jitter, where the in-process adapters lose about a fifth</li>
+                  <li>Every connection kept across a deploy, where in-process drops all 5,000</li>
+                  <li>600K connections on one box, where Puma walls at ~52K</li>
+                </ul>
+                <p class='compare-hub-card__cta'>Read the Rails benchmark &rarr;</p>
+              </a>
+
+              <div class='compare-hub-card compare-hub-card--soon'>
+                <div class='compare-hub-card__head'>
+                  <p class='compare-hub-card__bucket'>Laravel · PHP · Managed SaaS</p>
+                  <p class='compare-hub-card__status'>Coming soon</p>
+                </div>
+                <h3 class='compare-hub-card__title'>AnyCable <span class='is-mute'>vs</span> Pusher <span class='is-mute'>vs</span> Ably <span class='is-mute'>vs</span> Reverb</h3>
+                <p class='compare-hub-card__lede'>
+                  Self-hosted Laravel broadcasting against managed realtime. Live capacity, jitter, and deploy numbers for the self-hostable pair, AnyCable and Reverb, with published limits and pricing for Pusher and Ably.
+                </p>
+                <ul class='compare-hub-card__axes'>
+                  <li>Flat-cost self-hosting against per-message SaaS pricing</li>
+                  <li>Connection and message caps on each managed tier</li>
+                  <li>Deploy survival and delivery under jitter, measured on Railway</li>
+                </ul>
+                <p class='compare-hub-card__cta is-soon'>In progress</p>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {{!-- Landscape map — orients AnyCable within the three ways teams run
+             a WebSocket tier. Factual category description, no per-product
+             claims beyond topology. AnyCable's bucket carries the "here" pill. --}}
+        <section class='compare-rubric' id='landscape'>
+          <div class='compare-rubric__wrapper'>
+            <div class='compare-rubric__section'>
+              <div class='compare-rubric__content compare-rubric__content--full'>
+                <p class='compare-rubric__eyebrow'>The landscape</p>
+                <h2 class='compare-rubric__title'>Three ways to run a WebSocket tier</h2>
+                <p class='compare-prose'>
+                  Every realtime stack picks one of three topologies. It is the choice that drives the numbers on the pages above: what survives a deploy, how far one box scales, and who carries the cost.
+                </p>
+
+                <div class='compare-hub-buckets'>
+              <div class='compare-hub-bucket'>
+                <p class='compare-hub-bucket__label'>In-process app server</p>
+                <p class='compare-hub-bucket__lede'>The WebSocket lives inside your app process.</p>
+                <p class='compare-hub-bucket__examples'><strong>Action Cable, Solid Cable, AsyncCable, Socket.io, Reverb</strong></p>
+                <p class='compare-hub-bucket__note'>Simplest to run, nothing extra to deploy. Connections drop on every app deploy, and capacity is capped by the app server well before the box is full.</p>
+              </div>
+
+              <div class='compare-hub-bucket compare-hub-bucket--self'>
+                <p class='compare-hub-bucket__label'>Out-of-process gateway <span class='compare-hub-bucket__here'>You are here</span></p>
+                <p class='compare-hub-bucket__lede'>A dedicated server holds the sockets; your app handles auth and commands.</p>
+                <p class='compare-hub-bucket__examples'><strong>AnyCable</strong></p>
+                <p class='compare-hub-bucket__note'>Survives app deploys, adds delivery guarantees and presence, and scales to hundreds of thousands of connections on one box. You run one more service.</p>
+              </div>
+
+              <div class='compare-hub-bucket'>
+                <p class='compare-hub-bucket__label'>Managed SaaS</p>
+                <p class='compare-hub-bucket__lede'>A vendor runs the WebSocket tier, billed per connection and message.</p>
+                <p class='compare-hub-bucket__examples'><strong>Pusher, Ably, Liveblocks, PubNub</strong></p>
+                <p class='compare-hub-bucket__note'>No infrastructure to run. Cost scales with traffic, and your realtime data flows through a third party.</p>
+              </div>
+                </div>
+                <p class='compare-hub-footnote'>AnyCable is open source and MIT-licensed. The comparisons above pit it against the in-process and managed options on the metrics that matter in production.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class='compare-cta'>
+          <div class='compare-cta__inner'>
+            <h2 class='compare-cta__title'>Run AnyCable on your stack</h2>
+            <p class='compare-cta__subhead'>
+              Keep your channels and your client code. Move the WebSockets to a gateway that survives deploys, holds far more connections, and delivers reliably on bad networks.
+            </p>
+            <div class='compare-cta__actions'>
+              <a href='https://docs.anycable.io/' target='_blank' class='button button_size_big plausible-event-name=Navigation plausible-event-link=compare-hub-cta-docs' data-ph-capture-attribute-link-id='compare-hub-cta-docs'>Read the docs</a>
+              <a href='https://plus.anycable.io/' target='_blank' class='button button_size_big button_variant_outlined plausible-event-name=Signup plausible-event-location=compare-hub' data-ph-capture-attribute-link-id='compare-hub-cta-managed'>Try AnyCable+ free</a>
+            </div>
+          </div>
+        </section>
+
+      </main>
+      {{> footer }}
+    </div>
+
+    {{!-- CollectionPage + ItemList structured data — the index of comparison
+         pages, mirroring the visible cards. --}}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "WebSocket Server Comparisons",
+        "description": "Reproducible 2026 benchmarks of WebSocket servers and realtime adapters across stacks, compared on latency, delivery under jitter, connection capacity, and deploy survival.",
+        "url": "https://anycable.io/compare",
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnyCable",
+          "url": "https://anycable.io/"
+        },
+        "mainEntity": {
+          "@type": "ItemList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Node.js WebSocket servers: Socket.io vs uWebSockets.js vs AnyCable",
+              "url": "https://anycable.io/compare/nodejs-websocket"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Rails WebSocket adapters: Action Cable vs Solid Cable vs AsyncCable vs AnyCable",
+              "url": "https://anycable.io/compare/rails-actioncable"
+            }
+          ]
+        }
+      }
+    </script>
+
+    <script type="module" src="/index.ts"></script>
+  </body>
+</html>
