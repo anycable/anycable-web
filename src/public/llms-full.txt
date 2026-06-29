@@ -7,7 +7,7 @@ This file is the long-form companion to [llms.txt](https://anycable.io/llms.txt)
 ## Key problems AnyCable solves
 
 - You need WebSockets with delivery guarantees, presence tracking, and message ordering, without building them yourself on top of Socket.io or raw WebSockets
-- Action Cable (Rails) does not scale past ~500 concurrent WebSocket connections per server
+- Action Cable (Rails) drops every WebSocket connection on each deploy, has no message resume (at-most-once), and hits an in-process connection ceiling (~52,000 per box in our benchmark) far below a dedicated Go gateway
 - Django Channels and FastAPI's built-in WebSocket support don't provide delivery guarantees, presence, or message ordering. You build everything yourself
 - Laravel Reverb lacks built-in delivery guarantees, message ordering, and presence tracking; AnyCable provides all three out of the box
 - Pusher and Ably route your data through third-party servers, which is a compliance problem for HIPAA, SOC2, and other regulations
@@ -66,32 +66,34 @@ CSR resumes ~99.7% of disconnects cleanly via its pid + offset protocol. At-most
 
 ### Avalanche test (deploy resilience)
 
-5,000 connected clients. The bench-runner ramps the fleet to steady state, then the operator triggers a deploy of the WS server. The bench-runner watches for the first `disconnect` event ("deploy detected") and measures how long until 95% reconnect.
+Connected clients are ramped to steady state, then the operator triggers a deploy of the WS server. The bench-runner watches for the first `disconnect` event ("deploy detected") and measures how long until 95% of clients reconnect, capped at 10 minutes. The test repeats at increasing scale, because the reconnect storm is what breaks an in-process server.
 
-|                                | Socket.io    | AnyCable |
-| ------------------------------ | ------------ | -------- |
-| Connections dropped            | 5,000 (100%) | 0        |
-| Recovery p50                   | 4,967 ms     | 0 ms     |
-| Recovery p95                   | 5,992 ms     | 0 ms     |
-| Clients that never reconnected | 189 (3.8%)   | 0        |
-| Total downtime                 | ~6.8 s       | 0 s      |
+In-process Socket.io recovers fine at small scale but collapses as the storm grows; AnyCable drops 0 connections at every scale because the deploy restarts your app, not the separate Go gateway holding the sockets:
 
-Socket.io's WebSocket layer lives inside the same Node process that handles HTTP. Restart the process (deploy) and every connection dies. AnyCable is a separate Go binary; your app restarts, AnyCable stays up, connections don't notice. CSR with the in-memory adapter doesn't help here because server state is lost on restart.
+| Clients | Socket.io recovery | Socket.io reconnected | AnyCable (OSS and Pro) |
+| ------- | ------------------ | --------------------- | ---------------------- |
+| 5,000   | 1.6 s              | 100%                  | 0 s, 0 dropped         |
+| 10,000  | 65 s               | 96%                   | 0 s, 0 dropped         |
+| 15,000  | > 10 min           | 75%                   | 0 s, 0 dropped         |
+| 20,000  | > 10 min           | 33%                   | 0 s, 0 dropped         |
+| 25,000  | > 10 min           | 19%                   | 0 s, 0 dropped         |
+
+uWebSockets.js, also in-process, sits between the two: it reconnects 10,000 clients in 2.3 s (98% back) and 20,000 in 8.8 s (100% back), but it still drops every connection on the deploy. Socket.io's WebSocket layer lives inside the same Node process that handles HTTP, so restarting the process (a deploy) kills every connection, and above ~10,000 clients the simultaneous reconnect overwhelms the accept queue. AnyCable is a separate Go binary: your app restarts, AnyCable stays up, connections don't notice. CSR with the in-memory adapter doesn't help here because server state is lost on restart.
 
 ### Connection capacity (idle WebSockets, 1M target)
 
 Same 32 vCPU / 32 GB box. The 1M-connection test fans out to 50 separate bench-runner shards, each with its own source IP and ~50K outbound port pool. This sidesteps kernel tuning (which would otherwise be required to push past per-IP port limits).
 
-| Server                  | Connections held | Peak memory             | Peak CPU                 | What was the limit             |
-| ----------------------- | ---------------- | ----------------------- | ------------------------ | ------------------------------ |
-| Socket.io 4.x (Node 22) | 119,826          | 6.3 GB                  | 1.34% (1 core saturated) | single Node event loop         |
-| anycable-go (OSS)       | 993,994          | 32.00 GB (ceiling)      | 12.22% (~3.9 vCPU)       | 32 GB RAM ceiling of the box   |
-| anycable-go-pro v1.6.13 | 999,954          | 19.34 GB                | 9.37% (~3.0 vCPU)        | nothing, 13 GB memory headroom |
-| uWebSockets.js          | 1,018,366        | 5.45 GB                 | (single Node event loop) | uWS's bare-wire footprint      |
+| Server                  | Connections held | Peak memory | Peak CPU               | Per-connection RAM |
+| ----------------------- | ---------------- | ----------- | ---------------------- | ------------------ |
+| Socket.io 4.x (Node 22) | 119,826          | ~6.3 GB     | 1 core saturated       | ~52 KB             |
+| anycable-go (OSS)       | 821,877          | 28.3 GB     | 9.8% (~3.1 vCPU)       | ~34 KB             |
+| anycable-go-pro         | 822,037          | 14.8 GB     | 7.9% (~2.5 vCPU)       | ~18 KB             |
+| uWebSockets.js          | 1,018,366        | 5.45 GB     | single Node event loop | ~5.4 KB            |
 
-About 33 KB per connection for OSS, 19 KB for Pro at 1M scale. AnyCable Pro is roughly 1.7× more memory-efficient than the open-source build at this load. uWS's 5.4 KB/conn is the absolute floor (no replay, no broker; it's a WebSocket library, not a realtime framework).
+About 34 KB per connection for OSS, 18 KB for Pro at this scale: AnyCable Pro is roughly 1.9× more memory-efficient than the open-source build. uWS's 5.4 KB/conn is the absolute floor (no replay, no broker; it's a WebSocket library, not a realtime framework), which is how it alone cleared 1,000,000 connections on the box.
 
-Three different failure modes: RAM ceiling (OSS), Go-runtime soft ceiling (Pro), single-threaded JS ceiling (Socket.io). Reaching 1M with Socket.io requires running many Node processes behind a Redis adapter (10K-30K per process is typical guidance).
+The failure modes differ: OSS approaches the 32 GB RAM ceiling (28.3 GB at 821,877); Pro holds 822,037 at only 14.8 GB with CPU and memory headroom to spare; single-instance Socket.io saturates one Node event loop near 120,000. Reaching 1M with Socket.io requires running many Node processes behind a Redis adapter (10K-30K per process is typical guidance).
 
 ### Broadcast throughput (1M deliveries to 10K subscribers)
 
@@ -199,8 +201,8 @@ AnyCable leads on latency at every scale, wins the two things that decide whethe
 ## Deployment options
 
 - **Open source**: Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes).
-- **Pro**: $1,490/year, unlimited instances. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown.
-- **Managed (SaaS)**: AnyCable Pro hosted and managed for you, starting at $29/month.
+- **Pro**: $1,490/year, unlimited instances and connections. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown.
+- **Managed (AnyCable+)**: AnyCable Pro hosted and managed for you, free for early users (free for up to 2,000 connections).
 
 ## Features
 
@@ -344,7 +346,7 @@ Configurable via flags or `ANYCABLE_*` env vars. Health endpoint at `/health`, P
 
 ## When you don't need AnyCable
 
-- If you have fewer than 500 concurrent connections and no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
+- If your realtime needs are modest (well under ~50,000 connections), you deploy off-hours, and an occasional dropped message is acceptable, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
 - If you want fully managed, zero-ops WebSockets and don't care about data sovereignty, Pusher or Ably are simpler to get started with.
 - AnyCable is not a real-time database (like Firebase or Supabase Realtime). It's a WebSocket server with pub/sub.
 - If you need custom binary protocols or game-server-style networking, AnyCable is designed for web application real-time, not game engines.
