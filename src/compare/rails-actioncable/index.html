@@ -530,17 +530,18 @@ Turbo::StreamsChannel.broadcast_append_to(
                         <th>Adapter</th>
                         <th>10K subs <span class='t-mute t-tiny'>delivery / p99</span></th>
                         <th>Max held <span class='t-mute t-tiny'>0 failures</span></th>
+                        <th>RAM / conn <span class='t-mute t-tiny'>idle</span></th>
                         <th>What capped it</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>Solid Cable <span class='t-mute t-tiny'>DB</span></td><td>100% / 200&nbsp;ms</td><td>~52K</td><td class='t-mute t-tiny'>8-worker fd limit (2.5&nbsp;GB)</td></tr>
-                      <tr><td>Action Cable <span class='t-mute t-tiny'>Puma</span></td><td>100% / 84&nbsp;ms</td><td>~52K</td><td class='t-mute t-tiny'>8-worker fd limit (2.3&nbsp;GB)</td></tr>
-                      <tr><td>Async::Cable <span class='t-mute t-tiny'>Falcon</span></td><td>100% / 112&nbsp;ms</td><td>~97K</td><td class='t-mute t-tiny'>memory, ~290&nbsp;KB/conn (27&nbsp;GB)</td></tr>
-                      <tr class='is-row-best'><td>AnyCable</td><td class='is-best'><strong>100% / 31&nbsp;ms</strong></td><td class='is-best'><strong>600K+</strong></td><td class='t-mute t-tiny'>not broken; fleet-limited</td></tr>
+                      <tr><td>Solid Cable <span class='t-mute t-tiny'>DB</span></td><td>100% / 200&nbsp;ms</td><td>~52K</td><td>~50&nbsp;KB</td><td class='t-mute t-tiny'>8-worker fd limit (2.5&nbsp;GB)</td></tr>
+                      <tr><td>Action Cable <span class='t-mute t-tiny'>Puma</span></td><td>100% / 84&nbsp;ms</td><td>~52K</td><td>~45&nbsp;KB</td><td class='t-mute t-tiny'>8-worker fd limit (2.3&nbsp;GB)</td></tr>
+                      <tr><td>Async::Cable <span class='t-mute t-tiny'>Falcon</span></td><td>100% / 112&nbsp;ms</td><td>~97K</td><td class='is-worst'>~290&nbsp;KB</td><td class='t-mute t-tiny'>memory wall (27&nbsp;GB)</td></tr>
+                      <tr class='is-row-best'><td>AnyCable</td><td class='is-best'><strong>100% / 31&nbsp;ms</strong></td><td class='is-best'><strong>600K+</strong></td><td>~47&nbsp;KB</td><td class='t-mute t-tiny'>not broken; fleet-limited</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>10K column: subscribers held while a publisher broadcasts, sharded across 13 drivers. Max-held column: idle connections ramped to failure on identical 32&nbsp;GB boxes (default 8-worker config). Puma&rsquo;s ~52K is a process file-descriptor ceiling reached well below the memory limit; raising worker limits lifts it. AnyCable held 600K across 50 load drivers at 27&nbsp;GB (~47&nbsp;KB/conn), about 84% of the box, with zero failures. We did not drive it to failure: the load fleet maxed out, not the server, so 600K is a floor, not a ceiling. <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>Methodology</a>.</p>
+                  <p class='compare-data-table__footnote'>10K column: subscribers held while a publisher broadcasts, sharded across 13 drivers. Max-held column: idle connections ramped to failure on identical 32&nbsp;GB boxes (default 8-worker config). Puma&rsquo;s ~52K is a process file-descriptor ceiling reached well below the memory limit; raising worker limits lifts it. AnyCable held 600K across 50 load drivers at 27&nbsp;GB, about 84% of the box, with zero failures. We did not drive it to failure: the load fleet maxed out, not the server, so 600K is a floor, not a ceiling. <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>Methodology</a>.</p>
                 </div>
               </div>
             </div>
