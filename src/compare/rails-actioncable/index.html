@@ -83,7 +83,7 @@
                 <div class='compare-hero-card__label'>
                   Deploy survival
                   <span class='compare-hero-card__question'>Survives every deploy</span>
-                  <span class='t-mute t-tiny'>downtime on an app redeploy</span>
+                  <span class='t-mute t-tiny'>time to 95% reconnect on deploy</span>
                 </div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
@@ -464,12 +464,12 @@ Turbo::StreamsChannel.broadcast_append_to(
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
                 <div class='compare-frame'>
-                  <p class='compare-data-table__headline'>The interesting number is not that the in-process adapters drop every connection on deploy (they all do): it is that the blackout lasts ~7.5 to 8 seconds and, even after the reconnect storm, about 4% of clients never come back within the window. Falcon behaves like Puma here: swapping the runtime leaves the deploy fragility intact. AnyCable&rsquo;s gateway never sees the deploy, so there is no outage and nothing to reconnect.</p>
+                  <p class='compare-data-table__headline'>The interesting number is not that the in-process adapters drop every connection on deploy (they all do): it is that getting 95% of clients back takes ~7.5 to 8 seconds, and about 4% never reconnect within the window at all. Falcon behaves like Puma here: swapping the runtime leaves the deploy fragility intact. AnyCable&rsquo;s gateway never sees the deploy, so there is no outage and nothing to reconnect.</p>
                   <table class='compare-data-table'>
                     <thead>
                       <tr>
                         <th>Adapter <span class='t-mute t-tiny'>5K clients, app redeploy</span></th>
-                        <th>Down for <span class='t-mute t-tiny'>blackout before reconnect</span></th>
+                        <th>Down for <span class='t-mute t-tiny'>until 95% reconnect</span></th>
                         <th>Recovered <span class='t-mute t-tiny'>within the window</span></th>
                       </tr>
                     </thead>
@@ -496,7 +496,7 @@ Turbo::StreamsChannel.broadcast_append_to(
                       </tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>5,000 clients connected, then a real Railway redeploy of the app service. Every in-process adapter dropped all 5,000 connections; &ldquo;Down for&rdquo; is how long the blackout lasted before the reconnect storm settled, and &ldquo;Recovered&rdquo; is the share back online when observation stopped (the &ldquo;still out&rdquo; clients never reconnected within the window). AnyCable was redeployed the same way, on its Rails RPC backend: the gateway reported no disconnect at all, so there was zero downtime and nothing to reconnect.</p>
+                  <p class='compare-data-table__footnote'>5,000 clients connected, then a real Railway redeploy of the app service. Every in-process adapter dropped all 5,000 connections; &ldquo;Down for&rdquo; is the time from the redeploy until 95% of clients had reconnected, and &ldquo;Recovered&rdquo; is the share back online when observation stopped (the &ldquo;still out&rdquo; clients never reconnected within the window). AnyCable was redeployed the same way, on its Rails RPC backend: the gateway reported no disconnect at all, so there was zero downtime and nothing to reconnect.</p>
                 </div>
               </div>
             </div>
@@ -924,7 +924,7 @@ Turbo::StreamsChannel.broadcast_append_to(
         "variableMeasured": [
           { "@type": "PropertyValue", "name": "Latency p50 at 5K subscribers (ms)", "description": "Action Cable (Puma+Redis) 13; Solid Cable (Puma+DB) 74; Async::Cable (Falcon) 20; AnyCable (Go gateway) 7." },
           { "@type": "PropertyValue", "name": "Message delivery under ~2s network drops at 5K subscribers (%)", "description": "Action Cable 78.1; Solid Cable 78.1; Async::Cable 78.1; AnyCable 99.9." },
-          { "@type": "PropertyValue", "name": "Downtime and reconnection after an app redeploy (5,000 clients)", "description": "Every in-process adapter dropped all 5,000 connections. Action Cable down ~7.5 s, 96.3% reconnected; Solid Cable down ~7.6 s, 95.7%; Async::Cable down ~8.0 s, 96.4%; AnyCable 0 s downtime, never dropped." },
+          { "@type": "PropertyValue", "name": "Time to 95% reconnect after an app redeploy (5,000 clients)", "description": "Every in-process adapter dropped all 5,000 connections. Action Cable 7.5 s to 95% reconnect (96.3% back overall); Solid Cable 7.6 s (95.7%); Async::Cable 8.0 s (96.4%); AnyCable never dropped, 0 s." },
           { "@type": "PropertyValue", "name": "Max idle connections held before failure on a 32 GB box", "description": "Action Cable ~52,000 (file-descriptor limit); Solid Cable ~52,000 (file-descriptor limit); Async::Cable ~97,000 (memory); AnyCable 600,000 (not driven to failure)." }
         ]
       }
