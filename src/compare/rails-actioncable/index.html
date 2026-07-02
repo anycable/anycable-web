@@ -29,16 +29,16 @@
                 </div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
+                    <dt>Action Cable <span class='t-mute t-tiny'>Redis</span></dt>
+                    <dd>11&nbsp;ms</dd>
+                  </div>
+                  <div class='compare-hero-card__row'>
                     <dt>Solid Cable <span class='t-mute t-tiny'>DB</span></dt>
                     <dd>88&nbsp;ms</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>Async::Cable <span class='t-mute t-tiny'>Falcon</span></dt>
                     <dd>15&nbsp;ms</dd>
-                  </div>
-                  <div class='compare-hero-card__row'>
-                    <dt>Action Cable <span class='t-mute t-tiny'>Puma</span></dt>
-                    <dd>11&nbsp;ms</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable</dt>
@@ -58,15 +58,15 @@
                 </div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
-                    <dt>Solid Cable</dt>
+                    <dt>Action Cable <span class='t-mute t-tiny'>Redis</span></dt>
                     <dd class='is-worst'>53%</dd>
                   </div>
                   <div class='compare-hero-card__row'>
-                    <dt>Action Cable</dt>
+                    <dt>Solid Cable <span class='t-mute t-tiny'>DB</span></dt>
                     <dd class='is-worst'>53%</dd>
                   </div>
                   <div class='compare-hero-card__row'>
-                    <dt>Async::Cable</dt>
+                    <dt>Async::Cable <span class='t-mute t-tiny'>Falcon</span></dt>
                     <dd class='is-worst'>53%</dd>
                   </div>
                   <div class='compare-hero-card__row'>
@@ -87,15 +87,15 @@
                 </div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
-                    <dt>Action Cable</dt>
+                    <dt>Action Cable <span class='t-mute t-tiny'>Redis</span></dt>
                     <dd class='is-worst'>14&nbsp;s</dd>
                   </div>
                   <div class='compare-hero-card__row'>
-                    <dt>Solid Cable</dt>
+                    <dt>Solid Cable <span class='t-mute t-tiny'>DB</span></dt>
                     <dd class='is-worst'>14&nbsp;s</dd>
                   </div>
                   <div class='compare-hero-card__row'>
-                    <dt>Async::Cable</dt>
+                    <dt>Async::Cable <span class='t-mute t-tiny'>Falcon</span></dt>
                     <dd class='is-worst'>14&nbsp;s</dd>
                   </div>
                   <div class='compare-hero-card__row'>
@@ -116,16 +116,16 @@
                 </div>
                 <dl class='compare-hero-card__rows'>
                   <div class='compare-hero-card__row'>
-                    <dt>Async::Cable <span class='t-mute t-tiny'>Falcon</span></dt>
-                    <dd>~105K</dd>
+                    <dt>Action Cable <span class='t-mute t-tiny'>Redis</span></dt>
+                    <dd>~217K</dd>
                   </div>
                   <div class='compare-hero-card__row'>
-                    <dt>Solid Cable <span class='t-mute t-tiny'>Puma</span></dt>
+                    <dt>Solid Cable <span class='t-mute t-tiny'>DB</span></dt>
                     <dd>~206K</dd>
                   </div>
                   <div class='compare-hero-card__row'>
-                    <dt>Action Cable <span class='t-mute t-tiny'>Puma</span></dt>
-                    <dd>~217K</dd>
+                    <dt>Async::Cable <span class='t-mute t-tiny'>Falcon</span></dt>
+                    <dd>~105K</dd>
                   </div>
                   <div class='compare-hero-card__row'>
                     <dt>AnyCable</dt>
@@ -143,7 +143,7 @@
             </div>
 
             <div class='compare-callout'>
-              <strong>Should you switch?</strong> Stay on Action Cable or Solid Cable if you serve well under ~200K connections, deploy off-hours, and an occasional dropped update is acceptable. Reach for AnyCable when any of these holds: you deploy during business hours (every in-process deploy drops 100% of connections at once), your users are on flaky mobile or WiFi and silent message loss is unacceptable (chat, Turbo Streams, AI token streaming), or you are approaching ~200K connections. The app change is one line in <code>config/cable.yml</code>; the work is operational, and rollback is the same one-line revert, since a stock Action Cable client reconnects over the base protocol.
+              <strong>Should you switch?</strong> Stay on Action Cable or Solid Cable if your realtime traffic is light, you deploy off-hours, and an occasional dropped update is acceptable. Reach for AnyCable when any of these holds: you deploy during business hours (every in-process deploy drops 100% of connections at once), your users are on flaky mobile or WiFi and silent message loss is unacceptable (chat, Turbo Streams, AI token streaming), or you broadcast steadily to a large audience (the in-process latency degrades under sustained load well below the idle connection ceiling). The app change is one line in <code>config/cable.yml</code>; the work is operational, and rollback is the same one-line revert, since a stock Action Cable client reconnects over the base protocol.
             </div>
 
             <div class='compare-tldr'>
@@ -346,9 +346,9 @@ Turbo::StreamsChannel.broadcast_append_to(
                       </tr>
                     </thead>
                     <tbody>
+                      <tr><td>Action Cable <span class='t-mute t-tiny'>Redis</span></td><td>11 / 48&nbsp;ms</td><td>11 / 48&nbsp;ms</td></tr>
                       <tr><td>Solid Cable <span class='t-mute t-tiny'>DB</span></td><td>68 / 143&nbsp;ms</td><td>88 / 190&nbsp;ms</td></tr>
                       <tr><td>Async::Cable <span class='t-mute t-tiny'>Falcon</span></td><td>15 / 50&nbsp;ms</td><td>15 / 55&nbsp;ms</td></tr>
-                      <tr><td>Action Cable <span class='t-mute t-tiny'>Puma</span></td><td>11 / 48&nbsp;ms</td><td>11 / 48&nbsp;ms</td></tr>
                       <tr class='is-row-best'><td>AnyCable</td><td class='is-best'><strong>6 / 22&nbsp;ms</strong></td><td class='is-best'><strong>6 / 29&nbsp;ms</strong></td></tr>
                     </tbody>
                   </table>
@@ -386,15 +386,15 @@ Turbo::StreamsChannel.broadcast_append_to(
                     </thead>
                     <tbody>
                       <tr>
-                        <td>Solid Cable <span class='t-mute t-tiny'>DB</span></td>
+                        <td>Action Cable <span class='t-mute t-tiny'>Redis</span></td>
                         <td class='is-worst'><strong>53%</strong></td>
-                        <td>68&nbsp;ms</td>
+                        <td>12&nbsp;ms</td>
                         <td class='is-na'>n/a <span class='t-mute t-tiny'>no resume</span></td>
                       </tr>
                       <tr>
-                        <td>Action Cable <span class='t-mute t-tiny'>Puma</span></td>
+                        <td>Solid Cable <span class='t-mute t-tiny'>DB</span></td>
                         <td class='is-worst'><strong>53%</strong></td>
-                        <td>12&nbsp;ms</td>
+                        <td>68&nbsp;ms</td>
                         <td class='is-na'>n/a <span class='t-mute t-tiny'>no resume</span></td>
                       </tr>
                       <tr>
@@ -459,7 +459,7 @@ Turbo::StreamsChannel.broadcast_append_to(
               <div class='compare-rubric__content'>
                 <h2 class='compare-rubric__title' id='deploy'>03 &middot; Does it survive a deploy?<a class='heading-anchor' href='#deploy' aria-label='Permalink'>#</a></h2>
                 <p class='compare-prose'>
-                  Rails apps deploy often. Every time an in-process WebSocket server restarts, all of its connections drop at once and reconnect in a thundering herd. We connected 5,000 clients, ran a real <code>railway redeploy</code> on the app mid-test, and measured what happened. For AnyCable the redeploy hit the Rails RPC backend while the gateway kept holding the sockets. Background on the failure mode in <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>Vladimir&rsquo;s post at Martian Chronicles</a>.
+                  Rails apps deploy often, and every time an in-process WebSocket server restarts, all of its connections drop at once and have to reconnect. We connected 5,000 clients, ran a real <code>railway redeploy</code> on the app mid-test, and measured the recovery. Modern clients (Rails&nbsp;7+ and AnyCable) stagger reconnects with jittered backoff, so this rarely becomes the server-killing avalanche of older setups; even a constrained box recovers, just slower. What it always is, though, is a guaranteed disruption on every deploy: a reconnect gap, the messages missed during it, and a burst of re-auth and re-subscribe work. For AnyCable the redeploy hit the Rails RPC backend while the gateway kept holding the sockets, so there was nothing to reconnect. Background on the failure mode in <a class='link' href='https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications' target='_blank' rel='noopener'>Vladimir&rsquo;s post at Martian Chronicles</a>.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -496,7 +496,7 @@ Turbo::StreamsChannel.broadcast_append_to(
                       </tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>5,000 clients connected, then a real Railway redeploy of the app service. Every in-process adapter dropped all 5,000 connections; &ldquo;Recovery&rdquo; is the wall-clock from the redeploy until 95% of clients had reconnected on the stock <code>@rails/actioncable</code> client, whose poll-based reconnect is the slow part, and &ldquo;Reconnected&rdquo; is the share back online when observation stopped (the &ldquo;still out&rdquo; clients never came back within the window). The reconnect storm is generated across 20 drivers, so the recovery time is the adapter&rsquo;s, not the load fleet&rsquo;s. AnyCable was redeployed the same way, on its Rails RPC backend and driven by <code>@anycable/core</code>: the gateway reported no disconnect at all, so there was zero downtime and nothing to reconnect.</p>
+                  <p class='compare-data-table__footnote'>5,000 clients connected, then a real Railway redeploy of the app service. Every in-process adapter dropped all 5,000 connections; &ldquo;Recovery&rdquo; is the wall-clock from the redeploy until 95% of clients had reconnected on the stock <code>@rails/actioncable</code> client, whose poll-based reconnect is the slow part, and &ldquo;Reconnected&rdquo; is the share back online when observation stopped (the &ldquo;still out&rdquo; clients never came back within the window). The reconnect storm is generated across 20 drivers, so the recovery time is the adapter&rsquo;s, not the load fleet&rsquo;s. Box size sets the pace: the same redeploy on a constrained 2-worker instance holding ~21.5K connections recovered 96% in ~23&nbsp;s (vs ~14&nbsp;s on the 8-worker box), slower and with more stranded, but still no crash, the jittered client keeps the herd survivable. AnyCable was redeployed the same way, on its Rails RPC backend and driven by <code>@anycable/core</code>: the gateway reported no disconnect at all, so there was zero downtime and nothing to reconnect.</p>
                 </div>
               </div>
             </div>
@@ -513,7 +513,10 @@ Turbo::StreamsChannel.broadcast_append_to(
                   In-process Action Cable has a reputation for falling over under load. With a properly sharded load generator it does not at the sizes most apps see: all four adapters held <strong>10,000 subscribers at 100% delivery</strong> while broadcasting, and AnyCable kept the tightest tail. At that scale, reliability and deploys are what separate them.
                 </p>
                 <p class='compare-prose'>
-                  Pushed to failure on identical 32&nbsp;GB boxes, the picture changes. The two Puma adapters wall around <strong>~210K connections</strong> on an 8-worker file-descriptor ceiling, reached before the memory limit. Async::Cable on Falcon walls first, at <strong>~105K</strong>, because each fiber-backed connection costs roughly 290&nbsp;KB, six times the others, so on raw capacity Falcon trails the Puma pair. AnyCable held <strong>792K with zero failures</strong> before we ran out of load generators, using the whole box (one Go process, no per-worker wall) at about 47&nbsp;KB per connection. Same per-connection cost as Puma, several times the headroom.
+                  Parked idle on identical 32&nbsp;GB boxes, the raw ceilings are high: the two Puma adapters hold <strong>~210K connections</strong> on an 8-worker file-descriptor limit, Async::Cable on Falcon walls first at <strong>~105K</strong> (each fiber-backed connection costs ~290&nbsp;KB, six times the others), and AnyCable held <strong>792K</strong> before we ran out of load generators, at about 47&nbsp;KB per connection. Read those as an idle ceiling, though: sockets held open with no traffic.
+                </p>
+                <p class='compare-prose'>
+                  Under sustained broadcasting the usable ceiling is much lower, and the in-process adapters feel it first. At a gentle chat-like rate (~2&nbsp;messages/sec per subscriber), Action Cable&rsquo;s round-trip climbs from 11&nbsp;ms at 5K to 55&nbsp;ms at 25K and 149&nbsp;ms at 50K; Solid Cable and Async::Cable degrade further (571&nbsp;ms and 135&nbsp;ms at 50K). By 100K the in-process adapters start dropping messages, delivering 75&ndash;85%. AnyCable serves the same load at ~33&nbsp;ms and holds delivery, because fan-out runs in Go rather than behind Ruby&rsquo;s GVL. The number that governs a live app is throughput under your broadcast pattern, which sits well below the idle ceiling.
                 </p>
               </div>
               <div class='compare-rubric__media compare-rubric__media--align-top compare-rubric__media--sticky'>
@@ -524,19 +527,38 @@ Turbo::StreamsChannel.broadcast_append_to(
                       <tr>
                         <th>Adapter</th>
                         <th>10K subs <span class='t-mute t-tiny'>delivery / p99</span></th>
-                        <th>Max held <span class='t-mute t-tiny'>0 failures</span></th>
+                        <th>Max held <span class='t-mute t-tiny'>idle, 0 failures</span></th>
                         <th>RAM / conn <span class='t-mute t-tiny'>idle</span></th>
                         <th>What capped it</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <tr><td>Action Cable <span class='t-mute t-tiny'>Redis</span></td><td>100% / 54&nbsp;ms</td><td>~217K</td><td>~45&nbsp;KB</td><td class='t-mute t-tiny'>8-worker fd ceiling</td></tr>
                       <tr><td>Solid Cable <span class='t-mute t-tiny'>DB</span></td><td>100% / 925&nbsp;ms</td><td>~206K</td><td>~50&nbsp;KB</td><td class='t-mute t-tiny'>8-worker fd ceiling</td></tr>
-                      <tr><td>Action Cable <span class='t-mute t-tiny'>Puma</span></td><td>100% / 54&nbsp;ms</td><td>~217K</td><td>~45&nbsp;KB</td><td class='t-mute t-tiny'>8-worker fd ceiling</td></tr>
                       <tr><td>Async::Cable <span class='t-mute t-tiny'>Falcon</span></td><td>100% / 93&nbsp;ms</td><td>~105K</td><td class='is-worst'>~290&nbsp;KB</td><td class='t-mute t-tiny'>memory wall (~30&nbsp;GB)</td></tr>
                       <tr class='is-row-best'><td>AnyCable</td><td class='is-best'><strong>100% / 31&nbsp;ms</strong></td><td class='is-best'><strong>792K+</strong></td><td>~47&nbsp;KB</td><td class='t-mute t-tiny'>not broken; fleet-limited</td></tr>
                     </tbody>
                   </table>
-                  <p class='compare-data-table__footnote'>10K column: subscribers held while a publisher broadcasts, sharded across 40 drivers. Max-held column: idle connections ramped to failure on identical 32&nbsp;GB boxes, with Puma running its full 8 workers. Puma&rsquo;s ~210K is a per-process file-descriptor ceiling across the 8 workers, reached before the memory limit; raising the fd limit lifts it further. AnyCable held 792K across 66 load drivers with zero failures. The load fleet maxed out before the server did, so 792K is a floor, not a ceiling. <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>Methodology</a>.</p>
+                  <p class='compare-data-table__footnote'>10K column: subscribers held while a publisher broadcasts, sharded across 40 drivers. Max-held column: <strong>idle</strong> connections ramped to failure on identical 32&nbsp;GB boxes, with Puma running its full 8 workers. Puma&rsquo;s ~210K is a per-process file-descriptor ceiling across the 8 workers, reached before the memory limit; raising the fd limit lifts it further. AnyCable held 792K across 66 load drivers with zero failures. The load fleet maxed out before the server did, so 792K is a floor, not a ceiling. <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>Methodology</a>.</p>
+
+                  <p class='compare-data-table__headline'>Idle sockets are the easy part. Under a sustained ~2&nbsp;msg/sec load, latency is what gives first: all four still deliver 100% at 25K, but AnyCable is 2&ndash;6&times; faster, and by 50K the in-process adapters are sluggish. By 100K they start dropping messages.</p>
+                  <table class='compare-data-table compare-data-table--compact'>
+                    <thead>
+                      <tr>
+                        <th>Under load <span class='t-mute t-tiny'>~2 msg/s/sub</span></th>
+                        <th>p50 @ 25K</th>
+                        <th>p50 @ 50K</th>
+                        <th>@ 100K</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Action Cable <span class='t-mute t-tiny'>Redis</span></td><td>55&nbsp;ms</td><td>149&nbsp;ms</td><td class='is-worst'>81% delivered</td></tr>
+                      <tr><td>Solid Cable <span class='t-mute t-tiny'>DB</span></td><td>186&nbsp;ms</td><td>571&nbsp;ms</td><td class='is-worst'>85% delivered</td></tr>
+                      <tr><td>Async::Cable <span class='t-mute t-tiny'>Falcon</span></td><td>89&nbsp;ms</td><td>135&nbsp;ms</td><td class='is-worst'>75% delivered</td></tr>
+                      <tr class='is-row-best'><td>AnyCable</td><td class='is-best'><strong>33&nbsp;ms</strong></td><td class='is-best'><strong>31&nbsp;ms</strong></td><td class='is-best'>100% &middot; ~31&nbsp;ms</td></tr>
+                    </tbody>
+                  </table>
+                  <p class='compare-data-table__footnote'>Each subscriber holds a stream and receives ~2&nbsp;msg/sec; connection count ramped under that load. Every adapter delivers 100% through 50K, so the p50 is what separates them; by 100K the in-process adapters drop to 75&ndash;85% with p50 over 400&nbsp;ms. AnyCable&rsquo;s figure is steady-state serving once subscribed; establishing tens of thousands of connections in a sudden cold burst is a separate limit, set by the Rails RPC backend&rsquo;s Connect/Subscribe throughput (DB-pool sizing), not by fan-out. <a class='link' href='https://github.com/anycable/nodejs-websocket-bench' target='_blank' rel='noopener'>Methodology</a>.</p>
                 </div>
               </div>
             </div>
@@ -628,7 +650,7 @@ Turbo::StreamsChannel.broadcast_append_to(
                 <div class='compare-faq'>
                 <details class='compare-faq__item'>
                   <summary>Which Rails WebSocket adapter should I choose?</summary>
-                  <div class='compare-faq__answer'>For most Rails apps the choice is about reliability and operations, not raw speed, since all four hold 10,000 subscribers at 100% delivery. Choose <strong>Solid Cable</strong> if you want zero extra infrastructure (no Redis, just your database) and can accept message loss on reconnect and on deploy. Choose <strong>Action Cable</strong> on Redis or <strong>Async::Cable</strong> on Falcon if you are already invested in that runtime; both still lose about half of messages under network jitter with their default client and drop every connection on deploy. Choose <strong>AnyCable</strong> when you need reliable delivery (100% under jitter), connections that survive deploys, built-in presence, or scale past ~200,000 connections; it is the same Action Cable API with an out-of-process Go gateway. AnyCable is the safest default for production realtime on Rails.</div>
+                  <div class='compare-faq__answer'>For most Rails apps the choice is about reliability and operations, not raw speed, since all four hold 10,000 subscribers at 100% delivery. Choose <strong>Solid Cable</strong> if you want zero extra infrastructure (no Redis, just your database) and can accept message loss on reconnect and on deploy. Choose <strong>Action Cable</strong> on Redis or <strong>Async::Cable</strong> on Falcon if you are already invested in that runtime; both still lose about half of messages under network jitter with their default client and drop every connection on deploy. Choose <strong>AnyCable</strong> when you need reliable delivery (100% under jitter), connections that survive deploys, built-in presence, or you broadcast steadily to a large audience (in-process latency degrades under sustained load well below the idle connection ceiling); it is the same Action Cable API with an out-of-process Go gateway. AnyCable is the safest default for production realtime on Rails.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -653,7 +675,7 @@ Turbo::StreamsChannel.broadcast_append_to(
 
                 <details class='compare-faq__item'>
                   <summary>Doesn&rsquo;t in-process Action Cable fall over at scale?</summary>
-                  <div class='compare-faq__answer'>At everyday scale, less than its reputation suggests: all four adapters held 10,000 subscribers at 100% delivery with zero failures, so for most apps capacity rarely decides it. Pushed to the limit on identical 32&nbsp;GB boxes, the difference is large. Puma Action Cable and Solid Cable wall around 210K connections on an 8-worker file-descriptor ceiling, reached before the memory limit. Async::Cable on Falcon runs out of memory first, near 105K (its fibers cost ~290&nbsp;KB each). AnyCable held 792K with zero failures before our load fleet maxed out, using the whole box at ~47&nbsp;KB per connection. So in-process Rails is fine until you need real scale; past ~200K, AnyCable&rsquo;s separate Go process is what carries it, on top of its latency, jitter, and deploy wins.</div>
+                  <div class='compare-faq__answer'>At everyday scale, less than its reputation suggests: all four adapters held 10,000 subscribers at 100% delivery with zero failures, so for most apps capacity rarely decides it. Pushed to the limit on identical 32&nbsp;GB boxes, the difference is large. Puma Action Cable and Solid Cable wall around 210K connections on an 8-worker file-descriptor ceiling, reached before the memory limit. Async::Cable on Falcon runs out of memory first, near 105K (its fibers cost ~290&nbsp;KB each). AnyCable held 792K with zero failures before our load fleet maxed out, using the whole box at ~47&nbsp;KB per connection. Those are <em>idle</em> ceilings, though; under a sustained ~2&nbsp;msg/sec broadcast the in-process adapters degrade far sooner (p50 climbs to 149&ndash;571&nbsp;ms by 50K and delivery drops to 75&ndash;85% by 100K), while AnyCable serves the same load at ~33&nbsp;ms. So in-process Rails is fine for light traffic; under real broadcast load, AnyCable&rsquo;s separate Go process is what carries it, on top of its jitter and deploy wins.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -740,7 +762,7 @@ Turbo::StreamsChannel.broadcast_append_to(
             "name": "Which Rails WebSocket adapter should I choose?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "For most Rails apps the choice is about reliability and operations, not raw speed, since all four hold 10,000 subscribers at 100% delivery. Choose Solid Cable if you want zero extra infrastructure (no Redis, just your database) and can accept message loss on reconnect and on deploy. Choose Action Cable on Redis or Async::Cable on Falcon if you are already invested in that runtime; both still lose about half of messages under network jitter with their default client and drop every connection on deploy. Choose AnyCable when you need reliable delivery (100% under jitter), connections that survive deploys, built-in presence, or scale past ~200,000 connections; it is the same Action Cable API with an out-of-process Go gateway. AnyCable is the safest default for production realtime on Rails."
+              "text": "For most Rails apps the choice is about reliability and operations, not raw speed, since all four hold 10,000 subscribers at 100% delivery. Choose Solid Cable if you want zero extra infrastructure (no Redis, just your database) and can accept message loss on reconnect and on deploy. Choose Action Cable on Redis or Async::Cable on Falcon if you are already invested in that runtime; both still lose about half of messages under network jitter with their default client and drop every connection on deploy. Choose AnyCable when you need reliable delivery (100% under jitter), connections that survive deploys, built-in presence, or you broadcast steadily to a large audience (in-process latency degrades under sustained load well below the idle connection ceiling); it is the same Action Cable API with an out-of-process Go gateway. AnyCable is the safest default for production realtime on Rails."
             }
           },
           {
@@ -788,7 +810,7 @@ Turbo::StreamsChannel.broadcast_append_to(
             "name": "Doesn't in-process Action Cable fall over at scale?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "At everyday scale, less than its reputation suggests: all four adapters held 10,000 subscribers at 100% delivery with zero failures. Pushed to the limit on identical 32GB boxes, the difference is large. Puma Action Cable and Solid Cable wall around 210K connections on an 8-worker file-descriptor ceiling, reached before the memory limit. Async::Cable on Falcon runs out of memory first, near 105K (its fibers cost ~290KB each). AnyCable held 792K with zero failures before our load fleet maxed out, using the whole box at ~47KB per connection. In-process Rails is fine until you need real scale; past ~200K, AnyCable's separate Go process is what carries it."
+              "text": "At everyday scale, less than its reputation suggests: all four adapters held 10,000 subscribers at 100% delivery with zero failures. Pushed to the limit on identical 32GB boxes, the difference is large. Puma Action Cable and Solid Cable wall around 210K connections on an 8-worker file-descriptor ceiling, reached before the memory limit. Async::Cable on Falcon runs out of memory first, near 105K (its fibers cost ~290KB each). AnyCable held 792K with zero failures before our load fleet maxed out, using the whole box at ~47KB per connection. Those are idle ceilings, though; under a sustained ~2 msg/sec broadcast the in-process adapters degrade far sooner (p50 climbs to 149-571ms by 50K and delivery drops to 75-85% by 100K), while AnyCable serves the same load at ~33ms. In-process Rails is fine for light traffic; under real broadcast load, AnyCable's separate Go process is what carries it."
             }
           },
           {
