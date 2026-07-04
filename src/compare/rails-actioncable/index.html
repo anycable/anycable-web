@@ -418,6 +418,26 @@ Turbo::StreamsChannel.broadcast_append_to(
           </div>
         </section>
 
+        {{!-- Reconnect backoff — the client-side dimension of recovery. From
+             the default-vs-tuned reconnect matrix (bench PR #2): a faster
+             client is not the fix; resume is, and aggressive reconnect
+             storms the in-process servers. --}}
+        <section class='compare-rubric'>
+          <div class='compare-rubric__wrapper'>
+            <div class='compare-rubric__section'>
+              <div class='compare-rubric__content compare-rubric__content--full'>
+                <h3 class='compare-rubric__subtitle'>Why a faster client is not the fix</h3>
+                <p class='compare-prose'>
+                  How quickly a client comes back after a drop is set by the client library, not the server, and each ships a different default: the stock <code>@rails/actioncable</code> monitor waits about 6&nbsp;seconds before its first retry, <code>@anycable/core</code> a few seconds, some clients half a second. So the loss above looks like it has an easy fix, just reconnect sooner. It does not.
+                </p>
+                <p class='compare-prose'>
+                  A shorter backoff narrows the offline window, but it cannot bring back a message that dropped while the client was gone, the base protocol keeps no history to replay. Pushed hard it backfires. We reran the jitter test with an aggressive client: 10,000 subscribers reconnecting in near lockstep after each drop become a reconnect storm, and the in-process adapters on Puma got worse rather than better, delivery fell from about 51% to the 15&ndash;30% range as the server buckled under the rush. Falcon, whose fibers absorb the storm, held up. Resume is what closes the gap, not reconnect speed, and it is why AnyCable stays at 100% whatever backoff the client uses.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {{!-- What this breaks --}}
         <section class='compare-rubric'>
           <div class='compare-rubric__wrapper'>
