@@ -86,6 +86,66 @@ $className: 'plan-card';
     margin-left: 25px;
   }
 
+  &__tiers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__tiers-caption {
+    font-weight: 700;
+  }
+
+  &__tier-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  &__tier {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'name price'
+      'limit price';
+    align-items: center;
+    column-gap: 12px;
+    padding: 10px 14px;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: $fontPrimaryInvertedColor;
+  }
+
+  &__tier-name {
+    grid-area: name;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  &__tier-limit {
+    grid-area: limit;
+    font-size: 13px;
+    line-height: 1.3;
+    opacity: 0.8;
+  }
+
+  &__tier-price {
+    grid-area: price;
+    justify-self: end;
+    text-align: right;
+    font-size: 17px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    span {
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+  }
+
   &__action-wrapper {
     display: flex;
     flex-direction: column;

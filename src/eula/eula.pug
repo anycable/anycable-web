@@ -45,6 +45,53 @@ p.nested.
   Software. Also, you are entitled to use the Software as a part of a product or service that provides similar
   functionality to the Software itself.
 
+p.nested.
+  (c) Instances and Environments. An "Instance" means one running process of the Software in a Production environment.
+  Each replica, container, pod, or virtual machine running the Software is a separate Instance. Multiple Software
+  processes running on the same host are counted as multiple Instances. Your application, web, and remote procedure call
+  (RPC) processes are not Instances. "Production" means any environment serving live end-user or business traffic;
+  development, testing, staging, continuous-integration, and preview environments are not Production and are not counted.
+  Your "Steady-State Peak" means the greatest number of Instances running concurrently for a sustained period during your
+  normal operation; transient increases caused by autoscaling, rolling deployment, failover, or load testing are excluded.
+
+p.nested.
+  (d) Subscription Tiers. Your license specifies a subscription tier in the applicable invoice or at the time of
+  purchase, which determines the maximum number of Production Instances you may run. You may run the Software in any
+  number of non-Production environments regardless of tier. The tiers are:
+
+p.nested-2.
+  (i) Startup: up to five (5) Production Instances;
+
+p.nested-2.
+  (ii) Business: up to twenty (20) Production Instances;
+
+p.nested-2.
+  (iii) Scale: more than twenty (20) Production Instances, as agreed in the applicable invoice, together with priority
+  support and the critical-patch response target described in Section 7(d);
+
+p.nested-2.
+  (iv) Enterprise: as described in subsection (g) below.
+
+p.nested.
+  (e) Good-Faith Reporting; No Usage Monitoring. The Software does not meter usage, count connections, transmit
+  telemetry, or contact Licensor during operation, and it does not disable or degrade itself if your Steady-State Peak
+  exceeds your tier. Your compliance with your tier is based on good-faith self-reporting of your Steady-State Peak at the
+  time of purchase and at each renewal. Licensor does not monitor or audit your infrastructure and relies on your
+  declaration.
+
+p.nested.
+  (f) Tier at Renewal. If your Steady-State Peak grows beyond your current tier during a term, you may continue to run the
+  Software for the remainder of that term at your current tier and price, and you agree to move to the tier matching your
+  Steady-State Peak at your next renewal.
+
+p.nested.
+  (g) Enterprise and Source Access. The Startup, Business, and Scale tiers grant the right to run the Software in object
+  (binary) form only. Access to the Software's source code, and the right to modify it for your internal operations, are
+  available only under the Enterprise tier or a separate source license, on terms set out in the applicable invoice.
+  Except under such a license, the rights described in Section 4(b) (Modifications) apply only to the extent the
+  Software's source code is otherwise made available to you, and you shall not decompile, disassemble, or reverse engineer
+  the Software.
+
 h2 4. Permitted Uses.
 
 p.nested.
@@ -128,6 +175,12 @@ p.nested.
 
 p.nested.
   (c) Internet-based support system is generally available by email: anycable@evilmartians.com.
+
+p.nested.
+  (d) Critical Patches (Scale and Enterprise tiers). For the Scale and Enterprise tiers, Licensor will use commercially
+  reasonable efforts to provide an initial response to reports of critical defects or security issues within forty-eight
+  (48) hours. This is a response-time target and not a guarantee of resolution, workaround, or fix within any particular
+  period of time.
 
 h2 8. Ownership.
 
