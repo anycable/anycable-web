@@ -16,7 +16,7 @@
                 Action Cable <span class='c-vs'>vs</span> Solid Cable <span class='c-vs'>vs</span> Async::Cable <span class='c-vs'>vs</span> AnyCable
               </h1>
               <p class='compare-hero__subtitle'>
-                Four ways to run WebSockets in a Rails app, one 2026 benchmark on the same box. Three keep the socket inside your app process; AnyCable moves it out. All speak the Action Cable API your channels and Turbo Streams already use, so the choice is about what survives a bad network and a deploy, not a rewrite. A self-hosted alternative to Pusher and Ably for Hotwire apps.
+                Four ways to run WebSockets in a Rails app, one 2026 benchmark on the same box. Three keep the socket inside your app process; AnyCable moves it out. All speak the Action Cable API your channels and Turbo Streams already use, so the choice is about what survives a bad network and a deploy. A self-hosted alternative to Pusher and Ably for Hotwire apps.
               </p>
             </div>
 
@@ -714,7 +714,7 @@ Turbo::StreamsChannel.broadcast_append_to(
 
                 <details class='compare-faq__item'>
                   <summary>Does the 100% delivery require changing my JavaScript client?</summary>
-                  <div class='compare-faq__answer'>The resume guarantee rides on the extended <code>actioncable-v1-ext-json</code> protocol, which the AnyCable JS client negotiates automatically. It is a drop-in replacement for <code>@rails/actioncable</code>, and the AnyCable Turbo Streams package wires it into Hotwire for you, so it is a dependency swap, not a rewrite. A stock <code>@rails/actioncable</code> client still connects and works, but over the base protocol without resume, so for the 100% figure you do ship the AnyCable client.</div>
+                  <div class='compare-faq__answer'>The resume guarantee rides on the extended <code>actioncable-v1-ext-json</code> protocol, which the AnyCable JS client negotiates automatically. It is a drop-in replacement for <code>@rails/actioncable</code>, and the AnyCable Turbo Streams package wires it into Hotwire for you, so it is a dependency swap. A stock <code>@rails/actioncable</code> client still connects and works, but over the base protocol without resume, so for the 100% figure you do ship the AnyCable client.</div>
                 </details>
 
                 <details class='compare-faq__item'>
@@ -906,7 +906,7 @@ Turbo::StreamsChannel.broadcast_append_to(
             "name": "Does the 100% delivery require changing my JavaScript client?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The resume guarantee rides on the extended actioncable-v1-ext-json protocol, which the AnyCable JS client negotiates automatically. It is a drop-in replacement for @rails/actioncable, and the AnyCable Turbo Streams package wires it into Hotwire, so it is a dependency swap, not a rewrite. A stock @rails/actioncable client still connects and works, but over the base protocol without resume, so for the 100% figure you do ship the AnyCable client."
+              "text": "The resume guarantee rides on the extended actioncable-v1-ext-json protocol, which the AnyCable JS client negotiates automatically. It is a drop-in replacement for @rails/actioncable, and the AnyCable Turbo Streams package wires it into Hotwire, so it is a dependency swap. A stock @rails/actioncable client still connects and works, but over the base protocol without resume, so for the 100% figure you do ship the AnyCable client."
             }
           }
         ]
