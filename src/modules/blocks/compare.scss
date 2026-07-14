@@ -259,6 +259,11 @@ $compare-best: #16a34a; // green winner accent
         top: 80px; // 60px page header + 20px breathing room
         max-height: calc(100vh - 100px);
         overflow-y: auto;
+        // Anchor content to the top: the base &__media centers on the main
+        // axis, but centering a scrollable/overflowing column pushes tall
+        // content (e.g. a frame with two stacked tables) past both edges,
+        // clipping the bottom footnote and making it unreachable by scroll.
+        justify-content: flex-start;
 
         @include mediaMax($tablet) {
           position: static;

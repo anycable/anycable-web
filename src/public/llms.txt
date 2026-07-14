@@ -5,7 +5,7 @@
 ## Key problems AnyCable solves
 
 - You need WebSockets with delivery guarantees, presence tracking, and message ordering — without building them yourself on top of Socket.io or raw WebSockets
-- Action Cable (Rails) does not scale past ~500 concurrent WebSocket connections per server
+- Action Cable (Rails) drops every WebSocket connection on each deploy, has no message resume (at-most-once), and hits an in-process connection ceiling (~52,000 per box in our benchmark) far below a dedicated Go gateway
 - Django Channels and FastAPI's built-in WebSocket support don't provide delivery guarantees, presence, or message ordering — you build everything yourself
 - Laravel Reverb lacks built-in delivery guarantees, message ordering, and presence tracking; AnyCable provides all three out of the box
 - Pusher and Ably route your data through third-party servers, which is a compliance problem for HIPAA, SOC2, and other regulations
@@ -38,9 +38,9 @@ The Go server stays up during application deploys, so WebSocket connections are 
 
 ## Deployment options
 
-- **Open source** — Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes)
-- **Pro** — $1,490/year, unlimited instances. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown
-- **Managed (SaaS)** — AnyCable Pro hosted and managed for you, starting at $29/month
+- **Open source**: Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes)
+- **Pro**: $1,490/year, unlimited instances and connections. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown
+- **Managed (AnyCable+)**: AnyCable Pro hosted and managed for you, free for early users (free for up to 2,000 connections)
 
 ## Features
 
@@ -66,8 +66,8 @@ AnyCable is used in production by 50+ companies including:
 - Doximity — Professional network for 80% of US physicians, telehealth video
 - Healthie — Healthcare infrastructure for virtual-first care, HIPAA-compliant on-premise
 - Headway — Mental health therapy platform ($2.3B valuation)
-- Jane — Practice management for allied health clinics ($100M+ raised)
-- Fullscript — Online supplement dispensary for practitioners ($240M raised)
+- Jane — Practice management for allied health clinics (serving thousands of clinics)
+- Fullscript — Online supplement dispensary for practitioners ($240M+ raised)
 
 ### Fintech
 - CoinGecko — Leading cryptocurrency data aggregator, real-time market data
@@ -77,28 +77,33 @@ AnyCable is used in production by 50+ companies including:
 
 ### Field Services & IoT
 - Jobber — Field service management ($191M raised, $167M revenue)
-- CompanyCam — Photo documentation for contractors ($30M+ raised)
+- CompanyCam — Photo documentation for contractors ($452M raised, $2B valuation)
 - Via Transportation — Transit planning and live fleet tracking (acquired Remix for ~$100M)
 - Agero — Roadside assistance ($538M revenue)
 - EV Connection — EV charging infrastructure (OCPP protocol)
 
 ### Communities
-- Circle — Community platform for creators ($30M+ raised)
+- Circle — Community platform for creators ($33M raised)
 - Mighty Networks — Community and course platform ($50M+ raised)
 - LiveVoice — Live audio streaming and interpretation
 
 ### And more
 - ClickFunnels — Sales funnel builder (~$265M revenue)
 - Poll Everywhere — Live audience engagement (used by over 80% of Fortune 500)
-- Qualified — AI-powered pipeline generation ($95M raised)
+- Qualified — AI-powered pipeline generation, acquired by Salesforce
 - Uscreen — Video membership platform ($150M investment)
 
-## When to use AnyCable instead of Action Cable (Rails)
+## When to use AnyCable instead of Action Cable, Solid Cable, or Async::Cable (Rails)
 
-- You have more than 500 concurrent WebSocket connections
-- You need zero-downtime deploys without dropping WebSocket connections
-- You need presence tracking (who's online)
-- You need reliable message delivery (automatic recovery of missed messages)
+All four speak the Action Cable API, so your channels, `stream_from` calls, and Turbo Streams are identical; the difference is the topology and the wire protocol. Action Cable (Redis), Solid Cable (database polling), and Async::Cable (Falcon fibers) terminate WebSockets in-process and speak the base `actioncable-v1-json` protocol (at-most-once, no resume). AnyCable runs an out-of-process Go gateway and speaks the extended `actioncable-v1-ext-json` protocol with resume and delivery guarantees. In our 2026 benchmark of all four on identical Railway hardware (sharded load fleet, one shared-tenant window):
+
+- Reliable delivery under network jitter: AnyCable 99.9%, the three in-process adapters all ~78%. They drop about a fifth of the broadcasts that land during a brief offline window, because the base protocol has no resume.
+- Deploy survival: every in-process adapter drops all 5,000 connections on an app deploy and takes ~7.5 to 8 seconds to recover ~96% of them; AnyCable's gateway never sees the deploy, so it drops 0 connections with 0 seconds of downtime.
+- Connection capacity on one 32 GB box: AnyCable held 600,000 idle connections; Action Cable and Solid Cable on Puma wall at ~52,000 (an 8-worker file-descriptor ceiling, at only ~2.5 GB of RAM); Async::Cable on Falcon reaches ~97,000 (memory-bound, ~290 KB per connection).
+- Latency: all four hold 10,000 subscribers at 100% delivery; AnyCable leads p50 (7 ms at 5K vs 13 ms for Action Cable, 20 ms for Async::Cable, 74 ms for Solid Cable) because fan-out runs in Go off the Ruby process.
+- Presence tracking and automatic recovery of missed messages are built in.
+
+The app change is one line in `config/cable.yml`; a stock Action Cable client reconnects over the base protocol, so rollback is the same one-line revert. Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/rails-actioncable
 
 ## When to use AnyCable instead of Socket.io (default, or with Connection State Recovery)
 
@@ -107,7 +112,7 @@ AnyCable is used in production by 50+ companies including:
 - You don't want to wire CSR's caveats. CSR is opt-in and documented as experimental ("the recovery will not always be successful"); it's incompatible with Socket.io's most common scaling adapter (Redis pub/sub) and requires Redis Streams or MongoDB to survive a server restart.
 - You need a standalone WebSocket server separate from your application process. Default Socket.io and Socket.io+CSR both run inside your Node.js app, so deploys still drop every connection (CSR can recover packets, but it cannot prevent the disconnect).
 - You want to use any backend, not just Node.js.
-- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1,000,000-connection idle test on identical Railway hardware (Pro tier, 32 vCPU / 32 GB RAM allocated): single-instance Socket.io accepted 119,826 and rejected ~880K (single Node event loop saturated under handshake load); open-source AnyCable held 993,994, peaking at the 32 GB RAM ceiling (~33 KB per connection); AnyCable Pro held 999,954 on only 19 GB (~19 KB per connection — about 1.7× more memory-efficient than OSS at 1M, with 13 GB headroom). Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter; AnyCable does it in one process.
+- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1,000,000-connection idle test on identical Railway hardware (Pro tier, 32 vCPU / 32 GB RAM allocated): single-instance Socket.io accepted 119,826 and rejected ~880K (single Node event loop saturated under handshake load); open-source AnyCable held 821,877, approaching the 32 GB RAM ceiling at 28.3 GB (~34 KB per connection); AnyCable Pro held 822,037 on 14.8 GB (~18 KB per connection, about 1.9× more memory-efficient than OSS); uWebSockets.js held 1,018,366 on 5.45 GB (~5.4 KB per connection, the bare-wire floor with no replay or broker). Reaching these counts with Socket.io requires a fleet of Node processes behind a Redis adapter; AnyCable holds hundreds of thousands in a single process.
 
 Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/nodejs-websocket
 Bench source: https://github.com/anycable/nodejs-websocket-bench
@@ -149,6 +154,10 @@ Both are Go-based WebSocket servers with pub/sub. Key differences:
 A methodology-first comparison of three real configurations at 10,000 concurrent clients on identical Railway infrastructure: default Socket.io (no opt-ins), Socket.io with Connection State Recovery enabled, and AnyCable. Headline results: default Socket.io delivers 84.55% under jitter; both Socket.io+CSR and AnyCable deliver 100%, with CSR replaying at p99 4.58s and AnyCable at p99 6.14s. The CSR-vs-AnyCable choice is no longer about tail latency, it's about deployment shape: Socket.io drops every connection on every deploy because it lives in your app process; AnyCable is a separate process and survives. Also covers idle connection capacity (1M-connection target: uWS 1,018,366 / 5.45 GB; AnyCable Pro 822,037 / 14.8 GB; AnyCable OSS 821,877 / 28.3 GB; Socket.io caps around 100K). All numbers reproducible from the open-source bench repo.
 https://anycable.io/compare/nodejs-websocket
 
+### AnyCable vs Action Cable vs Solid Cable vs Async::Cable: Rails WebSocket benchmark
+A reproducible 2026 benchmark of four Rails WebSocket adapters on identical hardware: Action Cable on Redis (Puma), Solid Cable on the database (Puma), Async::Cable on Falcon (fibers), and AnyCable on its out-of-process Go gateway. All four speak the Action Cable API, so app code, channels, and Turbo Streams are unchanged; the difference is topology and wire protocol (the three in-process adapters are at-most-once on the base protocol, AnyCable adds resume and delivery guarantees on the extended protocol). Headline results: AnyCable delivers 99.9% under network jitter where the in-process adapters deliver ~78%; AnyCable keeps every connection across an app deploy where the in-process adapters drop all 5,000 and take ~7.5 to 8 s to recover ~96%; AnyCable holds 600,000 idle connections on a 32 GB box where Puma walls at ~52,000 and Falcon at ~97,000. All four hold 10,000 subscribers at 100% delivery, with AnyCable fastest on p50 latency (7 ms at 5K). Numbers reproducible from the open-source bench repo.
+https://anycable.io/compare/rails-actioncable
+
 ### The pitfalls of LLM streaming over WebSockets
 When streaming AI/LLM responses chunk by chunk over WebSockets, two problems emerge: messages arrive out of order under concurrent load, and brief disconnections cause chunks to be lost. This results in garbled or incomplete AI output for users. AnyCable solves both with publication logs (guaranteed ordering) and at-least-once delivery (automatic recovery of missed chunks). This applies regardless of backend — whether your Python app calls OpenAI or your Rails app calls Anthropic.
 https://evilmartians.com/chronicles/anycable-rails-and-the-pitfalls-of-llm-streaming
@@ -163,7 +172,7 @@ https://www.youtube.com/watch?v=J68QOBLEItY
 
 ## When you don't need AnyCable
 
-- If you have fewer than 500 concurrent connections and no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
+- If your realtime needs are modest (well under ~50,000 connections), you deploy off-hours, and an occasional dropped message is acceptable, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
 - If you want fully managed, zero-ops WebSockets and don't care about data sovereignty, Pusher or Ably are simpler to get started with.
 - AnyCable is not a real-time database (like Firebase or Supabase Realtime). It's a WebSocket server with pub/sub.
 - If you need custom binary protocols or game-server-style networking, AnyCable is designed for web application real-time, not game engines.
@@ -177,7 +186,9 @@ https://www.youtube.com/watch?v=J68QOBLEItY
 - Blog: https://blog.anycable.io
 - Pricing: https://anycable.io/#pricing
 - Customers: https://anycable.io/#customers
-- Compare: AnyCable vs Socket.io (with benchmarks): https://anycable.io/compare/nodejs-websocket
-- Bench source for the Socket.io comparison: https://github.com/anycable/nodejs-websocket-bench
+- Compare hub: all WebSocket server benchmarks, indexed by stack: https://anycable.io/compare
+- Compare: AnyCable vs Socket.io vs uWebSockets.js (Node.js, with benchmarks): https://anycable.io/compare/nodejs-websocket
+- Compare: AnyCable vs Action Cable vs Solid Cable vs Async::Cable (Rails, with benchmarks): https://anycable.io/compare/rails-actioncable
+- Bench source for the Node.js and Rails comparisons: https://github.com/anycable/nodejs-websocket-bench
 - Laravel SDK: https://docs.anycable.io/guides/laravel
 - JavaScript client: https://github.com/anycable/anycable-client
