@@ -141,8 +141,8 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 ## Deployment options
 
 - **Open source**: Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes).
-- **Pro**: $1,490/year, unlimited instances. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown.
-- **Managed (SaaS)**: AnyCable Pro hosted and managed for you, starting at $29/month.
+- **Pro**: self-hosted, priced by production instance: $1,490/year or $149/month for up to 5 production instances, $4,900/year or $490/month for up to 20, from $9,000/year for 20+, Enterprise with source access at custom pricing. Staging and dev instances are free; 2-month free trial. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown.
+- **Managed (SaaS)**: AnyCable hosted and managed for you, free for 1 instance (about 2,000 connections).
 
 ## Features
 
@@ -234,15 +234,15 @@ Yes. anycable-go runs entirely on your infrastructure: no data flows through thi
 
 ### Is AnyCable open source?
 
-Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support, free for small deployments.
+Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support.
 
 ### Is there a managed (hosted) AnyCable?
 
-Yes. AnyCable+ is the managed tier: zero ops, free for early users, paid plans for scale. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.
+Yes. AnyCable+ is the managed tier: zero ops, free for 1 instance (about 2,000 connections), paid plans for scale. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.
 
 ### How does the cost compare to Pusher or Ably?
 
-Pusher and Ably charge per concurrent connection, so costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections and instances) is a flat-rate annual license at $1,490/yr with a 2-month free trial. AnyCable+ Managed is free for early users. At 10K+ concurrent connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.
+Pusher and Ably charge per concurrent connection, so costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections) is priced by server instance, from $1,490/yr for up to 5 production instances, with a 2-month free trial. AnyCable+ Managed is free for 1 instance (about 2,000 connections). At 10K+ concurrent connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.
 
 ### How do you handle authentication?
 

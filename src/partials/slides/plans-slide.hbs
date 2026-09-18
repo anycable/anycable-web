@@ -3,186 +3,329 @@
     <h3 class='plans-slide__pretitle'>Pricing</h3>
     <h2 class='slide__title plans-slide__title'>Start free, pay when you scale</h2>
     <p class='plans-slide__lead'>
-      Start on managed AnyCable, free while it's in early access. Move to
-      self-hosted Pro when you want it on your own infrastructure.
+      Start on managed AnyCable, free for one instance. Move to self-hosted
+      Pro when you want it on your own infrastructure.
     </p>
   </div>
 
   <div class='plans-slide__content'>
-    <section class='plan-hero'>
-      <input
-        class='plan-hero__billing-input'
-        type='radio'
-        name='pro-billing'
-        id='pro-billing-yearly'
-        checked
-      />
-      <input
-        class='plan-hero__billing-input plan-hero__billing-input_period_monthly'
-        type='radio'
-        name='pro-billing'
-        id='pro-billing-monthly'
-      />
-
-      <div class='plan-hero__header'>
-        <div class='plan-hero__identity'>
-          <div class='plan-hero__icon'></div>
-          <div>
-            <h3 class='plan-hero__title'>Pro</h3>
-            <p class='plan-hero__tagline'>
-              <b>Twice more memory efficient</b> than open source, self-hosted on your own infrastructure.
-            </p>
-          </div>
-        </div>
-
-        <div class='plan-hero__billing'>
-          <label
-            class='plan-hero__billing-label plan-hero__billing-label_period_yearly'
-            for='pro-billing-yearly'
-          >Yearly</label>
-          <label
-            class='plan-hero__billing-label plan-hero__billing-label_period_monthly'
-            for='pro-billing-monthly'
-          >Monthly</label>
-        </div>
-      </div>
-
-      <ul class='plan-hero__tiers'>
-        <li class='plan-hero__tier'>
-          <span class='plan-hero__tier-name'>Startup</span>
-          <span class='plan-hero__tier-limit'>up to 5 production instances</span>
-          <span class='plan-hero__tier-price'>
-            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$1,490<span class='plan-hero__tier-unit'>/yr</span></span>
-            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$149<span class='plan-hero__tier-unit'>/mo</span></span>
-          </span>
-        </li>
-        <li class='plan-hero__tier'>
-          <span class='plan-hero__tier-name'>Business</span>
-          <span class='plan-hero__tier-limit'>up to 20 production instances</span>
-          <span class='plan-hero__tier-price'>
-            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$4,900<span class='plan-hero__tier-unit'>/yr</span></span>
-            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$490<span class='plan-hero__tier-unit'>/mo</span></span>
-          </span>
-        </li>
-        <li class='plan-hero__tier'>
-          <span class='plan-hero__tier-name'>Scale</span>
-          <span class='plan-hero__tier-limit'>20+ instances, priority support, 48h&nbsp;SLA</span>
-          <span class='plan-hero__tier-price'>
-            <span class='plan-hero__tier-amount'>from $9,000<span class='plan-hero__tier-unit'>/yr</span></span>
-          </span>
-        </li>
-        <li class='plan-hero__tier'>
-          <span class='plan-hero__tier-name'>Enterprise</span>
-          <span class='plan-hero__tier-limit'>source access &amp; customization</span>
-          <span class='plan-hero__tier-price'>
-            <span class='plan-hero__tier-amount'>Custom</span>
-          </span>
-        </li>
-      </ul>
-
-      <ul class='plan-hero__features'>
-        <li class='plan-hero__feature'>Consistency in cluster mode</li>
-        <li class='plan-hero__feature'>Adaptive scaling</li>
-        <li class='plan-hero__feature'>Slow drain on shutdown</li>
-        <li class='plan-hero__feature'>Binary compression</li>
-        <li class='plan-hero__feature'>Long-polling fallback</li>
-        <li class='plan-hero__feature'>Apollo GraphQL support</li>
-        <li class='plan-hero__feature'>Dedicated Slack-based support</li>
-      </ul>
-
-      <div class='plan-hero__footer'>
-        <p class='plan-hero__note'>
-          Yearly costs the same as ten months. Free 2-month trial.
-          <br/>
-          Priced by instances you count yourself: no metering, no telemetry.
-        </p>
-        <a
-          href="https://plus.anycable.io/pro"
-          target="_blank"
-          class='button button_inverted plan-hero__action'
-          data-ph-capture-attribute-link-id='plan-pro'
-        >
-          Start 2-month trial
-        </a>
-      </div>
-    </section>
-
-    <ul class='plans-slide__options'>
-      <li class='plan-card plan-card_recommended'>
+    <div class='plans-slide__main'>
+      <section class='plan-card plan-card_highlighted'>
         <div class='plan-card__icon plan-card__icon_type_pro-standard'></div>
         <p class='plan-card__tag'>Start here</p>
-        <h3 class='plan-card__title'>Managed</h3>
-        <p class='plan-card__text'>
-          We run and support AnyCable for you. Nothing to deploy, nothing to
-          scale.
+        <h3 class='plan-card__title plan-card__title_inverted'>Managed</h3>
+        <p class='plan-card__text plan-card__text_inverted'>
+          We run, upgrade, and support AnyCable for you. Nothing to deploy.
         </p>
-        <ul class='plan-card__list'>
-          <li>One instance in minutes, upgrades handled</li>
+        <p class='plan-card__price'>
+          Free
+          <span class='plan-card__price-note'>for 1 instance (about 2,000 connections), no SLA</span>
+        </p>
+        <a
+          class='link button button_inverted'
+          href='https://plus.anycable.io'
+          target='_blank'
+          data-ph-capture-attribute-link-id='plan-plus'
+        >
+          Start for free
+        </a>
+        <ul class='plan-card__list plan-card__text_inverted'>
+          <li>Up and running in minutes</li>
           <li>JWT auth and signed streams, no RPC to run</li>
           <li>Same server as Pro, same guarantees</li>
         </ul>
-        <div class='plan-card__action-wrapper'>
-          <p class='plan-card__text'>
-            <span
-              class='plan-card__text-accent plan-card__text-accent_type_big'
-            >Free for early users</span>
-          </p>
-          <a
-            class='link button'
-            href='https://plus.anycable.io'
-            target='_blank'
-            data-ph-capture-attribute-link-id='plan-plus'
-          >
-            Start for free
-          </a>
-        </div>
-      </li>
-
-      <li class='plan-card'>
-        <div class='plan-card__icon plan-card__icon_type_open-source'></div>
-        <h3 class='plan-card__title'>Open-source</h3>
-        <p class='plan-card__text'>
-          Run it yourself. Deploy to Render, Railway, Heroku, Fly, AWS, GCP, and
-          anywhere with Docker or K8s.
+        <p class='plan-card__footnote'>
+          Need more than one instance?
+          <a class='plan-card__footnote-link' href='#pricing-pro'>Self-host Pro</a>
         </p>
-        <div class='plan-card__action-wrapper'>
-          <p class='plan-card__text'>
-            <span
-              class='plan-card__text-accent plan-card__text-accent_type_big'
-            >Free</span>
-          </p>
-          <a
-            class='link button button_variant_outlined'
-            href='https://docs.anycable.io'
-            target='_blank'
-            data-ph-capture-attribute-link-id='plan-free'
-          >
-            Learn more
-          </a>
-        </div>
-      </li>
+      </section>
 
-      <li class='plan-card'>
-        <div class='plan-card__icon plan-card__icon_type_custom'></div>
-        <h3 class='plan-card__title' id="custom-solutions">Consulting</h3>
-        <ul class='plan-card__list'>
-          <li>Setup and deploy AnyCable</li>
-          <li>Load test setup to prepare for scale</li>
-        </ul>
-        <div class='plan-card__action-wrapper'>
-          <p class='plan-card__text'>
-            <span
-              class='plan-card__text-accent plan-card__text-accent_type_big'
-            >$200 per hour</span>
-            <span
-              class='plan-card__contact-text'
-            >anycable@evilmartians.com</span>
-          </p>
-          <a href='mailto:anycable@evilmartians.com' class='button plausible-event-name=Contact plausible-event-location=consulting' data-ph-capture-attribute-link-id='plan-custom'>
-            Contact us
-          </a>
+      <section class='plan-hero' id='pricing-pro'>
+        <input
+          class='plan-hero__billing-input'
+          type='radio'
+          name='pro-billing'
+          id='pro-billing-yearly'
+          checked
+        />
+        <input
+          class='plan-hero__billing-input plan-hero__billing-input_period_monthly'
+          type='radio'
+          name='pro-billing'
+          id='pro-billing-monthly'
+        />
+
+        <div class='plan-hero__header'>
+          <div class='plan-hero__identity'>
+            <div class='plan-hero__icon'></div>
+            <div>
+              <h3 class='plan-hero__title'>Pro</h3>
+              <p class='plan-hero__tagline'>
+                Self-hosted on your infrastructure, with
+                <b>half the memory per connection</b> of open source.
+              </p>
+            </div>
+          </div>
+
+          <div class='plan-hero__billing'>
+            <label
+              class='plan-hero__billing-label plan-hero__billing-label_period_yearly'
+              for='pro-billing-yearly'
+            >Yearly <span class='plan-hero__billing-badge'>2 months free</span></label>
+            <label
+              class='plan-hero__billing-label plan-hero__billing-label_period_monthly'
+              for='pro-billing-monthly'
+            >Monthly</label>
+          </div>
         </div>
+
+        <ul class='plan-hero__tiers'>
+          <li class='plan-hero__tier'>
+            <span class='plan-hero__tier-name'>Startup</span>
+            <span class='plan-hero__tier-limit'>Up to 5 production instances</span>
+            <span class='plan-hero__tier-price'>
+              <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$1,490<span class='plan-hero__tier-unit'>/yr</span></span>
+              <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$149<span class='plan-hero__tier-unit'>/mo</span></span>
+            </span>
+            <a
+              href='https://plus.anycable.io/pro'
+              target='_blank'
+              class='button plan-hero__tier-action'
+              data-ph-capture-attribute-link-id='plan-pro-startup'
+            >Start free trial</a>
+          </li>
+          <li class='plan-hero__tier'>
+            <span class='plan-hero__tier-name'>Business</span>
+            <span class='plan-hero__tier-limit'>Up to 20 production instances</span>
+            <span class='plan-hero__tier-price'>
+              <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$4,900<span class='plan-hero__tier-unit'>/yr</span></span>
+              <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$490<span class='plan-hero__tier-unit'>/mo</span></span>
+            </span>
+            <a
+              href='https://plus.anycable.io/pro'
+              target='_blank'
+              class='button plan-hero__tier-action'
+              data-ph-capture-attribute-link-id='plan-pro-business'
+            >Start free trial</a>
+          </li>
+          <li class='plan-hero__tier'>
+            <span class='plan-hero__tier-name'>Scale</span>
+            <span class='plan-hero__tier-limit'>20+ instances, priority support, 48h response on critical issues</span>
+            <span class='plan-hero__tier-price'>
+              <span class='plan-hero__tier-amount'><span class='plan-hero__tier-from'>from</span> $9,000<span class='plan-hero__tier-unit'>/yr</span></span>
+            </span>
+            <a
+              href='mailto:anycable@evilmartians.com?subject=AnyCable%20Pro%20Scale'
+              class='button button_variant_outlined plan-hero__tier-action plausible-event-name=Contact plausible-event-location=pro-scale'
+              data-ph-capture-attribute-link-id='plan-pro-scale'
+            >Contact us</a>
+          </li>
+          <li class='plan-hero__tier'>
+            <span class='plan-hero__tier-name'>Enterprise</span>
+            <span class='plan-hero__tier-limit'>Source access and customization, 48h response on critical issues</span>
+            <span class='plan-hero__tier-price'>
+              <span class='plan-hero__tier-amount'>Custom</span>
+            </span>
+            <a
+              href='mailto:anycable@evilmartians.com?subject=AnyCable%20Pro%20Enterprise'
+              class='button button_variant_outlined plan-hero__tier-action plausible-event-name=Contact plausible-event-location=pro-enterprise'
+              data-ph-capture-attribute-link-id='plan-pro-enterprise'
+            >Contact us</a>
+          </li>
+        </ul>
+
+        <ul class='plan-hero__terms'>
+          <li>Free 2-month trial, no card needed</li>
+          <li>Staging and dev instances are free</li>
+          <li>No metering, no telemetry</li>
+        </ul>
+
+        <p class='plan-hero__features'>
+          Everything in open source, plus consistency in cluster mode, adaptive
+          scaling, slow drain, binary formats, long-polling, Apollo GraphQL, and
+          dedicated Slack support.
+          <a class='link plan-hero__compare-link' href='#pricing-compare'>Compare with open source</a>
+        </p>
+      </section>
+    </div>
+
+    <ul class='plans-slide__more'>
+      <li class='plans-slide__more-item'>
+        <div class='plans-slide__more-icon plans-slide__more-icon_type_open-source'></div>
+        <div class='plans-slide__more-body'>
+          <h3 class='plans-slide__more-title'>Open-source <span class='plans-slide__more-price'>Free</span></h3>
+          <p class='plans-slide__more-text'>
+            Run it yourself on Render, Railway, Heroku, Fly, AWS, GCP, or
+            anywhere with Docker or K8s.
+          </p>
+        </div>
+        <a
+          class='link plans-slide__more-link'
+          href='https://docs.anycable.io'
+          target='_blank'
+          data-ph-capture-attribute-link-id='plan-free'
+        >Read the docs</a>
+      </li>
+      <li class='plans-slide__more-item' id="custom-solutions">
+        <div class='plans-slide__more-icon plans-slide__more-icon_type_custom'></div>
+        <div class='plans-slide__more-body'>
+          <h3 class='plans-slide__more-title'>Consulting <span class='plans-slide__more-price'>$200/hour</span></h3>
+          <p class='plans-slide__more-text'>
+            Setup, deploy, and load testing with the team behind AnyCable.
+          </p>
+        </div>
+        <a
+          class='link plans-slide__more-link plausible-event-name=Contact plausible-event-location=consulting'
+          href='mailto:anycable@evilmartians.com'
+          data-ph-capture-attribute-link-id='plan-custom'
+        >anycable@evilmartians.com</a>
       </li>
     </ul>
+
+    <div class='plans-slide__details'>
+      <section class='plans-slide__compare' id='pricing-compare'>
+        <h3 class='plans-slide__subtitle'>Open source vs. Pro</h3>
+        <div class='plans-slide__table-wrapper'>
+          <table class='plans-slide__table'>
+            <thead>
+              <tr>
+                <th scope='col'></th>
+                <th scope='col'>Open-source</th>
+                <th scope='col'>Pro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope='row'>Delivery guarantees, presence, JWT auth, signed streams</th>
+                <td>Yes</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>Memory per connection</th>
+                <td>~34&nbsp;KB</td>
+                <td>~18&nbsp;KB</td>
+              </tr>
+              <tr>
+                <th scope='row'>Consistency in cluster mode <span class='plans-slide__table-note'>stream history shared through Redis</span></th>
+                <td class='plans-slide__table-no'>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>Adaptive scaling <span class='plans-slide__table-note'>RPC concurrency adjusts to load</span></th>
+                <td class='plans-slide__table-no'>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>Slow drain on shutdown</th>
+                <td class='plans-slide__table-no'>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>Binary message formats</th>
+                <td class='plans-slide__table-no'>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>Long-polling fallback</th>
+                <td class='plans-slide__table-no'>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>Apollo GraphQL protocol</th>
+                <td class='plans-slide__table-no'>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>OCPP for EV chargers</th>
+                <td class='plans-slide__table-no'>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th scope='row'>Support</th>
+                <td>GitHub issues</td>
+                <td>Dedicated Slack</td>
+              </tr>
+              <tr>
+                <th scope='row'>License</th>
+                <td>MIT</td>
+                <td><a class='link' href='/eula'>Commercial EULA</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class='plans-slide__compare-note'>
+          Full list in the <a class='link' href='https://docs.anycable.io/pro' target='_blank'>Pro docs</a>.
+        </p>
+      </section>
+
+      <section class='plans-slide__faq'>
+        <h3 class='plans-slide__subtitle'>Pricing questions</h3>
+
+        <details class='plans-slide__faq-item'>
+          <summary>What counts as an instance?</summary>
+          <p>
+            One running AnyCable Pro server process in production. Each replica,
+            container, pod, or VM is a separate instance. Your application, web,
+            and RPC processes don't count.
+          </p>
+        </details>
+
+        <details class='plans-slide__faq-item'>
+          <summary>Do staging and development count?</summary>
+          <p>
+            No. Only environments serving live traffic count. Run as many
+            development, testing, staging, CI, and preview instances as you like.
+          </p>
+        </details>
+
+        <details class='plans-slide__faq-item'>
+          <summary>What if autoscaling takes us past our tier?</summary>
+          <p>
+            Short spikes from autoscaling, rolling deploys, failover, or load
+            tests don't count; tiers follow the peak you run steadily. The server
+            never slows down or shuts off when you go over. If your steady peak
+            grows, move up a tier in the billing portal, prorated for the rest of
+            the period.
+          </p>
+        </details>
+
+        <details class='plans-slide__faq-item'>
+          <summary>What happens when the trial ends?</summary>
+          <p>
+            The 2-month trial needs no card and doesn't turn into a paid
+            subscription on its own. Buy a plan to keep your access; otherwise
+            the license ends with the trial.
+          </p>
+        </details>
+
+        <details class='plans-slide__faq-item'>
+          <summary>Can I cancel Startup or Business?</summary>
+          <p>
+            Yes, any time in the billing portal. The plan runs to the end of the
+            month or year you've paid for and doesn't renew.
+          </p>
+        </details>
+
+        <details class='plans-slide__faq-item'>
+          <summary>How are Scale and Enterprise billed?</summary>
+          <p>
+            By invoice, yearly in advance, under an order form we sign together.
+            They renew automatically each year unless you opt out in the order
+            form, or email us any time before the year ends. An Enterprise
+            source license can also be added on top of any tier.
+          </p>
+        </details>
+
+        <details class='plans-slide__faq-item'>
+          <summary>What are the limits on managed AnyCable?</summary>
+          <p>
+            Managed AnyCable is free for 1 instance, which handles about 2,000
+            connections, with no SLA. When you need more, move to self-hosted
+            Pro; its Scale and Enterprise tiers include a 48h response on
+            critical issues.
+          </p>
+        </details>
+      </section>
+    </div>
   </div>
 </section>

@@ -39,8 +39,8 @@ The Go server stays up during application deploys, so WebSocket connections are 
 ## Deployment options
 
 - **Open source** — Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes)
-- **Pro** — $1,490/year, unlimited instances. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown
-- **Managed (SaaS)** — AnyCable Pro hosted and managed for you, starting at $29/month
+- **Pro** — self-hosted, priced by production instance: $1,490/year or $149/month for up to 5 production instances, $4,900/year or $490/month for up to 20, from $9,000/year for 20+, Enterprise with source access at custom pricing. Staging and dev instances are free; 2-month free trial. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown
+- **Managed (SaaS)** — AnyCable hosted and managed for you, free for 1 instance (about 2,000 connections)
 
 ## Features
 
