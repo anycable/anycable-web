@@ -38,20 +38,36 @@
         "name": "Managed AnyCable",
         "price": "0",
         "priceCurrency": "USD",
-        "description": "Free managed hosting, up to 2,000 connections."
+        "description": "Free during early access. A single AnyCable instance, run and upgraded for you."
       },
       {
         "@type": "Offer",
-        "name": "AnyCable Pro",
+        "name": "AnyCable Pro Startup",
         "price": "1490",
         "priceCurrency": "USD",
         "priceValidUntil": "2027-12-31",
-        "description": "$1,490 per year. Unlimited instances and connections. Cluster mode, binary compression, long-polling fallback, adaptive scaling, dedicated support."
+        "description": "$1,490 per year or $149 per month. Self-hosted, up to 5 production instances, unlimited connections. Cluster mode, binary compression, long-polling fallback, adaptive scaling, dedicated support."
       },
       {
         "@type": "Offer",
-        "name": "Enterprise",
-        "description": "Custom pricing for enterprise deployments."
+        "name": "AnyCable Pro Business",
+        "price": "4900",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "description": "$4,900 per year or $490 per month. Self-hosted, up to 20 production instances, unlimited connections."
+      },
+      {
+        "@type": "Offer",
+        "name": "AnyCable Pro Scale",
+        "price": "9000",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "description": "From $9,000 per year. More than 20 production instances, priority support, 48-hour response on critical issues."
+      },
+      {
+        "@type": "Offer",
+        "name": "AnyCable Pro Enterprise",
+        "description": "Custom pricing. Source code access and customization, 48-hour response on critical issues."
       },
       {
         "@type": "Offer",
@@ -81,7 +97,7 @@
         "name": "How much does AnyCable cost?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AnyCable open source is free. Managed AnyCable is free for up to 2,000 connections. AnyCable Pro costs $1,490 per year for unlimited connections and instances — flat pricing that doesn't grow with your user count. Enterprise plans have custom pricing. Consulting is available at $200 per hour."
+          "text": "AnyCable open source is free. Managed AnyCable is free during early access for a single instance. AnyCable Pro is self-hosted with unlimited connections and priced by production instance: $1,490 per year (or $149 per month) for up to 5 instances, $4,900 per year (or $490 per month) for up to 20, and from $9,000 per year beyond that. Enterprise, with source access, has custom pricing. Staging and development instances are free, and there is a free 2-month trial. Consulting is available at $200 per hour."
         }
       },
       {
@@ -113,7 +129,7 @@
         "name": "How is AnyCable different from Pusher or Ably?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Pusher and Ably are managed services that route your data through third-party servers — a problem for HIPAA and SOC2 compliance. Their pricing grows linearly with connections. AnyCable runs on your infrastructure (or use Managed AnyCable), offers flat pricing ($1,490/year for unlimited connections with Pro), and provides native SDKs for Rails and Laravel rather than generic client libraries."
+          "text": "Pusher and Ably are managed services that route your data through third-party servers — a problem for HIPAA and SOC2 compliance. Their pricing grows linearly with connections. AnyCable runs on your infrastructure (or use Managed AnyCable), prices Pro by server instance with unlimited connections (from $1,490/year), and provides native SDKs for Rails and Laravel rather than generic client libraries."
         }
       }
     ]
