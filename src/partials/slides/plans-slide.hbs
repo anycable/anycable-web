@@ -1,170 +1,188 @@
 <section class='slide plans-slide' id="pricing">
   <div class='slide__title-wrapper'>
     <h3 class='plans-slide__pretitle'>Pricing</h3>
-    <h2 class='slide__title plans-slide__title'>Choose option</h2>
+    <h2 class='slide__title plans-slide__title'>Start free, pay when you scale</h2>
+    <p class='plans-slide__lead'>
+      Start on managed AnyCable, free while it's in early access. Move to
+      self-hosted Pro when you want it on your own infrastructure.
+    </p>
   </div>
-  <ul class='plans-slide__content'>
-    <li class='plan-card'>
-      <div class='plan-card__icon plan-card__icon_type_open-source'></div>
-      <h3 class='plan-card__title'>Open-<br />source</h3>
-      <p class='plan-card__text'>
-        Deploy to Heroku, Fly, AWS, and anywhere with Docker or K8s.
-      </p>
-      <p class='plan-card__text'>Key features:</p>
-        <ul class='plan-card__list'>
-          <li>Hotwire support out-of-the-box</li>
-          <li>Consistency</li>
-          <li>JWT authentication</li>
-          <li>Prometheus and StatsD instrumentation</li>
-        </ul>
-      <div class='plan-card__action-wrapper'>
-        <p class='plan-card__text'>
-          <span
-            class='plan-card__text-accent plan-card__text-accent_type_big'
-          >Free</span>
-        </p>
-        <a
-          class='link button button_variant_outlined'
-          href='https://docs.anycable.io'
-          target='_blank'
-          data-ph-capture-attribute-link-id='plan-free'
-        >
-          Learn more
-        </a>
-      </div>
-    </li>
-    <li class='plan-card plan-card_highlighted'>
-      <div class='plan-card__icon plan-card__icon_type_pro-basic'></div>
-      <h3 class='plan-card__title plan-card__title_inverted'>Pro</h3>
-      <div>
-        <p class='plan-card__text plan-card__text_inverted'>
-          <span class='plan-card__text-accent'>Twice more memory efficient</span> than open source, and:
-        </p>
-        <ul class='plan-card__list plan-card__text_inverted'>
-          <li>Consistency in cluster mode</li>
-          <li>Adaptive scaling</li>
-          <li>Slow drain on shutdown</li>
-          <li>Binary compression</li>
-          <li>Long-polling fallback</li>
-          <li>Apollo GraphQL support (clients, Studio)</li>
-          <li>Dedicated Slack-based support</li>
-        </ul>
-      </div>
-      <div class='plan-card__tiers'>
-        <p class='plan-card__text plan-card__text_inverted plan-card__tiers-caption'>
-          Priced by production instances:
-        </p>
-        <input
-          class='plan-card__billing-input'
-          type='radio'
-          name='pro-billing'
-          id='pro-billing-yearly'
-          checked
-        />
-        <input
-          class='plan-card__billing-input plan-card__billing-input_period_monthly'
-          type='radio'
-          name='pro-billing'
-          id='pro-billing-monthly'
-        />
-        <div class='plan-card__billing'>
+
+  <div class='plans-slide__content'>
+    <section class='plan-hero'>
+      <input
+        class='plan-hero__billing-input'
+        type='radio'
+        name='pro-billing'
+        id='pro-billing-yearly'
+        checked
+      />
+      <input
+        class='plan-hero__billing-input plan-hero__billing-input_period_monthly'
+        type='radio'
+        name='pro-billing'
+        id='pro-billing-monthly'
+      />
+
+      <div class='plan-hero__header'>
+        <div class='plan-hero__identity'>
+          <div class='plan-hero__icon'></div>
+          <div>
+            <h3 class='plan-hero__title'>Pro</h3>
+            <p class='plan-hero__tagline'>
+              <b>Twice more memory efficient</b> than open source, self-hosted on your own infrastructure.
+            </p>
+          </div>
+        </div>
+
+        <div class='plan-hero__billing'>
           <label
-            class='plan-card__billing-label plan-card__billing-label_period_yearly'
+            class='plan-hero__billing-label plan-hero__billing-label_period_yearly'
             for='pro-billing-yearly'
           >Yearly</label>
           <label
-            class='plan-card__billing-label plan-card__billing-label_period_monthly'
+            class='plan-hero__billing-label plan-hero__billing-label_period_monthly'
             for='pro-billing-monthly'
           >Monthly</label>
         </div>
-        <ul class='plan-card__tier-list'>
-          <li class='plan-card__tier'>
-            <span class='plan-card__tier-name'>Startup</span>
-            <span class='plan-card__tier-limit'>up to 5 instances</span>
-            <span class='plan-card__tier-price'>
-              <span class='plan-card__price plan-card__price_period_yearly'>$1,490<span class='plan-card__tier-unit'>/yr</span></span>
-              <span class='plan-card__price plan-card__price_period_monthly'>$149<span class='plan-card__tier-unit'>/mo</span></span>
-            </span>
-          </li>
-          <li class='plan-card__tier'>
-            <span class='plan-card__tier-name'>Business</span>
-            <span class='plan-card__tier-limit'>up to 20 instances</span>
-            <span class='plan-card__tier-price'>
-              <span class='plan-card__price plan-card__price_period_yearly'>$4,900<span class='plan-card__tier-unit'>/yr</span></span>
-              <span class='plan-card__price plan-card__price_period_monthly'>$490<span class='plan-card__tier-unit'>/mo</span></span>
-            </span>
-          </li>
-          <li class='plan-card__tier'>
-            <span class='plan-card__tier-name'>Scale</span>
-            <span class='plan-card__tier-limit'>20+ instances, priority support, 48h&nbsp;SLA</span>
-            <span class='plan-card__tier-price'>
-              <span class='plan-card__price'>from $9,000<span class='plan-card__tier-unit'>/yr</span></span>
-            </span>
-          </li>
-          <li class='plan-card__tier'>
-            <span class='plan-card__tier-name'>Enterprise</span>
-            <span class='plan-card__tier-limit'>source access &amp; customization</span>
-            <span class='plan-card__tier-price'>
-              <span class='plan-card__price'>Custom</span>
-            </span>
-          </li>
-        </ul>
       </div>
-      <div class='plan-card__action-wrapper'>
-        <p class='plan-card__text plan-card__text_inverted'>
-          Yearly costs the same as ten months.
+
+      <ul class='plan-hero__tiers'>
+        <li class='plan-hero__tier'>
+          <span class='plan-hero__tier-name'>Startup</span>
+          <span class='plan-hero__tier-limit'>up to 5 production instances</span>
+          <span class='plan-hero__tier-price'>
+            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$1,490<span class='plan-hero__tier-unit'>/yr</span></span>
+            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$149<span class='plan-hero__tier-unit'>/mo</span></span>
+          </span>
+        </li>
+        <li class='plan-hero__tier'>
+          <span class='plan-hero__tier-name'>Business</span>
+          <span class='plan-hero__tier-limit'>up to 20 production instances</span>
+          <span class='plan-hero__tier-price'>
+            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$4,900<span class='plan-hero__tier-unit'>/yr</span></span>
+            <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$490<span class='plan-hero__tier-unit'>/mo</span></span>
+          </span>
+        </li>
+        <li class='plan-hero__tier'>
+          <span class='plan-hero__tier-name'>Scale</span>
+          <span class='plan-hero__tier-limit'>20+ instances, priority support, 48h&nbsp;SLA</span>
+          <span class='plan-hero__tier-price'>
+            <span class='plan-hero__tier-amount'>from $9,000<span class='plan-hero__tier-unit'>/yr</span></span>
+          </span>
+        </li>
+        <li class='plan-hero__tier'>
+          <span class='plan-hero__tier-name'>Enterprise</span>
+          <span class='plan-hero__tier-limit'>source access &amp; customization</span>
+          <span class='plan-hero__tier-price'>
+            <span class='plan-hero__tier-amount'>Custom</span>
+          </span>
+        </li>
+      </ul>
+
+      <ul class='plan-hero__features'>
+        <li class='plan-hero__feature'>Consistency in cluster mode</li>
+        <li class='plan-hero__feature'>Adaptive scaling</li>
+        <li class='plan-hero__feature'>Slow drain on shutdown</li>
+        <li class='plan-hero__feature'>Binary compression</li>
+        <li class='plan-hero__feature'>Long-polling fallback</li>
+        <li class='plan-hero__feature'>Apollo GraphQL support</li>
+        <li class='plan-hero__feature'>Dedicated Slack-based support</li>
+      </ul>
+
+      <div class='plan-hero__footer'>
+        <p class='plan-hero__note'>
+          Yearly costs the same as ten months. Free 2-month trial.
           <br/>
-          Free 2-month trial. No metering, no telemetry.
-        </p>
-        <a href="https://plus.anycable.io/pro" target="_blank" class='button button_inverted' data-ph-capture-attribute-link-id='plan-basic'>
-          Sign up
-        </a>
-      </div>
-    </li>
-    <li class='plan-card'>
-      <div class='plan-card__icon plan-card__icon_type_pro-standard'></div>
-      <h3 class='plan-card__title'>
-        Managed
-      </h3>
-      <p class='plan-card__text'>
-        We run and support AnyCable Pro for you.
-      </p>
-      <div class='plan-card__action-wrapper'>
-        <p class='plan-card__text'>
-          <span
-            class='plan-card__text-accent plan-card__text-accent_type_big'
-          >Free for early users</span>
+          Priced by instances you count yourself: no metering, no telemetry.
         </p>
         <a
-          class='link button'
-          href='https://plus.anycable.io'
-          target='_blank'
-          data-ph-capture-attribute-link-id='plan-plus'
+          href="https://plus.anycable.io/pro"
+          target="_blank"
+          class='button button_inverted plan-hero__action'
+          data-ph-capture-attribute-link-id='plan-pro'
         >
-          Sign up
+          Start 2-month trial
         </a>
       </div>
-    </li>
-    <li class='plan-card'>
-      <div class='plan-card__icon plan-card__icon_type_custom'></div>
-      <h3 class='plan-card__title' id="custom-solutions">Consulting</h3>
-      <ul class='plan-card__list'>
-        <li>Setup and deploy AnyCable</li>
-        <li>Load test setup to prepare for scale</li>
-      </ul>
-      <div class='plan-card__action-wrapper'>
+    </section>
+
+    <ul class='plans-slide__options'>
+      <li class='plan-card plan-card_recommended'>
+        <div class='plan-card__icon plan-card__icon_type_pro-standard'></div>
+        <p class='plan-card__tag'>Start here</p>
+        <h3 class='plan-card__title'>Managed</h3>
         <p class='plan-card__text'>
-          <span
-            class='plan-card__text-accent plan-card__text-accent_type_big'
-          >$200 per hour</span>
-          <span
-            class='plan-card__contact-text'
-          >anycable@evilmartians.com</span>
+          We run and support AnyCable for you. Nothing to deploy, nothing to
+          scale.
         </p>
-        <a href='mailto:anycable@evilmartians.com' class='button plausible-event-name=Contact plausible-event-location=consulting' data-ph-capture-attribute-link-id='plan-custom'>
-          Contact us
-        </a>
-      </div>
-    </li>
-  </ul>
+        <ul class='plan-card__list'>
+          <li>A cluster in minutes, upgrades handled</li>
+          <li>JWT auth and signed streams, no RPC to run</li>
+          <li>Same server as Pro, same guarantees</li>
+        </ul>
+        <div class='plan-card__action-wrapper'>
+          <p class='plan-card__text'>
+            <span
+              class='plan-card__text-accent plan-card__text-accent_type_big'
+            >Free for early users</span>
+          </p>
+          <a
+            class='link button'
+            href='https://plus.anycable.io'
+            target='_blank'
+            data-ph-capture-attribute-link-id='plan-plus'
+          >
+            Start for free
+          </a>
+        </div>
+      </li>
+
+      <li class='plan-card'>
+        <div class='plan-card__icon plan-card__icon_type_open-source'></div>
+        <h3 class='plan-card__title'>Open-source</h3>
+        <p class='plan-card__text'>
+          Run it yourself. Deploy to Render, Railway, Heroku, Fly, AWS, GCP, and
+          anywhere with Docker or K8s.
+        </p>
+        <div class='plan-card__action-wrapper'>
+          <p class='plan-card__text'>
+            <span
+              class='plan-card__text-accent plan-card__text-accent_type_big'
+            >Free</span>
+          </p>
+          <a
+            class='link button button_variant_outlined'
+            href='https://docs.anycable.io'
+            target='_blank'
+            data-ph-capture-attribute-link-id='plan-free'
+          >
+            Learn more
+          </a>
+        </div>
+      </li>
+
+      <li class='plan-card'>
+        <div class='plan-card__icon plan-card__icon_type_custom'></div>
+        <h3 class='plan-card__title' id="custom-solutions">Consulting</h3>
+        <ul class='plan-card__list'>
+          <li>Setup and deploy AnyCable</li>
+          <li>Load test setup to prepare for scale</li>
+        </ul>
+        <div class='plan-card__action-wrapper'>
+          <p class='plan-card__text'>
+            <span
+              class='plan-card__text-accent plan-card__text-accent_type_big'
+            >$200 per hour</span>
+            <span
+              class='plan-card__contact-text'
+            >anycable@evilmartians.com</span>
+          </p>
+          <a href='mailto:anycable@evilmartians.com' class='button plausible-event-name=Contact plausible-event-location=consulting' data-ph-capture-attribute-link-id='plan-custom'>
+            Contact us
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
 </section>

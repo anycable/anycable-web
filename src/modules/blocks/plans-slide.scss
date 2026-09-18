@@ -24,25 +24,58 @@ $className: 'plans-slide';
 
   &__title {
     padding-left: 64px;
+    // The lead sits under the title, so the gap below moves to the lead.
+    margin-bottom: 16px;
 
     @include mediaMax($mobile) {
       padding-left: 24px;
+      margin-bottom: 12px;
     }
   }
 
+  // .slide centres its flex children, so the content needs an explicit width
+  // and the same 64px inset the title carries, or it shrink-wraps off-axis.
   &__content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-    grid-auto-rows: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 1920px;
+    padding: 0 64px;
 
     @include mediaMax($tablet) {
+      gap: 0;
+      padding: 0;
+    }
+  }
+
+  // Managed is the path we want people to take, so it gets the wider column.
+  &__options {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 20px;
+
+    @include mediaMax($tablet) {
+      grid-template-columns: repeat(3, 1fr);
       gap: 0;
     }
 
     @include mediaMax($mobile) {
       grid-template-columns: 1fr;
-      grid-auto-rows: initial;
+    }
+  }
+
+  &__lead {
+    padding-left: 64px;
+    margin-bottom: 40px;
+    max-width: 58ch;
+    font-size: 20px;
+    line-height: 1.5;
+    color: $fontSecondaryColor;
+
+    @include mediaMax($mobile) {
+      padding-left: 24px;
+      font-size: 17px;
     }
   }
 
