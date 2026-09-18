@@ -16,7 +16,8 @@ h2 Definitions.
 p.
   "AnyCable Pro" or "Software" means the AnyCable Pro WebSocket server distributed by Licensor, together with any updates
   provided under an active subscription. It does not include the open-source AnyCable components, which are governed by
-  their own licenses.
+  their own licenses, nor any hosted or managed AnyCable service operated by Licensor, which is governed by separate
+  terms.
 
 p.
   "Instance" means one running process of the AnyCable Pro WebSocket server in a Production environment. Each replica,
@@ -32,8 +33,10 @@ p.
   normal operation. Transient increases from autoscaling, rolling deployment, failover, or load testing are excluded.
 
 p.
-  "Tier" means the Startup, Business, or Scale subscription level selected by Customer at the time of purchase or
-  identified in the Order Form, each corresponding to a maximum Steady-State Peak number of Instances.
+  "Tier" means the Startup, Business, Scale, or Enterprise subscription level selected by Customer at the time of purchase
+  or identified in the Order Form. Each Tier corresponds to a range of Steady-State Peak Instances: the Startup and
+  Business Tiers each have a maximum, the Scale Tier has a minimum and no maximum, and the allowance for the Enterprise
+  Tier is stated in the Order Form.
 
 p.
   "Billing Period" means the recurring interval for which Customer pays the fees for its Tier, either one (1) month or one
@@ -47,7 +50,7 @@ h2 1. License.
 
 p.
   Subject to the terms of this Agreement and payment of applicable fees, Licensor grants Customer a limited,
-  non-exclusive, non-transferable, worldwide license during the subscription term, without the right to grant
+  non-exclusive, non-transferable, worldwide license during the Subscription Term, without the right to grant
   sublicenses, to install and run the Software in Production up to the Steady-State Peak Instance count of Customer's Tier,
   and in any number of non-Production environments. Customer may run the Software on any infrastructure Customer controls,
   including containerized, virtualized, cloud, and air-gapped environments. The Software is licensed, not sold.
@@ -65,9 +68,9 @@ p.nested.
   by you.
 
 p.nested.
-  (c) Licensor grants access to the Software through a license-controlled distribution channel (container registry and/or
-  package repository). Customer's access credentials are tied to Customer's active subscription and may not be shared
-  outside Customer's organization. Licensor may issue an offline license file for air-gapped environments on request.
+  (c) Licensor grants access to the Software through a license-controlled distribution channel, which may be a container
+  registry, a package repository, or a private source or artifact repository. Customer's access credentials are tied to
+  Customer's active subscription and may not be shared outside Customer's organization. Licensor may issue an offline license file for air-gapped environments on request.
 
 h2 3. License Types.
 
@@ -78,9 +81,10 @@ p.nested.
   as expressly permitted in this Agreement (see Section 5).
 
 p.nested.
-  (b) Enterprise License. Access to and modification of the Software's source code require a separate Enterprise license,
-  which may be added to any Tier and is identified in the Order Form. Except under an active Enterprise license, Customer
-  may not access, decompile, reverse engineer, or modify the Software's source code.
+  (b) Enterprise License. Access to and modification of the Software's source code require an Enterprise license,
+  identified in the Order Form. An Enterprise license may be added to any Tier or purchased as the Enterprise Tier, with
+  the instance allowance stated in the Order Form. Except under an active Enterprise license, Customer may not access,
+  decompile, reverse engineer, or modify the Software's source code.
 
 h2 4. Permitted Uses.
 
@@ -198,9 +202,9 @@ h2 10. Term of Agreement.
 
 p.nested.
   (a) Term. Your right to use the Software begins on the date the Software is made available for download or installation
-  and continues until the end of the specified term unless otherwise terminated in accordance with this Agreement. For
-  clarification, the term of your license under this Agreement is designated as a fixed-term license in the invoice and
-  shall be specified at your time of purchase. Either party may terminate this Agreement (including all related Invoices)
+  and continues for the Subscription Term unless otherwise terminated in accordance with this Agreement. Each Billing
+  Period is a fixed term, specified at the time of purchase or in the invoice; whether a Billing Period is followed by
+  another is governed by Section 15 (Instance Tiers, Compliance, and Renewal). Either party may terminate this Agreement (including all related Invoices)
   if the other party:
 
 p.nested-2.
@@ -366,3 +370,21 @@ p.nested.
   written notice before the start of the renewal Billing Period. A change in fees never applies to a Billing Period already
   paid for. If Customer does not accept the change, Customer may cancel under Section 15(f) before the renewal takes
   effect.
+
+h2 16. Free Trial.
+
+p.nested.
+  (a) Licensor may make the Software available for a free evaluation period of the length stated at sign-up (currently two
+  (2) months). During that period Customer may install and run the Software subject to every term of this Agreement, at no
+  fee.
+
+p.nested.
+  (b) A trial does not require a payment method and does not convert into a paid subscription on its own. A paid
+  subscription begins only when Customer purchases one.
+
+p.nested.
+  (c) At the end of the trial, if Customer has not purchased a subscription, Section 10(c) (Expiration of License) applies
+  and Licensor may withdraw Customer's credentials to the distribution channel described in Section 2(c).
+
+p.nested.
+  (d) Licensor may change or withdraw the trial at any time for customers who have not yet started one.
