@@ -20,6 +20,21 @@ $className: 'plan-card';
     background-color: $accentPrimaryColor;
   }
 
+  &_recommended {
+    border: 2px solid $accentPrimaryColor;
+    background-color: $backgroundPrimaryColor;
+  }
+
+  &__tag {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $accentPrimaryColor;
+    margin-bottom: -8px;
+  }
+
   &__icon {
     width: 64px;
     height: 64px;

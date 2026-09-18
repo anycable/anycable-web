@@ -1,49 +1,90 @@
 h1 AnyCable Pro End-User License Agreement
 
+p.eula-effective Effective date: September 28, 2026
+
 p.
   This software end-user license agreement ("EULA") is a legal agreement ("Agreement") between you (the customer, either
-  as an individual or, if purchased or otherwise acquired by or for an entity, as an entity) and Evil Martians Inc.
-  ("Licensor"). Read it carefully before completing the installation process and using AnyCable Pro and all upgrades made
-  available to you ("Software"). It provides a license to use the Software and contains warranty information and liability
-  disclaimers. By installing and using the Software, you are confirming your acceptance of the Software and agreeing to
-  become bound by the terms of this Agreement.
+  as an individual or, if purchased or otherwise acquired by or for an entity, as an entity) and Evil Martians Inc., a
+  Delaware corporation with its principal place of business at 77 Sands St, Brooklyn, New York 11201 ("Licensor"). Read it
+  carefully before completing the installation process and using AnyCable Pro and all upgrades made available to you
+  ("Software"). It provides a license to use the Software and contains warranty information and liability disclaimers. By
+  installing and using the Software, you are confirming your acceptance of the Software and agreeing to become bound by the
+  terms of this Agreement.
+
+h2 Definitions.
+
+p.
+  "AnyCable Pro" or "Software" means the AnyCable Pro WebSocket server distributed by Licensor, together with any updates
+  provided under an active subscription. It does not include the open-source AnyCable components, which are governed by
+  their own licenses, nor any hosted or managed AnyCable service operated by Licensor, which is governed by separate
+  terms.
+
+p.
+  "Instance" means one running process of the AnyCable Pro WebSocket server in a Production environment. Each replica,
+  container, pod, or virtual machine running the Software is a separate Instance. Multiple Software processes on one host
+  are multiple Instances. Customer's application, web, and RPC processes are not Instances.
+
+p.
+  "Production" means any environment serving live end-user or business traffic. Development, testing, staging,
+  continuous-integration, and preview environments are not Production.
+
+p.
+  "Steady-State Peak" means the greatest number of Instances running concurrently for a sustained period during Customer's
+  normal operation. Transient increases from autoscaling, rolling deployment, failover, or load testing are excluded.
+
+p.
+  "Tier" means the Startup, Business, Scale, or Enterprise subscription level selected by Customer at the time of purchase
+  or identified in the Order Form. Each Tier corresponds to a range of Steady-State Peak Instances: the Startup and
+  Business Tiers each have a maximum, the Scale Tier has a minimum and no maximum, and the allowance for the Enterprise
+  Tier is stated in the Order Form.
+
+p.
+  "Billing Period" means the recurring interval for which Customer pays the fees for its Tier, either one (1) month or one
+  (1) year, as selected by Customer at the time of purchase or identified in the Order Form.
+
+p.
+  "Subscription Term" means the initial Billing Period together with each subsequent Billing Period for which the
+  subscription is renewed under Section 15.
 
 h2 1. License.
 
 p.
-  Subject to payment of the applicable fees and compliance with this EULA, Licensor grants you a limited,
-  non-exclusive and non-transferable license to use the rights for the Software, without the right to grant sublicenses,
-  subject to the terms and conditions in this Agreement. The Software is licensed, not sold.
+  Subject to the terms of this Agreement and payment of applicable fees, Licensor grants Customer a limited,
+  non-exclusive, non-transferable, worldwide license during the Subscription Term, without the right to grant
+  sublicenses, to install and run the Software in Production up to the Steady-State Peak Instance count of Customer's Tier,
+  and in any number of non-Production environments. Customer may run the Software on any infrastructure Customer controls,
+  including containerized, virtualized, cloud, and air-gapped environments. The Software is licensed, not sold.
 
 h2 2. Delivery.
 
 p.nested.
   (a) In order to use the Software under this Agreement, you shall receive the Installation Instructions and all other
-  necessary installation information that will be send to your email account at the time of purchase, in accordance with
-  the scope of use and other terms specified for each type of Software and as set forth in this Section 3 (License Types).
+  necessary installation information that will be sent to your email account at the time of purchase, in accordance with
+  the scope of use and other terms specified for each type of Software.
 
 p.nested.
   (b) All Software and license documentation shall be delivered by electronic means unless otherwise specified in the
   applicable invoice or at the time of purchase. Software shall be deemed delivered when it is made available for download
   by you.
 
+p.nested.
+  (c) Licensor grants access to the Software through a license-controlled distribution channel, which may be a container
+  registry, a package repository, or a private source or artifact repository. Customer's access credentials are tied to
+  Customer's active subscription and may not be shared outside Customer's organization. Licensor may issue an offline license file for air-gapped environments on request.
+
 h2 3. License Types.
 
 p.nested.
-  (a) Standard Commercial Use License. If you purchased a Standard Commercial Use License, you may use the Software solely
-  for your internal operations, as well as translate or incorporate the Software into other software. However, under no
-  circumstances may you sell or use the Software as part of a product or service that competes with the Software itself.
-  For example, you may not provide the Software “as a service” for integration into others’ software applications, or an
-  enhanced version of the Software offering performance or general-purpose functional improvements. A product or service
-  may compete even if it provides its functionality via a different kind of interface (such as a service, library, or
-  plug-in), even if it is ported to a different platform or programming language, and even if it is provided free of
-  charge.
+  (a) Standard Commercial Use License. If you purchased a Standard Commercial Use License, you may use the Software for
+  your internal operations, including translating or incorporating the Software into other software for that purpose. You
+  may not sell, sublicense, or redistribute the Software, or provide it to third parties as a product or service, except
+  as expressly permitted in this Agreement (see Section 5).
 
 p.nested.
-  (b) Extended Commercial Use License. If you purchased an Extended Commercial Use License, you may use the Software for
-  your internal operations and commercial activities, as well as translate or incorporate the Software into other
-  Software. Also, you are entitled to use the Software as a part of a product or service that provides similar
-  functionality to the Software itself.
+  (b) Enterprise License. Access to and modification of the Software's source code require an Enterprise license,
+  identified in the Order Form. An Enterprise license may be added to any Tier or purchased as the Enterprise Tier, with
+  the instance allowance stated in the Order Form. Except under an active Enterprise license, Customer may not access,
+  decompile, reverse engineer, or modify the Software's source code.
 
 h2 4. Permitted Uses.
 
@@ -52,7 +93,10 @@ p.nested.
   copy must reproduce all copyright and other proprietary rights notices on or in the Software.
 
 p.nested.
-  (b) Modifications. You are entitled to create Modifications of the original Software. "Modification" means:
+  (b) Modifications. Access to and modification of the Software's source code require a separate Enterprise license (see
+  Section 3(b)). Except under an active Enterprise license, Customer may not decompile, reverse engineer, or modify the
+  Software. Where Customer holds an active Enterprise license, Customer is entitled to create Modifications of the
+  original Software, and "Modification" means:
 
 p.nested-2.
   (i) any addition to or deletion from the contents of a file included in the original Software or previous Modifications
@@ -129,6 +173,12 @@ p.nested.
 p.nested.
   (c) Internet-based support system is generally available by email: anycable@evilmartians.com.
 
+p.nested.
+  (d) Critical Patches (Scale and Enterprise). For the Scale Tier and under an active Enterprise license, Licensor will
+  use commercially reasonable efforts to provide an initial response to reports of critical defects or security issues
+  within forty-eight (48) hours. This is a response-time target and not a guarantee of resolution, workaround, or fix
+  within any particular period of time.
+
 h2 8. Ownership.
 
 p.
@@ -142,20 +192,27 @@ p.
   The Software license fees will be due and payable in full as set forth in the applicable invoice or
   at the time of purchase.
 
+p.
+  Fees for the Startup and Business Tiers are charged in advance for each Billing Period, monthly or annually as selected
+  by Customer at the time of purchase. Fees for the Scale Tier and under an Enterprise license are invoiced annually in
+  advance unless the Order Form provides otherwise. Fees are non-refundable except where this Agreement or applicable law
+  expressly requires a refund.
+
 h2 10. Term of Agreement.
 
 p.nested.
   (a) Term. Your right to use the Software begins on the date the Software is made available for download or installation
-  and continues until the end of the specified term unless otherwise terminated in accordance with this Agreement. For
-  clarification, the term of your license under this Agreement is designated as a fixed-term license in the invoice and
-  shall be specified at your time of purchase. Either party may terminate this Agreement (including all related Invoices)
+  and continues for the Subscription Term unless otherwise terminated in accordance with this Agreement. Each Billing
+  Period is a fixed term, specified at the time of purchase or in the invoice; whether a Billing Period is followed by
+  another is governed by Section 15 (Instance Tiers, Compliance, and Renewal). Either party may terminate this Agreement (including all related Invoices)
   if the other party:
 
 p.nested-2.
   (i) fails to cure any material breach of this Agreement within fifteen (15) working days after written notice of such
   breach, provided that Licensor may terminate this Agreement immediately upon any breach of Section 5 (Restricted Uses)
   or if you exceed any other restrictions contained in Section 3 (License Types), unless otherwise specified in this
-  Agreement;
+  Agreement. For clarity, Customer's Steady-State Peak exceeding its Tier is not a breach for purposes of this Section and
+  is governed solely by Section 15 (Instance Tiers, Compliance, and Renewal);
 
 p.nested-2.
   (ii) ceases operation without a successor; or
@@ -265,3 +322,69 @@ p.nested.
 p.nested.
   (i) Contact Information. If you have any questions about this EULA, or if you want to contact Licensor for any reason,
   please direct correspondence to anycable@evilmartians.com.
+
+p.nested.
+  (j) Publicity. Licensor may display Customer's name and logo on Licensor's website (https://anycable.io) to identify
+  Customer as a user of the Software, unless the parties agree otherwise in writing. Licensor will remove Customer's name
+  and logo within a reasonable time following Customer's written request.
+
+h2 15. Instance Tiers, Compliance, and Renewal.
+
+p.nested.
+  (a) Tier compliance. Customer selects a Tier in the Order Form based on its Steady-State Peak number of Instances, and
+  keeps its Production usage within that Tier. If Customer's Steady-State Peak grows beyond its Tier, Customer will move to
+  the appropriate Tier and pay the applicable fees.
+
+p.nested.
+  (b) Upgrading. If Customer's Steady-State Peak grows beyond its Tier, Customer will move to the appropriate Tier, either
+  through the self-service billing portal where available for Customer's Tier, or by contacting Licensor at
+  anycable@evilmartians.com. The higher Tier and its fee apply from the date of the change, prorated for the remainder of
+  the current Billing Period.
+
+p.nested.
+  (c) No runtime restriction. The Software does not disable or degrade itself if Customer exceeds its Tier.
+
+p.nested.
+  (d) Transient usage. Brief increases from autoscaling, rolling deployment, failover, or load testing do not count toward
+  Customer's Tier.
+
+p.nested.
+  (e) Renewal of the Startup and Business Tiers. Subscriptions to the Startup and Business Tiers renew automatically at the
+  end of each Billing Period for a further Billing Period of the same length, at Licensor's then-current rates for
+  Customer's Tier, until cancelled under Section 15(f).
+
+p.nested.
+  (f) Cancellation of the Startup and Business Tiers. Customer may cancel at any time through the self-service billing
+  portal or by writing to anycable@evilmartians.com. Cancellation takes effect at the end of the Billing Period in which it
+  is requested; the subscription is not renewed and no further fees are charged. Customer retains access to the Software
+  for the remainder of that Billing Period, after which Section 10(c) (Expiration of License) applies. Fees already paid
+  for the current Billing Period are not refunded.
+
+p.nested.
+  (g) Renewal of the Scale Tier and Enterprise licenses. Subscriptions to the Scale Tier and licenses granted under an
+  Enterprise license do not renew automatically. Any renewal requires a new Order Form executed by both parties, priced at
+  Licensor's then-current rates for Customer's Tier.
+
+p.nested.
+  (h) Changes to fees. Licensor may change the fees applicable to a renewal by giving Customer at least thirty (30) days'
+  written notice before the start of the renewal Billing Period. A change in fees never applies to a Billing Period already
+  paid for. If Customer does not accept the change, Customer may cancel under Section 15(f) before the renewal takes
+  effect.
+
+h2 16. Free Trial.
+
+p.nested.
+  (a) Licensor may make the Software available for a free evaluation period of the length stated at sign-up (currently two
+  (2) months). During that period Customer may install and run the Software subject to every term of this Agreement, at no
+  fee.
+
+p.nested.
+  (b) A trial does not require a payment method and does not convert into a paid subscription on its own. A paid
+  subscription begins only when Customer purchases one.
+
+p.nested.
+  (c) At the end of the trial, if Customer has not purchased a subscription, Section 10(c) (Expiration of License) applies
+  and Licensor may withdraw Customer's credentials to the distribution channel described in Section 2(c).
+
+p.nested.
+  (d) Licensor may change or withdraw the trial at any time for customers who have not yet started one.
