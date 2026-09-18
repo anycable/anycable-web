@@ -1,13 +1,14 @@
 $className: 'plan-hero';
 
+// The self-hosted Pro card: four tiers as rows, each with its own action.
 .#{$className} {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   padding: 24px 32px 32px;
+  border: 1px solid $borderPrimaryColor;
   border-radius: 8px;
-  background-color: $accentPrimaryColor;
-  color: $fontPrimaryInvertedColor;
+  background-color: $backgroundSecondaryColor;
 
   @include mediaMax($tablet) {
     border-radius: 0;
@@ -47,7 +48,7 @@ $className: 'plan-hero';
     margin-top: 8px;
     font-size: 17px;
     line-height: 1.4;
-    max-width: 52ch;
+    max-width: 44ch;
 
     b {
       font-weight: 700;
@@ -55,7 +56,7 @@ $className: 'plan-hero';
   }
 
   // The billing switch is two radios: no script, and the browser keeps the
-  // state. The inputs sit next to the labels and the tier grid so plain
+  // state. The inputs sit next to the labels and the tier list so plain
   // sibling selectors can reach both.
   &__billing-input {
     position: absolute;
@@ -72,53 +73,63 @@ $className: 'plan-hero';
     display: flex;
     flex-shrink: 0;
     gap: 2px;
-    padding: 2px;
+    padding: 3px;
     border-radius: 999px;
-    background-color: rgba(255, 255, 255, 0.18);
+    background-color: $borderPrimaryColor;
   }
 
   &__billing-label {
-    padding: 6px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
     border-radius: 999px;
     font-size: 15px;
     font-weight: 700;
     line-height: 1.4;
+    color: $fontSecondaryColor;
     cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
-  &__tiers {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-
-    @include mediaMax($tablet) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include mediaMax($mobile) {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
+  &__billing-badge {
+    padding: 1px 8px;
+    border-radius: 999px;
+    background-color: $accentPrimaryColor;
+    color: $fontPrimaryInvertedColor;
+    font-size: 12px;
+    line-height: 1.5;
   }
 
-  &__tier {
+  &__tiers {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 16px;
+    gap: 8px;
+  }
+
+  // Name and limit on the left, then price, then the action. The price and
+  // action columns have fixed widths so all four rows line up.
+  &__tier {
+    display: grid;
+    grid-template-columns: 1fr 150px 160px;
+    grid-template-areas:
+      'name price action'
+      'limit price action';
+    align-items: center;
+    column-gap: 24px;
+    row-gap: 2px;
+    padding: 14px 16px 14px 20px;
     border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.14);
+    background-color: $backgroundPrimaryColor;
 
     @include mediaMax($mobile) {
-      display: grid;
       grid-template-columns: 1fr auto;
       grid-template-areas:
         'name price'
-        'limit price';
-      align-items: center;
-      column-gap: 12px;
-      padding: 12px 14px;
+        'limit limit'
+        'action action';
+      row-gap: 6px;
+      padding: 14px 16px;
     }
   }
 
@@ -131,95 +142,72 @@ $className: 'plan-hero';
 
   &__tier-limit {
     grid-area: limit;
-    font-size: 13px;
-    line-height: 1.3;
-    opacity: 0.85;
+    font-size: 15px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
   }
 
-  // Pushing the price down keeps all four aligned however the limits wrap.
   &__tier-price {
     grid-area: price;
-    margin-top: auto;
-    padding-top: 10px;
+    justify-self: end;
     font-size: 24px;
     font-weight: 700;
     line-height: 1.1;
     white-space: nowrap;
 
     @include mediaMax($mobile) {
-      margin-top: 0;
-      padding-top: 0;
-      justify-self: end;
       font-size: 20px;
     }
   }
 
-  &__tier-unit {
-    font-size: 13px;
+  &__tier-unit,
+  &__tier-from {
+    font-size: 14px;
     font-weight: 400;
-    opacity: 0.85;
+    color: $fontSecondaryColor;
+  }
+
+  &__tier-action {
+    grid-area: action;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 15px;
+    white-space: nowrap;
+
+    @include mediaMax($mobile) {
+      margin-top: 6px;
+    }
+  }
+
+  &__terms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    font-size: 15px;
+    line-height: 1.4;
+
+    li::before {
+      content: '✓';
+      margin-right: 8px;
+      font-weight: 700;
+      color: $accentPrimaryColor;
+    }
   }
 
   &__features {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 17px;
-    line-height: 1.5;
-
-    @include mediaMax($mobile) {
-      flex-direction: column;
-    }
-  }
-
-  // Inline on wide screens, separated by middots. Stacked on a phone, where a
-  // trailing separator would dangle at the end of every line.
-  &__feature {
-    &::after {
-      content: '·';
-      margin: 0 10px;
-      opacity: 0.6;
-    }
-
-    &:last-child::after {
-      content: none;
-    }
-
-    @include mediaMax($mobile) {
-      &::after {
-        content: none;
-      }
-
-      &::before {
-        content: '·';
-        margin-right: 10px;
-        opacity: 0.6;
-      }
-    }
-  }
-
-  &__footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px 24px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-  }
-
-  &__note {
+    padding-top: 16px;
+    border-top: 1px solid $borderPrimaryColor;
     font-size: 15px;
     line-height: 1.5;
-    opacity: 0.9;
+    color: $fontSecondaryColor;
   }
 
-  &__action {
-    flex-shrink: 0;
-    min-width: 240px;
+  &__compare-link {
+    font-weight: 700;
+    white-space: nowrap;
 
-    @include mediaMax($mobile) {
-      width: 100%;
-      min-width: 0;
+    &::after {
+      content: ' ↓';
     }
   }
 
@@ -230,8 +218,8 @@ $className: 'plan-hero';
 
   #pro-billing-yearly:checked ~ &__header &__billing-label_period_yearly,
   #pro-billing-monthly:checked ~ &__header &__billing-label_period_monthly {
-    background-color: $fontPrimaryInvertedColor;
-    color: $accentPrimaryColor;
+    background-color: $backgroundPrimaryColor;
+    color: $fontPrimaryColor;
   }
 
   #pro-billing-monthly:checked ~ &__tiers &__tier-amount_period_yearly {
@@ -242,8 +230,9 @@ $className: 'plan-hero';
     display: inline;
   }
 
-  &__billing-input:focus-visible ~ &__header &__billing-label {
-    outline: 2px solid $fontPrimaryInvertedColor;
+  #pro-billing-yearly:focus-visible ~ &__header &__billing-label_period_yearly,
+  #pro-billing-monthly:focus-visible ~ &__header &__billing-label_period_monthly {
+    outline: 2px solid $accentPrimaryColor;
     outline-offset: 2px;
   }
 }

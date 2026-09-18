@@ -49,19 +49,237 @@ $className: 'plans-slide';
     }
   }
 
-  // Managed is the path we want people to take, so it gets the wider column.
-  &__options {
+  // Managed first, then Pro: left to right is free to paid.
+  &__main {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr;
+    grid-template-columns: minmax(300px, 1fr) 2.2fr;
+    gap: 20px;
+
+    @include mediaMax($desktop) {
+      grid-template-columns: 1fr;
+    }
+
+    @include mediaMax($tablet) {
+      gap: 0;
+    }
+  }
+
+  // Open-source and consulting are secondary, so they get one line each.
+  &__more {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 
     @include mediaMax($tablet) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 0;
+    }
+  }
+
+  &__more-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    grid-template-areas:
+      'icon body'
+      'icon link';
+    column-gap: 16px;
+    row-gap: 8px;
+    padding: 20px 24px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 8px;
+
+    @include mediaMax($tablet) {
+      border-radius: 0;
+      border-top: none;
+    }
+  }
+
+  &__more-icon {
+    grid-area: icon;
+    width: 48px;
+    height: 48px;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &_type_open-source {
+      background-image: url(./images/monoculus-icon.svg);
+    }
+
+    &_type_custom {
+      background-image: url(./images/microscope-icon.svg);
+    }
+  }
+
+  &__more-body {
+    grid-area: body;
+  }
+
+  &__more-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  &__more-price {
+    margin-left: 8px;
+    font-size: 17px;
+    font-weight: 400;
+    color: $fontSecondaryColor;
+  }
+
+  &__more-text {
+    margin-top: 4px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: $fontSecondaryColor;
+  }
+
+  &__more-link {
+    grid-area: link;
+    justify-self: start;
+    font-size: 15px;
+    font-weight: 700;
+
+    &::after {
+      content: ' →';
+    }
+  }
+
+  &__subtitle {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  // The feature table and the FAQ sit side by side on wide screens.
+  &__details {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 64px;
+    margin-top: 56px;
+
+    @include mediaMax($desktop) {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      max-width: 880px;
+    }
+
+    @include mediaMax($tablet) {
+      margin-top: 40px;
+      padding: 0 24px;
+    }
+  }
+
+  &__table-wrapper {
+    overflow-x: auto;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 17px;
+    line-height: 1.4;
+
+    th,
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid $borderPrimaryColor;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    thead th {
+      font-size: 15px;
+      font-weight: 700;
+      color: $fontSecondaryColor;
+    }
+
+    tbody th {
+      font-weight: 400;
+      padding-left: 0;
+    }
+
+    // Value columns shrink to their content; the feature name takes the rest.
+    thead th + th,
+    td {
+      width: 1%;
+      white-space: nowrap;
+    }
+
+    td {
+      font-weight: 700;
     }
 
     @include mediaMax($mobile) {
-      grid-template-columns: 1fr;
+      font-size: 15px;
+
+      th,
+      td {
+        padding: 10px 8px;
+      }
+
+      td {
+        white-space: normal;
+      }
+    }
+  }
+
+  &__table-note {
+    display: block;
+    font-size: 14px;
+    color: $fontSecondaryColor;
+  }
+
+  &__table-no {
+    color: $accentSecondaryColor;
+
+    &#{&} {
+      font-weight: 400;
+    }
+  }
+
+  &__compare-note {
+    margin-top: 12px;
+    font-size: 15px;
+    color: $fontSecondaryColor;
+  }
+
+  &__faq-item {
+    border-bottom: 1px solid $borderPrimaryColor;
+
+    summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 0;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.4;
+      cursor: pointer;
+      list-style: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &::after {
+        content: '+';
+        flex-shrink: 0;
+        color: $accentPrimaryColor;
+      }
+    }
+
+    &[open] summary::after {
+      content: '−';
+    }
+
+    p {
+      padding-bottom: 16px;
+      max-width: 68ch;
+      font-size: 17px;
+      line-height: 1.5;
+      color: $fontSecondaryColor;
     }
   }
 
