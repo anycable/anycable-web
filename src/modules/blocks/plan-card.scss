@@ -138,12 +138,70 @@ $className: 'plan-card';
     font-size: 17px;
     font-weight: 700;
     white-space: nowrap;
+  }
 
-    span {
-      font-size: 12px;
-      font-weight: 400;
-      opacity: 0.8;
-    }
+  &__tier-unit {
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.8;
+  }
+
+  // The billing switch is two radios: no script, and the browser keeps the
+  // state. The inputs sit next to the list so a sibling selector can reach it.
+  &__billing-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  &__billing {
+    display: flex;
+    align-self: flex-start;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.14);
+  }
+
+  &__billing-label {
+    padding: 4px 14px;
+    border-radius: 999px;
+    color: $fontPrimaryInvertedColor;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  // Monthly figures stay out of the way until the switch asks for them.
+  &__price_period_monthly {
+    display: none;
+  }
+
+  #pro-billing-yearly:checked ~ &__billing &__billing-label_period_yearly,
+  #pro-billing-monthly:checked ~ &__billing &__billing-label_period_monthly {
+    background-color: $fontPrimaryInvertedColor;
+    color: $accentPrimaryColor;
+  }
+
+  #pro-billing-yearly:checked ~ &__tier-list &__price_period_monthly,
+  #pro-billing-monthly:checked ~ &__tier-list &__price_period_yearly {
+    display: none;
+  }
+
+  #pro-billing-monthly:checked ~ &__tier-list &__price_period_monthly {
+    display: inline;
+  }
+
+  &__billing-input:focus-visible ~ &__billing &__billing-label {
+    outline: 2px solid $fontPrimaryInvertedColor;
+    outline-offset: 2px;
   }
 
   &__action-wrapper {

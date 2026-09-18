@@ -54,31 +54,66 @@
         <p class='plan-card__text plan-card__text_inverted plan-card__tiers-caption'>
           Priced by production instances:
         </p>
+        <input
+          class='plan-card__billing-input'
+          type='radio'
+          name='pro-billing'
+          id='pro-billing-yearly'
+          checked
+        />
+        <input
+          class='plan-card__billing-input plan-card__billing-input_period_monthly'
+          type='radio'
+          name='pro-billing'
+          id='pro-billing-monthly'
+        />
+        <div class='plan-card__billing'>
+          <label
+            class='plan-card__billing-label plan-card__billing-label_period_yearly'
+            for='pro-billing-yearly'
+          >Yearly</label>
+          <label
+            class='plan-card__billing-label plan-card__billing-label_period_monthly'
+            for='pro-billing-monthly'
+          >Monthly</label>
+        </div>
         <ul class='plan-card__tier-list'>
           <li class='plan-card__tier'>
             <span class='plan-card__tier-name'>Startup</span>
             <span class='plan-card__tier-limit'>up to 5 instances</span>
-            <span class='plan-card__tier-price'>$1,490<span>/yr</span></span>
+            <span class='plan-card__tier-price'>
+              <span class='plan-card__price plan-card__price_period_yearly'>$1,490<span class='plan-card__tier-unit'>/yr</span></span>
+              <span class='plan-card__price plan-card__price_period_monthly'>$149<span class='plan-card__tier-unit'>/mo</span></span>
+            </span>
           </li>
           <li class='plan-card__tier'>
             <span class='plan-card__tier-name'>Business</span>
             <span class='plan-card__tier-limit'>up to 20 instances</span>
-            <span class='plan-card__tier-price'>$4,900<span>/yr</span></span>
+            <span class='plan-card__tier-price'>
+              <span class='plan-card__price plan-card__price_period_yearly'>$4,900<span class='plan-card__tier-unit'>/yr</span></span>
+              <span class='plan-card__price plan-card__price_period_monthly'>$490<span class='plan-card__tier-unit'>/mo</span></span>
+            </span>
           </li>
           <li class='plan-card__tier'>
             <span class='plan-card__tier-name'>Scale</span>
             <span class='plan-card__tier-limit'>20+ instances, priority support, 48h&nbsp;SLA</span>
-            <span class='plan-card__tier-price'>from $9,000<span>/yr</span></span>
+            <span class='plan-card__tier-price'>
+              <span class='plan-card__price'>from $9,000<span class='plan-card__tier-unit'>/yr</span></span>
+            </span>
           </li>
           <li class='plan-card__tier'>
             <span class='plan-card__tier-name'>Enterprise</span>
             <span class='plan-card__tier-limit'>source access &amp; customization</span>
-            <span class='plan-card__tier-price'>Custom</span>
+            <span class='plan-card__tier-price'>
+              <span class='plan-card__price'>Custom</span>
+            </span>
           </li>
         </ul>
       </div>
       <div class='plan-card__action-wrapper'>
         <p class='plan-card__text plan-card__text_inverted'>
+          Yearly costs the same as ten months.
+          <br/>
           Free 2-month trial. No metering, no telemetry.
         </p>
         <a href="https://plus.anycable.io/pro" target="_blank" class='button button_inverted' data-ph-capture-attribute-link-id='plan-basic'>
