@@ -1,15 +1,22 @@
-<pre class="shiki github-dark-high-contrast" style="background-color:#0a0c10;color:#f0f3f6" tabindex="0"><code style="padding:1em;overflow-x: auto;"><span class="line"><span style="color:#BDC4CC"># Broadcast from FastAPI via HTTP API</span></span>
-<span class="line"><span style="color:#FF9492">import</span><span style="color:#F0F3F6"> httpx</span></span>
+<pre class="shiki github-dark-high-contrast" style="background-color:#0a0c10;color:#f0f3f6" tabindex="0"><code style="padding:1em;overflow-x: auto;"><span class="line"><span style="color:#BDC4CC"># FastAPI: stream an LLM answer that survives a refresh</span></span>
+<span class="line"><span style="color:#FF9492">import</span><span style="color:#F0F3F6"> json, httpx</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F0F3F6">@app.</span><span style="color:#DBB7FF">post</span><span style="color:#F0F3F6">(</span><span style="color:#ADDCFF">"/messages"</span><span style="color:#F0F3F6">)</span></span>
-<span class="line"><span style="color:#FF9492">async def</span><span style="color:#DBB7FF"> create_message</span><span style="color:#F0F3F6">(msg: Message):</span></span>
-<span class="line"><span style="color:#FF9492">    async with</span><span style="color:#F0F3F6"> httpx.AsyncClient() </span><span style="color:#FF9492">as</span><span style="color:#F0F3F6"> client:</span></span>
-<span class="line"><span style="color:#FF9492">        await</span><span style="color:#F0F3F6"> client.</span><span style="color:#DBB7FF">post</span><span style="color:#F0F3F6">(</span></span>
-<span class="line"><span style="color:#ADDCFF">            f"</span><span style="color:#F0F3F6">{ANYCABLE_URL}</span><span style="color:#ADDCFF">/api/v1/broadcasts"</span><span style="color:#F0F3F6">,</span></span>
-<span class="line"><span style="color:#F0F3F6">            json={</span></span>
-<span class="line"><span style="color:#ADDCFF">                "stream"</span><span style="color:#F0F3F6">: </span><span style="color:#FF9492">f</span><span style="color:#ADDCFF">"chat/</span><span style="color:#F0F3F6">{msg.room_id}</span><span style="color:#ADDCFF">"</span><span style="color:#F0F3F6">,</span></span>
-<span class="line"><span style="color:#ADDCFF">                "data"</span><span style="color:#F0F3F6">: msg.</span><span style="color:#DBB7FF">json</span><span style="color:#F0F3F6">()</span></span>
-<span class="line"><span style="color:#F0F3F6">            }</span></span>
-<span class="line"><span style="color:#F0F3F6">        )</span></span>
-<span class="line"><span style="color:#FF9492">    return</span><span style="color:#F0F3F6"> {</span><span style="color:#ADDCFF">"ok"</span><span style="color:#F0F3F6">: </span><span style="color:#91CBFF">True</span><span style="color:#F0F3F6">}</span></span>
+<span class="line"><span style="color:#F0F3F6">BROADCAST_URL </span><span style="color:#FF9492">=</span><span style="color:#ADDCFF"> "http://anycable:8090/_broadcast"</span></span>
+<span class="line"><span style="color:#F0F3F6">AUTH </span><span style="color:#FF9492">=</span><span style="color:#F0F3F6"> {</span><span style="color:#ADDCFF">"Authorization"</span><span style="color:#F0F3F6">: </span><span style="color:#FF9492">f</span><span style="color:#ADDCFF">"Bearer </span><span style="color:#F0F3F6">{BROADCAST_KEY}</span><span style="color:#ADDCFF">"</span><span style="color:#F0F3F6">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF9492">async def</span><span style="color:#DBB7FF"> stream_answer</span><span style="color:#F0F3F6">(chat_id: </span><span style="color:#91CBFF">str</span><span style="color:#F0F3F6">, prompt: </span><span style="color:#91CBFF">str</span><span style="color:#F0F3F6">):</span></span>
+<span class="line"><span style="color:#BDC4CC">    # Runs apart from the request, so a closed tab can't stop it</span></span>
+<span class="line"><span style="color:#FF9492">    async with</span><span style="color:#F0F3F6"> httpx.</span><span style="color:#DBB7FF">AsyncClient</span><span style="color:#F0F3F6">(headers</span><span style="color:#FF9492">=</span><span style="color:#F0F3F6">AUTH) </span><span style="color:#FF9492">as</span><span style="color:#F0F3F6"> cable:</span></span>
+<span class="line"><span style="color:#FF9492">        async for</span><span style="color:#F0F3F6"> token </span><span style="color:#FF9492">in</span><span style="color:#F0F3F6"> llm.</span><span style="color:#DBB7FF">stream</span><span style="color:#F0F3F6">(prompt):</span></span>
+<span class="line"><span style="color:#FF9492">            await</span><span style="color:#F0F3F6"> cable.</span><span style="color:#DBB7FF">post</span><span style="color:#F0F3F6">(BROADCAST_URL, json</span><span style="color:#FF9492">=</span><span style="color:#F0F3F6">{</span></span>
+<span class="line"><span style="color:#ADDCFF">                "stream"</span><span style="color:#F0F3F6">: </span><span style="color:#FF9492">f</span><span style="color:#ADDCFF">"chat/</span><span style="color:#F0F3F6">{chat_id}</span><span style="color:#ADDCFF">"</span><span style="color:#F0F3F6">,</span></span>
+<span class="line"><span style="color:#ADDCFF">                "data"</span><span style="color:#F0F3F6">: json.</span><span style="color:#DBB7FF">dumps</span><span style="color:#F0F3F6">({</span><span style="color:#ADDCFF">"token"</span><span style="color:#F0F3F6">: token}),</span></span>
+<span class="line"><span style="color:#F0F3F6">            })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F0F3F6">@app.</span><span style="color:#DBB7FF">post</span><span style="color:#F0F3F6">(</span><span style="color:#ADDCFF">"/chats/{chat_id}/answer"</span><span style="color:#F0F3F6">)</span></span>
+<span class="line"><span style="color:#FF9492">async def</span><span style="color:#DBB7FF"> answer</span><span style="color:#F0F3F6">(chat_id: </span><span style="color:#91CBFF">str</span><span style="color:#F0F3F6">, q: Ask, bg: BackgroundTasks):</span></span>
+<span class="line"><span style="color:#F0F3F6">    bg.</span><span style="color:#DBB7FF">add_task</span><span style="color:#F0F3F6">(stream_answer, chat_id, q.prompt)</span></span>
+<span class="line"><span style="color:#BDC4CC">    # Browser subscribes to the signed stream; AnyCable</span></span>
+<span class="line"><span style="color:#BDC4CC">    # replays missed tokens when it reconnects</span></span>
+<span class="line"><span style="color:#FF9492">    return</span><span style="color:#F0F3F6"> {</span><span style="color:#ADDCFF">"stream"</span><span style="color:#F0F3F6">: </span><span style="color:#DBB7FF">signed_stream</span><span style="color:#F0F3F6">(</span><span style="color:#FF9492">f</span><span style="color:#ADDCFF">"chat/</span><span style="color:#F0F3F6">{chat_id}</span><span style="color:#ADDCFF">"</span><span style="color:#F0F3F6">)}</span></span>
 <span class="line"></span></code></pre>

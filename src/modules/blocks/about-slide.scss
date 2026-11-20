@@ -203,4 +203,169 @@ $className: 'about-slide';
   &__video-tip {
     margin-bottom: 24px;
   }
+
+  &__text a {
+    color: $accentPrimaryColor;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  &__heading {
+    margin-top: 96px;
+    margin-bottom: 32px;
+    font-size: 34px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-wrap: balance;
+
+    @include mediaMax($mobile) {
+      margin-top: 56px;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+  }
+
+  // Instant / Scalable / Dependable / Yours: one measured figure per promise.
+  &__pillars {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+
+    @include mediaMax($desktop) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include mediaMax($mobile) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  &__pillar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 12px;
+    background-color: $backgroundPrimaryColor;
+  }
+
+  &__pillar-label {
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $accentPrimaryColor;
+  }
+
+  &__pillar-figure {
+    font-size: 44px;
+    line-height: 1.05;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    small {
+      margin-left: 6px;
+      font-size: 18px;
+      font-weight: 400;
+      color: $fontSecondaryColor;
+    }
+  }
+
+  &__pillar-caption {
+    font-size: 15px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+  }
+
+  &__pillar-text {
+    margin-top: 8px;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  &__more {
+    align-self: flex-start;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    font-size: 17px;
+    line-height: 1.5;
+    font-weight: 700;
+    color: $accentPrimaryColor;
+    text-decoration: none;
+    transition: $opacityPrimaryTransition;
+
+    &:hover {
+      opacity: $opacityPrimaryValue;
+    }
+  }
+
+  &__table-wrap {
+    overflow-x: auto;
+    margin-bottom: 96px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 12px;
+    background-color: $backgroundPrimaryColor;
+
+    @include mediaMax($mobile) {
+      margin-bottom: 56px;
+    }
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 17px;
+    line-height: 1.5;
+
+    th,
+    td {
+      padding: 16px 20px;
+      border-bottom: 1px solid $borderPrimaryColor;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: $fontSecondaryColor;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td:first-child {
+      width: 24%;
+      font-weight: 700;
+    }
+
+    td:nth-child(2) {
+      color: $fontSecondaryColor;
+    }
+  }
+
+  // Lines the code tabs up with the section heading beside them.
+  &__media-code {
+    margin-top: 96px;
+  }
+
+  &__pro {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 6px;
+    border: 1px solid $accentPrimaryColor;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 700;
+    color: $accentPrimaryColor;
+    vertical-align: 2px;
+  }
 }

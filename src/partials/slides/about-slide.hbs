@@ -1,75 +1,114 @@
 <section class='slide about-slide' id="features">
   <div class='about-slide__wrapper'>
     <div class='about-slide__section'>
-      <div class='about-slide__content'>
+      <div class='about-slide__content about-slide__content-full'>
         <h2 class='about-slide__title'>
-          Why AnyCable?
+          Instant, scalable, dependable. And yours.
         </h2>
-        <h3 class='about-slide__subtitle'>
-          Delivery guarantees, out of the box
-        </h3>
-        <p class='about-slide__text'>
-          Most WebSocket solutions don't guarantee delivery. AnyCable does. Missed messages are automatically recovered during connectivity issues — micro-disconnections, subway rides, or network switches. Your connections also stay alive during deploys, so users never notice a deployment.
-        </p>
-        <h3 class='about-slide__subtitle'>
-          10,000+ connections per server
-        </h3>
-        <p class='about-slide__text'>
-          Written in Go for minimal memory overhead on long-lived connections. Works with any backend — Rails, Laravel, Node.js, Python, or any language via HTTP pub/sub API. In production since 2017, powering 50+ companies.
-        </p>
-      </div>
-      <div class='about-slide__media about-slide__media-top demo__slide'>
-        {{> slides/demo }}
-      </div>
-    </div>
-    <div class='about-slide__section'>
-      <div class='about-slide__content'>
-        <h3
-          class='about-slide__subtitle'
-        >
-          Managed, open source, or on-premise Pro
-        </h3>
-        <p class='about-slide__text'>
-          Start with AnyCable in its managed (SaaS) form, then switch to the on-premise Pro version as you scale. You can always move to open source, which is free. No code changes are needed to switch between any option — choose what's best for you today.
-        </p>
-        <h3 class='about-slide__subtitle'>Secure and HIPAA compliant messaging</h3>
-        <p class='about-slide__text'>
-          Using on premise AnyCable, Pro and open source, you store all realtime data, such as chat messages, on your servers and never have to send it to a 3rd-party. Simple, secure and compliant with HIPAA.
-        </p>
-      </div>
-      <div class='about-slide__media'>
-        <div class='slide-show__frame'>{{inline
-          'images/illustration.svg'
-        }}</div>
-      </div>
-    </div>
-    <div class='about-slide__section'>
-      <div class='about-slide__content'>
-        <h3 class='about-slide__subtitle'>Works with any backend</h3>
-        <p class='about-slide__text'>
-          AnyCable runs as a standalone server alongside your application. Broadcast from any backend via HTTP API — or use native SDKs for Rails and Laravel. Works with Hotwire, Turbo Streams, and any JavaScript framework out of the box.
-        </p>
-        <div class='about-slide__arrow'>
-          <svg width="171" height="20" viewBox="0 0 171 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M168 1H159C160.351 2.00994 161.217 2.84532 161.805 3.72314C162.441 4.67378 162.752 5.67419 163 7L168 1Z" fill="#F64343"/>
-            <path d="M1 1C73.0118 31.8187 139.167 14.5697 168 1M168 1H159C161.814 3.10366 162.523 4.44994 163 7L168 1Z" stroke="#F64343" stroke-width="2"/>
-          </svg>
+        <div class='about-slide__pillars'>
+          <article class='about-slide__pillar'>
+            <p class='about-slide__pillar-label'>Instant</p>
+            <p class='about-slide__pillar-figure'>3 ms<small>p50</small></p>
+            <p class='about-slide__pillar-caption'>roundtrip at 10K connections, 11 ms at p99</p>
+            <p class='about-slide__pillar-text'>
+              A Go server holds the sockets and fans out every broadcast. Your app publishes over HTTP, Redis or the embedded NATS, then goes back to its own work.
+            </p>
+          </article>
+          <article class='about-slide__pillar'>
+            <p class='about-slide__pillar-label'>Scalable</p>
+            <p class='about-slide__pillar-figure'>18 KB</p>
+            <p class='about-slide__pillar-caption'>per idle connection on Pro, against about 52 KB on Socket.io</p>
+            <p class='about-slide__pillar-text'>
+              Connections live outside your app processes, so a launch-day spike lands on AnyCable, and you scale it by adding instances. Pro adapts its concurrency to load.
+            </p>
+          </article>
+          <article class='about-slide__pillar'>
+            <p class='about-slide__pillar-label'>Dependable</p>
+            <p class='about-slide__pillar-figure'>100%</p>
+            <p class='about-slide__pillar-caption'>delivered through Wi-Fi drops, against 85% to 87% for Socket.io and uWebSockets.js</p>
+            <p class='about-slide__pillar-text'>
+              Stream history replays what a client missed, in order, when it reconnects. Connections stay open while you deploy, so users never notice a release.
+            </p>
+          </article>
+          <article class='about-slide__pillar'>
+            <p class='about-slide__pillar-label'>Yours</p>
+            <p class='about-slide__pillar-figure'>Flat</p>
+            <p class='about-slide__pillar-caption'>price, with no metering and no telemetry</p>
+            <p class='about-slide__pillar-text'>
+              Run it in your cluster under the MIT license, or self-host Pro with unlimited connections from $1,490 a year. Messages never leave your infrastructure.
+            </p>
+          </article>
         </div>
-        <h3 class='about-slide__subtitle'>Reuse your existing infra components</h3>
+        <a class='about-slide__more plausible-event-name=Navigation plausible-event-link=features-benchmark' href='/compare/nodejs-websocket' data-ph-capture-attribute-link-id='features-benchmark'>
+          How we measured: the 2026 benchmark and its open-source repo →
+        </a>
+      </div>
+    </div>
+
+    <div class='about-slide__section'>
+      <div class='about-slide__content about-slide__content-full'>
+        <h3 class='about-slide__heading'>What happens when…</h3>
+        <div class='about-slide__table-wrap'>
+          <table class='about-slide__table'>
+            <thead>
+              <tr>
+                <th scope='col'>When</th>
+                <th scope='col'>WebSockets inside your app (Action Cable, Socket.io)</th>
+                <th scope='col'>AnyCable</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>You deploy your app</td>
+                <td>Every connection drops, and every client reconnects at once</td>
+                <td>Connections stay open: the Go server runs apart from your app</td>
+              </tr>
+              <tr>
+                <td>A phone loses signal for 30 seconds</td>
+                <td>Messages sent in that window are gone</td>
+                <td>The client reconnects, restores its session and receives what it missed from stream history</td>
+              </tr>
+              <tr>
+                <td>A WebSocket server restarts</td>
+                <td>Its clients reconnect into an empty state</td>
+                <td>Slow drain spreads the reconnects out, and clients resume from stream history shared across the cluster <span class='about-slide__pro'>Pro</span></td>
+              </tr>
+              <tr>
+                <td>Launch-day traffic arrives</td>
+                <td>App processes hold the connections and run short of memory</td>
+                <td>Add AnyCable instances; your app's memory stays flat</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class='about-slide__section' id='fastapi'>
+      <div class='about-slide__content'>
+        <h3 class='about-slide__heading'>AI answers that survive a refresh</h3>
         <p class='about-slide__text'>
-          AnyCable doesn't require any additional infrastructure components for its operation and scalability: good old HTTP API and embedded NATS pub/sub server got you covered. And if you already have Redis or NATS, you can use it as well.
+          A tab switch or a network blip ends a streamed LLM answer, and there is nothing to resume from. With AnyCable, your FastAPI worker broadcasts tokens to a stream, and the Go server holds the connection, keeps the history and replays from where the client left off. No WebSocket code in Python, no sticky sessions, no Redis Streams plumbing.
+        </p>
+        <p class='about-slide__text'>
+          GitLab ships AnyCable's JavaScript client in GitLab Duo to stream AI responses.
+          <a href='https://docs.anycable.io/guides/python' target='_blank' class='plausible-event-name=Navigation plausible-event-link=fastapi-guide' data-ph-capture-attribute-link-id='fastapi-guide'>Read the Python and FastAPI guide →</a>
+        </p>
+        <h3 class='about-slide__subtitle'>Works with your stack</h3>
+        <p class='about-slide__text'>
+          AnyCable runs next to your application. Rails and Laravel get native SDKs; FastAPI, Node.js and any other backend broadcast over HTTP. Hotwire, Turbo Streams and every JavaScript framework work out of the box, and if you already run Redis or NATS, AnyCable can use them.
         </p>
       </div>
-      <div class='about-slide__media about-slide__media-align-top' data-controller="tabs">
+      <div class='about-slide__media about-slide__media-align-top about-slide__media-code' data-controller="tabs">
         <div class='about-slide__tabs'>
-          <button data-tabs-target="code-pubsub" class='button button_variant_outlined about-slide__tab active-tab'>Pub/Sub</button>
-          <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Ruby</button>
-          <button data-tabs-target="code-js" class='button button_variant_outlined about-slide__tab'>JS/TS</button>
-          <button data-tabs-target="code-py" class='button button_variant_outlined about-slide__tab'>Python</button>
+          <button data-tabs-target="code-py" class='button button_variant_outlined about-slide__tab active-tab'>FastAPI</button>
+          <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Rails</button>
+          <button data-tabs-target="code-js" class='button button_variant_outlined about-slide__tab'>Node.js</button>
+          <button data-tabs-target="code-pubsub" class='button button_variant_outlined about-slide__tab'>Browser</button>
         </div>
         <div class='slide-show__frame' id="codes">
-          <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
-{{> slides/code-snippets/pubsub}}
+          <div data-tabs-id="code-py" class='slide-show__code-wrapper'>
+{{> slides/code-snippets/python}}
           </div>
           <div data-tabs-id="code-rb" style="display:none" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/ruby}}
@@ -77,10 +116,28 @@
           <div data-tabs-id="code-js" style="display:none" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/js}}
           </div>
-          <div data-tabs-id="code-py" style="display:none" class='slide-show__code-wrapper'>
-{{> slides/code-snippets/python}}
+          <div data-tabs-id="code-pubsub" style="display:none" class='slide-show__code-wrapper'>
+{{> slides/code-snippets/pubsub}}
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class='about-slide__section'>
+      <div class='about-slide__content'>
+        <h3 class='about-slide__heading'>Managed AnyCable, Pro, or open source</h3>
+        <p class='about-slide__text'>
+          Start on Managed AnyCable, free for one instance. Move to self-hosted Pro when you want it on your own infrastructure, or run open source for free. It is the same server with the same guarantees, so moving between them takes no code changes.
+        </p>
+        <h3 class='about-slide__subtitle'>Your messages stay on your servers</h3>
+        <p class='about-slide__text'>
+          Self-hosted Pro and open source keep every realtime message, chat history included, inside your infrastructure. Nothing goes to a third party, which is why healthcare teams run AnyCable for HIPAA-covered data.
+        </p>
+      </div>
+      <div class='about-slide__media'>
+        <div class='slide-show__frame'>{{inline
+          'images/illustration.svg'
+        }}</div>
       </div>
     </div>
   </div>

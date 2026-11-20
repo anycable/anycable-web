@@ -1,34 +1,59 @@
 <section class='slide main-slide'>
-  <div class='main-slide__content-wrapper'>
-    <div class='main-slide__left-content'>
-      {{inline 'images/logo.svg'}}
-    </div>
-    <div class='main-slide__right-content'>
-      <h1 class='main-slide__title' id='pro'>AnyCable</h1>
+  <div class='main-slide__inner'>
+    <div class='main-slide__copy'>
+      <p class='main-slide__eyebrow'>Open-source realtime server · in production since 2017</p>
+      <h1 class='main-slide__title' id='pro'>Every message arrives.</h1>
       <p class='main-slide__subtitle'>
-        Realtime server with delivery guarantees, presence tracking, and message ordering — built in.
+        AnyCable keeps WebSocket connections open through your deploys and replays what a client missed when it comes back online. Delivery guarantees, ordering and presence, built in.
       </p>
-      <div class='main-slide__text'>
-        <p>
-          Works with Rails, Laravel, Node.js, Python, and any backend via HTTP API.
-        </p>
-        <p class="no-mobile">
-          Open source, managed, or on-premise Pro.
-        </p>
+      <p class='main-slide__stack'>
+        For Rails, FastAPI, Laravel, Node.js, and any backend that can send an HTTP request.
       </p>
-      <div class='main-slide__footer'>
-        <div class='try-now'>
-          <p class='try-now__caption'>
-            Start a 
-            <span class='try-now__caption try-now__caption_bolded'>free trial</span>
-            of SaaS, or on premise Pro
-          </p>
-          <a href="https://plus.anycable.io/pro" target="_blank" class='button button_size_big try-now__button plausible-event-name=Signup plausible-event-location=hero' data-ph-capture-attribute-link-id='try-pro-now'>
-            Sign up
-          </a>
+      <div class='main-slide__ctas'>
+        <a href="https://plus.anycable.io" target="_blank" class='button button_size_big main-slide__cta plausible-event-name=Signup plausible-event-location=hero' data-ph-capture-attribute-link-id='start-managed'>
+          Start free on Managed AnyCable
+        </a>
+        <a href="/#pricing" class='main-slide__cta-secondary plausible-event-name=Navigation plausible-event-link=hero-pro' data-ph-capture-attribute-link-id='self-host-pro'>
+          Self-host Pro →
+        </a>
+      </div>
+      <p class='main-slide__note'>
+        Managed AnyCable is free for one instance. Pro has a 2-month trial, no card needed.
+      </p>
+    </div>
+
+    <div class='main-slide__stage live-map' data-controller='live-map'>
+      <canvas class='live-map__canvas' data-live-map-target='canvas' role='img' aria-label='Live map of connections: your app broadcasts through the AnyCable server to about a hundred client devices. Simulated network drops, deploys and traffic spikes show missed messages replaying from stream history.'></canvas>
+      <div class='live-map__hud'>
+        <div class='live-map__switch' role='group' aria-label='Realtime server'>
+          <button type='button' class='live-map__switch-btn' data-live-map-target='mode-any' aria-pressed='true'>AnyCable</button>
+          <button type='button' class='live-map__switch-btn live-map__switch-btn_ws' data-live-map-target='mode-ws' aria-pressed='false'>In-process WebSockets</button>
         </div>
-        <button class='main-slide__learn-more-btn plausible-event-name=Navigation plausible-event-link=learn-more' data-ph-capture-attribute-link-id='learn-more'></button>
+        <dl class='live-map__tally'>
+          <div class='live-map__tally-item'><dt>delivered</dt><dd data-live-map-target='delivered'>0</dd></div>
+          <div class='live-map__tally-item live-map__tally-item_ok'><dt>replayed</dt><dd data-live-map-target='replayed'>0</dd></div>
+          <div class='live-map__tally-item'><dt>lost</dt><dd data-live-map-target='lost'>0</dd></div>
+        </dl>
+      </div>
+      <div class='live-map__bar'>
+        <div class='live-map__actions'>
+          <button type='button' class='live-map__action live-map__action_primary plausible-event-name=Demo plausible-event-action=tunnel' data-live-map-target='tunnel'>Drop the network</button>
+          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=deploy' data-live-map-target='deploy'>Deploy the app</button>
+          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=spike' data-live-map-target='spike'>Launch-day spike</button>
+          <span class='live-map__auto' data-live-map-target='auto'>autoplay · press a button to take over</span>
+        </div>
+        <div class='live-map__log' data-live-map-target='log' aria-live='polite'></div>
       </div>
     </div>
   </div>
+
+  <ul class='main-slide__stats'>
+    <li class='main-slide__stat'><b>100%</b><span>of messages delivered through Wi-Fi drops</span></li>
+    <li class='main-slide__stat'><b>0 s</b><span>reconnect storm when you deploy</span></li>
+    <li class='main-slide__stat'><b>3 ms</b><span>p50 roundtrip at 10K connections</span></li>
+    <li class='main-slide__stat'><b>18 KB</b><span>RAM per idle connection on Pro</span></li>
+    <li class='main-slide__stat main-slide__stat_link'>
+      <a href="/compare/nodejs-websocket" class='plausible-event-name=Navigation plausible-event-link=hero-benchmark' data-ph-capture-attribute-link-id='hero-benchmark'>Measured in our 2026 benchmark against Socket.io and uWebSockets.js →</a>
+    </li>
+  </ul>
 </section>
