@@ -60,23 +60,23 @@
             <tbody>
               <tr>
                 <td>You deploy your app</td>
-                <td>Every connection drops, and every client reconnects at once</td>
-                <td>Connections stay open: the Go server runs apart from your app</td>
+                <td data-label='WebSockets in your app'>Every connection drops, and every client reconnects at once</td>
+                <td data-label='AnyCable'>Connections stay open: the Go server runs apart from your app</td>
               </tr>
               <tr>
                 <td>A phone loses signal for 30 seconds</td>
-                <td>Messages sent in that window are gone</td>
-                <td>The client reconnects, restores its session and receives what it missed from stream history</td>
+                <td data-label='WebSockets in your app'>Messages sent in that window are gone</td>
+                <td data-label='AnyCable'>The client reconnects, restores its session and receives what it missed from stream history</td>
               </tr>
               <tr>
                 <td>A WebSocket server restarts</td>
-                <td>Its clients reconnect into an empty state</td>
-                <td>Slow drain spreads the reconnects out, and clients resume from stream history shared across the cluster <span class='about-slide__pro'>Pro</span></td>
+                <td data-label='WebSockets in your app'>Its clients reconnect into an empty state</td>
+                <td data-label='AnyCable'>Slow drain spreads the reconnects out, and clients resume from stream history shared across the cluster <span class='about-slide__pro'>Pro</span></td>
               </tr>
               <tr>
                 <td>Launch-day traffic arrives</td>
-                <td>App processes hold the connections and run short of memory</td>
-                <td>Add AnyCable instances; your app's memory stays flat</td>
+                <td data-label='WebSockets in your app'>App processes hold the connections and run short of memory</td>
+                <td data-label='AnyCable'>Add AnyCable instances; your app's memory stays flat</td>
               </tr>
             </tbody>
           </table>
@@ -87,7 +87,7 @@
     <div class='about-slide__section' id='fastapi'>
       <div class='about-slide__content'>
         <h3 class='about-slide__heading'>AI answers that survive a refresh</h3>
-        <p class='about-slide__text'>
+        <p class='about-slide__text about-slide__text_lead'>
           A tab switch or a network blip ends a streamed LLM answer, and there is nothing to resume from. With AnyCable, your FastAPI worker broadcasts tokens to a stream, and the Go server holds the connection, keeps the history and replays from where the client left off. No WebSocket code in Python, no sticky sessions, no Redis Streams plumbing.
         </p>
         <p class='about-slide__text'>

@@ -25,8 +25,13 @@ $className: 'about-slide';
     }
 
     @include mediaMax($tablet) {
+      flex-direction: column;
       padding: 0 24px;
       background-color: $backgroundSecondaryColor;
+    }
+
+    @include mediaMax($mobile) {
+      padding: 0 16px;
     }
   }
 
@@ -173,13 +178,24 @@ $className: 'about-slide';
   &__tabs {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
     align-items: center;
+
+    @include mediaMax($smallMobile) {
+      gap: 8px;
+    }
   }
 
   &__tab {
     padding: 0 12px;
     box-shadow: none;
+
+    @include mediaMax($smallMobile) {
+      height: 40px;
+      padding: 0 10px;
+      font-size: 15px;
+    }
 
     &.active-tab {
       background-color: $accentPrimaryColor;
@@ -202,6 +218,15 @@ $className: 'about-slide';
 
   &__video-tip {
     margin-bottom: 24px;
+  }
+
+  // A paragraph that continues the one before it, rather than ending a block.
+  &__text_lead {
+    margin-bottom: 20px;
+
+    @include mediaMax($mobile) {
+      margin-bottom: 16px;
+    }
   }
 
   &__text a {
@@ -349,11 +374,72 @@ $className: 'about-slide';
     td:nth-child(2) {
       color: $fontSecondaryColor;
     }
+
+    // Phones: each row becomes a card, with the column name above each cell.
+    @include mediaMax($mobile) {
+      min-width: 0;
+      font-size: 16px;
+
+      thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+
+      tr {
+        display: block;
+        padding: 16px 18px;
+        border-bottom: 1px solid $borderPrimaryColor;
+      }
+
+      tr:last-child {
+        border-bottom: 0;
+      }
+
+      td,
+      td:first-child {
+        display: block;
+        width: auto;
+        padding: 0;
+        border: 0;
+      }
+
+      td + td {
+        margin-top: 10px;
+      }
+
+      td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: $fontSecondaryColor;
+      }
+
+      td:last-child::before {
+        color: $accentPrimaryColor;
+      }
+    }
   }
 
-  // Lines the code tabs up with the section heading beside them.
+  // Lines the code tabs up with the section heading beside them. The code is
+  // the argument for FastAPI teams, so phones show it too, under the text.
   &__media-code {
     margin-top: 96px;
+
+    @include mediaMax($tablet) {
+      display: flex;
+      width: 100%;
+      margin-top: 0;
+      padding: 0 0 56px;
+      background-color: transparent;
+      align-items: stretch;
+    }
   }
 
   &__pro {

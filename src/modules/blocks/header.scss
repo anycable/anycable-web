@@ -24,6 +24,12 @@ $className: 'header';
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
+
+    // Between phone and desktop widths the links must stay on one line.
+    @include mediaMax($tablet) {
+      padding: 12px 24px;
+    }
 
     @include mediaMax($smallMobile) {
       padding: 8px 24px 0;
@@ -37,6 +43,8 @@ $className: 'header';
   }
 
   &__right {
+    flex: none;
+    white-space: nowrap;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -44,6 +52,11 @@ $className: 'header';
 
   &__stars {
     margin-right: 40px;
+
+    @include mediaMax($tablet) {
+      margin-right: 20px;
+    }
+
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -62,6 +75,12 @@ $className: 'header';
 
   &__links {
     margin-left: 64px;
+    white-space: nowrap;
+
+    // Too little room for five links next to the stars and the button.
+    @include mediaMax($smallTablet) {
+      display: none;
+    }
 
     @include mediaMax($tablet) {
       margin-left: 24px;
@@ -84,6 +103,10 @@ $className: 'header';
 
     &:not(:first-child) {
       margin-left: 24px;
+
+      @include mediaMax($smallTablet) {
+        margin-left: 16px;
+      }
     }
   }
 
