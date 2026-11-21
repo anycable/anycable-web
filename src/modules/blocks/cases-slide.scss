@@ -476,6 +476,10 @@ $className: 'cases-slide';
     opacity: 0.75;
     transition: filter 200ms, opacity 200ms;
 
+    &_light {
+      filter: grayscale(1) brightness(0.62);
+    }
+
     .#{$className}__tile:hover &,
     .#{$className}__tile:focus-visible & {
       filter: none;
