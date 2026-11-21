@@ -30,10 +30,9 @@ const LOGOS: Record<string, string> = {
   'Callbell': '/images/logos/callbell-wordmark.svg',
   'Qualified': '/images/logos/qualified-mark.svg',
   'Uscreen': '/images/logos/uscreen-mark.svg',
-  'CallTrackingMetrics': '/images/logos/calltrackingmetrics.png',
+  'CTM': '/images/logos/ctm-mark.svg',
   'Zyda': '/images/logos/zyda-wordmark.svg',
   'Sera': '/images/logos/sera-wordmark.svg',
-  'Vito': '/images/logos/vito.png',
 };
 
 const dialog = document.getElementById('company-modal') as HTMLDialogElement;
