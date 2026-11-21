@@ -32,10 +32,10 @@
           </article>
           <article class='about-slide__pillar'>
             <p class='about-slide__pillar-label'>Yours</p>
-            <p class='about-slide__pillar-figure'>Flat</p>
-            <p class='about-slide__pillar-caption'>price, with no metering and no telemetry</p>
+            <p class='about-slide__pillar-figure'>$0</p>
+            <p class='about-slide__pillar-caption'>per connection or message, with no metering and no telemetry</p>
             <p class='about-slide__pillar-text'>
-              Run it in your cluster under the MIT license, or self-host Pro with unlimited connections from $1,490 a year. Messages never leave your infrastructure.
+              Run it in your cluster under the MIT license, or self-host Pro, priced by the number of servers, with unlimited connections from $1,490 a year. Messages never leave your infrastructure.
             </p>
           </article>
         </div>
@@ -84,6 +84,11 @@
       </div>
     </div>
 
+    {{!-- TODO(fastapi): there is no FastAPI library or example app yet. The
+         Python guide below shows plain HTTP broadcasts and hand-rolled token
+         and stream signing. Once a FastAPI package (broadcast client,
+         signed_stream, JWT helpers) and an example app ship, link both here
+         and from the FastAPI docs card in resources-slide.hbs. --}}
     <div class='about-slide__section' id='fastapi'>
       <div class='about-slide__content'>
         <h3 class='about-slide__heading'>AI answers that survive a refresh</h3>
@@ -107,6 +112,9 @@
           <button data-tabs-target="code-pubsub" class='button button_variant_outlined about-slide__tab'>Browser</button>
         </div>
         <div class='slide-show__frame' id="codes">
+          {{!-- TODO(fastapi): signed_stream() in this sample stands in for the
+               planned FastAPI library; today the guide implements it by hand.
+               Swap in the real import once the package exists. --}}
           <div data-tabs-id="code-py" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/python}}
           </div>

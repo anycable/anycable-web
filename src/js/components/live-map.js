@@ -2,11 +2,14 @@
 //
 // Your app broadcasts through the AnyCable server (drawn with the real AnyCable
 // logo) to a field of client devices; one dot stands for 100 connections.
-// Three scenarios show what the delivery guarantees mean in practice: a
+// Four scenarios show what the delivery guarantees mean in practice: a
 // network drop (missed messages wait in stream history and replay on
-// reconnect), an app deploy (connections stay open), and a launch-day spike
-// (connections live outside the app process). A switch replays the same
-// events on an in-process WebSocket server, where messages are lost.
+// reconnect), an app deploy (connections stay open), a reconnect storm (every
+// client reconnects at once; AnyCable restores sessions from its cache without
+// calling the app), and a launch-day spike (connections live outside the app
+// process). A switch replays the same events on an in-process WebSocket
+// server, where messages are lost and the storm crashes the app until clients
+// back off far enough for it to recover.
 //
 // The traffic is simulated. A short script plays on its own until the visitor
 // presses a button. Rendering pauses while the hero is off screen, and with
@@ -115,6 +118,8 @@ function initLiveMap(root) {
       rx: 0,
       refused: false,
       back: -1,
+      inStorm: false,
+      rcAt: -1, // storm time of the next reconnect attempt
     });
   }
 
@@ -132,6 +137,26 @@ function initLiveMap(root) {
   const TUN = 4.5,
     DEP = 3.6,
     SPK = 9;
+  // Reconnect storm. Both servers face the same first wave. The in-process
+  // server crashes at CRASH[i] and stays down for DOWN seconds; clients retry
+  // in waves that spread wider as their backoff grows (WAVE).
+  const STORM = { any: 5, ws: 10.5 },
+    CRASH = [1.7, 4.9],
+    DOWN = 1.5,
+    WAVE = [0.8, 0.9, 2.8];
+  let stormT = -1,
+    stormDur = 0,
+    stormTotal = 0,
+    stormLost = 0,
+    stormCalls = 0,
+    stormReplayed = 0,
+    stormLast = 0,
+    stormNoted = false,
+    crashes = 0,
+    appDown = -1,
+    appLoad = 0,
+    hubLoad = 0;
+  const rcTimes = [];
   const t0 = Date.now();
 
   const fmt = n => Math.round(n).toLocaleString('en-US');
@@ -281,6 +306,7 @@ function initLiveMap(root) {
     });
   }
   function broadcast() {
+    if (mode === 'ws' && appDown >= 0) return; // the app is down
     const list = activeList();
     if (!list.length) return;
     const k = 3 + Math.floor(Math.random() * 6),
@@ -305,6 +331,7 @@ function initLiveMap(root) {
     stats.lost += PER;
     if (tunnelT >= 0) tunnelLost += PER;
     if (deployT >= 0) deployLost += PER;
+    if (stormT >= 0) stormLost += PER;
     drops.push({
       x,
       y,
@@ -338,7 +365,41 @@ function initLiveMap(root) {
       t.fc = OK;
       stats.delivered += PER;
       stats.replayed += PER;
+    } else if (p.kind === 'rc') reconnect(t);
+  }
+  // Sends the queued messages of a client that came back, from stream history.
+  function replayQueue(c, stagger) {
+    for (let k = 0; k < c.queue; k++)
+      sendTo(c, hubP, 'replay', stagger * k + Math.random() * 0.2);
+    const n = c.queue;
+    c.queue = 0;
+    return n;
+  }
+  // A reconnect attempt reaches the server.
+  function reconnect(c) {
+    if (!c.active || c.on || (tunnelT >= 0 && inTunnel(c))) return;
+    if (mode === 'ws') {
+      if (appDown >= 0 || deployT >= 0) {
+        c.rx = 1; // refused: the app is down
+        if (c.rcAt < 0 && stormT >= 0)
+          c.rcAt = stormT + 0.5 + Math.random() * 1.2;
+        return;
+      }
+      // Every reconnect runs the app's connect code: auth, a database query.
+      stormCalls++;
+      appLoad = Math.min(1, appLoad + 0.012);
+      c.on = true;
+      c.gap = 1;
+    } else {
+      // AnyCable restores the session from its cache, with no call to the app.
+      hubLoad = Math.min(1, hubLoad + 0.0085);
+      c.on = true;
+      c.flash = 1;
+      c.fc = AMB;
+      stormReplayed += replayQueue(c, 0.06);
     }
+    rcTimes.push(clock);
+    stormLast = stormT;
   }
 
   // Scenarios
@@ -435,6 +496,86 @@ function initLiveMap(root) {
       );
     else log('Deploy done: 0 connections dropped, 0 messages lost.', 'ok');
   }
+  function startStorm() {
+    if (stormT >= 0) return;
+    stormT = 0;
+    stormDur = STORM[mode];
+    stormLost = 0;
+    stormCalls = 0;
+    stormReplayed = 0;
+    stormLast = 0;
+    stormNoted = false;
+    crashes = 0;
+    rcTimes.length = 0;
+    let n = 0;
+    clients.forEach(c => {
+      if (!c.active || !c.on || c.back >= 0) return;
+      c.on = false;
+      c.inStorm = true;
+      c.rcAt = 0.35 + Math.random() * WAVE[0];
+      n++;
+    });
+    stormTotal = n;
+    log(
+      `Load balancer restart: ${fmt(
+        n * PER
+      )} connections drop and reconnect at once.`,
+      'bad'
+    );
+  }
+  function crash() {
+    crashes++;
+    appDown = DOWN;
+    appLoad = 1;
+    const up = stormT + DOWN;
+    clients.forEach(c => {
+      if (!c.inStorm) return;
+      c.on = false;
+      c.rcAt = up + 0.15 + Math.random() * WAVE[crashes];
+    });
+    log(
+      crashes === 1
+        ? `Out of memory: your app crashes, and your pages go down with it.`
+        : `Crashed again: ${fmt(
+            stormTotal * PER
+          )} clients retried at the same moment.`,
+      'bad'
+    );
+  }
+  function endStorm() {
+    const wasWs = mode === 'ws';
+    stormT = -1;
+    clients.forEach(c => {
+      if (!c.inStorm) return;
+      c.inStorm = false;
+      c.rcAt = -1;
+      if (
+        c.active &&
+        !c.on &&
+        !(tunnelT >= 0 && inTunnel(c)) &&
+        !(wasWs && (deployT >= 0 || appDown >= 0))
+      ) {
+        c.on = true;
+        if (!wasWs) stormReplayed += replayQueue(c, 0.06);
+      }
+    });
+    if (wasWs)
+      log(
+        `Back after ${crashes} crashes, ${stormLast.toFixed(1)} s: ${fmt(
+          stormLost
+        )} messages lost, ${fmt(stormCalls * PER)} connect calls.`,
+        'bad'
+      );
+    else
+      log(
+        `Storm absorbed: ${fmt(stormTotal * PER)} sessions back in ${(
+          stormLast - 0.35
+        ).toFixed(1)} s, 0 calls to your app, ${fmt(
+          stormReplayed * PER
+        )} missed messages replayed.`,
+        'ok'
+      );
+  }
   function startSpike() {
     if (spikeT >= 0) return;
     spikeT = 0;
@@ -468,6 +609,11 @@ function initLiveMap(root) {
     tunnelT = -1;
     deployT = -1;
     spikeT = -1;
+    stormT = -1;
+    appDown = -1;
+    appLoad = 0;
+    hubLoad = 0;
+    rcTimes.length = 0;
     history = 0;
     pulses.length = 0;
     drops.length = 0;
@@ -476,6 +622,9 @@ function initLiveMap(root) {
       c.on = true;
       c.queue = 0;
       c.back = -1;
+      c.inStorm = false;
+      c.rcAt = -1;
+      c.rx = 0;
       c.refused = false;
       c.active = c.order < 0.5;
     });
@@ -491,16 +640,18 @@ function initLiveMap(root) {
   let auto = !RM,
     autoT = 0,
     autoIdx = 0;
-  const LOOP = 50;
+  const LOOP = 68;
   const script = [
     [2, startTunnel],
-    [8.5, startDeploy],
-    [13.5, startSpike],
-    [24, () => setMode('ws')],
-    [26, startTunnel],
-    [32.5, startDeploy],
-    [38, startSpike],
-    [48, () => setMode('any')],
+    [8, startDeploy],
+    [13, startStorm],
+    [19.5, startSpike],
+    [30, () => setMode('ws')],
+    [32, startTunnel],
+    [38, startDeploy],
+    [43, startStorm],
+    [55, startSpike],
+    [66, () => setMode('any')],
   ];
   function takeOver() {
     if (!auto) return;
@@ -546,6 +697,52 @@ function initLiveMap(root) {
       }
       if (deployT >= DEP) endDeploy();
     }
+    if (stormT >= 0) {
+      stormT += dt;
+      const o = mode === 'any' ? hubP : appOut();
+      clients.forEach(c => {
+        if (c.rcAt < 0 || stormT < c.rcAt) return;
+        c.rcAt = -1;
+        if (!c.active || c.on) return;
+        addPulse({
+          kind: 'rc',
+          target: c,
+          x0: c.x,
+          y0: c.y,
+          x1: o.x,
+          y1: o.y,
+          dur: 0.4 + Math.random() * 0.3,
+          bend: (Math.random() - 0.5) * 0.3,
+        });
+      });
+      if (mode === 'ws' && crashes < CRASH.length && stormT >= CRASH[crashes])
+        crash();
+      if (mode === 'any' && !stormNoted && stormT >= 1) {
+        stormNoted = true;
+        log(
+          'AnyCable restores each session from its cache: no auth calls reach your app.',
+          'ok'
+        );
+      }
+      if (stormT >= stormDur) endStorm();
+    }
+    if (appDown >= 0) {
+      appDown -= dt;
+      if (appDown <= 0) {
+        appDown = -1;
+        appLoad = 0.15;
+        if (stormT >= 0)
+          log(
+            crashes === 1
+              ? 'App restarted. Every client retries at the same moment.'
+              : 'App restarted again. Clients have backed off longer this time.',
+            'bad'
+          );
+      }
+    }
+    appLoad = Math.max(0, appLoad - appLoad * 0.45 * dt);
+    hubLoad = Math.max(0, hubLoad - hubLoad * 1.2 * dt);
+    while (rcTimes.length && clock - rcTimes[0] > 0.5) rcTimes.shift();
     if (spikeT >= 0) {
       spikeT += dt;
       if (spikeT >= SPK) endSpike();
@@ -729,6 +926,17 @@ function initLiveMap(root) {
       ctx.strokeStyle = rgba(MUTE, 0.6);
       ctx.lineWidth = 1;
       ctx.stroke();
+      if (c.rx > 0.01) {
+        // A refused reconnect attempt
+        ctx.strokeStyle = rgba(RED, c.rx);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(c.x - 3.5, c.y - 3.5);
+        ctx.lineTo(c.x + 3.5, c.y + 3.5);
+        ctx.moveTo(c.x + 3.5, c.y - 3.5);
+        ctx.lineTo(c.x - 3.5, c.y + 3.5);
+        ctx.stroke();
+      }
     }
     if (c.queue > 0) {
       ctx.fillStyle = rgba(RED, 1);
@@ -745,23 +953,51 @@ function initLiveMap(root) {
     }
   }
   function drawApp() {
-    const { x, y, w, h } = app;
-    const dep = deployT >= 0,
-      inner = w - 28;
+    const { w, h } = app;
+    const ws = mode === 'ws',
+      down = ws && appDown >= 0,
+      storm = stormT >= 0,
+      dep = deployT >= 0,
+      inner = w - 28,
+      blink = Math.abs(Math.sin(clock * 9));
+    // An overloaded or crashed app shakes.
+    const strain = ws ? (down ? 0.6 : Math.max(0, (appLoad - 0.8) / 0.2)) : 0;
+    const sx = RM ? 0 : Math.sin(clock * 53) * 1.8 * strain,
+      sy = RM ? 0 : Math.cos(clock * 41) * 0.9 * strain;
+    const x = app.x + sx,
+      y = app.y + sy;
     rr(x, y, w, h, 10);
-    ctx.fillStyle = '#1B191E';
+    ctx.fillStyle = down ? '#2A1517' : '#1B191E';
     ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = dep ? rgba(AMB, 0.9) : rgba(INK, 0.16);
+    ctx.lineWidth = down ? 1.5 : 1;
+    ctx.strokeStyle = down
+      ? rgba(RED, 0.5 + 0.5 * blink)
+      : strain > 0
+      ? rgba(RED, 0.5 + 0.4 * strain)
+      : dep
+      ? rgba(AMB, 0.9)
+      : rgba(INK, 0.16);
     ctx.stroke();
-    ctx.fillStyle = rgba(INK, 1);
+    ctx.fillStyle = rgba(INK, down ? 0.55 : 1);
     ctx.fillText(fit('Your app', inner, 700, 14, SANS), x + 14, y + 24);
-    ctx.fillStyle = dep ? rgba(AMB, 1) : rgba(MUTE, 1);
-    const sub = dep
-      ? `deploying v${ver}…`
-      : mode === 'any'
-      ? 'rails · fastapi · node'
-      : '+ websocket server';
+    let sub, subCol;
+    if (down) {
+      sub = 'out of memory';
+      subCol = RED;
+    } else if (dep) {
+      sub = `deploying v${ver}…`;
+      subCol = AMB;
+    } else if (storm && ws) {
+      sub = `connect × ${fmt(stormCalls * PER)}`;
+      subCol = appLoad > 0.8 ? RED : AMB;
+    } else if (storm) {
+      sub = '0 connect calls';
+      subCol = OK;
+    } else {
+      sub = ws ? '+ websocket server' : 'rails · fastapi · node';
+      subCol = MUTE;
+    }
+    ctx.fillStyle = rgba(subCol, 1);
     ctx.fillText(fit(sub, inner, 400, 10.5, MONO), x + 14, y + 41);
     const n = 4,
       gap = 4,
@@ -769,17 +1005,23 @@ function initLiveMap(root) {
       cur = dep ? Math.floor((deployT / DEP) * n) : -1;
     for (let i = 0; i < n; i++) {
       let col = rgba(INK, 0.22);
-      if (dep && i === cur)
-        col = rgba(AMB, 0.5 + 0.5 * Math.abs(Math.sin(clock * 9)));
+      if (down) col = rgba(RED, 0.3 + 0.5 * blink);
+      else if (dep && i === cur) col = rgba(AMB, 0.5 + 0.5 * blink);
       else if (dep && i < cur) col = rgba(OK, 0.75);
       rr(x + 14 + i * (bw + gap), y + 52, bw, 5, 2);
       ctx.fillStyle = col;
       ctx.fill();
     }
-    const mem =
-      mode === 'any'
-        ? 0.2
-        : Math.min(0.97, 0.15 + ((0.85 * onlineCount()) / N) * 1.15);
+    // Memory: in-process connections and every reconnect's connect call
+    // live in the app; with AnyCable they live in the AnyCable server.
+    let mem = 0.2;
+    if (ws)
+      mem = down
+        ? 0.04
+        : Math.max(
+            appLoad,
+            Math.min(0.97, 0.15 + ((0.85 * onlineCount()) / N) * 1.15)
+          );
     ctx.fillStyle = rgba(MUTE, 1);
     ctx.fillText(fit('mem', 30, 400, 9.5, MONO), x + 14, y + h - 12);
     const mx = x + 46,
@@ -796,13 +1038,31 @@ function initLiveMap(root) {
       hw = hh * (80 / 102);
     const scale = 1 + 0.06 * kick;
     const bob = RM ? 0 : Math.sin(clock * 1.6) * 2.5;
+    // Under a reconnect storm the logo trembles and a load ring fills.
+    const strain = Math.max(0, (hubLoad - 0.55) / 0.45);
+    const jx = RM ? 0 : Math.sin(clock * 57) * 1.4 * strain;
     // The logo's cube body is centered at (40, 52) of its 80 x 102 box.
     const cx = hubP.x,
       cy = hubP.y + bob;
-    const lx = cx - (hw * scale) / 2,
+    const lx = cx + jx - (hw * scale) / 2,
       ly = cy - hh * scale * (52 / 102);
     ctx.save();
     ctx.globalAlpha = 0.12 + 0.88 * hubMix;
+    if (hubLoad > 0.02 && hubMix > 0.5) {
+      const r = hh * 0.66,
+        a = Math.min(1, hubLoad * 4);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = rgba(INK, 0.1 * a);
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, 6.283);
+      ctx.stroke();
+      ctx.strokeStyle = rgba(hubLoad > 0.75 ? RED : AMB, 0.9 * a);
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + hubLoad * 6.283);
+      ctx.stroke();
+      ctx.lineCap = 'butt';
+    }
     if (kick > 0.02 && hubMix > 0.5) {
       ctx.strokeStyle = rgba(RED, 0.45 * kick);
       ctx.lineWidth = 1.5;
@@ -823,8 +1083,14 @@ function initLiveMap(root) {
     const name = fit('AnyCable', maxW - 24, 700, 14, SANS);
     const nameFont = [ctx.font, ctx.fontStretch],
       nw = ctx.measureText(name).width;
+    const rate = rcTimes.length * 2 * PER; // reconnects per second
+    const storming = hubMix > 0.5 && stormT >= 0 && rate > 0;
     const sub = fit(
-      hubMix > 0.5 ? `${fmt(onlineCount() * PER)} connections` : 'not in use',
+      storming
+        ? `${fmt(rate)} reconnects/s`
+        : hubMix > 0.5
+        ? `${fmt(onlineCount() * PER)} connections`
+        : 'not in use',
       maxW - 24,
       400,
       10.5,
@@ -844,7 +1110,7 @@ function initLiveMap(root) {
     ctx.fillStyle = rgba(INK, hubMix > 0.5 ? 1 : 0.4);
     ctx.fillText(name, cx, top + 18);
     [ctx.font, ctx.fontStretch] = subFont;
-    ctx.fillStyle = rgba(MUTE, 1);
+    ctx.fillStyle = storming ? rgba(AMB, 1) : rgba(MUTE, 1);
     ctx.fillText(sub, cx, top + 33);
 
     if (history > 0 && hubMix > 0.5) {
@@ -856,6 +1122,7 @@ function initLiveMap(root) {
         MONO
       );
       const lw = ctx.measureText(label).width + 30;
+      pill(cx - lw / 2, top + 50, lw, 22, rgba(BG, 1));
       pill(cx - lw / 2, top + 50, lw, 22, rgba(RED, 0.16), rgba(RED, 0.55));
       ctx.fillStyle = rgba(RED, 1);
       ctx.beginPath();
@@ -868,6 +1135,25 @@ function initLiveMap(root) {
       ctx.textBaseline = 'alphabetic';
     }
     ctx.textAlign = 'left';
+  }
+  // The field label doubles as the storm's progress line. It is drawn over
+  // the traffic, on a solid backing, since reconnects cross it on phones.
+  function drawFieldLabel() {
+    let fieldLabel = 'Your users · 1 dot = 100 connections',
+      fieldCol = MUTE;
+    if (stormT >= 0) {
+      const back = clients.reduce((k, c) => k + (c.inStorm && c.on ? 1 : 0), 0);
+      const down = mode === 'ws' && appDown >= 0;
+      fieldLabel = `${down ? 'App down' : 'Reconnect storm'} · ${fmt(
+        back * PER
+      )} of ${fmt(stormTotal * PER)} back`;
+      fieldCol = down ? RED : AMB;
+    }
+    const fl = fit(fieldLabel, field.w, 400, 10.5, MONO);
+    ctx.fillStyle = rgba(BG, 0.9);
+    ctx.fillRect(field.x - 4, field.y - 29, ctx.measureText(fl).width + 8, 18);
+    ctx.fillStyle = rgba(fieldCol, 1);
+    ctx.fillText(fl, field.x, field.y - 16);
   }
   function draw() {
     ctx.fillStyle = `rgb(${BG})`;
@@ -886,12 +1172,6 @@ function initLiveMap(root) {
     gr.addColorStop(1, rgba(RED, 0));
     ctx.fillStyle = gr;
     ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = rgba(MUTE, 1);
-    ctx.fillText(
-      fit('Your users · 1 dot = 100 connections', field.w, 400, 10.5, MONO),
-      field.x,
-      field.y - 16
-    );
     drawTunnel();
     ctx.lineWidth = 1;
     ctx.strokeStyle = rgba(INK, 0.05);
@@ -926,7 +1206,13 @@ function initLiveMap(root) {
         a = at(p, t),
         b = at(p, ta);
       const col =
-        p.kind === 'replay' ? OK : p.kind === 'doomed' ? RED : '255,128,112';
+        p.kind === 'replay'
+          ? OK
+          : p.kind === 'doomed'
+          ? RED
+          : p.kind === 'rc'
+          ? AMB
+          : '255,128,112';
       const lg = ctx.createLinearGradient(b[0], b[1], a[0], a[1]);
       lg.addColorStop(0, rgba(col, 0));
       lg.addColorStop(1, rgba(col, 0.95));
@@ -960,6 +1246,7 @@ function initLiveMap(root) {
       ctx.lineTo(d.x - 3, d.y + 3);
       ctx.stroke();
     });
+    drawFieldLabel();
     drawTunnelLabel();
     drawApp();
     drawHub();
@@ -975,12 +1262,14 @@ function initLiveMap(root) {
     tunnel: q('tunnel'),
     deploy: q('deploy'),
     spike: q('spike'),
+    storm: q('storm'),
   };
   let tallyT = 0;
   function updateHud(dt) {
     [
       [buttons.tunnel, tunnelT, TUN],
       [buttons.deploy, deployT, DEP],
+      [buttons.storm, stormT, stormDur],
       [buttons.spike, spikeT, SPK],
     ].forEach(([b, t, d]) => {
       if (t >= 0) {
@@ -1009,6 +1298,7 @@ function initLiveMap(root) {
     });
   on('tunnel', startTunnel);
   on('deploy', startDeploy);
+  on('storm', startStorm);
   on('spike', startSpike);
   on('mode-any', () => setMode('any'));
   on('mode-ws', () => setMode('ws'));
