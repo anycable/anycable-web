@@ -7,7 +7,7 @@ const LOGOS: Record<string, string> = {
   'Joint Academy': '/images/logos/joint-academy-wordmark.svg',
   'Wawa Fertility': '/images/logos/wawa.svg',
   'Sessions Health': '/images/logos/sessionshealth-mark.svg',
-  'Vinita': '/images/logos/vinita.png',
+  'Vinita': '/images/logos/vinita-mark.png',
   'CoinGecko': '/images/logos/coingecko.svg',
   'Dext': '/images/logos/dext-wordmark.svg',
   'FreeAgent': '/images/logos/freeagent-wordmark.svg',
