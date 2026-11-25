@@ -19,6 +19,7 @@ $liveMapLine: #2c292f;
   color: $liveMapInk;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06),
     0 40px 80px -40px rgba(140, 10, 10, 0.5);
+  container-type: inline-size;
 
   &__top {
     display: flex;
@@ -44,7 +45,7 @@ $liveMapLine: #2c292f;
     border: 0;
     border-radius: 7px;
     background: transparent;
-    font: 700 13px/1.1 'Stem', Arial, sans-serif;
+    font: 400 13px/1.1 'Stem', Arial, sans-serif;
     color: $liveMapMute;
     white-space: nowrap;
     cursor: pointer;
@@ -96,14 +97,12 @@ $liveMapLine: #2c292f;
 
     dt {
       font: 10.5px/1.3 $liveMapMono;
-      font-stretch: 87.5%;
       color: $liveMapMute;
     }
 
     dd {
       margin: 0;
       font: 700 15px/1.35 $liveMapMono;
-      font-stretch: 87.5%;
       font-variant-numeric: tabular-nums;
     }
 
@@ -141,8 +140,10 @@ $liveMapLine: #2c292f;
       height: clamp(360px, 42vw, 440px);
     }
 
-    @include mediaMax($smallMobile) {
-      height: 540px;
+    // Under 720px the drawing stacks the app, the hub and the field
+    // (narrow in live-map.js), which needs the extra height.
+    @container (max-width: 719.98px) {
+      height: 500px;
     }
   }
 
@@ -170,7 +171,7 @@ $liveMapLine: #2c292f;
     border: 1px solid #3a363d;
     border-radius: 9px;
     background: transparent;
-    font: 700 14px/1.1 'Stem', Arial, sans-serif;
+    font: 400 14px/1.1 'Stem', Arial, sans-serif;
     color: $liveMapInk;
     white-space: nowrap;
     cursor: pointer;
@@ -190,6 +191,12 @@ $liveMapLine: #2c292f;
     &:hover {
       border-color: #6a646e;
       background-color: #1d1b20;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none; // no hover state on a waiting button
     }
 
     &[data-running] {
@@ -213,24 +220,12 @@ $liveMapLine: #2c292f;
     }
   }
 
-  &__auto {
-    margin-left: auto;
-    font: 10.5px/1.4 $liveMapMono;
-    font-stretch: 87.5%;
-    color: $liveMapMute;
-
-    @include mediaMax($smallMobile) {
-      flex: 1 1 100%;
-      margin-left: 0;
-    }
-  }
-
-  // One line of narration, wrapping when it must; the min-height holds the
+  // One line of narration: the timestamp in its own column, the message
+  // wrapping beside it; the min-height holds the
   // room for the longest message so the page below never jumps.
   &__log {
     min-height: 40px;
     font: 12px/1.65 $liveMapMono;
-    font-stretch: 87.5%;
     color: #b3adb7;
 
     @include mediaMax($smallMobile) {
@@ -239,6 +234,10 @@ $liveMapLine: #2c292f;
   }
 
   &__log-line {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1ch;
+
     &_ok {
       color: #6fd39c;
     }

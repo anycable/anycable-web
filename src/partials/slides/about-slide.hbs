@@ -71,7 +71,7 @@
               <tr>
                 <td>A WebSocket server restarts</td>
                 <td data-label='WebSockets in your app'>Its clients reconnect into an empty state</td>
-                <td data-label='AnyCable'>Slow drain spreads the reconnects out, and clients resume from stream history shared across the cluster <span class='about-slide__pro'>Pro</span></td>
+                <td data-label='AnyCable'>Slow drain spreads the reconnects out, and clients resume from stream history shared across the <span class='about-slide__nowrap'>cluster <span class='about-slide__pro'>Pro</span></span></td>
               </tr>
               <tr>
                 <td>Launch-day traffic arrives</td>
@@ -89,43 +89,40 @@
          and stream signing. Once a FastAPI package (broadcast client,
          signed_stream, JWT helpers) and an example app ship, link both here
          and from the FastAPI docs card in resources-slide.hbs. --}}
-    <div class='about-slide__section' id='fastapi'>
+    <div class='about-slide__section' id='stack'>
       <div class='about-slide__content'>
-        <h3 class='about-slide__heading'>AI answers that survive a refresh</h3>
+        <h3 class='about-slide__heading'>Works with your stack</h3>
         <p class='about-slide__text about-slide__text_lead'>
-          A tab switch or a network blip ends a streamed LLM answer, and there is nothing to resume from. With AnyCable, your FastAPI worker broadcasts tokens to a stream, and the Go server holds the connection, keeps the history and replays from where the client left off. No WebSocket code in Python, no sticky sessions, no Redis Streams plumbing.
+          AnyCable runs next to your application. Any backend that can send an HTTP request can broadcast, Node.js included, and Rails and Laravel get native SDKs. Hotwire, Turbo Streams and every JavaScript framework work out of the box, and if you already run Redis or NATS, AnyCable can use them.
         </p>
+        <h3 class='about-slide__subtitle'>Streamed LLM answers resume after a dropped connection</h3>
         <p class='about-slide__text'>
-          GitLab ships AnyCable's JavaScript client in GitLab Duo to stream AI responses.
+          A tab switch or a network blip cuts off a streamed LLM answer. With AnyCable, your backend broadcasts tokens to a stream, and the Go server holds the connection, keeps the history and replays from where the client left off. GitLab ships AnyCable's JavaScript client in GitLab Duo to stream AI responses.
           <a href='https://docs.anycable.io/guides/python' target='_blank' class='plausible-event-name=Navigation plausible-event-link=fastapi-guide' data-ph-capture-attribute-link-id='fastapi-guide'>Read the Python and FastAPI guide →</a>
-        </p>
-        <h3 class='about-slide__subtitle'>Works with your stack</h3>
-        <p class='about-slide__text'>
-          AnyCable runs next to your application. Rails and Laravel get native SDKs; FastAPI, Node.js and any other backend broadcast over HTTP. Hotwire, Turbo Streams and every JavaScript framework work out of the box, and if you already run Redis or NATS, AnyCable can use them.
         </p>
       </div>
       <div class='about-slide__media about-slide__media-align-top about-slide__media-code' data-controller="tabs">
         <div class='about-slide__tabs'>
-          <button data-tabs-target="code-py" class='button button_variant_outlined about-slide__tab active-tab'>FastAPI</button>
-          <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Rails</button>
+          <button data-tabs-target="code-pubsub" class='button button_variant_outlined about-slide__tab active-tab'>Browser</button>
           <button data-tabs-target="code-js" class='button button_variant_outlined about-slide__tab'>Node.js</button>
-          <button data-tabs-target="code-pubsub" class='button button_variant_outlined about-slide__tab'>Browser</button>
+          <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Rails</button>
+          <button data-tabs-target="code-py" class='button button_variant_outlined about-slide__tab'>FastAPI</button>
         </div>
         <div class='slide-show__frame' id="codes">
-          {{!-- TODO(fastapi): signed_stream() in this sample stands in for the
-               planned FastAPI library; today the guide implements it by hand.
-               Swap in the real import once the package exists. --}}
-          <div data-tabs-id="code-py" class='slide-show__code-wrapper'>
-{{> slides/code-snippets/python}}
-          </div>
-          <div data-tabs-id="code-rb" style="display:none" class='slide-show__code-wrapper'>
-{{> slides/code-snippets/ruby}}
+          <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
+{{> slides/code-snippets/pubsub}}
           </div>
           <div data-tabs-id="code-js" style="display:none" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/js}}
           </div>
-          <div data-tabs-id="code-pubsub" style="display:none" class='slide-show__code-wrapper'>
-{{> slides/code-snippets/pubsub}}
+          <div data-tabs-id="code-rb" style="display:none" class='slide-show__code-wrapper'>
+{{> slides/code-snippets/ruby}}
+          </div>
+          {{!-- TODO(fastapi): signed_stream() in this sample stands in for the
+               planned FastAPI library; today the guide implements it by hand.
+               Swap in the real import once the package exists. --}}
+          <div data-tabs-id="code-py" style="display:none" class='slide-show__code-wrapper'>
+{{> slides/code-snippets/python}}
           </div>
         </div>
       </div>

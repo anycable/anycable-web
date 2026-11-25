@@ -172,7 +172,6 @@ function initLiveMap(root) {
     let s = size;
     const set = () => {
       ctx.font = `${weight} ${s}px ${family}`;
-      ctx.fontStretch = family === MONO ? 'semi-condensed' : 'normal';
     };
     set();
     while (ctx.measureText(text).width > maxW && s > 8) {
@@ -219,7 +218,9 @@ function initLiveMap(root) {
     const time = document.createElement('span');
     time.className = 'live-map__log-time';
     time.textContent = `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
-    line.append(time, ` ${msg}`);
+    const text = document.createElement('span');
+    text.textContent = msg;
+    line.append(time, text);
     el.replaceChildren(line);
   }
 
@@ -232,10 +233,13 @@ function initLiveMap(root) {
     cv.width = Math.round(W * dpr);
     cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    narrow = W < 560;
+    // Side by side, the field gets squeezed into a tall strip below about
+    // 720px, so narrower panels stack the app, the hub and the field. The
+    // canvas gets taller at the same width (a container query in live-map.scss).
+    narrow = W < 720;
     if (!narrow) {
       app.w = Math.round(Math.max(156, Math.min(180, W * 0.22)));
-      app.h = 92;
+      app.h = 70;
       app.x = 20;
       app.y = Math.round(H / 2 - app.h / 2);
       hubP.h = Math.max(72, Math.min(96, H * 0.2));
@@ -245,7 +249,7 @@ function initLiveMap(root) {
       field = { x: fx, y: 44, w: W - fx - 20, h: H - 44 - 22 };
     } else {
       app.w = Math.round(Math.min(220, W * 0.62));
-      app.h = 92;
+      app.h = 70;
       app.x = Math.round(W / 2 - app.w / 2);
       app.y = 16;
       hubP.h = 64;
@@ -354,7 +358,7 @@ function initLiveMap(root) {
     } else if (p.kind === 'out') {
       if (t.on) {
         t.flash = 1;
-        t.fc = RED;
+        t.fc = OK; // green marks a message that arrived; red marks a problem
         stats.delivered += PER;
       } else if (mode === 'any') {
         t.queue++;
@@ -656,10 +660,8 @@ function initLiveMap(root) {
   function takeOver() {
     if (!auto) return;
     auto = false;
-    q('auto').textContent = 'You are driving.';
     q('log').setAttribute('aria-live', 'polite'); // quiet during autoplay
   }
-  if (RM) q('auto').textContent = 'Press a button to run a scenario.';
 
   function update(dt) {
     clock += dt;
@@ -862,7 +864,7 @@ function initLiveMap(root) {
     const label = fit(
       `No signal · subway · ${left} s`,
       z.w - 40,
-      600,
+      500,
       10.5,
       MONO
     );
@@ -979,7 +981,7 @@ function initLiveMap(root) {
       : rgba(INK, 0.16);
     ctx.stroke();
     ctx.fillStyle = rgba(INK, down ? 0.55 : 1);
-    ctx.fillText(fit('Your app', inner, 700, 14, SANS), x + 14, y + 24);
+    ctx.fillText(fit('Your app', inner, 400, 14, SANS), x + 14, y + 24);
     let sub, subCol;
     if (down) {
       sub = 'out of memory';
@@ -994,7 +996,7 @@ function initLiveMap(root) {
       sub = '0 connect calls';
       subCol = OK;
     } else {
-      sub = ws ? '+ websocket server' : 'rails · fastapi · node';
+      sub = ws ? '+ websocket server' : 'any backend';
       subCol = MUTE;
     }
     ctx.fillStyle = rgba(subCol, 1);
@@ -1012,26 +1014,6 @@ function initLiveMap(root) {
       ctx.fillStyle = col;
       ctx.fill();
     }
-    // Memory: in-process connections and every reconnect's connect call
-    // live in the app; with AnyCable they live in the AnyCable server.
-    let mem = 0.2;
-    if (ws)
-      mem = down
-        ? 0.04
-        : Math.max(
-            appLoad,
-            Math.min(0.97, 0.15 + ((0.85 * onlineCount()) / N) * 1.15)
-          );
-    ctx.fillStyle = rgba(MUTE, 1);
-    ctx.fillText(fit('mem', 30, 400, 9.5, MONO), x + 14, y + h - 12);
-    const mx = x + 46,
-      mw = w - 60;
-    rr(mx, y + h - 19, mw, 5, 2);
-    ctx.fillStyle = rgba(INK, 0.1);
-    ctx.fill();
-    rr(mx, y + h - 19, Math.max(4, mw * mem), 5, 2);
-    ctx.fillStyle = mem > 0.8 ? rgba(RED, 1) : rgba(INK, 0.55);
-    ctx.fill();
   }
   function drawHub() {
     const hh = hubP.h,
@@ -1064,7 +1046,7 @@ function initLiveMap(root) {
       ctx.lineCap = 'butt';
     }
     if (kick > 0.02 && hubMix > 0.5) {
-      ctx.strokeStyle = rgba(RED, 0.45 * kick);
+      ctx.strokeStyle = rgba(INK, 0.35 * kick);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx, cy, hh * 0.62 + (1 - kick) * 26, 0, 6.283);
@@ -1080,8 +1062,8 @@ function initLiveMap(root) {
     const maxW = narrow
       ? W - 40
       : Math.min(200, field.x - (app.x + app.w) - 16);
-    const name = fit('AnyCable', maxW - 24, 700, 14, SANS);
-    const nameFont = [ctx.font, ctx.fontStretch],
+    const name = fit('AnyCable', maxW - 24, 400, 14, SANS);
+    const nameFont = ctx.font,
       nw = ctx.measureText(name).width;
     const rate = rcTimes.length * 2 * PER; // reconnects per second
     const storming = hubMix > 0.5 && stormT >= 0 && rate > 0;
@@ -1096,7 +1078,7 @@ function initLiveMap(root) {
       10.5,
       MONO
     );
-    const subFont = [ctx.font, ctx.fontStretch],
+    const subFont = ctx.font,
       sw = ctx.measureText(sub).width;
     const bw = Math.max(nw, sw) + 24;
     rr(cx - bw / 2, top, bw, 42, 8);
@@ -1106,10 +1088,10 @@ function initLiveMap(root) {
     ctx.strokeStyle = rgba(INK, 0.1);
     ctx.stroke();
     ctx.textAlign = 'center';
-    [ctx.font, ctx.fontStretch] = nameFont;
+    ctx.font = nameFont;
     ctx.fillStyle = rgba(INK, hubMix > 0.5 ? 1 : 0.4);
     ctx.fillText(name, cx, top + 18);
-    [ctx.font, ctx.fontStretch] = subFont;
+    ctx.font = subFont;
     ctx.fillStyle = storming ? rgba(AMB, 1) : rgba(MUTE, 1);
     ctx.fillText(sub, cx, top + 33);
 
@@ -1117,7 +1099,7 @@ function initLiveMap(root) {
       const label = fit(
         `${fmt(history * PER)} in history`,
         maxW - 30,
-        600,
+        500,
         10.5,
         MONO
       );
@@ -1212,7 +1194,7 @@ function initLiveMap(root) {
           ? RED
           : p.kind === 'rc'
           ? AMB
-          : '255,128,112';
+          : INK;
       const lg = ctx.createLinearGradient(b[0], b[1], a[0], a[1]);
       lg.addColorStop(0, rgba(col, 0));
       lg.addColorStop(1, rgba(col, 0.95));
@@ -1266,12 +1248,16 @@ function initLiveMap(root) {
   };
   let tallyT = 0;
   function updateHud(dt) {
-    [
+    const runs = [
       [buttons.tunnel, tunnelT, TUN],
       [buttons.deploy, deployT, DEP],
       [buttons.storm, stormT, stormDur],
       [buttons.spike, spikeT, SPK],
-    ].forEach(([b, t, d]) => {
+    ];
+    // One scenario at a time: the others wait until it ends.
+    const busy = runs.some(([, t]) => t >= 0);
+    runs.forEach(([b, t, d]) => {
+      b.disabled = busy && t < 0;
       if (t >= 0) {
         b.setAttribute('data-running', '');
         b.style.setProperty('--p', (t / d).toFixed(3));

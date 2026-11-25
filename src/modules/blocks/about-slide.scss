@@ -442,6 +442,11 @@ $className: 'about-slide';
     }
   }
 
+  // Keeps a badge on the line of the word before it.
+  &__nowrap {
+    white-space: nowrap;
+  }
+
   &__pro {
     display: inline-block;
     margin-left: 4px;
