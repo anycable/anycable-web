@@ -286,23 +286,8 @@ $className: 'cases-slide';
     color: $fontSecondaryColor;
   }
 
-  &__company-case-study {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: $accentPrimaryColor;
-    text-decoration: none;
-    transition: opacity 200ms;
-
-    &:hover {
-      text-decoration: underline;
-      opacity: $opacityPrimaryValue;
-    }
-  }
-
-  // Logo wall: one tile per customer, filterable by industry. Tiles keep the
-  // company-card data attributes, so a click still opens the company modal.
+  // Logo wall: one tile per customer, filterable by industry. A click on a
+  // tile opens the company modal from its data attributes (company-modal.ts).
   // Logos are cropped to their ink and sized for equal optical weight by the
   // generator (inline width/height on each mark), so CSS only places them.
   &__head {
@@ -420,8 +405,7 @@ $className: 'cases-slide';
     }
   }
 
-  // Doubled class: outranks the company-card base without !important.
-  &__tile.#{$className}__tile {
+  &__tile {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -429,11 +413,18 @@ $className: 'cases-slide';
     min-width: 0;
     height: 88px;
     padding: 12px 16px;
+    border: 1px solid $borderPrimaryColor;
     border-radius: 12px;
     background-color: $backgroundPrimaryColor;
+    font-family: inherit;
+    color: inherit;
     text-align: center;
+    cursor: pointer;
+    transition: border-color 200ms, box-shadow 200ms, transform 200ms;
 
     &:hover {
+      border-color: $accentPrimaryColor;
+      transform: translateY(-1px);
       box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.15);
     }
 
@@ -560,20 +551,9 @@ $className: 'cases-slide';
       outline-offset: 2px;
     }
 
-    > .#{$className}__story-mark,
-    > .#{$className}__story-lockup {
+    > .#{$className}__story-mark {
       margin-bottom: 16px;
     }
-  }
-
-  &__story-lockup {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    height: 28px;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
   }
 
   &__story-figure {

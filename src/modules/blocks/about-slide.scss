@@ -109,16 +109,6 @@ $className: 'about-slide';
     }
   }
 
-  &__arrow {
-    position: absolute;
-    top: 120px;
-    left: calc(100% - 120px);
-
-    @include mediaMax($tablet) {
-      display: none;
-    }
-  }
-
   &__title {
     font-size: 46px;
     line-height: 1.2;
