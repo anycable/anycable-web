@@ -84,11 +84,9 @@
       </div>
     </div>
 
-    {{!-- TODO(fastapi): there is no FastAPI library or example app yet. The
-         Python guide below shows plain HTTP broadcasts and hand-rolled token
-         and stream signing. Once a FastAPI package (broadcast client,
-         signed_stream, JWT helpers) and an example app ship, link both here
-         and from the FastAPI docs card in resources-slide.hbs. --}}
+    {{!-- TODO(fastapi): link a FastAPI package and example app here and from
+         the docs card in resources-slide.hbs once they ship. Until then the
+         sample signs streams by hand, the way the Python guide does. --}}
     <div class='about-slide__section' id='stack'>
       <div class='about-slide__content'>
         <h3 class='about-slide__heading'>Works with your stack</h3>
@@ -118,9 +116,6 @@
           <div data-tabs-id="code-rb" style="display:none" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/ruby}}
           </div>
-          {{!-- TODO(fastapi): signed_stream() in this sample stands in for the
-               planned FastAPI library; today the guide implements it by hand.
-               Swap in the real import once the package exists. --}}
           <div data-tabs-id="code-py" style="display:none" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/python}}
           </div>
