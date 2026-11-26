@@ -93,9 +93,13 @@
         <p class='about-slide__text about-slide__text_lead'>
           AnyCable runs next to your application. Any backend that can send an HTTP request can broadcast, Node.js included, and Rails and Laravel get native SDKs. Hotwire, Turbo Streams and every JavaScript framework work out of the box, and if you already run Redis or NATS, AnyCable can use them.
         </p>
+        <h3 class='about-slide__subtitle'>Delivery guarantees, out of the box</h3>
+        <p class='about-slide__text'>
+          Chat messages, edits in a shared document and notifications reach every user in order. When a phone loses signal on the subway or switches from Wi-Fi to cellular, AnyCable replays what it missed as soon as it reconnects, and connections stay open through your deploys.
+        </p>
         <h3 class='about-slide__subtitle'>Streamed LLM answers resume after a dropped connection</h3>
         <p class='about-slide__text'>
-          A tab switch or a network blip cuts off a streamed LLM answer. With AnyCable, your backend broadcasts tokens to a stream, and the Go server holds the connection, keeps the history and replays from where the client left off. GitLab ships AnyCable's JavaScript client in GitLab Duo to stream AI responses.
+          A tab switch or a network blip cuts off a streamed LLM answer. With AnyCable, your backend broadcasts tokens to a stream, and the Go server holds the connection, keeps the history and replays from where the client left off.
           <a href='https://docs.anycable.io/guides/python' target='_blank' class='plausible-event-name=Navigation plausible-event-link=fastapi-guide' data-ph-capture-attribute-link-id='fastapi-guide'>Read the Python and FastAPI guide →</a>
         </p>
       </div>
