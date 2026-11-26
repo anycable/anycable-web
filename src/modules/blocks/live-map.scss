@@ -170,18 +170,23 @@ $liveMapLine: #2c292f;
     background-color: #131115;
   }
 
+  // Three scenario buttons share one row at every width; on narrow panels
+  // each icon sits above its label.
   &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
   }
 
   // While a scenario runs, its button fills with progress (--p, 0 to 1).
   &__action {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     overflow: hidden;
-    padding: 10px 14px;
+    padding: 10px 8px;
     border: 1px solid #3a363d;
     border-radius: 9px;
     background: transparent;
@@ -227,11 +232,19 @@ $liveMapLine: #2c292f;
       outline-offset: 2px;
     }
 
-    @include mediaMax($smallMobile) {
-      flex: 1 1 auto;
-      padding: 10px 10px;
+    @container (max-width: 559.98px) {
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 6px;
       font-size: 13px;
+      white-space: normal;
+      text-align: center;
     }
+  }
+
+  &__action-icon {
+    font-size: 15px;
+    line-height: 1;
   }
 
   // One line of narration: the timestamp in its own column, the message

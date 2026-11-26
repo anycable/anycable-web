@@ -71,7 +71,7 @@ export function createRenderer(ctx, sim, { theme: T, logo, reducedMotion }) {
     ctx.arc(x, y, r, 0, TAU);
     ctx.stroke();
   }
-  // A red X: a lost message or a refused connection.
+  // A red X: a lost message or a refused reconnect.
   function cross(x, y, r, alpha) {
     ctx.strokeStyle = rgba(T.red, alpha);
     ctx.lineWidth = 1.5;
@@ -151,17 +151,9 @@ export function createRenderer(ctx, sim, { theme: T, logo, reducedMotion }) {
 
   // Devices
   function drawClient(c) {
-    if (!c.active) {
-      if (c.rx > 0.01) cross(c.x, c.y, 4, c.rx); // a refused new connection
-      return;
-    }
-    const scale = 0.5 + 0.5 * c.appear;
-    const size = DEVICE[c.kind];
-    const w = size.w * scale;
-    const h = size.h * scale;
+    const { w, h } = DEVICE[c.kind];
     const x = c.x - w / 2;
     const y = c.y - h / 2;
-    if (c.appear < 1) ring(c.x, c.y, 6 + 14 * c.appear, rgba(T.ink, 0.6 * (1 - c.appear)), 1);
     if (c.flash > 0.02)
       circle(c.x, c.y, 8 + 7 * (1 - c.flash), rgba(tone[c.tone], 0.26 * c.flash));
     if (c.on) drawOnline(c, x, y, w, h);
@@ -177,7 +169,7 @@ export function createRenderer(ctx, sim, { theme: T, logo, reducedMotion }) {
   }
   function drawOnline(c, x, y, w, h) {
     rr(x, y, w, h, 2);
-    ctx.fillStyle = rgba(T.ink, (0.38 + 0.5 * c.flash) * (0.4 + 0.6 * c.appear));
+    ctx.fillStyle = rgba(T.ink, 0.38 + 0.5 * c.flash);
     ctx.fill();
     if (c.flash > 0.25) {
       rr(x + 1.5, y + 1.5, w - 3, h - 3, 1);
@@ -382,7 +374,7 @@ export function createRenderer(ctx, sim, { theme: T, logo, reducedMotion }) {
     ctx.strokeStyle = rgba(T.ink, 0.05);
     ctx.beginPath();
     for (const c of sim.clients) {
-      if (!c.active || !c.on) continue;
+      if (!c.on) continue;
       ctx.moveTo(h.x, h.y);
       ctx.lineTo(c.x, c.y);
     }

@@ -1,11 +1,10 @@
-// The live map's model: client devices, messages in flight, and the four
+// The live map's model: client devices, messages in flight, and the three
 // scenarios. One scenario runs at a time. Drawing lives in draw.js.
 
 import { appOut } from './layout.js';
 
 export const PER = 100; // connections per dot
-export const N = 200; // dots at full load
-const REST = 0.5; // share of dots online outside a spike: 10,000 connections
+const N = 100; // dots: 10,000 connections
 
 // The bottom 40% of the field is the subway that loses signal.
 export const TUNNEL_TOP = 0.6;
@@ -16,9 +15,7 @@ const DEPLOY_S = 3.6;
 // In-process deploys: clients start reconnecting this far into the deploy,
 // spread over RECONNECT_SPREAD_S.
 const DEPLOY_RECONNECT_AT = 0.55;
-const DEPLOY_RECONNECT_SPREAD_S = 1.1;
-const SPIKE_S = 9;
-const SPIKE_REFUSE_P = 0.35; // in-process: share of new connections that time out
+const DEPLOY_RECONNECT_SPREAD_S = 0.55;
 // Reconnect storm. Both servers face the same first wave, which starts
 // FIRST_WAVE_S after the drop. The in-process server crashes at CRASH_AT[i]
 // and stays down for DOWN_S; clients retry in waves that spread wider as their
@@ -40,8 +37,8 @@ const DOOMED_AT = 0.62;
 export const fmt = n => Math.round(n).toLocaleString('en-US');
 
 // Device positions: an R2 low-discrepancy sequence spreads them evenly in
-// any aspect ratio. A fixed shuffle gives each one its turn to come online,
-// so exactly half are online at rest.
+// any aspect ratio. A fixed shuffle gives each one its place in the order
+// in which in-process clients reconnect after a deploy.
 function makeClients() {
   let seed = 7;
   const random = () => {
@@ -63,14 +60,11 @@ function makeClients() {
       x: 0,
       y: 0,
       on: true,
-      active: order < REST,
-      appear: 1,
       flash: 0,
       tone: 'ok', // flash colour: ok for a message, amber for a restored session
       queue: 0, // messages waiting in stream history for this client
       gap: 0, // fading ring: this client reconnected with nothing to replay
       rx: 0, // fading cross: a refused connection attempt
-      refused: false,
       back: -1, // in-process deploy: when this client reconnects
       inStorm: false,
       rcAt: -1, // storm time of the next reconnect attempt
@@ -110,18 +104,8 @@ export function createSim({ log, reducedMotion }) {
   };
   let due = 0; // broadcasts owed to the clock
 
-  const activeList = () => clients.filter(c => c.active);
-  const onlineCount = () =>
-    clients.reduce((n, c) => n + (c.active && c.on ? 1 : 0), 0);
+  const onlineCount = () => clients.reduce((n, c) => n + (c.on ? 1 : 0), 0);
   const elapsed = name => (sim.running?.name === name ? sim.running.t : -1);
-
-  function spikeLevel() {
-    const t = elapsed('spike');
-    if (t < 0) return REST;
-    if (t < 2) return REST + 0.25 * t;
-    if (t < 7) return 1;
-    return Math.max(REST, 1 - 0.25 * (t - 7));
-  }
 
   // Messages
   function addPulse(p) {
@@ -152,12 +136,10 @@ export function createSim({ log, reducedMotion }) {
   }
   function broadcast() {
     if (sim.mode === 'ws' && sim.appDown >= 0) return; // the app is down
-    const list = activeList();
-    if (!list.length) return;
     const count = 3 + Math.floor(Math.random() * 6);
     const targets = Array.from(
       { length: count },
-      () => list[Math.floor(Math.random() * list.length)]
+      () => clients[Math.floor(Math.random() * clients.length)]
     );
     const o = appOut(sim.geo);
     if (sim.mode === 'ws') {
@@ -228,7 +210,7 @@ export function createSim({ log, reducedMotion }) {
   // A reconnect attempt reaches the server during a storm.
   function reconnect(c) {
     const storm = sim.running?.name === 'storm' ? sim.running : null;
-    if (!storm || !c.active || c.on) return; // the storm already ended
+    if (!storm || c.on) return; // the storm already ended
     if (sim.mode === 'ws') {
       if (sim.appDown >= 0) {
         c.rx = 1; // refused: the app is down
@@ -261,7 +243,7 @@ export function createSim({ log, reducedMotion }) {
       start() {
         let n = 0;
         for (const c of clients) {
-          if (!c.active || !inTunnel(c)) continue;
+          if (!inTunnel(c)) continue;
           c.on = false;
           n++;
         }
@@ -270,7 +252,7 @@ export function createSim({ log, reducedMotion }) {
       end(run) {
         let replayed = 0;
         for (const c of clients) {
-          if (!c.active || !inTunnel(c)) continue;
+          if (!inTunnel(c)) continue;
           c.on = true;
           if (sim.mode === 'ws') c.gap = 1;
           else
@@ -307,7 +289,7 @@ export function createSim({ log, reducedMotion }) {
         }
         let n = 0;
         for (const c of clients) {
-          if (!c.active || !c.on) continue;
+          if (!c.on) continue;
           c.on = false;
           c.back =
             DEPLOY_S * DEPLOY_RECONNECT_AT + c.order * DEPLOY_RECONNECT_SPREAD_S;
@@ -355,7 +337,7 @@ export function createSim({ log, reducedMotion }) {
         });
         sim.rcTimes.length = 0;
         for (const c of clients) {
-          if (!c.active || !c.on) continue;
+          if (!c.on) continue;
           c.on = false;
           c.inStorm = true;
           c.rcAt = FIRST_WAVE_S + Math.random() * WAVE_S[0];
@@ -387,7 +369,7 @@ export function createSim({ log, reducedMotion }) {
           if (!c.inStorm) continue;
           c.inStorm = false;
           c.rcAt = -1;
-          if (!c.active || c.on) continue;
+          if (c.on) continue;
           c.on = true;
           if (sim.mode === 'any')
             run.replayed += replayQueue(c, { stagger: 0.06 });
@@ -405,29 +387,6 @@ export function createSim({ log, reducedMotion }) {
       },
     },
 
-    spike: {
-      duration: () => SPIKE_S,
-      start(run) {
-        run.refused = 0;
-        if (sim.mode === 'any')
-          log(
-            `Launch day: connections double to ${fmt(N * PER)}, outside your app processes.`,
-            'ok'
-          );
-        else
-          log('Launch day: connections double inside your app processes.', 'bad');
-      },
-      end(run) {
-        if (sim.mode === 'any')
-          log('Spike over: every new connection was accepted.', 'ok');
-        else if (run.refused)
-          log(
-            `Spike over: ${fmt(run.refused * PER)} connection attempts timed out.`,
-            'bad'
-          );
-        for (const c of clients) c.refused = false;
-      },
-    },
   };
 
   // Storm helpers
@@ -436,7 +395,7 @@ export function createSim({ log, reducedMotion }) {
     for (const c of clients) {
       if (c.rcAt < 0 || run.t < c.rcAt) continue;
       c.rcAt = -1;
-      if (!c.active || c.on) continue;
+      if (c.on) continue;
       addPulse({
         kind: 'rc',
         target: c,
@@ -510,8 +469,6 @@ export function createSim({ log, reducedMotion }) {
         inStorm: false,
         rcAt: -1,
         rx: 0,
-        refused: false,
-        active: c.order < REST,
       });
     log(
       mode === 'any'
@@ -554,27 +511,11 @@ export function createSim({ log, reducedMotion }) {
     sim.running = null;
   }
   function tickClients(dt) {
-    const level = spikeLevel();
-    const spike = sim.running?.name === 'spike' ? sim.running : null;
     for (const c of clients) {
-      const wanted = c.order < level;
-      if (wanted && !c.active && !c.refused) {
-        if (sim.mode === 'ws' && spike && Math.random() < SPIKE_REFUSE_P) {
-          c.refused = true;
-          c.rx = 1;
-          spike.refused++;
-        } else Object.assign(c, { active: true, appear: 0, on: true });
-      } else if (!wanted && c.active) {
-        c.active = false;
-        sim.history = Math.max(0, sim.history - c.queue);
-        c.queue = 0;
-      }
       c.flash = Math.max(0, c.flash - dt * 2.2);
       c.gap = Math.max(0, c.gap - dt * 0.8);
-      c.appear = Math.min(1, c.appear + dt * 2.5);
       c.rx = Math.max(0, c.rx - dt * 0.6);
     }
-    return level;
   }
   function tickPulses(dt) {
     for (let i = sim.pulses.length - 1; i >= 0; i--) {
@@ -617,11 +558,11 @@ export function createSim({ log, reducedMotion }) {
     sim.hubLoad = Math.max(0, sim.hubLoad - sim.hubLoad * 1.2 * dt);
     while (sim.rcTimes.length && sim.clock - sim.rcTimes[0] > RATE_WINDOW_S)
       sim.rcTimes.shift();
-    const level = tickClients(dt);
+    tickClients(dt);
     const rate = reducedMotion
       ? BROADCASTS_PER_S.reducedMotion
       : BROADCASTS_PER_S.normal;
-    due += dt * rate * (level / REST);
+    due += dt * rate;
     for (; due >= 1; due--) broadcast();
     tickPulses(dt);
     tickDrops(dt);

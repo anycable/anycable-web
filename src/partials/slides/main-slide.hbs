@@ -37,13 +37,12 @@
           <div class='live-map__tally-item'><dt>lost</dt><dd data-live-map-target='lost'>0</dd></div>
         </dl>
       </div>
-      <canvas class='live-map__canvas' data-live-map-target='canvas' role='img' aria-label='Simulated map of connections: your app broadcasts through the AnyCable server to 10,000 client connections. Network drops, deploys, a reconnect storm and a traffic spike show missed messages replaying from stream history. With in-process WebSockets the same events lose messages, and the reconnect storm crashes the app twice before it recovers.'></canvas>
+      <canvas class='live-map__canvas' data-live-map-target='canvas' role='img' aria-label='Simulated map of connections: your app broadcasts through the AnyCable server to 10,000 client connections. Network drops, deploys and a reconnect storm show missed messages replaying from stream history. With in-process WebSockets the same events lose messages, and the reconnect storm crashes the app twice before it recovers.'></canvas>
       <div class='live-map__bar'>
         <div class='live-map__actions'>
-          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=tunnel' data-live-map-target='tunnel'>Drop the network</button>
-          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=deploy' data-live-map-target='deploy'>Deploy the app</button>
-          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=storm' data-live-map-target='storm'>Reconnect storm</button>
-          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=spike' data-live-map-target='spike'>Launch-day spike</button>
+          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=tunnel' data-live-map-target='tunnel'><span class='live-map__action-icon' aria-hidden='true'>🚇</span>Unreliable network</button>
+          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=deploy' data-live-map-target='deploy'><span class='live-map__action-icon' aria-hidden='true'>🚀</span>Deployment survival</button>
+          <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=storm' data-live-map-target='storm'><span class='live-map__action-icon' aria-hidden='true'>⛈️</span>Reconnect storm</button>
         </div>
         <div class='live-map__log' data-live-map-target='log' aria-live='off'></div>
       </div>

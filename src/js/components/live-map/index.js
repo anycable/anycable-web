@@ -2,12 +2,11 @@
 //
 // Your app broadcasts through the AnyCable server (drawn with the real AnyCable
 // logo) to a field of client devices; one dot stands for 100 connections.
-// Four scenarios show what the delivery guarantees mean in practice: a
-// network drop (missed messages wait in stream history and replay on
-// reconnect), an app deploy (connections stay open), a reconnect storm (every
-// client reconnects at once; AnyCable restores sessions from its cache without
-// calling the app), and a launch-day spike (connections live outside the app
-// process). A switch replays the same events on an in-process WebSocket
+// Three scenarios show what the delivery guarantees mean in practice: an
+// unreliable network (missed messages wait in stream history and replay on
+// reconnect), an app deploy (connections stay open) and a reconnect storm
+// (every client reconnects at once; AnyCable restores sessions from its cache
+// without calling the app). A switch replays the same events on an in-process WebSocket
 // server, where messages are lost and the storm crashes the app until clients
 // back off far enough for it to recover.
 //
@@ -22,21 +21,19 @@ import { computeLayout } from './layout.js';
 import { createSim, PER, fmt } from './sim.js';
 import { createRenderer } from './draw.js';
 
-const SCENARIOS = ['tunnel', 'deploy', 'storm', 'spike'];
+const SCENARIOS = ['tunnel', 'deploy', 'storm'];
 // Autoplay: [seconds into the loop, scenario name or mode switch]
 const SCRIPT = [
   [2, 'tunnel'],
   [8, 'deploy'],
   [13, 'storm'],
-  [19.5, 'spike'],
-  [30, { mode: 'ws' }],
-  [32, 'tunnel'],
-  [38, 'deploy'],
-  [43, 'storm'],
-  [55, 'spike'],
-  [66, { mode: 'any' }],
+  [20, { mode: 'ws' }],
+  [22, 'tunnel'],
+  [28, 'deploy'],
+  [33, 'storm'],
+  [45.5, { mode: 'any' }],
 ];
-const LOOP_S = 68;
+const LOOP_S = 47.5;
 const MAX_FRAME_S = 0.05;
 const TALLY_EVERY_S = 0.2;
 
