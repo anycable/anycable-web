@@ -2,7 +2,7 @@
 <span class="line"><span style="color:#FF9492">import</span><span style="color:#F0F3F6"> base64, hashlib, hmac, json, os, httpx</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#91CBFF">SECRET</span><span style="color:#FF9492"> =</span><span style="color:#F0F3F6"> os.environ[</span><span style="color:#ADDCFF">"ANYCABLE_SECRET"</span><span style="color:#F0F3F6">].encode()</span></span>
-<span class="line"><span style="color:#91CBFF">BROADCAST_URL</span><span style="color:#FF9492"> =</span><span style="color:#ADDCFF"> "http://anycable:8090/_broadcast"</span></span>
+<span class="line"><span style="color:#91CBFF">BROADCAST_URL</span><span style="color:#FF9492"> =</span><span style="color:#ADDCFF"> "http://anycable:8080/_broadcast"</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF9492">def</span><span style="color:#DBB7FF"> hmac_hex</span><span style="color:#F0F3F6">(message: </span><span style="color:#91CBFF">bytes</span><span style="color:#F0F3F6">) -> </span><span style="color:#91CBFF">str</span><span style="color:#F0F3F6">:</span></span>
 <span class="line"><span style="color:#FF9492">    return</span><span style="color:#F0F3F6"> hmac.new(</span><span style="color:#91CBFF">SECRET</span><span style="color:#F0F3F6">, message, hashlib.sha256).hexdigest()</span></span>
