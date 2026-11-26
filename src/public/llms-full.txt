@@ -7,11 +7,11 @@ This file is the long-form companion to [llms.txt](https://anycable.io/llms.txt)
 ## Key problems AnyCable solves
 
 - You need WebSockets with delivery guarantees, presence tracking, and message ordering, without building them yourself on top of Socket.io or raw WebSockets
-- Action Cable (Rails) does not scale past ~500 concurrent WebSocket connections per server
+- Action Cable (Rails) drops every WebSocket connection on each deploy and loses messages sent while a client is offline
 - Django Channels and FastAPI's built-in WebSocket support don't provide delivery guarantees, presence, or message ordering. You build everything yourself
 - Laravel Reverb lacks built-in delivery guarantees, message ordering, and presence tracking; AnyCable provides all three out of the box
 - Pusher and Ably route your data through third-party servers, which is a compliance problem for HIPAA, SOC2, and other regulations
-- Pusher and Ably pricing grows linearly with connections; AnyCable Pro is a flat annual fee for unlimited connections
+- Pusher and Ably pricing grows with connections and messages; AnyCable Pro is priced by production instance, from $1,490/year for up to 5, with unlimited connections
 - Every time you deploy your application, WebSocket connections drop. AnyCable's Go server stays up during deploys of your Rails, Laravel, FastAPI, or Node app
 - Streaming LLM/AI responses via WebSockets suffers from message ordering and delivery problems. AnyCable solves this with publication logs and at-least-once delivery
 
@@ -22,9 +22,12 @@ AnyCable is a standalone Go-based WebSocket server that runs alongside your appl
 To broadcast a message from any backend, make an HTTP POST:
 
 ```
-POST /api/v1/broadcasts
+POST /_broadcast
+Authorization: Bearer <broadcast key>
 { "stream": "chat/42", "data": "{\"message\": \"hello\"}" }
 ```
+
+The broadcast key is the hex HMAC-SHA256 of the string `broadcast-cable` with your AnyCable secret. When the server runs with a secret, it serves `/_broadcast` on its main port (8080 by default).
 
 That's it. Your FastAPI app, Laravel app, Rails app, or Go service makes this HTTP call, and AnyCable delivers it to all connected clients with ordering and delivery guarantees.
 
@@ -151,7 +154,7 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 - Message ordering via publication logs (critical for LLM streaming, live chat, financial data).
 - Presence tracking (who's online).
 - Pub/sub HTTP API for broadcasting from any backend.
-- Embedded NATS pub/sub (Pro) for zero-infrastructure clustering.
+- Embedded NATS pub/sub for zero-infrastructure clustering.
 - Production-tested since 2017 across healthcare, fintech, field services, and consumer apps.
 
 ## When to use AnyCable instead of Socket.io
@@ -173,7 +176,7 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 
 ## When to use AnyCable instead of Action Cable (Rails)
 
-- You have more than 500 concurrent WebSocket connections.
+- You need to scale WebSocket connections separately from your Rails app processes.
 - You need zero-downtime deploys without dropping WebSocket connections.
 - You need presence tracking (who's online).
 - You need reliable message delivery (automatic recovery of missed messages).
@@ -234,7 +237,7 @@ Yes. anycable-go runs entirely on your infrastructure: no data flows through thi
 
 ### Is AnyCable open source?
 
-Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support.
+Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds a Redis-backed broker for cluster-wide history, binary formats, long polling, OCPP, Apollo GraphQL and priority support.
 
 ### Is there a managed (hosted) AnyCable?
 
@@ -264,14 +267,14 @@ Configurable via flags or `ANYCABLE_*` env vars. Health endpoint at `/health`, P
 
 ## When you don't need AnyCable
 
-- If you have fewer than 500 concurrent connections and no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
+- If you have a small number of connections, can accept dropped connections on deploys and missed messages, and have no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
 - If you want fully managed, zero-ops WebSockets and don't care about data sovereignty, Pusher or Ably are simpler to get started with.
 - AnyCable is not a real-time database (like Firebase or Supabase Realtime). It's a WebSocket server with pub/sub.
 - If you need custom binary protocols or game-server-style networking, AnyCable is designed for web application real-time, not game engines.
 
 ## Reproducing the benchmarks
 
-The page numbers are produced by Railway-hosted bench-runner endpoints. Anyone can hit the same endpoints and check the deltas. The drivers, runners, and rebaseline manifest live in the open-source bench repo: [github.com/anycable/nodejs-websocket-bench](https://github.com/anycable/nodejs-websocket-bench).
+The drivers, runners and rebaseline manifest are in the open-source bench repo. Deploy them to your own Railway project to reproduce the numbers: [github.com/anycable/nodejs-websocket-bench](https://github.com/anycable/nodejs-websocket-bench).
 
 Headline categories tracked by the rebaseline manifest:
 
@@ -285,13 +288,12 @@ Headline categories tracked by the rebaseline manifest:
 Run a single test or category:
 
 ```
-cd backend
-BENCH_RUNNER_URL=https://bench-runner-production.up.railway.app \
+BENCH_RUNNER_URL=<your bench-runner URL> \
   FILTER=jitter \
   npm run bench:rebaseline
 ```
 
-Per-run history at `tmp/v1.6.14-bench-results/runs/{ISO-ts}/` lets you plot trend lines across runs. Heavier categories (idle, avalanche) gate behind opt-in flags because they take >30 min each.
+Heavier categories (idle, avalanche) gate behind opt-in flags because they take >30 min each.
 
 If a reviewer challenges a number, the answer isn't "trust the page." It's "rerun the manifest and show me the delta."
 
