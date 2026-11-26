@@ -35,6 +35,8 @@ $className: 'slide-show';
       width: 100%;
       min-height: 100%;
       margin: 0 !important;
+      // Show code as typed: the "--" in a signed stream is two characters.
+      font-variant-ligatures: none;
     }
   }
 

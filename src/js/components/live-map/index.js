@@ -149,6 +149,11 @@ function initLiveMap(root) {
       action();
     });
   for (const name of SCENARIOS) on(name, () => sim.start(name));
+  // Reaching for a button ends autoplay, so the one running finishes and
+  // the visitor's choice comes next (a disabled button gets no click).
+  const actions = q(SCENARIOS[0]).parentNode;
+  actions.addEventListener('pointerenter', takeOver);
+  root.addEventListener('focusin', takeOver);
   on('mode-any', () => setMode('any'));
   on('mode-ws', () => setMode('ws'));
 
