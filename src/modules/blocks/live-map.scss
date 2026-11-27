@@ -1,0 +1,306 @@
+$className: 'live-map';
+$liveMapLine: #2c292f;
+
+// The hero's live connection map. Always dark: it reads as an instrument
+// panel on the light page. Three stacked rows, none overlapping the drawing:
+// controls and tally on top, the canvas, then scenarios and the event log.
+// Drawing happens in src/js/components/live-map/. The canvas reads the
+// colour and font tokens below, so both sides share one palette; colours are
+// "R G B" triplets for rgb(var(--x)) and rgb(var(--x) / alpha).
+.#{$className} {
+  --live-map-ink: 238 235 239;
+  --live-map-mute: 154 148 159;
+  --live-map-bg: 14 13 16;
+  --live-map-panel: 27 25 30;
+  --live-map-panel-down: 42 21 23;
+  --live-map-red: 246 67 67;
+  --live-map-ok: 74 210 138;
+  --live-map-amber: 236 170 60;
+  --live-map-ok-text: 111 211 156;
+  --live-map-bad-text: 255 122 112;
+  --live-map-mono: 'Martian Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --live-map-sans: 'Stem', Arial, sans-serif;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: rgb(var(--live-map-bg));
+  color: rgb(var(--live-map-ink));
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06),
+    0 40px 80px -40px rgba(140, 10, 10, 0.5);
+  container-type: inline-size;
+
+  &__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding: 12px;
+    border-bottom: 1px solid $liveMapLine;
+  }
+
+  &__switch {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid #353138;
+    border-radius: 10px;
+    background-color: #17151a;
+  }
+
+  &__switch-btn {
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    font: 400 13px/1.1 var(--live-map-sans);
+    color: rgb(var(--live-map-mute));
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 200ms, color 200ms;
+
+    &:hover {
+      color: rgb(var(--live-map-ink));
+    }
+
+    &[aria-pressed='true'] {
+      background-color: $accentPrimaryColor;
+      color: #fff;
+    }
+
+    &_ws[aria-pressed='true'] {
+      background-color: #4a454e;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 1px;
+    }
+
+    @include mediaMax($extremeMinimumWidth) {
+      padding: 8px 9px;
+      font-size: 12px;
+    }
+  }
+
+  &__tally {
+    display: flex;
+    margin: 0;
+  }
+
+  &__tally-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 76px;
+    padding: 0 12px;
+
+    & + & {
+      border-left: 1px solid $liveMapLine;
+    }
+
+    &:last-child {
+      padding-right: 4px;
+    }
+
+    dt {
+      font: 10.5px/1.3 var(--live-map-mono);
+      color: rgb(var(--live-map-mute));
+    }
+
+    dd {
+      margin: 0;
+      font: 700 15px/1.35 var(--live-map-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    &_ok dd {
+      color: rgb(var(--live-map-ok-text));
+    }
+
+    &_bad dd {
+      color: rgb(var(--live-map-bad-text));
+    }
+
+    @include mediaMax($smallMobile) {
+      align-items: flex-start;
+      min-width: 0;
+      flex: 1;
+
+      &:first-child {
+        padding-left: 4px;
+      }
+    }
+  }
+
+  @include mediaMax($smallMobile) {
+    &__tally {
+      flex: 1 1 100%;
+    }
+  }
+
+  // The canvas and a tag that says the traffic is simulated.
+  &__field {
+    position: relative;
+  }
+
+  // Top left is empty in the side-by-side drawing; the stacked one puts
+  // the app there, so the tag moves to the right.
+  &__sim-tag {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    padding: 3px 7px;
+    border: 1px solid #3a363d;
+    border-radius: 5px;
+    font: 10.5px/1.2 var(--live-map-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(var(--live-map-mute));
+    pointer-events: none;
+
+    @container (max-width: 719.98px) {
+      left: auto;
+      right: 12px;
+    }
+  }
+
+  &__canvas {
+    display: block;
+    width: 100%;
+    height: clamp(380px, 31vw, 460px);
+
+    @include mediaMax($desktop) {
+      height: clamp(360px, 42vw, 440px);
+    }
+
+    // Under 720px side by side squeezes the field into a tall strip, so the
+    // drawing stacks the app, the hub and the field, which needs more height.
+    // The script reads --live-map-layout, so this is the only breakpoint.
+    @container (max-width: 719.98px) {
+      --live-map-layout: stacked;
+      height: 500px;
+    }
+  }
+
+  &__bar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 12px 14px;
+    border-top: 1px solid $liveMapLine;
+    background-color: #131115;
+  }
+
+  // Three scenario buttons share one row at every width; on narrow panels
+  // each icon sits above its label.
+  &__actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  // While a scenario runs, its button fills with progress (--p, 0 to 1).
+  &__action {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    overflow: hidden;
+    padding: 10px 8px;
+    border: 1px solid #3a363d;
+    border-radius: 9px;
+    background: transparent;
+    font: 400 14px/1.1 var(--live-map-sans);
+    color: rgb(var(--live-map-ink));
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 200ms, background-color 200ms;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: calc(var(--p, 0) * 100%);
+      background-color: $accentPrimaryColor;
+      opacity: 0;
+    }
+
+    &:hover {
+      border-color: #6a646e;
+      background-color: #1d1b20;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none; // no hover state on a waiting button
+    }
+
+    &[data-running] {
+      border-color: rgb(var(--live-map-red) / 0.7);
+      background-color: rgb(var(--live-map-red) / 0.12);
+
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 2px;
+    }
+
+    @container (max-width: 559.98px) {
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 6px;
+      font-size: 13px;
+      white-space: normal;
+      text-align: center;
+    }
+  }
+
+  &__action-icon {
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  // One line of narration: the timestamp in its own column, the message
+  // wrapping beside it; the min-height holds the
+  // room for the longest message so the page below never jumps.
+  &__log {
+    min-height: 40px;
+    font: 12px/1.65 var(--live-map-mono);
+    color: #b3adb7;
+
+    @include mediaMax($smallMobile) {
+      min-height: 60px;
+    }
+  }
+
+  &__log-line {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1ch;
+
+    &_ok {
+      color: rgb(var(--live-map-ok-text));
+    }
+
+    &_bad {
+      color: rgb(var(--live-map-bad-text));
+    }
+  }
+
+  &__log-time {
+    color: rgb(var(--live-map-mute));
+  }
+}

@@ -126,52 +126,6 @@ $className: 'oss-slide';
     }
   }
 
-  &__highlight {
-    margin-top: auto;
-    border-left: 3px solid $accentPrimaryColor;
-    background-color: $backgroundPrimaryColor;
-    border-radius: 0 6px 6px 0;
-    padding: 16px 18px;
-
-    @include mediaMax($tablet) {
-      background-color: $backgroundSecondaryColor;
-    }
-  }
-
-  &__highlight-tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: $accentPrimaryColor;
-    margin-bottom: 8px;
-  }
-
-  &__highlight-text {
-    font-size: 15px;
-    line-height: 1.55;
-    color: $fontPrimaryColor;
-    margin: 0 0 10px;
-
-    & code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.85em;
-      color: $fontSecondaryColor;
-    }
-  }
-
-  &__highlight-link {
-    font-size: 13px;
-    font-weight: 600;
-    color: $accentPrimaryColor;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   &__cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -194,6 +148,11 @@ $className: 'oss-slide';
     background: none;
     transition: all 200ms;
 
+    // An odd card out spans the row instead of leaving a hole beside it.
+    &:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
     &:hover {
       border-color: $accentPrimaryColor;
       transform: translateY(-1px);
@@ -211,14 +170,18 @@ $className: 'oss-slide';
 
   &__repo {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     line-height: 1.3;
     color: $fontPrimaryColor;
-    word-break: break-all;
+    // Long names break at the <wbr> after the slash or before a dot; only a
+    // part wider than the card itself breaks mid-word.
+    overflow-wrap: anywhere;
   }
 
+  // Last item in the footer row, pushed to the right edge.
   &__stars {
+    margin-left: auto;
     font-size: 12px;
     line-height: 1.3;
     color: $fontSecondaryColor;

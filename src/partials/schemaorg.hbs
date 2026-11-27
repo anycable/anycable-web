@@ -38,7 +38,7 @@
         "name": "Managed AnyCable",
         "price": "0",
         "priceCurrency": "USD",
-        "description": "Free for 1 instance (about 2,000 connections), no SLA. Run and upgraded for you."
+        "description": "Free for two cables, each taking up to 2,000 concurrent connections, no SLA. Run and upgraded for you."
       },
       {
         "@type": "Offer",
@@ -46,7 +46,7 @@
         "price": "1490",
         "priceCurrency": "USD",
         "priceValidUntil": "2027-12-31",
-        "description": "$1,490 per year or $149 per month. Self-hosted, up to 5 production instances, unlimited connections. Cluster mode, binary compression, long-polling fallback, adaptive scaling, dedicated support."
+        "description": "$1,490 per year or $149 per month. Self-hosted, up to 5 production instances, unlimited connections. Cluster mode, binary compression, long-polling fallback, adaptive scaling, Slack support, usually within 48 hours."
       },
       {
         "@type": "Offer",
@@ -54,7 +54,7 @@
         "price": "4900",
         "priceCurrency": "USD",
         "priceValidUntil": "2027-12-31",
-        "description": "$4,900 per year or $490 per month. Self-hosted, up to 20 production instances, unlimited connections."
+        "description": "$4,900 per year or $490 per month. Self-hosted, up to 20 production instances, unlimited connections, Slack support, usually within 48 hours."
       },
       {
         "@type": "Offer",
@@ -62,7 +62,7 @@
         "price": "9000",
         "priceCurrency": "USD",
         "priceValidUntil": "2027-12-31",
-        "description": "From $9,000 per year. More than 20 production instances, priority support, 48-hour response on critical issues."
+        "description": "From $9,000 per year. More than 20 production instances, priority support, guaranteed 48-hour response on critical issues."
       },
       {
         "@type": "Offer",
@@ -89,7 +89,7 @@
         "name": "What is AnyCable?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AnyCable is an open-source WebSocket server written in Go with built-in delivery guarantees, presence tracking, and message ordering. It works with any backend — Ruby on Rails, Laravel, Node.js/TypeScript, Python/FastAPI, or any language that can make HTTP requests — via its pub/sub HTTP API. AnyCable handles 10,000+ concurrent connections per server and has been in production since 2017, powering 50+ companies including Doximity, CoinGecko, Jobber, and Circle."
+          "text": "AnyCable is an open-source WebSocket server written in Go with built-in delivery guarantees, presence tracking, and message ordering. It works with any backend that can make HTTP requests, including Ruby on Rails, Laravel, Node.js/TypeScript and Python/FastAPI, through its pub/sub HTTP API. AnyCable handles 10,000+ concurrent connections per server and has been in production since 2017, powering 50+ companies including Doximity, CoinGecko, Jobber, and Circle."
         }
       },
       {
@@ -97,7 +97,7 @@
         "name": "How much does AnyCable cost?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AnyCable open source is free. Managed AnyCable is free for 1 instance (about 2,000 connections). AnyCable Pro is self-hosted with unlimited connections and priced by production instance: $1,490 per year (or $149 per month) for up to 5 instances, $4,900 per year (or $490 per month) for up to 20, and from $9,000 per year beyond that. Enterprise, with source access, has custom pricing. Staging and development instances are free, and there is a free 2-month trial. Consulting is available at $200 per hour."
+          "text": "AnyCable open source is free. Managed AnyCable is free for two cables, each taking up to 2,000 concurrent connections. AnyCable Pro is self-hosted with unlimited connections and priced by production instance: $1,490 per year (or $149 per month) for up to 5 instances, $4,900 per year (or $490 per month) for up to 20, and from $9,000 per year beyond that. Enterprise, with source access, has custom pricing. Staging and development instances are free, and there is a free 2-month trial. Consulting is available at $200 per hour."
         }
       },
       {
@@ -105,7 +105,7 @@
         "name": "Does AnyCable work with Python, Laravel, or Node.js?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. AnyCable works with any backend language. For Rails, it's a drop-in Action Cable replacement. For Laravel, there's a native SDK with broadcasting and channels. For Python/FastAPI, Node.js, or any other backend, you broadcast messages via AnyCable's HTTP pub/sub API — a simple HTTP POST from your application delivers messages to all connected WebSocket clients with ordering and delivery guarantees."
+          "text": "Yes. AnyCable works with any backend language. For Rails, it's a drop-in Action Cable replacement. For Laravel, there's a native SDK with broadcasting and channels. For Python/FastAPI, Node.js, or any other backend, you broadcast messages via AnyCable's HTTP pub/sub API: a simple HTTP POST from your application delivers messages to all connected WebSocket clients with ordering and delivery guarantees."
         }
       },
       {
@@ -113,7 +113,7 @@
         "name": "Is AnyCable HIPAA compliant?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. AnyCable Pro and open source run on your infrastructure — real-time data never leaves your servers. This makes AnyCable compliant with HIPAA, SOC2, and other data sovereignty requirements. Nine healthcare companies use AnyCable in production, including Doximity (professional network for 80% of US physicians), Healthie, and Headway ($2.3B valuation)."
+          "text": "Yes. AnyCable Pro and open source run on your infrastructure, so real-time data never leaves your servers, and AnyCable fits inside an existing HIPAA or SOC 2 boundary. Eight healthcare companies use AnyCable in production, including Doximity (professional network for 80% of US physicians), Healthie, and Headway ($2.3B valuation)."
         }
       },
       {
@@ -121,7 +121,7 @@
         "name": "How is AnyCable different from Socket.io?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Socket.io is a JavaScript library that provides WebSocket transport — you build reliability, presence, and authentication yourself. AnyCable is a standalone server with delivery guarantees, presence tracking, message ordering, and authentication built in. AnyCable works with any backend (not just Node.js), and because it's a separate process, WebSocket connections survive application deploys."
+          "text": "Socket.io is a JavaScript library that provides WebSocket transport; you build reliability, presence, and authentication yourself. AnyCable is a standalone server with delivery guarantees, presence tracking, message ordering, and authentication built in. AnyCable works with any backend, Node.js included, and because it's a separate process, WebSocket connections survive application deploys."
         }
       },
       {
@@ -129,7 +129,7 @@
         "name": "How is AnyCable different from Pusher or Ably?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Pusher and Ably are managed services that route your data through third-party servers — a problem for HIPAA and SOC2 compliance. Their pricing grows linearly with connections. AnyCable runs on your infrastructure (or use Managed AnyCable), prices Pro by server instance with unlimited connections (from $1,490/year), and provides native SDKs for Rails and Laravel rather than generic client libraries."
+          "text": "Pusher and Ably are managed services that route your data through third-party servers, which is a problem for HIPAA and SOC 2 compliance, and their pricing grows with connections and messages. AnyCable runs on your infrastructure (or use Managed AnyCable), prices Pro by production instance with unlimited connections (from $1,490/year), and provides native SDKs for Rails and Laravel."
         }
       }
     ]

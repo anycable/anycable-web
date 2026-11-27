@@ -25,8 +25,13 @@ $className: 'about-slide';
     }
 
     @include mediaMax($tablet) {
+      flex-direction: column;
       padding: 0 24px;
       background-color: $backgroundSecondaryColor;
+    }
+
+    @include mediaMax($mobile) {
+      padding: 0 16px;
     }
   }
 
@@ -104,16 +109,6 @@ $className: 'about-slide';
     }
   }
 
-  &__arrow {
-    position: absolute;
-    top: 120px;
-    left: calc(100% - 120px);
-
-    @include mediaMax($tablet) {
-      display: none;
-    }
-  }
-
   &__title {
     font-size: 46px;
     line-height: 1.2;
@@ -146,6 +141,15 @@ $className: 'about-slide';
     @include mediaMax($mobile) {
       margin-bottom: 48px;
     }
+
+    // Inside a section, a paragraph leads into the next subheading.
+    &:has(+ .#{$className}__subtitle) {
+      margin-bottom: 40px;
+
+      @include mediaMax($mobile) {
+        margin-bottom: 32px;
+      }
+    }
   }
 
   // Calm inline code: smaller, faint background, never breaks the rhythm
@@ -173,13 +177,41 @@ $className: 'about-slide';
   &__tabs {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
     align-items: center;
+
+    @include mediaMax($smallMobile) {
+      gap: 8px;
+    }
+
+    // Five stack tabs: tighter in a narrow code column, then an even 3 + 2
+    // grid, so Laravel never wraps onto a line of its own.
+    @container (max-width: 479.98px) {
+      gap: 6px;
+    }
+
+    @container (max-width: 379.98px) {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
   }
 
   &__tab {
     padding: 0 12px;
     box-shadow: none;
+
+    @include mediaMax($smallMobile) {
+      height: 40px;
+      padding: 0 10px;
+      font-size: 15px;
+    }
+
+    @container (max-width: 479.98px) {
+      padding: 0 8px;
+      font-size: 15px;
+    }
 
     &.active-tab {
       background-color: $accentPrimaryColor;
@@ -202,5 +234,246 @@ $className: 'about-slide';
 
   &__video-tip {
     margin-bottom: 24px;
+  }
+
+  // A paragraph that continues the one before it, rather than ending a block.
+  &__text_lead {
+    margin-bottom: 20px;
+
+    @include mediaMax($mobile) {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__text a {
+    color: $accentPrimaryColor;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  &__heading {
+    margin-top: 96px;
+    margin-bottom: 32px;
+    font-size: 34px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-wrap: balance;
+
+    @include mediaMax($mobile) {
+      margin-top: 56px;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+  }
+
+  // Instant / Scalable / Dependable / Yours: one measured figure per promise.
+  &__pillars {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+
+    @include mediaMax($desktop) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include mediaMax($mobile) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  &__pillar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 12px;
+    background-color: $backgroundPrimaryColor;
+  }
+
+  &__pillar-label {
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $accentPrimaryColor;
+  }
+
+  &__pillar-figure {
+    font-size: 44px;
+    line-height: 1.05;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    small {
+      margin-left: 6px;
+      font-size: 18px;
+      font-weight: 400;
+      color: $fontSecondaryColor;
+    }
+  }
+
+  &__pillar-caption {
+    font-size: 15px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+  }
+
+  &__pillar-text {
+    margin-top: 8px;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  &__more {
+    align-self: flex-start;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    font-size: 17px;
+    line-height: 1.5;
+    font-weight: 700;
+    color: $accentPrimaryColor;
+    text-decoration: none;
+    transition: $opacityPrimaryTransition;
+
+    &:hover {
+      opacity: $opacityPrimaryValue;
+    }
+  }
+
+  &__table-wrap {
+    overflow-x: auto;
+    margin-bottom: 96px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 12px;
+    background-color: $backgroundPrimaryColor;
+
+    @include mediaMax($mobile) {
+      margin-bottom: 56px;
+    }
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 17px;
+    line-height: 1.5;
+
+    th,
+    td {
+      padding: 16px 20px;
+      border-bottom: 1px solid $borderPrimaryColor;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: $fontSecondaryColor;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td:first-child {
+      width: 24%;
+      font-weight: 700;
+    }
+
+    td:nth-child(2) {
+      color: $fontSecondaryColor;
+    }
+
+    // Phones: each row becomes a card, with the column name above each cell.
+    @include mediaMax($mobile) {
+      min-width: 0;
+      font-size: 16px;
+
+      thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+
+      tr {
+        display: block;
+        padding: 16px 18px;
+        border-bottom: 1px solid $borderPrimaryColor;
+      }
+
+      tr:last-child {
+        border-bottom: 0;
+      }
+
+      td,
+      td:first-child {
+        display: block;
+        width: auto;
+        padding: 0;
+        border: 0;
+      }
+
+      td + td {
+        margin-top: 10px;
+      }
+
+      td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: $fontSecondaryColor;
+      }
+
+      td:last-child::before {
+        color: $accentPrimaryColor;
+      }
+    }
+  }
+
+  // Lines the code tabs up with the section heading beside them. The code is
+  // the argument for FastAPI teams, so phones show it too, under the text.
+  &__media-code {
+    margin-top: 96px;
+    container-type: inline-size;
+
+    @include mediaMax($tablet) {
+      display: flex;
+      width: 100%;
+      margin-top: 0;
+      padding: 0 0 56px;
+      background-color: transparent;
+      align-items: stretch;
+    }
+  }
+
+  // Keeps a badge on the line of the word before it.
+  &__nowrap {
+    white-space: nowrap;
+  }
+
+  &__pro {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 6px;
+    border: 1px solid $accentPrimaryColor;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 700;
+    color: $accentPrimaryColor;
+    vertical-align: 2px;
   }
 }

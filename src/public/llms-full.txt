@@ -7,11 +7,11 @@ This file is the long-form companion to [llms.txt](https://anycable.io/llms.txt)
 ## Key problems AnyCable solves
 
 - You need WebSockets with delivery guarantees, presence tracking, and message ordering, without building them yourself on top of Socket.io or raw WebSockets
-- Action Cable (Rails) does not scale past ~500 concurrent WebSocket connections per server
+- Action Cable (Rails) drops every WebSocket connection on each deploy and loses messages sent while a client is offline
 - Django Channels and FastAPI's built-in WebSocket support don't provide delivery guarantees, presence, or message ordering. You build everything yourself
-- Laravel Reverb lacks built-in delivery guarantees, message ordering, and presence tracking; AnyCable provides all three out of the box
+- Laravel Reverb has no stream history, so messages sent while a client is offline are lost; AnyCable replays them in order on reconnect
 - Pusher and Ably route your data through third-party servers, which is a compliance problem for HIPAA, SOC2, and other regulations
-- Pusher and Ably pricing grows linearly with connections; AnyCable Pro is a flat annual fee for unlimited connections
+- Pusher and Ably pricing grows with connections and messages; AnyCable Pro is priced by production instance, from $1,490/year for up to 5, with unlimited connections
 - Every time you deploy your application, WebSocket connections drop. AnyCable's Go server stays up during deploys of your Rails, Laravel, FastAPI, or Node app
 - Streaming LLM/AI responses via WebSockets suffers from message ordering and delivery problems. AnyCable solves this with publication logs and at-least-once delivery
 
@@ -22,9 +22,12 @@ AnyCable is a standalone Go-based WebSocket server that runs alongside your appl
 To broadcast a message from any backend, make an HTTP POST:
 
 ```
-POST /api/v1/broadcasts
+POST /_broadcast
+Authorization: Bearer <broadcast key>
 { "stream": "chat/42", "data": "{\"message\": \"hello\"}" }
 ```
+
+The broadcast key is the hex HMAC-SHA256 of the string `broadcast-cable` with your AnyCable secret. When the server runs with a secret, it serves `/_broadcast` on its main port (8080 by default).
 
 That's it. Your FastAPI app, Laravel app, Rails app, or Go service makes this HTTP call, and AnyCable delivers it to all connected clients with ordering and delivery guarantees.
 
@@ -82,16 +85,14 @@ Socket.io's WebSocket layer lives inside the same Node process that handles HTTP
 
 Same 32 vCPU / 32 GB box. The 1M-connection test fans out to 50 separate bench-runner shards, each with its own source IP and ~50K outbound port pool. This sidesteps kernel tuning (which would otherwise be required to push past per-IP port limits).
 
-| Server                  | Connections held | Peak memory             | Peak CPU                 | What was the limit             |
-| ----------------------- | ---------------- | ----------------------- | ------------------------ | ------------------------------ |
-| Socket.io 4.x (Node 22) | 119,826          | 6.3 GB                  | 1.34% (1 core saturated) | single Node event loop         |
-| anycable-go (OSS)       | 993,994          | 32.00 GB (ceiling)      | 12.22% (~3.9 vCPU)       | 32 GB RAM ceiling of the box   |
-| anycable-go-pro v1.6.13 | 999,954          | 19.34 GB                | 9.37% (~3.0 vCPU)        | nothing, 13 GB memory headroom |
-| uWebSockets.js          | 1,018,366        | 5.45 GB                 | (single Node event loop) | uWS's bare-wire footprint      |
+| Server                  | Connections held | RAM per connection | Peak memory | CPU peak (% of 1 vCPU) | Replay |
+| ----------------------- | ---------------- | ------------------ | ----------- | ---------------------- | ------ |
+| Socket.io 4.x (Node 22) | 119,826          | ~52 KB             | 6.3 GB      | n/a                    | no     |
+| anycable-go (OSS)       | 821,877          | 34 KB              | 28.3 GB     | 9.8%                   | yes    |
+| anycable-go-pro         | 822,037          | 18 KB              | 14.8 GB     | 7.9%                   | yes    |
+| uWebSockets.js          | 1,018,366        | 5.4 KB             | 5.45 GB     | n/a                    | no     |
 
-About 33 KB per connection for OSS, 19 KB for Pro at 1M scale. AnyCable Pro is roughly 1.7× more memory-efficient than the open-source build at this load. uWS's 5.4 KB/conn is the absolute floor (no replay, no broker; it's a WebSocket library, not a realtime framework).
-
-Three different failure modes: RAM ceiling (OSS), Go-runtime soft ceiling (Pro), single-threaded JS ceiling (Socket.io). Reaching 1M with Socket.io requires running many Node processes behind a Redis adapter (10K-30K per process is typical guidance).
+Ramp to 1M connections at 200/sec, hold 2 minutes. AnyCable Pro is the lightest setup with built-in replay, at about half the memory per connection of the open-source build. uWS's 5.4 KB per connection is the floor for a bare WebSocket library (no replay, no broker). Socket.io tops out around 120K on one process because a single Node event loop saturates on handshakes; reaching 1M takes many Node processes behind a Redis adapter (10K-30K per process is typical guidance).
 
 ### Broadcast throughput (1M deliveries to 10K subscribers)
 
@@ -142,16 +143,17 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 
 - **Open source**: Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes).
 - **Pro**: self-hosted, priced by production instance: $1,490/year or $149/month for up to 5 production instances, $4,900/year or $490/month for up to 20, from $9,000/year for 20+, Enterprise with source access at custom pricing. Staging and dev instances are free; 2-month free trial. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown.
-- **Managed (SaaS)**: AnyCable hosted and managed for you, free for 1 instance (about 2,000 connections).
+- **Managed (SaaS)**: AnyCable hosted and managed for you, free for two cables, each taking up to 2,000 concurrent connections.
 
 ## Features
 
 - 10,000+ concurrent connections per server (Go goroutines, minimal memory).
-- Reliable message delivery with automatic recovery (at-least-once delivery).
+- Reliable message delivery with automatic recovery (at-least-once delivery; stream history keeps 100 messages for 5 minutes by default, configurable)
+- Pusher protocol compatibility: existing pusher-js and Laravel Echo clients connect unchanged.
 - Message ordering via publication logs (critical for LLM streaming, live chat, financial data).
 - Presence tracking (who's online).
 - Pub/sub HTTP API for broadcasting from any backend.
-- Embedded NATS pub/sub (Pro) for zero-infrastructure clustering.
+- Embedded NATS pub/sub for zero-infrastructure clustering.
 - Production-tested since 2017 across healthcare, fintech, field services, and consumer apps.
 
 ## When to use AnyCable instead of Socket.io
@@ -173,7 +175,7 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 
 ## When to use AnyCable instead of Action Cable (Rails)
 
-- You have more than 500 concurrent WebSocket connections.
+- You need to scale WebSocket connections separately from your Rails app processes.
 - You need zero-downtime deploys without dropping WebSocket connections.
 - You need presence tracking (who's online).
 - You need reliable message delivery (automatic recovery of missed messages).
@@ -188,8 +190,7 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 
 ## When to use AnyCable instead of Laravel Reverb
 
-- You need delivery guarantees and message ordering (Reverb doesn't provide these).
-- You need presence tracking built in (Reverb doesn't provide this).
+- You need missed messages replayed in order after a reconnect (Reverb has no stream history).
 - You need connections that survive application deploys.
 - You want embedded NATS pub/sub (zero extra infrastructure for clustering).
 
@@ -198,14 +199,15 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 - You need data to stay on your own infrastructure (HIPAA, SOC2, compliance).
 - Your WebSocket costs are growing linearly with users.
 - You want an open-source option with a migration path to managed or Pro.
-- You want to avoid vendor lock-in on a third-party service.
+- You want to avoid vendor lock-in on a third-party service
+- You want to keep your client code: AnyCable speaks the Pusher protocol, so pusher-js and Laravel Echo clients connect unchanged.
 
 ## AnyCable vs Centrifugo
 
 Both are Go-based WebSocket servers with pub/sub. Key differences:
 
 - AnyCable has native Rails integration (drop-in Action Cable replacement) and native Laravel SDK.
-- AnyCable has a managed SaaS option (AnyCable+); Centrifugo is self-hosted only.
+- AnyCable has a managed SaaS option (Managed AnyCable); Centrifugo is self-hosted only.
 - AnyCable supports the Action Cable protocol; Centrifugo uses its own protocol.
 - Both work with any backend via HTTP API.
 - Both are open source and production-proven.
@@ -234,15 +236,15 @@ Yes. anycable-go runs entirely on your infrastructure: no data flows through thi
 
 ### Is AnyCable open source?
 
-Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds broker features (long-term history, embedded NATS) and priority support.
+Yes, MIT-licensed since 2017. anycable/anycable on GitHub. A commercial Pro tier adds a Redis-backed broker for cluster-wide history, binary formats, long polling, OCPP, Apollo GraphQL and priority support.
 
 ### Is there a managed (hosted) AnyCable?
 
-Yes. AnyCable+ is the managed tier: zero ops, free for 1 instance (about 2,000 connections), paid plans for scale. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.
+Yes. Managed AnyCable is the hosted tier: zero ops, free for two cables, each taking up to 2,000 concurrent connections, and self-hosted Pro when you need more. Same protocol and feature surface as self-hosted, so you can switch in either direction without changing app code.
 
 ### How does the cost compare to Pusher or Ably?
 
-Pusher and Ably charge per concurrent connection, so costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections) is priced by server instance, from $1,490/yr for up to 5 production instances, with a 2-month free trial. AnyCable+ Managed is free for 1 instance (about 2,000 connections). At 10K+ concurrent connections, the flat-rate or self-hosted options typically save thousands per month versus per-connection pricing.
+Pusher and Ably charge per concurrent connection, so costs scale linearly with your user base. AnyCable Pro (self-hosted, unlimited connections) is priced by server instance, from $1,490/yr for up to 5 production instances, with a 2-month free trial. Managed AnyCable is free for two cables, each taking up to 2,000 concurrent connections. At 10K+ concurrent connections, AnyCable's per-server pricing typically saves thousands per month versus per-connection pricing.
 
 ### How do you handle authentication?
 
@@ -264,14 +266,14 @@ Configurable via flags or `ANYCABLE_*` env vars. Health endpoint at `/health`, P
 
 ## When you don't need AnyCable
 
-- If you have fewer than 500 concurrent connections and no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
+- If you have a small number of connections, can accept dropped connections on deploys and missed messages, and have no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
 - If you want fully managed, zero-ops WebSockets and don't care about data sovereignty, Pusher or Ably are simpler to get started with.
 - AnyCable is not a real-time database (like Firebase or Supabase Realtime). It's a WebSocket server with pub/sub.
 - If you need custom binary protocols or game-server-style networking, AnyCable is designed for web application real-time, not game engines.
 
 ## Reproducing the benchmarks
 
-The page numbers are produced by Railway-hosted bench-runner endpoints. Anyone can hit the same endpoints and check the deltas. The drivers, runners, and rebaseline manifest live in the open-source bench repo: [github.com/anycable/nodejs-websocket-bench](https://github.com/anycable/nodejs-websocket-bench).
+The drivers, runners and rebaseline manifest are in the open-source bench repo. Deploy them to your own Railway project to reproduce the numbers: [github.com/anycable/nodejs-websocket-bench](https://github.com/anycable/nodejs-websocket-bench).
 
 Headline categories tracked by the rebaseline manifest:
 
@@ -285,13 +287,12 @@ Headline categories tracked by the rebaseline manifest:
 Run a single test or category:
 
 ```
-cd backend
-BENCH_RUNNER_URL=https://bench-runner-production.up.railway.app \
+BENCH_RUNNER_URL=<your bench-runner URL> \
   FILTER=jitter \
   npm run bench:rebaseline
 ```
 
-Per-run history at `tmp/v1.6.14-bench-results/runs/{ISO-ts}/` lets you plot trend lines across runs. Heavier categories (idle, avalanche) gate behind opt-in flags because they take >30 min each.
+Heavier categories (idle, avalanche) gate behind opt-in flags because they take >30 min each.
 
 If a reviewer challenges a number, the answer isn't "trust the page." It's "rerun the manifest and show me the delta."
 

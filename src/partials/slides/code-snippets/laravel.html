@@ -1,0 +1,18 @@
+<pre class="shiki github-dark-high-contrast" style="background-color:#0a0c10;color:#f0f3f6" tabindex="0"><code style="padding:1em;overflow-x: auto;"><span class="line"><span style="color:#BDC4CC">// Broadcast from Laravel with the anycable driver</span></span>
+<span class="line"><span style="color:#FF9492">class</span><span style="color:#FFB757"> MessageSent</span><span style="color:#FF9492"> implements</span><span style="color:#91CBFF"> ShouldBroadcast</span></span>
+<span class="line"><span style="color:#F0F3F6">{</span></span>
+<span class="line"><span style="color:#FF9492">    public</span><span style="color:#FF9492"> function</span><span style="color:#91CBFF"> __construct</span><span style="color:#F0F3F6">(</span><span style="color:#FF9492">public</span><span style="color:#91CBFF"> Message</span><span style="color:#F0F3F6"> $message) {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF9492">    public</span><span style="color:#FF9492"> function</span><span style="color:#DBB7FF"> broadcastOn</span><span style="color:#F0F3F6">()</span><span style="color:#FF9492">:</span><span style="color:#FF9492"> array</span></span>
+<span class="line"><span style="color:#F0F3F6">    {</span></span>
+<span class="line"><span style="color:#FF9492">        return</span><span style="color:#F0F3F6"> [</span><span style="color:#FF9492">new</span><span style="color:#91CBFF"> PrivateChannel</span><span style="color:#F0F3F6">(</span><span style="color:#ADDCFF">'chat'</span><span style="color:#F0F3F6">)];</span></span>
+<span class="line"><span style="color:#F0F3F6">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF9492">    public</span><span style="color:#FF9492"> function</span><span style="color:#DBB7FF"> broadcastAs</span><span style="color:#F0F3F6">()</span><span style="color:#FF9492">:</span><span style="color:#FF9492"> string</span></span>
+<span class="line"><span style="color:#F0F3F6">    {</span></span>
+<span class="line"><span style="color:#FF9492">        return</span><span style="color:#ADDCFF"> 'message.sent'</span><span style="color:#F0F3F6">;</span></span>
+<span class="line"><span style="color:#F0F3F6">    }</span></span>
+<span class="line"><span style="color:#F0F3F6">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#DBB7FF">broadcast</span><span style="color:#F0F3F6">(</span><span style="color:#FF9492">new</span><span style="color:#91CBFF"> MessageSent</span><span style="color:#F0F3F6">($message));</span></span>
+<span class="line"></span></code></pre>

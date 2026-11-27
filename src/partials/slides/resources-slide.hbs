@@ -21,19 +21,25 @@
             <img src='./images/hotwire-icon.svg' class='resource-card__icon' alt='Hotwire' />
             <span class='resource-card__title'>Using with Hotwire</span>
           </a>
+          {{!-- TODO(fastapi): points to the generic Python guide until a FastAPI
+               library and example app exist. --}}
+          <a href='https://docs.anycable.io/guides/python' target='_blank' class='resource-card' data-ph-capture-attribute-link-id='docs-fastapi'>
+            <img src='./images/fastapi-icon.svg' class='resource-card__icon' alt='FastAPI' />
+            <span class='resource-card__title'>Using with FastAPI</span>
+          </a>
           <a href='https://docs.anycable.io' target='_blank' class='resource-card resource-card_all' data-ph-capture-attribute-link-id='docs-all'>
             <span class='resource-card__title'>All docs</span>
           </a>
         </div>
       </div>
       <div class='cases-slide__content'>
-        <h3 class='cases-slide__pretitle'>Resources</h3>
+        <p class='cases-slide__pretitle'>Resources</p>
         <h2 class='cases-slide__title'>Documentation</h2>
         <div class='cases-slide__text'>
           <ul>
-            <li>Works with Rails, Laravel, JavaScript, and any backend via HTTP API.</li>
+            <li>Works with any backend via HTTP API: Node.js, Rails, Laravel, FastAPI.</li>
             <li>Deploy with Docker, Kubernetes, Heroku, Fly.io, or as a standalone binary.</li>
-            <li>Comprehensive guides for every integration.</li>
+            <li>Guides for Hotwire, Laravel, Python, serverless and client-side apps.</li>
           </ul>
         </div>
       </div>
@@ -42,12 +48,12 @@
     {{!-- Talks --}}
     <div class='cases-slide__section'>
       <div class='cases-slide__content'>
-        <h3 class='cases-slide__pretitle'>Resources</h3>
+        <p class='cases-slide__pretitle'>Resources</p>
         <h2 class='cases-slide__title'>Talks & Videos</h2>
         <div class='cases-slide__text'>
           <ul>
             <li>Conference talks, screencasts, and deep dives on real-time architecture.</li>
-            <li>Learn from AnyCable users and maintainers.</li>
+            <li>From the maintainers, and from Wealthbox on collaborative editing with Yjs.</li>
           </ul>
           <br />
           <a class="link" href="https://www.youtube.com/watch?v=4n1SxfK0Uqg&list=PLAgBW0XUpyOVFnpoS6FKDszd8WEvXzg-A" target="_blank" data-ph-capture-attribute-link-id='screencasts-all'>All screencasts on YouTube</a>
@@ -68,7 +74,7 @@
             <div class='video-card__overlay'>
               <div class='video-card__play'></div>
               <p class='video-card__title'>Evolution of Real-Time, AnyCable Pro and... me</p>
-              <p class='video-card__speaker'>Irina Nazarova — Rocky Mountain Ruby 2024</p>
+              <p class='video-card__speaker'>Irina Nazarova · Rocky Mountain Ruby 2024</p>
             </div>
           </a>
           <a href='https://www.youtube.com/watch?v=J68QOBLEItY' target='_blank' class='video-card' data-ph-capture-attribute-link-id='video-collab'>
@@ -76,7 +82,7 @@
             <div class='video-card__overlay'>
               <div class='video-card__play'></div>
               <p class='video-card__title'>Real-time collaboration with AnyCable and Yjs</p>
-              <p class='video-card__speaker'>JP Camara (Wealthbox) — SF Ruby 2025</p>
+              <p class='video-card__speaker'>JP Camara (Wealthbox) · SF Ruby 2025</p>
             </div>
           </a>
         </div>
@@ -87,6 +93,10 @@
     <div class='cases-slide__section cases-slide__section-mobile-reverse'>
       <div class='cases-slide__media'>
         <div class='cases-slide__companies'>
+          <a href="https://blog.anycable.io/p/any-cables-35-summer-heat" target="_blank" class="cases-slide__company-card" data-ph-capture-attribute-link-id="newsletter-35">
+            <span class="cases-slide__company-name">Any Cables #35: Summer heat</span>
+            <span class="cases-slide__company-desc">Jun 2026</span>
+          </a>
           <a href="https://blog.anycable.io/p/any-cables-34-cli-over-websocket" target="_blank" class="cases-slide__company-card" data-ph-capture-attribute-link-id="newsletter-34">
             <span class="cases-slide__company-name">Any Cables #34: CLI-over-WebSocket</span>
             <span class="cases-slide__company-desc">Apr 2026</span>
@@ -99,27 +109,23 @@
             <span class="cases-slide__company-name">Any Cables #32: 2025 is over</span>
             <span class="cases-slide__company-desc">Dec 2025</span>
           </a>
-          <a href="https://blog.anycable.io/p/any-cables-monthly-31-whyjs" target="_blank" class="cases-slide__company-card" data-ph-capture-attribute-link-id="newsletter-31">
-            <span class="cases-slide__company-name">Any Cables #31: Why.js?</span>
-            <span class="cases-slide__company-desc">Oct 2025</span>
-          </a>
           <a href="https://blog.anycable.io" target="_blank" class="cases-slide__company-card cases-slide__company-card_cta" data-ph-capture-attribute-link-id="newsletter-all">
             <span class="cases-slide__company-name">All issues & subscribe</span>
-            <span class="cases-slide__company-desc">Monthly updates on AnyCable and real-time</span>
+            <span class="cases-slide__company-desc">Updates on AnyCable and realtime</span>
           </a>
         </div>
       </div>
       <div class='cases-slide__content'>
-        <h3 class='cases-slide__pretitle'>Resources</h3>
+        <p class='cases-slide__pretitle'>Resources</p>
         <h2 class='cases-slide__title'>Newsletter & Community</h2>
         <div class='cases-slide__text'>
           <ul>
-            <li><a class='link' href='https://blog.anycable.io' target='_blank'>Subscribe to our newsletter</a> — monthly releases, tips, and case studies.</li>
+            <li><a class='link' href='https://blog.anycable.io' target='_blank'>Subscribe to our newsletter</a>: releases, tips and case studies.</li>
             <li>Follow on <a class='link' href='https://twitter.com/any_cable' target='_blank'>X (Twitter)</a>.</li>
             <li>Submit issues on <a class='link' href='https://github.com/anycable/anycable' target='_blank'>GitHub</a>.</li>
           </ul>
           <br />
-          <a class="link" href="https://github.com/anycable/slide-quiz" target="_blank" data-ph-capture-attribute-link-id="slide-quiz">Try Slide Quiz</a> — live polls for Sli.dev and Reveal.js web presentations powered by AnyCable
+          <a class="link" href="https://github.com/anycable/slide-quiz" target="_blank" data-ph-capture-attribute-link-id="slide-quiz">Try Slide Quiz</a>: live polls for Sli.dev and Reveal.js web presentations powered by AnyCable
         </div>
       </div>
     </div>

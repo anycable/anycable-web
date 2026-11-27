@@ -1,9 +1,9 @@
 <section class='slide plans-slide' id="pricing">
   <div class='slide__title-wrapper'>
-    <h3 class='plans-slide__pretitle'>Pricing</h3>
+    <p class='plans-slide__pretitle'>Pricing</p>
     <h2 class='slide__title plans-slide__title'>Start free, pay when you scale</h2>
     <p class='plans-slide__lead'>
-      Start on managed AnyCable, free for one instance. Move to self-hosted
+      Start on Managed AnyCable with two free cables. Move to self-hosted
       Pro when you want it on your own infrastructure.
     </p>
   </div>
@@ -13,16 +13,16 @@
       <section class='plan-card plan-card_highlighted'>
         <div class='plan-card__icon plan-card__icon_type_pro-standard'></div>
         <p class='plan-card__tag'>Start here</p>
-        <h3 class='plan-card__title plan-card__title_inverted'>Managed</h3>
+        <h3 class='plan-card__title plan-card__title_inverted'>Managed AnyCable</h3>
         <p class='plan-card__text plan-card__text_inverted'>
-          We run, upgrade, and support AnyCable for you. Nothing to deploy.
+          We run, upgrade, and support AnyCable for you. Nothing to deploy. Formerly AnyCable+, at plus.anycable.io.
         </p>
         <p class='plan-card__price'>
           Free
-          <span class='plan-card__price-note'>for 1 instance (about 2,000 connections), no SLA</span>
+          <span class='plan-card__price-note'>for 2 cables, up to 2,000 connections each, no&nbsp;SLA</span>
         </p>
         <a
-          class='link button button_inverted'
+          class='link button button_inverted plausible-event-name=Signup plausible-event-location=pricing-managed plausible-event-plan=managed'
           href='https://plus.anycable.io'
           target='_blank'
           data-ph-capture-attribute-link-id='plan-plus'
@@ -30,26 +30,29 @@
           Start for free
         </a>
         <ul class='plan-card__list plan-card__text_inverted'>
+          <li>A cable is one hosted AnyCable server with its own WebSocket URL</li>
           <li>Up and running in minutes</li>
-          <li>JWT auth and signed streams, no RPC to run</li>
-          <li>Same server as Pro, same guarantees</li>
+          <li>Built on the AnyCable Pro server</li>
+          <li>Delivery guarantees, presence, JWT auth and signed streams</li>
+          <li>Moves to self-hosted Pro with no code changes</li>
         </ul>
         <p class='plan-card__footnote'>
-          Need more than one instance?
-          <a class='plan-card__footnote-link' href='#pricing-pro'>Self-host Pro</a>
+          Need more than two cables?
+          <a class='plan-card__footnote-link plausible-event-name=Navigation plausible-event-link=pricing-self-host-pro' href='#pro'>Self-host Pro</a>
+          or <a class='plan-card__footnote-link plausible-event-name=Contact plausible-event-location=managed-quota' href='mailto:anycable@evilmartians.com?subject=Managed%20AnyCable%20quota'>ask us for a larger quota</a>
         </p>
       </section>
 
-      <section class='plan-hero' id='pricing-pro'>
+      <section class='plan-hero' id='pro'>
         <input
-          class='plan-hero__billing-input'
+          class='plan-hero__billing-input plausible-event-name=Pricing plausible-event-period=yearly'
           type='radio'
           name='pro-billing'
           id='pro-billing-yearly'
           checked
         />
         <input
-          class='plan-hero__billing-input plan-hero__billing-input_period_monthly'
+          class='plan-hero__billing-input plan-hero__billing-input_period_monthly plausible-event-name=Pricing plausible-event-period=monthly'
           type='radio'
           name='pro-billing'
           id='pro-billing-monthly'
@@ -82,7 +85,7 @@
         <ul class='plan-hero__tiers'>
           <li class='plan-hero__tier'>
             <span class='plan-hero__tier-name'>Startup</span>
-            <span class='plan-hero__tier-limit'>Up to 5 production instances</span>
+            <span class='plan-hero__tier-limit'>Up to 5 production instances, Slack support, usually within&nbsp;48h</span>
             <span class='plan-hero__tier-price'>
               <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$1,490<span class='plan-hero__tier-unit'>/yr</span></span>
               <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$149<span class='plan-hero__tier-unit'>/mo</span></span>
@@ -90,13 +93,13 @@
             <a
               href='https://plus.anycable.io/pro'
               target='_blank'
-              class='button plan-hero__tier-action'
+              class='button plan-hero__tier-action plausible-event-name=Signup plausible-event-location=pricing-pro-startup plausible-event-plan=pro'
               data-ph-capture-attribute-link-id='plan-pro-startup'
             >Start free trial</a>
           </li>
           <li class='plan-hero__tier'>
             <span class='plan-hero__tier-name'>Business</span>
-            <span class='plan-hero__tier-limit'>Up to 20 production instances</span>
+            <span class='plan-hero__tier-limit'>Up to 20 production instances, Slack support, usually within&nbsp;48h</span>
             <span class='plan-hero__tier-price'>
               <span class='plan-hero__tier-amount plan-hero__tier-amount_period_yearly'>$4,900<span class='plan-hero__tier-unit'>/yr</span></span>
               <span class='plan-hero__tier-amount plan-hero__tier-amount_period_monthly'>$490<span class='plan-hero__tier-unit'>/mo</span></span>
@@ -104,13 +107,13 @@
             <a
               href='https://plus.anycable.io/pro'
               target='_blank'
-              class='button plan-hero__tier-action'
+              class='button plan-hero__tier-action plausible-event-name=Signup plausible-event-location=pricing-pro-business plausible-event-plan=pro'
               data-ph-capture-attribute-link-id='plan-pro-business'
             >Start free trial</a>
           </li>
           <li class='plan-hero__tier'>
             <span class='plan-hero__tier-name'>Scale</span>
-            <span class='plan-hero__tier-limit'>20+ instances, priority support, 48h response on critical issues</span>
+            <span class='plan-hero__tier-limit'>20+ instances, priority support, guaranteed 48h response on critical issues</span>
             <span class='plan-hero__tier-price'>
               <span class='plan-hero__tier-amount'><span class='plan-hero__tier-from'>from</span> $9,000<span class='plan-hero__tier-unit'>/yr</span></span>
             </span>
@@ -122,7 +125,7 @@
           </li>
           <li class='plan-hero__tier'>
             <span class='plan-hero__tier-name'>Enterprise</span>
-            <span class='plan-hero__tier-limit'>Source access and customization, 48h response on critical issues</span>
+            <span class='plan-hero__tier-limit'>Source access and customization, guaranteed 48h response on critical issues</span>
             <span class='plan-hero__tier-price'>
               <span class='plan-hero__tier-amount'>Custom</span>
             </span>
@@ -137,14 +140,14 @@
         <ul class='plan-hero__terms'>
           <li>Free 2-month trial, no card needed</li>
           <li>Staging and dev instances are free</li>
-          <li>No metering, no telemetry</li>
+          <li>No metering or connection caps</li>
         </ul>
 
         <p class='plan-hero__features'>
-          Everything in open source, plus consistency in cluster mode, adaptive
+          Everything in open source, plus stream history and presence shared across a Redis cluster, adaptive
           scaling, slow drain, binary formats, long-polling, Apollo GraphQL, and
           dedicated Slack support.
-          <a class='link plan-hero__compare-link' href='#pricing-compare'>Compare with open source</a>
+          <a class='link plan-hero__compare-link plausible-event-name=Navigation plausible-event-link=pricing-compare-oss' href='#pricing-compare'>Compare with open source</a>
         </p>
       </section>
     </div>
@@ -160,7 +163,7 @@
           </p>
         </div>
         <a
-          class='link plans-slide__more-link'
+          class='link plans-slide__more-link plausible-event-name=Navigation plausible-event-link=pricing-oss-docs'
           href='https://docs.anycable.io'
           target='_blank'
           data-ph-capture-attribute-link-id='plan-free'
@@ -206,7 +209,7 @@
                 <td>~18&nbsp;KB</td>
               </tr>
               <tr>
-                <th scope='row'>Consistency in cluster mode <span class='plans-slide__table-note'>stream history shared through Redis</span></th>
+                <th scope='row'>History and presence across a Redis cluster <span class='plans-slide__table-note'>open source shares history through NATS</span></th>
                 <td class='plans-slide__table-no'>No</td>
                 <td>Yes</td>
               </tr>
@@ -248,13 +251,13 @@
               <tr>
                 <th scope='row'>License</th>
                 <td>MIT</td>
-                <td><a class='link' href='/eula'>Commercial EULA</a></td>
+                <td><a class='link plausible-event-name=Navigation plausible-event-link=pricing-eula' href='/eula'>Commercial EULA</a></td>
               </tr>
             </tbody>
           </table>
         </div>
         <p class='plans-slide__compare-note'>
-          Full list in the <a class='link' href='https://docs.anycable.io/pro' target='_blank'>Pro docs</a>.
+          Full list in the <a class='link plausible-event-name=Navigation plausible-event-link=pricing-pro-docs' href='https://docs.anycable.io/pro' target='_blank'>Pro docs</a>.
         </p>
       </section>
 
@@ -317,10 +320,10 @@
         </details>
 
         <details class='plans-slide__faq-item'>
-          <summary>What are the limits on managed AnyCable?</summary>
+          <summary>What are the limits on Managed AnyCable?</summary>
           <p>
-            Managed AnyCable is free for 1 instance, which handles about 2,000
-            connections, with no SLA. When you need more, move to self-hosted
+            Managed AnyCable is free for two cables, each taking up to 2,000
+            concurrent connections, with no SLA. When you need more, move to self-hosted
             Pro; its Scale and Enterprise tiers include a 48h response on
             critical issues.
           </p>

@@ -62,7 +62,6 @@ $className: 'cases-slide';
       background-color: $backgroundPrimaryColor;
       padding: 48px 0px;
     }
-
   }
 
   &__media {
@@ -99,7 +98,6 @@ $className: 'cases-slide';
     line-height: 1.2;
     font-weight: 700;
     margin-bottom: 46px;
-
 
     @include mediaMax($mobile) {
       font-size: 40px;
@@ -288,18 +286,301 @@ $className: 'cases-slide';
     color: $fontSecondaryColor;
   }
 
-  &__company-case-study {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: $accentPrimaryColor;
-    text-decoration: none;
-    transition: opacity 200ms;
+  // Logo wall: one tile per customer, filterable by industry. A click on a
+  // tile opens the company modal from its data attributes (company-modal.ts).
+  // Logos are cropped to their ink and sized for equal optical weight by the
+  // generator (inline width/height on each mark), so CSS only places them.
+  &__head {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 112px 64px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include mediaMax($tablet) {
+      padding: 72px 24px 24px;
+    }
+
+    @include mediaMax($mobile) {
+      padding: 56px 16px 20px;
+    }
+  }
+
+  &__headline {
+    margin-top: 4px;
+    font-size: 46px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+
+    @include mediaMax($mobile) {
+      font-size: 34px;
+    }
+  }
+
+  &__lede {
+    max-width: 38em;
+    margin-top: 16px;
+    font-size: 20px;
+    line-height: 1.55;
+    color: $fontSecondaryColor;
+    text-wrap: pretty;
+
+    @include mediaMax($mobile) {
+      font-size: 18px;
+    }
+  }
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  &__filter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 9px 14px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 999px;
+    background-color: $backgroundPrimaryColor;
+    font: 700 15px/1.2 'Stem', Arial, sans-serif;
+    color: $fontPrimaryColor;
+    cursor: pointer;
+    transition: border-color 200ms, background-color 200ms, color 200ms;
+
+    span {
+      font-weight: 400;
+      font-variant-numeric: tabular-nums;
+      color: $fontSecondaryColor;
+    }
 
     &:hover {
-      text-decoration: underline;
-      opacity: $opacityPrimaryValue;
+      border-color: $accentPrimaryColor;
     }
+
+    &[aria-pressed='true'] {
+      border-color: $fontPrimaryColor;
+      background-color: $fontPrimaryColor;
+      color: $fontPrimaryInvertedColor;
+
+      span {
+        color: rgba(255, 255, 255, 0.65);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 2px;
+    }
+  }
+
+  &__wall {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 64px 56px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(208px, 1fr));
+    gap: 12px;
+
+    @include mediaMax($tablet) {
+      padding: 0 24px 40px;
+    }
+
+    @include mediaMax($mobile) {
+      padding: 0 16px 32px;
+    }
+
+    @include mediaMax($smallMobile) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+  }
+
+  &__tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 0;
+    height: 88px;
+    padding: 12px 16px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 12px;
+    background-color: $backgroundPrimaryColor;
+    font-family: inherit;
+    color: inherit;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 200ms, box-shadow 200ms, transform 200ms;
+
+    &:hover {
+      border-color: $accentPrimaryColor;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 2px;
+    }
+
+    &[hidden] {
+      display: none;
+    }
+
+    @include mediaMax($smallMobile) {
+      flex-direction: column;
+      gap: 6px;
+      height: 84px;
+      padding: 10px;
+    }
+  }
+
+  &__mark,
+  &__story-mark {
+    position: relative;
+    display: block;
+    flex: none;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      max-width: none;
+    }
+
+    &_app {
+      border-radius: 6px;
+    }
+  }
+
+  &__mark {
+    filter: grayscale(1);
+    opacity: 0.75;
+    transition: filter 200ms, opacity 200ms;
+
+    &_light {
+      filter: grayscale(1) brightness(0.62);
+    }
+
+    .#{$className}__tile:hover &,
+    .#{$className}__tile:focus-visible & {
+      filter: none;
+      opacity: 1;
+    }
+  }
+
+  .#{$className}__tile &__tile-name {
+    display: block;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 17px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #2b2b2b;
+    text-align: left;
+    text-wrap: balance;
+
+    @include mediaMax($smallMobile) {
+      max-width: 100%;
+      font-size: 13px;
+      text-align: center;
+    }
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  &__stories {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 64px 112px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+
+    @include mediaMax($tablet) {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0 24px 72px;
+    }
+
+    @include mediaMax($mobile) {
+      padding: 0 16px 56px;
+    }
+  }
+
+  &__story {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+    padding: 28px;
+    border: 1px solid $borderPrimaryColor;
+    border-radius: 12px;
+    background-color: $backgroundSecondaryColor;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 200ms, box-shadow 200ms;
+
+    &:hover {
+      border-color: $accentPrimaryColor;
+      box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.18);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 2px;
+    }
+
+    > .#{$className}__story-mark {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__story-figure {
+    font-size: 48px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__story-caption {
+    font-size: 17px;
+    line-height: 1.5;
+    color: $fontSecondaryColor;
+    text-wrap: pretty;
+  }
+
+  &__story-link {
+    margin-top: auto;
+    padding-top: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: $accentPrimaryColor;
+  }
+
+  // The quote spans the full width: no column divider.
+  &__quote-section > :first-child {
+    border-right: none;
   }
 }

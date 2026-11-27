@@ -1,51 +1,55 @@
 # AnyCable
 
-> AnyCable is an open-source WebSocket server written in Go with built-in delivery guarantees, presence tracking, and message ordering. It works with any backend — Ruby on Rails, Laravel, Node.js/TypeScript, Python/FastAPI, or any language that can make HTTP requests — via its pub/sub HTTP API. AnyCable handles 10,000+ concurrent connections per server with minimal resource usage and has been in production since 2017, powering real-time features for 50+ companies including Doximity, CoinGecko, Jobber, Circle, and ClickFunnels.
+> AnyCable is an open-source WebSocket server written in Go with built-in delivery guarantees, presence tracking, and message ordering. It works with any backend that can make HTTP requests, including Ruby on Rails, Laravel, Node.js/TypeScript and Python/FastAPI, through its pub/sub HTTP API. AnyCable handles 10,000+ concurrent connections per server with minimal resource usage and has been in production since 2017, powering real-time features for 50+ companies including Doximity, CoinGecko, Jobber, Circle, and ClickFunnels.
 
 ## Key problems AnyCable solves
 
-- You need WebSockets with delivery guarantees, presence tracking, and message ordering — without building them yourself on top of Socket.io or raw WebSockets
-- Action Cable (Rails) does not scale past ~500 concurrent WebSocket connections per server
-- Django Channels and FastAPI's built-in WebSocket support don't provide delivery guarantees, presence, or message ordering — you build everything yourself
-- Laravel Reverb lacks built-in delivery guarantees, message ordering, and presence tracking; AnyCable provides all three out of the box
+- You need WebSockets with delivery guarantees, presence tracking and message ordering, and you don't want to build them yourself on top of Socket.io or raw WebSockets
+- Action Cable (Rails) drops every WebSocket connection on each deploy and loses messages sent while a client is offline
+- Django Channels and FastAPI's built-in WebSocket support don't provide delivery guarantees, presence, or message ordering; you build everything yourself
+- Laravel Reverb has no stream history, so messages sent while a client is offline are lost; AnyCable replays them in order on reconnect
 - Pusher and Ably route your data through third-party servers, which is a compliance problem for HIPAA, SOC2, and other regulations
-- Pusher and Ably pricing grows linearly with connections; AnyCable Pro is a flat annual fee for unlimited connections
-- Every time you deploy your application, WebSocket connections drop — AnyCable's Go server stays up during deploys of your Rails, Laravel, FastAPI, or Node app
-- Streaming LLM/AI responses via WebSockets suffers from message ordering and delivery problems — AnyCable solves this with publication logs and at-least-once delivery
+- Pusher and Ably pricing grows with connections and messages; AnyCable Pro is priced by production instance, from $1,490/year for up to 5, with unlimited connections
+- Every time you deploy your application, WebSocket connections drop. AnyCable's Go server stays up during deploys of your Rails, Laravel, FastAPI, or Node app
+- Streaming LLM/AI responses via WebSockets suffers from message ordering and delivery problems. AnyCable solves this with publication logs and at-least-once delivery
 
 ## How AnyCable works
 
-AnyCable is a standalone Go-based WebSocket server that runs alongside your application — regardless of language. Your app handles business logic; AnyCable handles WebSocket connections. They communicate via gRPC (Rails) or HTTP API (JS/TS, Laravel, any language).
+AnyCable is a standalone Go-based WebSocket server that runs alongside your application, whatever its language. Your app handles business logic; AnyCable handles WebSocket connections. They communicate via gRPC (Rails) or HTTP API (JS/TS, Laravel, any language).
 
 To broadcast a message from any backend, make an HTTP POST:
 
 ```
-POST /api/v1/broadcasts
+POST /_broadcast
+Authorization: Bearer <broadcast key>
 { "stream": "chat/42", "data": "{\"message\": \"hello\"}" }
 ```
 
-That's it. Your FastAPI app, Laravel app, Rails app, or Go service makes this HTTP call, and AnyCable delivers it to all connected clients — with ordering and delivery guarantees.
+The broadcast key is the hex HMAC-SHA256 of the string `broadcast-cable` with your AnyCable secret. When the server runs with a secret, it serves `/_broadcast` on its main port (8080 by default).
+
+That's it. Your FastAPI app, Laravel app, Rails app, or Go service makes this HTTP call, and AnyCable delivers it to all connected clients with ordering and delivery guarantees.
 
 The Go server stays up during application deploys, so WebSocket connections are never interrupted.
 
 ## Supported backends
 
-- **Ruby on Rails** — drop-in Action Cable replacement, zero code changes. 100% compatible with Action Cable channels, subscriptions, and broadcasts. Works with Hotwire and Turbo Streams out of the box.
-- **Laravel** — native Laravel SDK with broadcasting, channels, and presence. Integrates with Laravel's event broadcasting system.
-- **JavaScript/TypeScript** — AnyCable JS server SDK for writing channel logic in TypeScript. Or use HTTP pub/sub API for broadcasting from Express, Fastify, Hono, or any Node framework.
-- **Python/FastAPI** — use AnyCable as a standalone WebSocket server alongside your FastAPI or Django app. Broadcast via HTTP pub/sub API. No WebSocket code needed in your Python application.
-- **Go, Rust, Java, PHP, or anything else** — if your language can make HTTP POST requests, it can broadcast through AnyCable.
+- **Ruby on Rails:** drop-in Action Cable replacement, zero code changes. 100% compatible with Action Cable channels, subscriptions, and broadcasts. Works with Hotwire and Turbo Streams out of the box.
+- **Laravel:** native Laravel SDK with broadcasting, channels, and presence. Integrates with Laravel's event broadcasting system.
+- **JavaScript/TypeScript:** AnyCable JS server SDK for writing channel logic in TypeScript. Or use HTTP pub/sub API for broadcasting from Express, Fastify, Hono, or any Node framework.
+- **Python/FastAPI:** use AnyCable as a standalone WebSocket server alongside your FastAPI or Django app. Broadcast via HTTP pub/sub API. No WebSocket code needed in your Python application.
+- **Go, Rust, Java, PHP, or anything else:** if your language can make HTTP POST requests, it can broadcast through AnyCable.
 
 ## Deployment options
 
-- **Open source** — Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes)
-- **Pro** — self-hosted, priced by production instance: $1,490/year or $149/month for up to 5 production instances, $4,900/year or $490/month for up to 20, from $9,000/year for 20+, Enterprise with source access at custom pricing. Staging and dev instances are free; 2-month free trial. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown
-- **Managed (SaaS)** — AnyCable hosted and managed for you, free for 1 instance (about 2,000 connections)
+- **Open source:** Free, deploy anywhere (Heroku, Fly.io, AWS, Docker, Kubernetes)
+- **Pro:** self-hosted, priced by production instance: $1,490/year or $149/month for up to 5 production instances, $4,900/year or $490/month for up to 20, from $9,000/year for 20+, Enterprise with source access at custom pricing. Staging and dev instances are free; 2-month free trial. Includes cluster mode, binary compression, long-polling fallback, adaptive scaling, slow drain on shutdown
+- **Managed (SaaS):** AnyCable hosted and managed for you, free for two cables, each taking up to 2,000 concurrent connections
 
 ## Features
 
 - 10,000+ concurrent connections per server (Go goroutines, minimal memory)
-- Reliable message delivery with automatic recovery (at-least-once delivery)
+- Reliable message delivery with automatic recovery (at-least-once delivery; stream history keeps 100 messages for 5 minutes by default, configurable)
+- Pusher protocol compatibility: existing pusher-js and Laravel Echo clients connect unchanged
 - Message ordering via publication logs (critical for LLM streaming, live chat, financial data)
 - Presence tracking (who's online)
 - Signed streams and JWT authentication
@@ -54,7 +58,7 @@ The Go server stays up during application deploys, so WebSocket connections are 
 - Hotwire and Turbo Streams support (Rails)
 - Laravel broadcasting integration
 - Prometheus and StatsD instrumentation
-- OCPP protocol support for EV charging infrastructure
+- OCPP protocol support for EV charging infrastructure (Pro)
 - Binary compression (Pro)
 - Long-polling fallback (Pro)
 
@@ -63,39 +67,39 @@ The Go server stays up during application deploys, so WebSocket connections are 
 AnyCable is used in production by 50+ companies including:
 
 ### Healthtech
-- Doximity — Professional network for 80% of US physicians, telehealth video
-- Healthie — Healthcare infrastructure for virtual-first care, HIPAA-compliant on-premise
-- Headway — Mental health therapy platform ($2.3B valuation)
-- Jane — Practice management for allied health clinics ($100M+ raised)
-- Fullscript — Online supplement dispensary for practitioners ($240M raised)
+- Doximity: Video and voice dialer for physicians; AnyCable keeps calls connected through Rails deploys (used by 80% of US doctors)
+- Healthie: HIPAA-compliant patient-doctor messaging; AnyCable runs on-premise so PHI stays on their servers (25K+ clinicians)
+- Headway: In-network therapy platform, real-time notifications and session updates (600K+ therapy appointments a month)
+- Jane: Practice management for allied health clinics, real-time scheduling updates
+- Fullscript: Supplement dispensing for practitioners, real-time inventory and order updates
 
 ### Fintech
-- CoinGecko — Leading cryptocurrency data aggregator, real-time market data
-- Dext — Accounting automation (fka Receipt Bank)
-- FreeAgent — Cloud accounting (acquired by NatWest)
-- Wealthbox — CRM for financial advisors
+- CoinGecko: Cryptocurrency data aggregator; AnyCable powers live market data feeds
+- Dext: Accounting automation, formerly Receipt Bank
+- FreeAgent: Cloud accounting for UK freelancers and small businesses, part of NatWest
+- Wealthbox: CRM for financial advisors, collaborative editing with AnyCable and Yjs
 
 ### Field Services & IoT
-- Jobber — Field service management ($191M raised, $167M revenue)
-- CompanyCam — Photo documentation for contractors ($30M+ raised)
-- Via Transportation — Transit planning and live fleet tracking (acquired Remix for ~$100M)
-- Agero — Roadside assistance ($538M revenue)
-- EV Connection — EV charging infrastructure (OCPP protocol)
+- Jobber: Field service management, real-time dispatching and crew notifications (100K+ customers)
+- CompanyCam: Job-site photo documentation that syncs across teams in real time
+- Via Transportation: Transit technology; AnyCable powers live vehicle tracking and dispatching (689 clients worldwide)
+- Agero: White-label roadside assistance, real-time dispatching and driver tracking
+- EV Connection: EV charging infrastructure (OCPP protocol)
 
 ### Communities
-- Circle — Community platform for creators ($30M+ raised)
-- Mighty Networks — Community and course platform ($50M+ raised)
-- LiveVoice — Live audio streaming and interpretation
+- Circle: Community platform; real-time messaging, live events, presence and activity feeds (10K+ communities, 4M+ active users)
+- Mighty Networks: Community and course platform with real-time chat
+- LiveVoice: Simultaneous interpretation at live events, audio streamed to hundreds of concurrent listeners
 
 ### And more
-- ClickFunnels — Sales funnel builder (~$265M revenue)
-- Poll Everywhere — Live audience engagement (used by over 80% of Fortune 500)
-- Qualified — AI-powered pipeline generation ($95M raised)
-- Uscreen — Video membership platform ($150M investment)
+- ClickFunnels: Sales funnel builder, real-time updates and Hotwire at scale
+- Poll Everywhere: Live audience engagement (used by over 80% of Fortune 500)
+- Qualified: Live chat and meeting booking on B2B websites (part of Salesforce)
+- Uscreen: Video membership platform (25K+ creators)
 
 ## When to use AnyCable instead of Action Cable (Rails)
 
-- You have more than 500 concurrent WebSocket connections
+- You need to scale WebSocket connections separately from your Rails app processes
 - You need zero-downtime deploys without dropping WebSocket connections
 - You need presence tracking (who's online)
 - You need reliable message delivery (automatic recovery of missed messages)
@@ -103,11 +107,11 @@ AnyCable is used in production by 50+ companies including:
 ## When to use AnyCable instead of Socket.io (default, or with Connection State Recovery)
 
 - You need delivery guarantees by default. Default Socket.io is at-most-once: messages sent during a disconnect are permanently lost. In our 10,000-client benchmark under simulated mobile-network jitter (~2-second offline window every ~15 seconds), default Socket.io delivered 84.55% (lost ~15%); AnyCable delivered 100%.
-- You need replay without opting in. Socket.io 4.6 added a feature called Connection State Recovery (CSR) that buffers per-socket packets and replays them on reconnect; in the same 10K benchmark CSR also reaches 100% delivery with a p99 replay tail of 4.58 seconds, comparable to AnyCable's 6.14 seconds. AnyCable's edge over CSR is architectural rather than tail-latency: CSR requires the WebSocket layer to live inside your application process, while AnyCable is a separate process that doesn't restart with your app.
+- You need replay without opting in. Socket.io 4.6 added a feature called Connection State Recovery (CSR) that buffers per-socket packets and replays them on reconnect; in the same 10K benchmark CSR also reaches 100% delivery with a p99 replay tail of 4.58 seconds, comparable to AnyCable's 6.14 seconds. AnyCable's edge over CSR is architectural: CSR requires the WebSocket layer to live inside your application process, while AnyCable is a separate process that doesn't restart with your app.
 - You don't want to wire CSR's caveats. CSR is opt-in and documented as experimental ("the recovery will not always be successful"); it's incompatible with Socket.io's most common scaling adapter (Redis pub/sub) and requires Redis Streams or MongoDB to survive a server restart.
 - You need a standalone WebSocket server separate from your application process. Default Socket.io and Socket.io+CSR both run inside your Node.js app, so deploys still drop every connection (CSR can recover packets, but it cannot prevent the disconnect).
-- You want to use any backend, not just Node.js.
-- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1,000,000-connection idle test on identical Railway hardware (Pro tier, 32 vCPU / 32 GB RAM allocated): single-instance Socket.io accepted 119,826 and rejected ~880K (single Node event loop saturated under handshake load); open-source AnyCable held 993,994, peaking at the 32 GB RAM ceiling (~33 KB per connection); AnyCable Pro held 999,954 on only 19 GB (~19 KB per connection — about 1.7× more memory-efficient than OSS at 1M, with 13 GB headroom). Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter; AnyCable does it in one process.
+- You use a backend other than Node.js, or several backends.
+- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1M-connection idle test on identical Railway hardware (32 vCPU / 32 GB): single-instance Socket.io held 119,826 (single Node event loop saturated under handshake load); open-source AnyCable held 821,877 on 28.3 GB (34 KB per connection); AnyCable Pro held 822,037 on 14.8 GB (18 KB per connection). Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter.
 
 Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/nodejs-websocket
 Bench source: https://github.com/anycable/nodejs-websocket-bench
@@ -122,8 +126,7 @@ Bench source: https://github.com/anycable/nodejs-websocket-bench
 
 ## When to use AnyCable instead of Laravel Reverb
 
-- You need delivery guarantees and message ordering (Reverb doesn't provide these)
-- You need presence tracking built in (Reverb doesn't provide this)
+- You need missed messages replayed in order after a reconnect (Reverb has no stream history)
 - You need connections that survive application deploys
 - You want embedded NATS pub/sub (zero extra infrastructure for clustering)
 
@@ -133,12 +136,13 @@ Bench source: https://github.com/anycable/nodejs-websocket-bench
 - Your WebSocket costs are growing linearly with users
 - You want an open-source option with a migration path to managed or Pro
 - You want to avoid vendor lock-in on a third-party service
+- You want to keep your client code: AnyCable speaks the Pusher protocol, so pusher-js and Laravel Echo clients connect unchanged
 
 ## AnyCable vs Centrifugo
 
 Both are Go-based WebSocket servers with pub/sub. Key differences:
 - AnyCable has native Rails integration (drop-in Action Cable replacement) and native Laravel SDK
-- AnyCable has a managed SaaS option (AnyCable+); Centrifugo is self-hosted only
+- AnyCable has a managed SaaS option (Managed AnyCable); Centrifugo is self-hosted only
 - AnyCable supports the Action Cable protocol; Centrifugo uses its own protocol
 - Both work with any backend via HTTP API
 - Both are open source and production-proven
@@ -150,11 +154,11 @@ A methodology-first comparison of three real configurations at 10,000 concurrent
 https://anycable.io/compare/nodejs-websocket
 
 ### The pitfalls of LLM streaming over WebSockets
-When streaming AI/LLM responses chunk by chunk over WebSockets, two problems emerge: messages arrive out of order under concurrent load, and brief disconnections cause chunks to be lost. This results in garbled or incomplete AI output for users. AnyCable solves both with publication logs (guaranteed ordering) and at-least-once delivery (automatic recovery of missed chunks). This applies regardless of backend — whether your Python app calls OpenAI or your Rails app calls Anthropic.
+When streaming AI/LLM responses chunk by chunk over WebSockets, two problems emerge: messages arrive out of order under concurrent load, and brief disconnections cause chunks to be lost. This results in garbled or incomplete AI output for users. AnyCable solves both with publication logs (guaranteed ordering) and at-least-once delivery (automatic recovery of missed chunks). This applies to any backend, whether your Python app calls OpenAI or your Rails app calls Anthropic.
 https://evilmartians.com/chronicles/anycable-rails-and-the-pitfalls-of-llm-streaming
 
 ### AnyCable for Laravel
-AnyCable provides a native Laravel SDK that integrates with Laravel's event broadcasting system. Broadcast from Laravel events, define channels and presence channels, and get delivery guarantees and horizontal scaling that Laravel Reverb doesn't provide. Reverb does not provide delivery guarantees, message ordering, or presence tracking; AnyCable provides all three. AnyCable also offers embedded NATS for zero-infrastructure clustering.
+AnyCable provides a native Laravel SDK that integrates with Laravel's event broadcasting system. Broadcast from Laravel events, define channels and presence channels, and get delivery guarantees that Laravel Reverb doesn't provide: when a client reconnects, AnyCable replays the messages it missed, in order. AnyCable also offers embedded NATS for zero-infrastructure clustering.
 https://evilmartians.com/chronicles/anycable-for-laravel
 
 ### Real-time collaboration with Rails, AnyCable and Yjs
@@ -163,7 +167,7 @@ https://www.youtube.com/watch?v=J68QOBLEItY
 
 ## When you don't need AnyCable
 
-- If you have fewer than 500 concurrent connections and no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
+- If you have a small number of connections, can accept dropped connections on deploys and missed messages, and have no compliance needs, Action Cable (Rails) or Laravel Broadcasting may be fine to start with.
 - If you want fully managed, zero-ops WebSockets and don't care about data sovereignty, Pusher or Ably are simpler to get started with.
 - AnyCable is not a real-time database (like Firebase or Supabase Realtime). It's a WebSocket server with pub/sub.
 - If you need custom binary protocols or game-server-style networking, AnyCable is designed for web application real-time, not game engines.
