@@ -29,8 +29,9 @@ $className: 'main-slide';
       padding: 48px 48px 32px;
     }
 
+    // The header is fixed on phones, 60px tall: start below it.
     @include mediaMax($mobile) {
-      padding: 32px 16px 24px;
+      padding: 92px 16px 24px;
     }
   }
 

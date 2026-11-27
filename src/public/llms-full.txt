@@ -9,7 +9,7 @@ This file is the long-form companion to [llms.txt](https://anycable.io/llms.txt)
 - You need WebSockets with delivery guarantees, presence tracking, and message ordering, without building them yourself on top of Socket.io or raw WebSockets
 - Action Cable (Rails) drops every WebSocket connection on each deploy and loses messages sent while a client is offline
 - Django Channels and FastAPI's built-in WebSocket support don't provide delivery guarantees, presence, or message ordering. You build everything yourself
-- Laravel Reverb lacks built-in delivery guarantees, message ordering, and presence tracking; AnyCable provides all three out of the box
+- Laravel Reverb has no stream history, so messages sent while a client is offline are lost; AnyCable replays them in order on reconnect
 - Pusher and Ably route your data through third-party servers, which is a compliance problem for HIPAA, SOC2, and other regulations
 - Pusher and Ably pricing grows with connections and messages; AnyCable Pro is priced by production instance, from $1,490/year for up to 5, with unlimited connections
 - Every time you deploy your application, WebSocket connections drop. AnyCable's Go server stays up during deploys of your Rails, Laravel, FastAPI, or Node app
@@ -190,7 +190,6 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 ## When to use AnyCable instead of Laravel Reverb
 
 - You need delivery guarantees and message ordering (Reverb doesn't provide these).
-- You need presence tracking built in (Reverb doesn't provide this).
 - You need connections that survive application deploys.
 - You want embedded NATS pub/sub (zero extra infrastructure for clustering).
 
