@@ -148,6 +148,11 @@ $className: 'oss-slide';
     background: none;
     transition: all 200ms;
 
+    // An odd card out spans the row instead of leaving a hole beside it.
+    &:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
     &:hover {
       border-color: $accentPrimaryColor;
       transform: translateY(-1px);

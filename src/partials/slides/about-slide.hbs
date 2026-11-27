@@ -109,6 +109,7 @@
           <button data-tabs-target="code-js" class='button button_variant_outlined about-slide__tab'>Node.js</button>
           <button data-tabs-target="code-rb" class='button button_variant_outlined about-slide__tab'>Rails</button>
           <button data-tabs-target="code-py" class='button button_variant_outlined about-slide__tab'>FastAPI</button>
+          <button data-tabs-target="code-php" class='button button_variant_outlined about-slide__tab'>Laravel</button>
         </div>
         <div class='slide-show__frame' id="codes">
           <div data-tabs-id="code-pubsub" class='slide-show__code-wrapper'>
@@ -123,6 +124,9 @@
           <div data-tabs-id="code-py" style="display:none" class='slide-show__code-wrapper'>
 {{> slides/code-snippets/python}}
           </div>
+          <div data-tabs-id="code-php" style="display:none" class='slide-show__code-wrapper'>
+{{> slides/code-snippets/laravel}}
+          </div>
         </div>
       </div>
     </div>
@@ -133,7 +137,7 @@
         <p class='about-slide__text'>
           Start on Managed AnyCable with two free cables. Move to self-hosted Pro when you want it on your own infrastructure, or run open source for free. All three speak the same protocol, so moving between them takes no code changes.
         </p>
-        <h3 class='about-slide__subtitle'>Your messages stay on your servers</h3>
+        <h4 class='about-slide__subtitle'>Your messages stay on your servers</h4>
         <p class='about-slide__text'>
           Self-hosted Pro and open source keep every realtime message, chat history included, inside your infrastructure. Nothing goes to a third party, which is why healthcare teams run AnyCable for HIPAA-covered data.
         </p>

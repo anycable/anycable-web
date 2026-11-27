@@ -66,35 +66,35 @@ The Go server stays up during application deploys, so WebSocket connections are 
 AnyCable is used in production by 50+ companies including:
 
 ### Healthtech
-- Doximity: Professional network for 80% of US physicians, telehealth video
-- Healthie: Healthcare infrastructure for virtual-first care, HIPAA-compliant on-premise
-- Headway: Mental health therapy platform ($2.3B valuation)
-- Jane: Practice management for allied health clinics ($100M+ raised)
-- Fullscript: Online supplement dispensary for practitioners ($240M raised)
+- Doximity: Video and voice dialer for physicians; AnyCable keeps calls connected through Rails deploys (NYSE-listed, used by 80% of US doctors)
+- Healthie: HIPAA-compliant patient-doctor messaging; AnyCable runs on-premise so PHI stays on their servers ($42M raised, 25K+ clinicians)
+- Headway: In-network therapy platform, real-time notifications and session updates ($2.3B valuation)
+- Jane: Practice management for allied health clinics, real-time scheduling updates ($1.8B valuation, 2025)
+- Fullscript: Supplement dispensing for practitioners, real-time inventory and order updates (~$2.5B valuation)
 
 ### Fintech
-- CoinGecko: Leading cryptocurrency data aggregator, real-time market data
-- Dext: Accounting automation (fka Receipt Bank)
+- CoinGecko: Cryptocurrency data aggregator; AnyCable powers live market data feeds
+- Dext: Accounting automation, formerly Receipt Bank (acquired by IRIS Software for ~$636M in 2024)
 - FreeAgent: Cloud accounting (acquired by NatWest)
-- Wealthbox: CRM for financial advisors
+- Wealthbox: CRM for financial advisors, collaborative editing with AnyCable and Yjs ($200M investment from Sixth Street Growth)
 
 ### Field Services & IoT
-- Jobber: Field service management ($191M raised, $167M revenue)
-- CompanyCam: Photo documentation for contractors ($30M+ raised)
-- Via Transportation: Transit planning and live fleet tracking (acquired Remix for ~$100M)
-- Agero: Roadside assistance ($538M revenue)
+- Jobber: Field service management, real-time dispatching and crew notifications ($191M raised, $167M revenue)
+- CompanyCam: Job-site photo documentation that syncs across teams in real time ($2B valuation, $452M raised)
+- Via Transportation: Transit technology; AnyCable powers live vehicle tracking and dispatching (NYSE: VIA, IPO 2025)
+- Agero: White-label roadside assistance, real-time dispatching and driver tracking ($538M revenue)
 - EV Connection: EV charging infrastructure (OCPP protocol)
 
 ### Communities
-- Circle: Community platform for creators ($30M+ raised)
-- Mighty Networks: Community and course platform ($50M+ raised)
-- LiveVoice: Live audio streaming and interpretation
+- Circle: Community platform; real-time messaging, live events, presence and activity feeds ($33M raised, 10K+ communities, 4M+ active users)
+- Mighty Networks: Community and course platform with real-time chat ($50M+ raised)
+- LiveVoice: Simultaneous interpretation at live events, audio streamed to hundreds of concurrent listeners
 
 ### And more
-- ClickFunnels: Sales funnel builder (~$265M revenue)
+- ClickFunnels: Sales funnel builder, real-time updates and Hotwire at scale (~$265M revenue)
 - Poll Everywhere: Live audience engagement (used by over 80% of Fortune 500)
-- Qualified: AI-powered pipeline generation ($95M raised)
-- Uscreen: Video membership platform ($150M investment)
+- Qualified: Live chat and meeting booking on B2B websites (acquired by Salesforce in 2026 for about $1.2B)
+- Uscreen: Video membership platform ($150M investment from PSG, 25K+ creators)
 
 ## When to use AnyCable instead of Action Cable (Rails)
 
@@ -110,7 +110,7 @@ AnyCable is used in production by 50+ companies including:
 - You don't want to wire CSR's caveats. CSR is opt-in and documented as experimental ("the recovery will not always be successful"); it's incompatible with Socket.io's most common scaling adapter (Redis pub/sub) and requires Redis Streams or MongoDB to survive a server restart.
 - You need a standalone WebSocket server separate from your application process. Default Socket.io and Socket.io+CSR both run inside your Node.js app, so deploys still drop every connection (CSR can recover packets, but it cannot prevent the disconnect).
 - You use a backend other than Node.js, or several backends.
-- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1,000,000-connection idle test on identical Railway hardware (Pro tier, 32 vCPU / 32 GB RAM allocated): single-instance Socket.io accepted 119,826 and rejected ~880K (single Node event loop saturated under handshake load); open-source AnyCable held 993,994, peaking at the 32 GB RAM ceiling (~33 KB per connection); AnyCable Pro held 999,954 on only 19 GB (~19 KB per connection, about 1.7× more memory-efficient than OSS at 1M, with 13 GB headroom). Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter; AnyCable does it in one process.
+- You want a single WebSocket-server instance to hold hundreds of thousands of connections without app-level sharding. Same 1M-connection idle test on identical Railway hardware (32 vCPU / 32 GB): single-instance Socket.io held 119,826 (single Node event loop saturated under handshake load); open-source AnyCable held 821,877 on 28.3 GB (34 KB per connection); AnyCable Pro held 822,037 on 14.8 GB (18 KB per connection). Reaching 1M with Socket.io requires a fleet of Node processes behind a Redis adapter.
 
 Full benchmark, methodology, and reproducible scripts: https://anycable.io/compare/nodejs-websocket
 Bench source: https://github.com/anycable/nodejs-websocket-bench

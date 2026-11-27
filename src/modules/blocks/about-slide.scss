@@ -175,6 +175,18 @@ $className: 'about-slide';
     @include mediaMax($smallMobile) {
       gap: 8px;
     }
+
+    // Five stack tabs: tighter in a narrow code column, then an even 3 + 2
+    // grid, so Laravel never wraps onto a line of its own.
+    @container (max-width: 479.98px) {
+      gap: 6px;
+    }
+
+    @container (max-width: 379.98px) {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
   }
 
   &__tab {
@@ -184,6 +196,11 @@ $className: 'about-slide';
     @include mediaMax($smallMobile) {
       height: 40px;
       padding: 0 10px;
+      font-size: 15px;
+    }
+
+    @container (max-width: 479.98px) {
+      padding: 0 8px;
       font-size: 15px;
     }
 
@@ -421,6 +438,7 @@ $className: 'about-slide';
   // the argument for FastAPI teams, so phones show it too, under the text.
   &__media-code {
     margin-top: 96px;
+    container-type: inline-size;
 
     @include mediaMax($tablet) {
       display: flex;

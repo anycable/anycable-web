@@ -126,7 +126,7 @@
         line-spacing='14'
         fill='#9E9E9E'
       >
-        <tspan x='26' y='200'>Commercial SaaS</tspan>
+        <tspan x='80' y='200' text-anchor='middle'>Proprietary SaaS</tspan>
       </text>
     </g>
     <g class='sprite--vs' id='VS' transform='translate(112, 126)'>

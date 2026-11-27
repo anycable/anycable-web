@@ -85,16 +85,14 @@ Socket.io's WebSocket layer lives inside the same Node process that handles HTTP
 
 Same 32 vCPU / 32 GB box. The 1M-connection test fans out to 50 separate bench-runner shards, each with its own source IP and ~50K outbound port pool. This sidesteps kernel tuning (which would otherwise be required to push past per-IP port limits).
 
-| Server                  | Connections held | Peak memory             | Peak CPU                 | What was the limit             |
-| ----------------------- | ---------------- | ----------------------- | ------------------------ | ------------------------------ |
-| Socket.io 4.x (Node 22) | 119,826          | 6.3 GB                  | 1.34% (1 core saturated) | single Node event loop         |
-| anycable-go (OSS)       | 993,994          | 32.00 GB (ceiling)      | 12.22% (~3.9 vCPU)       | 32 GB RAM ceiling of the box   |
-| anycable-go-pro v1.6.13 | 999,954          | 19.34 GB                | 9.37% (~3.0 vCPU)        | nothing, 13 GB memory headroom |
-| uWebSockets.js          | 1,018,366        | 5.45 GB                 | (single Node event loop) | uWS's bare-wire footprint      |
+| Server                  | Connections held | RAM per connection | Peak memory | CPU peak (% of 1 vCPU) | Replay |
+| ----------------------- | ---------------- | ------------------ | ----------- | ---------------------- | ------ |
+| Socket.io 4.x (Node 22) | 119,826          | ~52 KB             | 6.3 GB      | n/a                    | no     |
+| anycable-go (OSS)       | 821,877          | 34 KB              | 28.3 GB     | 9.8%                   | yes    |
+| anycable-go-pro         | 822,037          | 18 KB              | 14.8 GB     | 7.9%                   | yes    |
+| uWebSockets.js          | 1,018,366        | 5.4 KB             | 5.45 GB     | n/a                    | no     |
 
-About 33 KB per connection for OSS, 19 KB for Pro at 1M scale. AnyCable Pro is roughly 1.7× more memory-efficient than the open-source build at this load. uWS's 5.4 KB/conn is the absolute floor (no replay, no broker; it's a WebSocket library, not a realtime framework).
-
-Three different failure modes: RAM ceiling (OSS), Go-runtime soft ceiling (Pro), single-threaded JS ceiling (Socket.io). Reaching 1M with Socket.io requires running many Node processes behind a Redis adapter (10K-30K per process is typical guidance).
+Ramp to 1M connections at 200/sec, hold 2 minutes. AnyCable Pro is the lightest setup with built-in replay, at about half the memory per connection of the open-source build. uWS's 5.4 KB per connection is the floor for a bare WebSocket library (no replay, no broker). Socket.io tops out around 120K on one process because a single Node event loop saturates on handshakes; reaching 1M takes many Node processes behind a Redis adapter (10K-30K per process is typical guidance).
 
 ### Broadcast throughput (1M deliveries to 10K subscribers)
 
