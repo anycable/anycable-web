@@ -167,15 +167,42 @@ $className: 'plan-hero';
     color: $fontSecondaryColor;
   }
 
-  &__tier-action {
-    grid-area: action;
+  &__tier-action,
+  &__tier-button {
     height: 40px;
     padding: 0 16px;
     font-size: 15px;
     white-space: nowrap;
+  }
+
+  &__tier-action,
+  &__tier-contact {
+    grid-area: action;
 
     @include mediaMax($mobile) {
       margin-top: 6px;
+    }
+  }
+
+  // Sales tiers: book a call, with email as the quieter alternative.
+  &__tier-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    text-align: center;
+  }
+
+  &__tier-email {
+    font-size: 13px;
+    line-height: 1.4;
+    color: $fontSecondaryColor;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: $opacityPrimaryTransition;
+
+    &:hover {
+      opacity: $opacityPrimaryValue;
     }
   }
 
