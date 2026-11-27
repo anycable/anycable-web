@@ -34,6 +34,10 @@ $className: 'header';
     @include mediaMax($smallMobile) {
       padding: 8px 24px 0;
     }
+
+    @media (max-width: 419.98px) {
+      padding: 8px 16px 0;
+    }
   }
 
   &__left {
@@ -71,6 +75,11 @@ $className: 'header';
     &__count {
       margin-left: 8px;
     }
+
+    // Phones keep the logo, Sign up and the menu.
+    @media (max-width: 419.98px) {
+      display: none;
+    }
   }
 
   &__links {
@@ -107,6 +116,108 @@ $className: 'header';
       @include mediaMax($smallTablet) {
         margin-left: 16px;
       }
+    }
+  }
+
+  // Phone menu: a native <details>, shown where the header links are hidden.
+  &__menu {
+    display: none;
+    margin-left: 12px;
+
+    @include mediaMax($smallTablet) {
+      display: block;
+    }
+  }
+
+  &__menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accentPrimaryColor;
+      outline-offset: 2px;
+    }
+  }
+
+  // Three bars that turn into a cross while the menu is open.
+  &__menu-icon,
+  &__menu-icon::before,
+  &__menu-icon::after {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: $fontPrimaryColor;
+    transition: transform 200ms, background-color 200ms;
+  }
+
+  &__menu-icon {
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+
+    &::before {
+      top: -6px;
+    }
+
+    &::after {
+      top: 6px;
+    }
+  }
+
+  &__menu[open] &__menu-icon {
+    background-color: transparent;
+
+    &::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    &::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+  }
+
+  &__menu-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 24px 16px;
+    border-bottom: 1px solid $borderPrimaryColor;
+    background: $backgroundPrimaryColor;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  &__menu-link {
+    padding: 12px 0;
+    color: $fontPrimaryColor;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+
+    & + & {
+      border-top: 1px solid $borderPrimaryColor;
+    }
+
+    &:hover {
+      color: $accentPrimaryColor;
     }
   }
 

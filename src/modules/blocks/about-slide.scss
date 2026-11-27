@@ -141,6 +141,15 @@ $className: 'about-slide';
     @include mediaMax($mobile) {
       margin-bottom: 48px;
     }
+
+    // Inside a section, a paragraph leads into the next subheading.
+    &:has(+ .#{$className}__subtitle) {
+      margin-bottom: 40px;
+
+      @include mediaMax($mobile) {
+        margin-bottom: 32px;
+      }
+    }
   }
 
   // Calm inline code: smaller, faint background, never breaks the rhythm

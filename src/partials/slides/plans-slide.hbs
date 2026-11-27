@@ -15,7 +15,7 @@
         <p class='plan-card__tag'>Start here</p>
         <h3 class='plan-card__title plan-card__title_inverted'>Managed AnyCable</h3>
         <p class='plan-card__text plan-card__text_inverted'>
-          We run, upgrade, and support AnyCable for you. Nothing to deploy.
+          We run, upgrade, and support AnyCable for you. Nothing to deploy. Formerly AnyCable+, at plus.anycable.io.
         </p>
         <p class='plan-card__price'>
           Free
@@ -30,12 +30,16 @@
           Start for free
         </a>
         <ul class='plan-card__list plan-card__text_inverted'>
+          <li>A cable is one hosted AnyCable server with its own WebSocket URL</li>
           <li>Up and running in minutes</li>
           <li>Built on the AnyCable Pro server</li>
+          <li>Delivery guarantees, presence, JWT auth and signed streams</li>
+          <li>Moves to self-hosted Pro with no code changes</li>
         </ul>
         <p class='plan-card__footnote'>
           Need more than two cables?
           <a class='plan-card__footnote-link plausible-event-name=Navigation plausible-event-link=pricing-self-host-pro' href='#pro'>Self-host Pro</a>
+          or <a class='plan-card__footnote-link plausible-event-name=Contact plausible-event-location=managed-quota' href='mailto:anycable@evilmartians.com?subject=Managed%20AnyCable%20quota'>ask us for a larger quota</a>
         </p>
       </section>
 
@@ -136,11 +140,11 @@
         <ul class='plan-hero__terms'>
           <li>Free 2-month trial, no card needed</li>
           <li>Staging and dev instances are free</li>
-          <li>No metering, no telemetry</li>
+          <li>No metering or connection caps</li>
         </ul>
 
         <p class='plan-hero__features'>
-          Everything in open source, plus consistency in cluster mode, adaptive
+          Everything in open source, plus stream history and presence shared across a Redis cluster, adaptive
           scaling, slow drain, binary formats, long-polling, Apollo GraphQL, and
           dedicated Slack support.
           <a class='link plan-hero__compare-link plausible-event-name=Navigation plausible-event-link=pricing-compare-oss' href='#pricing-compare'>Compare with open source</a>
@@ -205,7 +209,7 @@
                 <td>~18&nbsp;KB</td>
               </tr>
               <tr>
-                <th scope='row'>Consistency in cluster mode <span class='plans-slide__table-note'>stream history shared through Redis</span></th>
+                <th scope='row'>History and presence across a Redis cluster <span class='plans-slide__table-note'>open source shares history through NATS</span></th>
                 <td class='plans-slide__table-no'>No</td>
                 <td>Yes</td>
               </tr>

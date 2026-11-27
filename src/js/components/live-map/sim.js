@@ -264,7 +264,7 @@ export function createSim({ log, reducedMotion }) {
         }
         if (sim.mode === 'ws')
           log(
-            `Signal back: ${fmt(run.lost)} messages lost, with no history to replay.`,
+            `Signal back: ${fmt(run.lost)} messages lost during the outage, with no history to replay.`,
             'bad'
           );
         else
@@ -317,7 +317,7 @@ export function createSim({ log, reducedMotion }) {
         }
         if (sim.mode === 'ws')
           log(
-            `Deploy done: ${fmt(run.lost)} messages lost, ${fmt(run.reconnected * PER)} clients reconnected at once.`,
+            `Deploy done: ${fmt(run.lost)} messages lost during the deploy, ${fmt(run.reconnected * PER)} clients reconnected at once.`,
             'bad'
           );
         else log('Deploy done: 0 connections dropped, 0 messages lost.', 'ok');
@@ -376,7 +376,7 @@ export function createSim({ log, reducedMotion }) {
         }
         if (sim.mode === 'ws')
           log(
-            `Back after ${run.crashes} crashes, ${run.last.toFixed(1)} s: ${fmt(run.lost)} messages lost, ${fmt(run.calls * PER)} connect calls.`,
+            `Back after ${run.crashes} crashes, ${run.last.toFixed(1)} s: ${fmt(run.lost)} messages lost during the storm, ${fmt(run.calls * PER)} connect calls.`,
             'bad'
           );
         else

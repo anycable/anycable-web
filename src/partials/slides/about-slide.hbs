@@ -8,16 +8,16 @@
         <div class='about-slide__pillars'>
           <article class='about-slide__pillar'>
             <p class='about-slide__pillar-label'>Instant</p>
-            <p class='about-slide__pillar-figure'>3 ms<small>p50</small></p>
-            <p class='about-slide__pillar-caption'>roundtrip at 10K connections, 11 ms at p99 on&nbsp;Pro</p>
+            <p class='about-slide__pillar-figure'>11 ms<small>p99</small></p>
+            <p class='about-slide__pillar-caption'>roundtrip at 10K connections on Pro, 3&nbsp;ms at&nbsp;p50</p>
             <p class='about-slide__pillar-text'>
               A Go server holds the sockets and fans out every broadcast. Your app publishes over HTTP, Redis or the embedded NATS, then goes back to its own work.
             </p>
           </article>
           <article class='about-slide__pillar'>
             <p class='about-slide__pillar-label'>Scalable</p>
-            <p class='about-slide__pillar-figure'>18 KB</p>
-            <p class='about-slide__pillar-caption'>per idle connection on Pro, against about 52 KB on Socket.io</p>
+            <p class='about-slide__pillar-figure'>822K</p>
+            <p class='about-slide__pillar-caption'>idle connections on one Pro server, where Socket.io stopped at&nbsp;120K</p>
             <p class='about-slide__pillar-text'>
               Connections live outside your app processes, so a launch-day spike lands on AnyCable, and you scale it by adding instances. Pro adapts its concurrency to load.
             </p>
@@ -27,13 +27,13 @@
             <p class='about-slide__pillar-figure'>100%</p>
             <p class='about-slide__pillar-caption'>delivered through Wi&#8209;Fi drops, against 85% to 87% for default Socket.io and&nbsp;uWebSockets.js</p>
             <p class='about-slide__pillar-text'>
-              Stream history replays what a client missed, in order, when it reconnects. Connections stay open while you deploy, so users never notice a release.
+              Each stream keeps its recent history, 100 messages for 5 minutes by default and configurable, so a client that reconnects gets what it missed, in order.
             </p>
           </article>
           <article class='about-slide__pillar'>
             <p class='about-slide__pillar-label'>Yours</p>
-            <p class='about-slide__pillar-figure'>$0</p>
-            <p class='about-slide__pillar-caption'>per connection or message, with no metering</p>
+            <p class='about-slide__pillar-figure'>No caps</p>
+            <p class='about-slide__pillar-caption'>on connections or messages when you self&#8209;host</p>
             <p class='about-slide__pillar-text'>
               Run it in your cluster under the MIT license, or self-host Pro, priced by production instance, with unlimited connections from $1,490 a year. Messages never leave your infrastructure.
             </p>
@@ -91,11 +91,11 @@
       <div class='about-slide__content'>
         <h3 class='about-slide__heading'>Works with your stack</h3>
         <p class='about-slide__text about-slide__text_lead'>
-          AnyCable runs next to your application. Rails, Laravel and Node.js get native SDKs, and any other backend that can send an HTTP request can broadcast. Hotwire, Turbo Streams and every JavaScript framework work out of the box, and if you already run Redis or NATS, AnyCable can use them.
+          AnyCable runs next to your application. Rails, Laravel and Node.js get native SDKs, and any other backend that can send an HTTP request can broadcast. Hotwire, Turbo Streams and every JavaScript framework work out of the box, and if you already run Redis or NATS, AnyCable can use them. Coming from Pusher or Laravel Reverb? AnyCable speaks the Pusher protocol, so your Echo or pusher-js client stays as it is.
         </p>
         <h4 class='about-slide__subtitle'>Delivery guarantees, out of the box</h4>
         <p class='about-slide__text'>
-          Chat messages, edits in a shared document and notifications reach every user in order. When a phone loses signal on the subway or switches from Wi&#8209;Fi to cellular, AnyCable replays what it missed as soon as it reconnects, and connections stay open through your deploys.
+          Chat messages, edits in a shared document and notifications reach every user in order, including the one whose phone just switched from Wi&#8209;Fi to cellular.
         </p>
         <h4 class='about-slide__subtitle'>Streamed LLM answers resume after a dropped connection</h4>
         <p class='about-slide__text'>

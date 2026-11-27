@@ -3,7 +3,7 @@
     <div class='main-slide__copy'>
       <p class='main-slide__eyebrow'>
         <span class='main-slide__eyebrow-dot' aria-hidden='true'></span>
-        <span>Open-source realtime server<span class='main-slide__eyebrow-long'>, in production</span> since 2017</span>
+        <span>Open-source realtime server<span class='main-slide__eyebrow-long'> by Evil Martians, in production</span> since 2017</span>
       </p>
       <h1 class='main-slide__title'>Every message arrives.</h1>
       <p class='main-slide__subtitle'>
@@ -37,7 +37,10 @@
           <div class='live-map__tally-item'><dt>lost</dt><dd data-live-map-target='lost'>0</dd></div>
         </dl>
       </div>
-      <canvas class='live-map__canvas' data-live-map-target='canvas' role='img' aria-label='Simulated map of connections: your app broadcasts through the AnyCable server to 10,000 client connections. Network drops, deploys and a reconnect storm show missed messages replaying from stream history. With in-process WebSockets the same events lose messages, and the reconnect storm crashes the app twice before it recovers.'></canvas>
+      <div class='live-map__field'>
+        <canvas class='live-map__canvas' data-live-map-target='canvas' role='img' aria-label='Simulated map of connections: your app broadcasts through the AnyCable server to 10,000 client connections. Network drops, deploys and a reconnect storm show missed messages replaying from stream history. With in-process WebSockets the same events lose messages, and the reconnect storm crashes the app twice before it recovers.'></canvas>
+        <span class='live-map__sim-tag' aria-hidden='true'>Simulation</span>
+      </div>
       <div class='live-map__bar'>
         <div class='live-map__actions'>
           <button type='button' class='live-map__action plausible-event-name=Demo plausible-event-action=tunnel' data-live-map-target='tunnel'><span class='live-map__action-icon' aria-hidden='true'>🚇</span>Unreliable network</button>

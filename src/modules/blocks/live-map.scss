@@ -143,6 +143,32 @@ $liveMapLine: #2c292f;
     }
   }
 
+  // The canvas and a tag that says the traffic is simulated.
+  &__field {
+    position: relative;
+  }
+
+  // Top left is empty in the side-by-side drawing; the stacked one puts
+  // the app there, so the tag moves to the right.
+  &__sim-tag {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    padding: 3px 7px;
+    border: 1px solid #3a363d;
+    border-radius: 5px;
+    font: 10.5px/1.2 var(--live-map-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(var(--live-map-mute));
+    pointer-events: none;
+
+    @container (max-width: 719.98px) {
+      left: auto;
+      right: 12px;
+    }
+  }
+
   &__canvas {
     display: block;
     width: 100%;

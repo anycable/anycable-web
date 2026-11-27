@@ -6,4 +6,5 @@ import './js/components/customer-filter';
 import './js/components/tabs';
 import './js/components/cursors';
 import './js/components/github-button';
+import './js/components/header-menu';
 import './index.scss';

@@ -48,7 +48,8 @@ The Go server stays up during application deploys, so WebSocket connections are 
 ## Features
 
 - 10,000+ concurrent connections per server (Go goroutines, minimal memory)
-- Reliable message delivery with automatic recovery (at-least-once delivery)
+- Reliable message delivery with automatic recovery (at-least-once delivery; stream history keeps 100 messages for 5 minutes by default, configurable)
+- Pusher protocol compatibility: existing pusher-js and Laravel Echo clients connect unchanged
 - Message ordering via publication logs (critical for LLM streaming, live chat, financial data)
 - Presence tracking (who's online)
 - Signed streams and JWT authentication
@@ -66,35 +67,35 @@ The Go server stays up during application deploys, so WebSocket connections are 
 AnyCable is used in production by 50+ companies including:
 
 ### Healthtech
-- Doximity: Video and voice dialer for physicians; AnyCable keeps calls connected through Rails deploys (NYSE-listed, used by 80% of US doctors)
-- Healthie: HIPAA-compliant patient-doctor messaging; AnyCable runs on-premise so PHI stays on their servers ($42M raised, 25K+ clinicians)
-- Headway: In-network therapy platform, real-time notifications and session updates ($2.3B valuation)
-- Jane: Practice management for allied health clinics, real-time scheduling updates ($1.8B valuation, 2025)
-- Fullscript: Supplement dispensing for practitioners, real-time inventory and order updates (~$2.5B valuation)
+- Doximity: Video and voice dialer for physicians; AnyCable keeps calls connected through Rails deploys (used by 80% of US doctors)
+- Healthie: HIPAA-compliant patient-doctor messaging; AnyCable runs on-premise so PHI stays on their servers (25K+ clinicians)
+- Headway: In-network therapy platform, real-time notifications and session updates (600K+ therapy appointments a month)
+- Jane: Practice management for allied health clinics, real-time scheduling updates
+- Fullscript: Supplement dispensing for practitioners, real-time inventory and order updates
 
 ### Fintech
 - CoinGecko: Cryptocurrency data aggregator; AnyCable powers live market data feeds
-- Dext: Accounting automation, formerly Receipt Bank (acquired by IRIS Software for ~$636M in 2024)
-- FreeAgent: Cloud accounting (acquired by NatWest)
-- Wealthbox: CRM for financial advisors, collaborative editing with AnyCable and Yjs ($200M investment from Sixth Street Growth)
+- Dext: Accounting automation, formerly Receipt Bank
+- FreeAgent: Cloud accounting for UK freelancers and small businesses, part of NatWest
+- Wealthbox: CRM for financial advisors, collaborative editing with AnyCable and Yjs
 
 ### Field Services & IoT
-- Jobber: Field service management, real-time dispatching and crew notifications ($191M raised, $167M revenue)
-- CompanyCam: Job-site photo documentation that syncs across teams in real time ($2B valuation, $452M raised)
-- Via Transportation: Transit technology; AnyCable powers live vehicle tracking and dispatching (NYSE: VIA, IPO 2025)
-- Agero: White-label roadside assistance, real-time dispatching and driver tracking ($538M revenue)
+- Jobber: Field service management, real-time dispatching and crew notifications (100K+ customers)
+- CompanyCam: Job-site photo documentation that syncs across teams in real time
+- Via Transportation: Transit technology; AnyCable powers live vehicle tracking and dispatching (689 clients worldwide)
+- Agero: White-label roadside assistance, real-time dispatching and driver tracking
 - EV Connection: EV charging infrastructure (OCPP protocol)
 
 ### Communities
-- Circle: Community platform; real-time messaging, live events, presence and activity feeds ($33M raised, 10K+ communities, 4M+ active users)
-- Mighty Networks: Community and course platform with real-time chat ($50M+ raised)
+- Circle: Community platform; real-time messaging, live events, presence and activity feeds (10K+ communities, 4M+ active users)
+- Mighty Networks: Community and course platform with real-time chat
 - LiveVoice: Simultaneous interpretation at live events, audio streamed to hundreds of concurrent listeners
 
 ### And more
-- ClickFunnels: Sales funnel builder, real-time updates and Hotwire at scale (~$265M revenue)
+- ClickFunnels: Sales funnel builder, real-time updates and Hotwire at scale
 - Poll Everywhere: Live audience engagement (used by over 80% of Fortune 500)
-- Qualified: Live chat and meeting booking on B2B websites (acquired by Salesforce in 2026 for about $1.2B)
-- Uscreen: Video membership platform ($150M investment from PSG, 25K+ creators)
+- Qualified: Live chat and meeting booking on B2B websites (part of Salesforce)
+- Uscreen: Video membership platform (25K+ creators)
 
 ## When to use AnyCable instead of Action Cable (Rails)
 
@@ -125,7 +126,7 @@ Bench source: https://github.com/anycable/nodejs-websocket-bench
 
 ## When to use AnyCable instead of Laravel Reverb
 
-- You need delivery guarantees and message ordering (Reverb doesn't provide these)
+- You need missed messages replayed in order after a reconnect (Reverb has no stream history)
 - You need connections that survive application deploys
 - You want embedded NATS pub/sub (zero extra infrastructure for clustering)
 
@@ -135,6 +136,7 @@ Bench source: https://github.com/anycable/nodejs-websocket-bench
 - Your WebSocket costs are growing linearly with users
 - You want an open-source option with a migration path to managed or Pro
 - You want to avoid vendor lock-in on a third-party service
+- You want to keep your client code: AnyCable speaks the Pusher protocol, so pusher-js and Laravel Echo clients connect unchanged
 
 ## AnyCable vs Centrifugo
 

@@ -16,6 +16,17 @@
         <span class='header__stars__count' id="gh-stars-counter">2.4K</span>
       </a>
       <a href="https://plus.anycable.io" target="_blank" class="button plausible-event-name=Signup plausible-event-location=header plausible-event-plan=managed" data-ph-capture-attribute-link-id="start-managed-header">Sign up</a>
+      {{!-- Below 820px the header links don't fit; a native disclosure holds them. --}}
+      <details class='header__menu'>
+        <summary class='header__menu-button' aria-label='Menu'><span class='header__menu-icon' aria-hidden='true'></span></summary>
+        <div class='header__menu-panel'>
+          <a href="/#features" class="header__menu-link plausible-event-name=Navigation plausible-event-link=menu-features" data-ph-capture-attribute-link-id="menu-features">Features</a>
+          <a href="/#customers" class="header__menu-link plausible-event-name=Navigation plausible-event-link=menu-customers" data-ph-capture-attribute-link-id="menu-customers">Customers</a>
+          <a href="/#pricing" class="header__menu-link plausible-event-name=Navigation plausible-event-link=menu-pricing" data-ph-capture-attribute-link-id="menu-pricing">Pricing</a>
+          <a href="https://docs.anycable.io" target="_blank" class="header__menu-link plausible-event-name=Navigation plausible-event-link=menu-docs" data-ph-capture-attribute-link-id="menu-docs">Docs</a>
+          <a href="/#resources" class="header__menu-link plausible-event-name=Navigation plausible-event-link=menu-resources" data-ph-capture-attribute-link-id="menu-resources">Resources</a>
+        </div>
+      </details>
     </div>
   </nav>
 </header>

@@ -38,6 +38,21 @@ $className: 'slide-show';
       // Show code as typed: the "--" in a signed stream is two characters.
       font-variant-ligatures: none;
     }
+
+    // A sample wider than its frame scrolls sideways: a soft light edge
+    // shows on whichever side has more code. The two "local" layers move
+    // with the code and cover each edge once it is scrolled all the way.
+    & pre > code {
+      flex: 1 1 auto;
+      min-width: 0;
+      background:
+        linear-gradient(to right, #0a0c10 40%, rgb(10 12 16 / 0)) 0 0 / 40px 100%,
+        linear-gradient(to left, #0a0c10 40%, rgb(10 12 16 / 0)) 100% 0 / 40px 100%,
+        linear-gradient(to right, rgb(240 243 246 / 0.16), rgb(240 243 246 / 0)) 0 0 / 14px 100%,
+        linear-gradient(to left, rgb(240 243 246 / 0.16), rgb(240 243 246 / 0)) 100% 0 / 14px 100%;
+      background-repeat: no-repeat;
+      background-attachment: local, local, scroll, scroll;
+    }
   }
 
   &__img {

@@ -148,7 +148,8 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 ## Features
 
 - 10,000+ concurrent connections per server (Go goroutines, minimal memory).
-- Reliable message delivery with automatic recovery (at-least-once delivery).
+- Reliable message delivery with automatic recovery (at-least-once delivery; stream history keeps 100 messages for 5 minutes by default, configurable)
+- Pusher protocol compatibility: existing pusher-js and Laravel Echo clients connect unchanged.
 - Message ordering via publication logs (critical for LLM streaming, live chat, financial data).
 - Presence tracking (who's online).
 - Pub/sub HTTP API for broadcasting from any backend.
@@ -189,7 +190,7 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 
 ## When to use AnyCable instead of Laravel Reverb
 
-- You need delivery guarantees and message ordering (Reverb doesn't provide these).
+- You need missed messages replayed in order after a reconnect (Reverb has no stream history).
 - You need connections that survive application deploys.
 - You want embedded NATS pub/sub (zero extra infrastructure for clustering).
 
@@ -198,7 +199,8 @@ The methodology lesson: when your benchmark gives a dramatic result, ask what ot
 - You need data to stay on your own infrastructure (HIPAA, SOC2, compliance).
 - Your WebSocket costs are growing linearly with users.
 - You want an open-source option with a migration path to managed or Pro.
-- You want to avoid vendor lock-in on a third-party service.
+- You want to avoid vendor lock-in on a third-party service
+- You want to keep your client code: AnyCable speaks the Pusher protocol, so pusher-js and Laravel Echo clients connect unchanged.
 
 ## AnyCable vs Centrifugo
 
